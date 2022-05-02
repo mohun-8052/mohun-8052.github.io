@@ -23,16 +23,16 @@
 <meta property="og:site_name" content="墨魂">
 <meta property="og:description" content="第四章 导线1. 互连参数1. 导线材料 金属层 多晶硅层 n+或p+扩散层  2. 互连参数——电容 平板电容模型 边缘电容模型  3. 互连参数——电阻方块电阻：$$R_\Box&#x3D;\frac{\rho}{H}$$其中，$H$​为工艺常数 知道了方块电阻$R_\Box$，可求得电阻$R$，有$$R&#x3D;R_\Box\frac{L}{W}$$ 扩展： ​	芯片中的互连，一般高层的金">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126214746698.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126220745937.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126230250702.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png">
 <meta property="article:published_time" content="2022-05-01T16:33:35.000Z">
-<meta property="article:modified_time" content="2022-05-01T16:42:03.744Z">
+<meta property="article:modified_time" content="2022-05-02T06:34:42.283Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="数字集成电路">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126214746698.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png">
   
   
   <title>数字集成电路（13）导线互连 - 墨魂</title>
@@ -84,7 +84,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>墨魂</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -259,7 +259,7 @@
 <p>​	即$W↑\ →\ R↓\ →\ 功耗P↓,\ RC↓ $</p>
 <p>​	因此高层金属层，如$M_4、M_5$​，常用于时钟、电源等关键信号的布线</p>
 <p>​	中间层金属用作于信号线。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126214746698.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="4-互连参数——电感"><a href="#4-互连参数——电感" class="headerlink" title="4. 互连参数——电感"></a>4. 互连参数——电感</h3><p>当频率上$GHz$的时候，才会去考虑电感的作用。</p>
 <h2 id="2-导线模型"><a href="#2-导线模型" class="headerlink" title="2. 导线模型"></a>2. 导线模型</h2><h3 id="1-模型"><a href="#1-模型" class="headerlink" title="1. 模型"></a>1. 模型</h3><ul>
 <li><p>理想导线</p>
@@ -343,11 +343,14 @@
 </li>
 <li><p><font color=red><b>可预测的结构</b></font></p>
 <ul>
-<li>方法：<strong>密集型布线结构</strong>——同层信号线使用电源线隔离，相邻层采用垂直布线。</li>
-<li>缺点：面积和电容增加了+5%，功耗和延时增加</li>
-<li>优点：减小了电容串扰，延时差别也下降到不超过2%</li>
+<li><p>方法：<strong>密集型布线结构</strong>——同层信号线使用电源线隔离，相邻层采用垂直布线。</p>
+</li>
+<li><p>缺点：面积和电容增加了+5%，功耗和延时增加</p>
+</li>
+<li><p>优点：减小了电容串扰，延时差别也下降到不超过2%</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126214746698.png" srcset="/img/loading.gif" lazyload></p>
+</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126220745937.png" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p><font color=red><b>采用低介电常数的绝缘材料</b></font></p>
 <ul>
@@ -376,10 +379,12 @@
 <p>常考虑：<font color=red><b>电源网络设计——导线消耗了电压，使得供给门电路的电压下降</b></font></p>
 <p>供给门电路的电压下降的危害</p>
 <ul>
-<li>噪声容限降低</li>
-<li>延时增加</li>
+<li><p>噪声容限降低</p>
+</li>
+<li><p>延时增加</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126220745937.png" srcset="/img/loading.gif" lazyload></p>
+</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126230250702.png" srcset="/img/loading.gif" lazyload></p>
 <p>上图中，$\Delta V’$称为电压降，而$\Delta V$称为低电压反弹。</p>
 <p>实际供给门电路的电压只有  $V&#x3D;V_{DD}-\Delta V’-\Delta V$​</p>
 <h4 id="2-【重点】减小电压降的方法"><a href="#2-【重点】减小电压降的方法" class="headerlink" title="2. 【重点】减小电压降的方法"></a>2. 【重点】减小电压降的方法</h4><p>战略：缩短电源引线和电路电源接地线的距离</p>
@@ -419,7 +424,7 @@
 <p>​	局部线（底层金属层做信号传输）采用高密度，全局线（高层金属层走全局信号，如时钟线、电源线）</p>
 </li>
 <li><p>采用更好的互连策略——对角线法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126230250702.png" srcset="/img/loading.gif" lazyload></p>
 <p>​	采用<strong>对角线式布线</strong>（如上图），现场可较小29%，但是对于EDA工具、掩膜制作的要求高，难度大。</p>
 <p>​	目前一般采用<strong>曼哈顿式布线</strong>，即横平竖直式的布线。</p>
 </li>

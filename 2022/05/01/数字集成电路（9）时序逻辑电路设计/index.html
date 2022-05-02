@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160542210.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127194944618.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220502144029350.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220501232734462.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011162522262.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011163927553.png">
@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194307002.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194622279.png">
 <meta property="article:published_time" content="2022-05-01T15:23:40.000Z">
-<meta property="article:modified_time" content="2022-05-01T15:41:12.223Z">
+<meta property="article:modified_time" content="2022-05-02T06:42:14.120Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="数字集成电路">
 <meta name="twitter:card" content="summary_large_image">
@@ -101,7 +101,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>墨魂</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -228,7 +228,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      41 分钟
+      40 分钟
     </span>
   
 
@@ -298,7 +298,7 @@
 </li>
 <li><p>传播时间$t_{Propagate\ Time}$​</p>
 <p>当<strong>满足建立时间和保持时间</strong>时，数据从输入端复制到输出端所需要的时间（$50%$对$50%$）。</p>
-<p>即**<font color=red>时钟$CLK50%$对输出端数据$50%$​​</font>**，如下图。</p>
+<p>即<font color=red><b>时钟</b>$CLK50%$<b>对输出端数据</b>$50%$​​</font>，如下图。</p>
 <p><strong>为何这么说？</strong></p>
 <p>因为只有当满足了建立时间，此时时钟$CLK$​​​​才可以翻转，即<strong>此时的数据才是输入端输入的数据</strong></p>
 <p>所以<strong>输入端数据的$50%$即为时钟的$50%$</strong></p>
@@ -373,9 +373,8 @@
 <p>如果要让数据可以正确锁存下来，需要④⑤之间的节点的电平等于③⑤之间节点的电平，即<br>$$<br>D_{④⑤}&#x3D;D_{③⑤}<br>$$<br>即，如果要所锁存数据A，则当数据A到达④⑤节点之前，$D&#x3D;A$​​不可以改变，其信号传播路径：D-①-②-③-④-$Node_{④⑤}$​​</p>
 <h2 id="2-静态寄存器——边沿触发寄存器"><a href="#2-静态寄存器——边沿触发寄存器" class="headerlink" title="2. 静态寄存器——边沿触发寄存器"></a>2. 静态寄存器——边沿触发寄存器</h2><p>边沿触发寄存器，又称主-从寄存器，由主、从两个锁存器组成</p>
 <h3 id="1-电路图与分析-1"><a href="#1-电路图与分析-1" class="headerlink" title="1. 电路图与分析"></a>1. 电路图与分析</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010194213324.png" srcset="/img/loading.gif" lazyload alt="框架图"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png" srcset="/img/loading.gif" lazyload alt="传输门电路原理图
-电路分析：" style="zoom: 80%;" /></p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160542210.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png" srcset="/img/loading.gif" lazyload alt="传输门电路原理图"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160542210.png" srcset="/img/loading.gif" lazyload alt="时序图"></p>
 <p>主-从寄存器，由主锁存器——负锁存器、从锁存器——正锁存器组成。</p>
 <ul>
 <li>$CLK&#x3D;0→1$​​​​​时，主锁存器锁存数据。</li>
@@ -430,7 +429,7 @@
 <p>此时传播时间即为$Node_{I4-T3}$​到达$Q$​的时间</p>
 <p>而又因为此时$CLK&#x3D;1$，从锁存器处于透明模式，故数据路径为$Node_{I4-T3}-T_3-I_6-Q$​（1个INV、1个TX）</p>
 <p>即有，<br>$$<br>t_{c-q}&#x3D;t_{pd-inv}+t_{pd-tx}<br>$$</p>
-<h3 id="3-寄存器复位——同步-x2F-异步"><a href="#3-寄存器复位——同步-x2F-异步" class="headerlink" title="3. 寄存器复位——同步&#x2F;异步"></a>3. 寄存器复位——同步&#x2F;异步</h3><h4 id="1-同步复位（RST-x3D-0时复位）"><a href="#1-同步复位（RST-x3D-0时复位）" class="headerlink" title="1. 同步复位（RST&#x3D;0时复位）"></a>1. 同步复位（RST&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127194944618.png" srcset="/img/loading.gif" lazyload alt="image-20211026160542210"></p>
+<h3 id="3-寄存器复位——同步-x2F-异步"><a href="#3-寄存器复位——同步-x2F-异步" class="headerlink" title="3. 寄存器复位——同步&#x2F;异步"></a>3. 寄存器复位——同步&#x2F;异步</h3><h4 id="1-同步复位（RST-x3D-0时复位）"><a href="#1-同步复位（RST-x3D-0时复位）" class="headerlink" title="1. 同步复位（RST&#x3D;0时复位）"></a>1. 同步复位（RST&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220502144029350.png" srcset="/img/loading.gif" lazyload alt="image-20220502144029350"></p>
 <h4 id="2-异步复位（clr-x3D-0时复位）"><a href="#2-异步复位（clr-x3D-0时复位）" class="headerlink" title="2. 异步复位（clr&#x3D;0时复位）"></a>2. 异步复位（clr&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220501232734462.png" srcset="/img/loading.gif" lazyload alt="image-20220501232734462"></p>
 <h1 id="3-动态锁存器-x2F-寄存器"><a href="#3-动态锁存器-x2F-寄存器" class="headerlink" title="3. 动态锁存器&#x2F;寄存器"></a>3. 动态锁存器&#x2F;寄存器</h1><h2 id="1-动态锁存器"><a href="#1-动态锁存器" class="headerlink" title="1. 动态锁存器"></a>1. 动态锁存器</h2><p>电路图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011162522262.png" srcset="/img/loading.gif" lazyload alt="image-20211011162522262"></p>
@@ -475,7 +474,7 @@
 <h1 id="4-流水线和多周期路径"><a href="#4-流水线和多周期路径" class="headerlink" title="4. 流水线和多周期路径"></a>4. 流水线和多周期路径</h1><h2 id="1-流水线"><a href="#1-流水线" class="headerlink" title="1. 流水线"></a>1. 流水线</h2><p>电路的工作速度取决于<strong>时序电路间的组合逻辑</strong></p>
 <ul>
 <li>可以通过将复杂、延迟大的组合逻辑（如计算$lg(A·B)$​）通过寄存器进行分割，提高做工效率。</li>
-<li>**<font color=red>需要注意时序设计</font>**。每增加一个寄存器，结果就落后一拍！</li>
+<li><font color=red><b>需要注意时序设计</b></font>。每增加一个寄存器，结果就落后一拍！</li>
 </ul>
 <h2 id="2-多周期路径"><a href="#2-多周期路径" class="headerlink" title="2. 多周期路径"></a>2. 多周期路径</h2><p>主要是写<strong>RTL</strong>代码时需要注意。</p>
 <p>如果一个组合逻辑计算需要多个时间周期完成，可以通过一个<code>cnt</code>进行移位（移位运算量小）。当满足某个条件时，寄存器<code>en=1</code>，输出结果。</p>
@@ -487,7 +486,7 @@
 <p>波形：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194307002.png" srcset="/img/loading.gif" lazyload alt="施密特触发器波形图"></p>
 <p><strong>用处</strong>：将含有<strong>噪声或者缓慢变化</strong>的信号转变为一个干净的数字输出信号，即<strong>“0”或者“1”</strong>。</p>
-<p>​			或者说：**<font color=red>抑制信号的振荡，使输入信号迅速翻转。</font>**</p>
+<p>​			或者说：<font color=red><b>抑制信号的振荡，使输入信号迅速翻转。</b></font></p>
 <p><strong>原理</strong>：一般采用互补CMOS进行搭建，改变PMOS管和NMOS管的$W$之比，实现$V_M$的改变。</p>
 <p>​			（增大PMOS管的尺寸，$V_M$​​后移）</p>
 <p><strong>施密特触发器互补CMOS电路图</strong></p>
