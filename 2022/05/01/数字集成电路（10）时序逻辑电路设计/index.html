@@ -24,15 +24,15 @@
 <meta property="og:description" content="第七章 时序逻辑电路设计1. 时序基础概念1. 时序分析的目的对数字系统进行时序检查，判断电路是否可以正常工作（常面临建立时间和保持时间等问题），判断电路的性能等。 常常分析电压、温度、工艺（工艺角）等参数进行分析。 2. 时序分析的分类1. 静态时序分析（STA） 主要研究对象：建立时间、保持时间、传播延时  常用于分析同步时序电路（源时钟和目的时钟相同）  时序分析模型：  同步时钟&amp;#x2F">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019205442171.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211020103111439.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019210811041.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019213546648.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019210811041.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211020103111439.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211020105507695.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204529658.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025210013014.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204957015.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025213413238.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204713311.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204957015.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025210013014.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025213413238.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025220852654.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025221606061.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025234107739.png">
@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127232503203.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127232430246.png">
 <meta property="article:published_time" content="2022-05-01T15:43:53.000Z">
-<meta property="article:modified_time" content="2022-05-01T16:00:45.617Z">
+<meta property="article:modified_time" content="2022-05-02T16:21:07.496Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="数字集成电路">
 <meta name="twitter:card" content="summary_large_image">
@@ -335,7 +335,7 @@
 <li>所谓<strong>理想状态</strong>，指的是数据没有跳变时间，即数据跳变是瞬间完成的，数据跳变的$90%$、$50%$、$10%$​​是在同一个时间。</li>
 <li>根据以上理想状态的定义，可认为一有<font color=red><b>扰动</b></font>，数据就跳变完成。</li>
 </ul>
-<h3 id="5-计算污染时间和传播时间"><a href="#5-计算污染时间和传播时间" class="headerlink" title="5. 计算污染时间和传播时间"></a>5. 计算污染时间和传播时间</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211020103111439.png" srcset="/img/loading.gif" lazyload alt="image-20211019213546648"></p>
+<h3 id="5-计算污染时间和传播时间"><a href="#5-计算污染时间和传播时间" class="headerlink" title="5. 计算污染时间和传播时间"></a>5. 计算污染时间和传播时间</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019213546648.png" srcset="/img/loading.gif" lazyload alt="image-20211020103111439"></p>
 <p>现对图中四个时间进行解释：</p>
 <ul>
 <li><p>组合逻辑：</p>
@@ -394,7 +394,7 @@
 <p>如图所示，$Clk_{u4}→u4时钟引脚$​</p>
 </li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019213546648.png" srcset="/img/loading.gif" lazyload alt="image-20211020103111439"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211020103111439.png" srcset="/img/loading.gif" lazyload alt="image-20211019213546648"></p>
 </li>
 <li><p>数据路径</p>
 <pre><code class=" mermaid">graph LR
@@ -462,7 +462,7 @@
 <p>$\delta$：时钟偏差</p>
 <p>$t_{r-max}$​​：从该时钟域的时钟输入端口到该时钟域内寄存器的最长时间，如图中②</p>
 <p>$t_{r-max}$​​​​：从该时钟域的时钟输入端口到该时钟域内寄存器的最短时间，如图中①</p>
-<h4 id="1-全局时钟偏差"><a href="#1-全局时钟偏差" class="headerlink" title="1. 全局时钟偏差"></a>1. 全局时钟偏差</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025210013014.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="1-全局时钟偏差"><a href="#1-全局时钟偏差" class="headerlink" title="1. 全局时钟偏差"></a>1. 全局时钟偏差</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204713311.png" srcset="/img/loading.gif" lazyload alt="image-20211025213413238"></p>
 <p>如图所示，蓝色阴影部分为全局电路。</p>
 <p>可知，$t_{r-max}&#x3D;0.38ns(T_3)$​​​；$t_{r-min}&#x3D;0.36ns(T_2)$​​​，故时钟偏差$\delta&#x3D;0.38-0.36&#x3D;0.02ns$​​​</p>
 <h4 id="2-局部时钟偏差"><a href="#2-局部时钟偏差" class="headerlink" title="2. 局部时钟偏差"></a>2. 局部时钟偏差</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204957015.png" srcset="/img/loading.gif" lazyload alt="image-20211025204957015"></p>
@@ -470,7 +470,7 @@
 <p>可知，对于<strong>阴影部分</strong>而言，$t_{r-max}&#x3D;0.22ns(T_3)$​​​​；$t_{r-min}&#x3D;0.21ns(T_2)$​​​​，故时钟偏差$\delta&#x3D;0.22-0.21&#x3D;0.01ns$</p>
 <p><strong>注意</strong>，非阴影部分电路不属于该局部电路，故而$t_{r-min}$取$T_2$，而不取$T_3$</p>
 <h3 id="2-时钟偏差分类（正负）"><a href="#2-时钟偏差分类（正负）" class="headerlink" title="2. 时钟偏差分类（正负）"></a>2. 时钟偏差分类（正负）</h3><h4 id="1-正偏差"><a href="#1-正偏差" class="headerlink" title="1. 正偏差"></a>1. 正偏差</h4><p>正偏差，即<font color=red><b>时钟延迟方向与数据流方向一致</b></font>，如图所示。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025213413238.png" srcset="/img/loading.gif" lazyload alt="image-20211025210013014"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025210013014.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li><p>建立时间：<strong>正偏差对于建立时间是有利的</strong>。</p>
 <p>​					因为信号从$R_1$传播到$R_2$​的时间多了$\delta$，即$T+\delta$，如图所示。</p>
@@ -482,7 +482,7 @@
 </li>
 </ul>
 <h4 id="2-负偏差"><a href="#2-负偏差" class="headerlink" title="2. 负偏差"></a>2. 负偏差</h4><p>正偏差，即<font color=red><b>时钟延迟方向与数据流方向相反</b></font>，如图所示。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204713311.png" srcset="/img/loading.gif" lazyload alt="image-20211025213413238"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025213413238.png" srcset="/img/loading.gif" lazyload alt="image-20211025210013014"></p>
 <ul>
 <li><p>建立时间：<strong>负偏差对于建立时间是不利的</strong>。</p>
 <p>​					因为信号从$R_1$​传播到$R_2$​​的时间少了$\delta$​，即$T-\delta$​，如图所示。</p>
