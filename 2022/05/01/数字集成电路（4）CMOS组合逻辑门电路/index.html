@@ -1,0 +1,807 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/mohun.png">
+  <link rel="icon" href="/img/mohun.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述静态互补CMOS电路基本概念和延时计算。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字集成电路（4）CMOS组合逻辑门电路">
+<meta property="og:url" content="http://example.com/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%884%EF%BC%89CMOS%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E9%97%A8%E7%94%B5%E8%B7%AF/index.html">
+<meta property="og:site_name" content="墨魂">
+<meta property="og:description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述静态互补CMOS电路基本概念和延时计算。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924170555179.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924165935360.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924202818084.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925110036727.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925135413503.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925142702981.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925161257847.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925170854676.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925191633262.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128003928853.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002162122634.png">
+<meta property="article:published_time" content="2022-05-01T13:57:31.000Z">
+<meta property="article:modified_time" content="2022-10-19T09:28:31.062Z">
+<meta property="article:author" content="shi">
+<meta property="article:tag" content="数字IC基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924170555179.png">
+  
+  
+  <title>数字集成电路（4）CMOS组合逻辑门电路 - 墨魂</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨魂</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-notebook"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background1.webp') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数字集成电路（4）CMOS组合逻辑门电路">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-01 21:57" pubdate>
+        2022年5月1日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      51 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数字集成电路（4）CMOS组合逻辑门电路</h1>
+            
+            <div class="markdown-body">
+              <p>本人《数字集成电路设计》课程笔记，老师为王仁平。</p>
+<p>本文主要讲述静态互补CMOS电路基本概念和延时计算。</p>
+<hr>
+<span id="more"></span>
+
+
+
+<h1 id="第六章-CMOS组合逻辑门电路"><a href="#第六章-CMOS组合逻辑门电路" class="headerlink" title="第六章 CMOS组合逻辑门电路"></a>第六章 CMOS组合逻辑门电路</h1><h2 id="1-CMOS电路的分类"><a href="#1-CMOS电路的分类" class="headerlink" title="1. CMOS电路的分类"></a>1. CMOS电路的分类</h2><ol>
+<li><p><strong>静态互补CMOS电路</strong></p>
+<p>即常见的CMOS电路——<strong>开关模型&#x3D;理想开关+有限电阻</strong></p>
+<p>门输出通过一个低阻连接到$V_{DD}$和$GND$​，输出为该电路实现的布尔值（0或者1）</p>
+<p>特点如下：</p>
+<ul>
+<li>高噪声容限（见（3）噪声门限）。</li>
+<li>高输入阻抗，低输出阻抗</li>
+<li>静态功耗可忽略（见（3）功耗）</li>
+</ul>
+</li>
+<li><p><strong>动态CMOS集成电路</strong></p>
+<p>信号暂时存储在高阻抗电路节点上面的<strong>电容</strong>上——$RC$大</p>
+<p>特点如下：</p>
+<ul>
+<li>门电路简单、速度快</li>
+<li>设计和制作工艺复杂</li>
+<li>对噪声敏感</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-静态互补CMOS设计"><a href="#2-静态互补CMOS设计" class="headerlink" title="2. 静态互补CMOS设计"></a>2. 静态互补CMOS设计</h2><h3 id="1-何为互补CMOS"><a href="#1-何为互补CMOS" class="headerlink" title="1. 何为互补CMOS"></a>1. 何为互补CMOS</h3><ul>
+<li><p>互补CMOS由<strong>上拉网络（PUN）和下拉网络（PDN）</strong>组成，每个输入都分配到上拉和下拉网络</p>
+<p>如下图，以<strong>与非门</strong>为例：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924170555179.png" srcset="/img/loading.gif" lazyload alt="image-20210924170555179"></p>
+</li>
+<li><p>上拉和下拉网络是<strong>相互排斥</strong>的——上下只能同时<strong>一个导通</strong></p>
+</li>
+<li><p>上拉：输出为1，$OUT$和$V_{DD}$之间存在通路</p>
+<p>下拉：输出为0，$OUT$和$V_{SS}(GND)$之间存在通路</p>
+</li>
+<li><p>上拉：使用PMOS管，输出为<strong>强1</strong>，即$V_{out}&#x3D;V_{DD}$​​​；故<strong>一般使用PMOS管</strong>。</p>
+<p>​			使用NMOS管，输出为<strong>弱1</strong>，即$V_{out}&#x3D;V_{DD}-V_{THN}$</p>
+<p>下拉：使用NMOS管，输出为<strong>强0</strong>，即$V_{out}&#x3D;GND$​；故<strong>一般使用NMOS管</strong></p>
+<p>​			使用PMOS管，输出为<strong>弱0</strong>，即$V_{out}&#x3D;|V_{THP}|$</p>
+<p>其原因在于：MOS管导通需要满足$V_{GS}&gt;V_{TH}$​</p>
+</li>
+<li><p><strong>具有N输出的逻辑门所需的晶体管数为2N</strong></p>
+</li>
+</ul>
+<h3 id="2-规则"><a href="#2-规则" class="headerlink" title="2. 规则"></a>2. 规则</h3><p>以NMOS管作为分析对象，</p>
+<center><b><font color="red" size="6">串与，并或</font></b></center>
+
+<p>即，<strong>NMOS管串联</strong>，实现<strong>与非</strong>功能；<strong>NMOS管并联</strong>，实现<strong>或非</strong>功能。</p>
+<p>其关系如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924165935360.png" srcset="/img/loading.gif" lazyload alt="image-20210924165935360"></p>
+<p>为何是<strong>非</strong>？</p>
+<p>因为互补CMOS本身脱身于<strong>反相器</strong>，故自带非逻辑。</p>
+<h3 id="3-设计复杂的逻辑门电路"><a href="#3-设计复杂的逻辑门电路" class="headerlink" title="3. 设计复杂的逻辑门电路"></a>3. 设计复杂的逻辑门电路</h3><h4 id="1-构成逻辑图的要素"><a href="#1-构成逻辑图的要素" class="headerlink" title="1. 构成逻辑图的要素"></a>1. 构成逻辑图的要素</h4><ul>
+<li>网络节点：<strong>顶点</strong></li>
+<li>弧线：<strong>源-漏</strong></li>
+<li>弧线名：<strong>栅信号</strong></li>
+</ul>
+<h4 id="2-步骤"><a href="#2-步骤" class="headerlink" title="2. 步骤"></a>2. 步骤</h4><ol>
+<li><p><strong>根据原理图画下拉网络</strong>——NMOS管构成</p>
+<p>根据<font color="red"> <b>串与并或</b></font>的原则，画出下拉网络的逻辑图。</p>
+</li>
+<li><p><strong>根据下拉网络，画出上拉网络（PMOS管）</strong></p>
+<ul>
+<li>每个<strong>闭合路径</strong>放置<strong>节点</strong></li>
+<li>设置节点：$OUT$、$V_{DD}$​​ 两个新节点</li>
+<li>PMOS管新弧线穿过NMOS管弧线，把节点连接起来</li>
+<li>给定新的PMOS弧线和NMOS管弧线<strong>相同的逻辑标记</strong></li>
+</ul>
+</li>
+</ol>
+<h2 id="3-【静态CMOS】分析逻辑门电路"><a href="#3-【静态CMOS】分析逻辑门电路" class="headerlink" title="3. 【静态CMOS】分析逻辑门电路"></a>3. 【静态CMOS】分析逻辑门电路</h2><p>CMOS管构成的电路分析，使用<strong>开关模型——理想开关+有限电阻+<em>电容</em></strong></p>
+<p>以<strong>两输入与非门</strong>为例，如下图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210924202818084.png" srcset="/img/loading.gif" lazyload alt="image-20210924202818084"></p>
+<center>两输入与非门开关模型</center>
+
+<p><strong>注意</strong>：有节点的地方，一般都有电容。如上图两输入与非门所示，两个串联的NMOS管之间存在节点，于是存在一个电容$C_{int}$​；上拉和下拉网络之间存在节点，这个节点正好是输出结果的节点​，为$C_L$</p>
+<h3 id="1-【输入模式】影响互补CMOS的传播延时-t-p"><a href="#1-【输入模式】影响互补CMOS的传播延时-t-p" class="headerlink" title="1. 【输入模式】影响互补CMOS的传播延时$t_p$"></a>1. 【输入模式】影响互补CMOS的传播延时$t_p$</h3><p>以两输入与非门为例，电路图如上图。</p>
+<ul>
+<li><p><strong>输出</strong>：低$\rightarrow$高</p>
+<ol>
+<li><p>**两个输入均→低 **： 即通过两个上拉电阻对电容充电，上拉网络中两个管子导通。此时两个$R_P$​并联<br>$$<br>t_p&#x3D;0.69· \frac{R_P}{2}·C_L<br>$$<br>其中，$\frac{R_P}{2}$为两$R_P$电阻并联之后的电阻阻值。​</p>
+</li>
+<li><p><strong>一个输入为高，一个输入→低</strong>：即只通过一个电阻对电容进行充电，上拉网络仅有一个管子导通，此时只有一个电阻$R_P$<br>$$<br>t_p&#x3D;0.69·R_P·C_L<br>$$</p>
+</li>
+</ol>
+</li>
+<li><p><strong>输出</strong>：高 $\rightarrow$ 低</p>
+<ol>
+<li><strong>两个输入均为高电平（或低→高）</strong>：即通过两个下拉电阻对电容放电，下拉网络中的两个管子均导通。此时两个$R_N$串联<br>$$<br>t_p&#x3D;0.69·2R_N·CL<br>$$<br>其中，$2R_N$为两个$R_N$电阻串联之后的电阻阻值</li>
+</ol>
+</li>
+<li><p>此处给出一组表格。采用$NMOS&#x3D;0.5\mu&#x2F;0.25\mu;PMOS&#x3D;0.75\mu&#x2F;0.25\mu;C_L&#x3D;100fF$</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">输入方式</th>
+<th align="center">延迟（$ps$）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$A、B&#x3D;0\rightarrow 1$​</td>
+<td align="center">62</td>
+</tr>
+<tr>
+<td align="center">$A&#x3D;1；B&#x3D;0 \rightarrow 1$</td>
+<td align="center">50</td>
+</tr>
+<tr>
+<td align="center">$A&#x3D;0 \rightarrow 1；B&#x3D;1$</td>
+<td align="center">69</td>
+</tr>
+<tr>
+<td align="center">$A&#x3D;B&#x3D;1 \rightarrow 0$</td>
+<td align="center">35</td>
+</tr>
+<tr>
+<td align="center">$A&#x3D;1；B&#x3D;1 \rightarrow 0$</td>
+<td align="center">57</td>
+</tr>
+<tr>
+<td align="center">$A&#x3D;1 \rightarrow 0；B&#x3D;1$</td>
+<td align="center">76</td>
+</tr>
+</tbody></table>
+<p>很明显，<strong>传播延时取决于输入模式</strong></p>
+<h3 id="2-【重点】如何确定晶体管尺寸"><a href="#2-【重点】如何确定晶体管尺寸" class="headerlink" title="2. 【重点】如何确定晶体管尺寸"></a>2. 【重点】如何确定晶体管尺寸</h3><p>目的：使得做出来的逻辑门电路<strong>性能</strong>最好（$t_p$最小）</p>
+<p>指标：该逻辑门<strong>最坏情况</strong>下，与反相器提供相同的输出电流，即$R_{PUN-max}&#x3D;R_{PDN-max}$​​​。</p>
+<p>​			即$t_{pHL}&#x3D;t_{pLH}$。</p>
+<p>​			相当于构建一个<strong>对称反相器</strong></p>
+<p>例子：</p>
+<ul>
+<li><p><strong>电阻大小和管子的$W$​​​成反比</strong></p>
+</li>
+<li><p>由于迁移率$\mu$​​的不同，此处我们认为，$W_P&#x3D;2,W_N&#x3D;1$​时，<strong>管子有着相同的电阻</strong>。</p>
+<p>这个系数$\frac{W_P}{W_N}&#x3D;2$​并不一定，根据工艺进行调整。</p>
+<p>下面是版图上面的体现：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925110036727.png" srcset="/img/loading.gif" lazyload alt="image-20210925110036727"></p>
+<p>按照<strong>系数为2</strong>进行计算，即有<br>$$<br>W_P&#x3D;2 \rightarrow R_P&#x3D;1\<br>W_N&#x3D;1 \rightarrow R_N&#x3D;1\<br>$$<br>原因：PMOS管和NMOS管的$\mu$不同</p>
+<p>注意：不同工艺的系数不同，此处的系数相当于是构建了一个对称反相器</p>
+<p>以两输入与非门和两输入或非门为例：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925135413503.png" srcset="/img/loading.gif" lazyload alt="image-20210925135413503"></p>
+</li>
+</ul>
+<ol>
+<li><p>双输入与非门：</p>
+<p><strong>PUN</strong>：当只有一个管子导通的时候，取到最大电阻，$R_{PUN-max}&#x3D;R_P$</p>
+<p><strong>PDN</strong>：当两个管子同时导通的时候，取到最大电阻，$R_{PDN-max}&#x3D;2R_N$</p>
+<p>即$R_P&#x3D;2R_N$​</p>
+<p>假设$R_P&#x3D;1$​​，则$W_P&#x3D;2$；此时$R_N&#x3D;1&#x2F;2$，则$W_N&#x3D;2·1&#x3D;2$</p>
+<p>结果如上图。</p>
+</li>
+<li><p>双输入或非门：</p>
+<p><strong>PUN</strong>：当两个管子同时导通的时候，取到最大电阻，$R_{PUN-max}&#x3D;2R_P$​</p>
+<p><strong>PDN</strong>：当只有一个管子导通的时候，取到最大电阻，$R_{PDN-max}&#x3D;R_N$​</p>
+<p>即$2R_P&#x3D;R_N$​​</p>
+<p>假设$R_N&#x3D;1$​​​​​​，则$W_N&#x3D;1$​​​​；此时$R_P&#x3D;1&#x2F;2$​​​​，则$W_P&#x3D;2·2&#x3D;4$​​​​</p>
+<p>结果如上图。</p>
+</li>
+<li><p>【<strong>重点</strong>】复合门的例子</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925142702981.png" srcset="/img/loading.gif" lazyload alt="image-20210925142702981"></p>
+<p><strong>PUN</strong>：$B、C、D$​​​管子 或 $A、D$​管子导通时，取到最大电阻，$R_{PUN-max}&#x3D;3R_{P-bcd}$​或者$R_{PUN-max}&#x3D;2R_{P-ad}$​​​</p>
+<p><strong>PDN</strong>：$A、C$​ 或 $A、B$​导通 或 只有$D$​管子导通时，取到最大电阻，$R_{PDN-max}&#x3D;2R_{N-ac、ab}$​或者$R_{PDN-max}&#x3D;R_{N-d}$​</p>
+<p>即$2R_{P-bc}+R_{P-d}&#x3D;R_{P-a}+R_{P-d}&#x3D;R_{N-d}&#x3D;R_{N-a}+R_{N-bc}$​​</p>
+<p>假设$R_{N-d}&#x3D;1$​​，则$W_{N-d}&#x3D;1$​​；</p>
+<p>若令$R_{N-a}&#x3D;R_{N-bc}&#x3D;R_{N-abc}$，即$2R_{N-abc}&#x3D;R_{N-d}$，因此$R_{N-abc}&#x3D;1&#x2F;2$，$W_{N-abc}&#x3D;2·1&#x3D;2$</p>
+<p>若令$R_{P-bc}&#x3D;R_{P-d}&#x3D;R_{P-bcd}$，即$3R_{P-bcd}&#x3D;R_{N-d}$，因此$R_{P-bcd}&#x3D;1&#x2F;3$，$W_{P-bcd}&#x3D;3·2&#x3D;6$</p>
+<p>又因为$2R_{P-bc}&#x3D;R_{P-a}$，即$\frac{3}{2}R_{P-a}&#x3D;R_{N-d}$，因此$R_{P-a}&#x3D;2&#x2F;3$，$W_{P-a}&#x3D;\frac{3}{2}·2&#x3D;3$</p>
+<p>结果如上图。</p>
+<p>或采用<strong>另外一种方法——更加方便快捷</strong></p>
+<p><strong>PUN</strong>：$B、C、D$​​​管子 或 $A、D$​管子导通时，取到最大电阻。​</p>
+<p>​			取<strong>串联最多</strong>的，即$3R_{P-bcd}$为计算基准</p>
+<p><strong>PDN</strong>：$A、C$​ 或 $A、B$​导通 或 只有$D$​管子导通时，取到最大电阻</p>
+<p>​			取<strong>串联最多</strong>的，即$2R_{N-ac、ab}$​为计算基准</p>
+<p>对于<strong>PUN</strong>，因为最多是<b><font color="red">3个电阻串联——3</font><strong>（BCD），且</strong><font color="red">为PMOS管——2</font></b>，故$W_{P-bcd}&#x3D;3·2&#x3D;6$​​</p>
+<p>​					根据$A$​和<b><font color="red">2个电阻并联——2</font></b>（BC），故$W_{P-a}&#x3D;\frac{6}{2}&#x3D;3$​</p>
+<p>对于<strong>PDN</strong>，因为最多是<b><font color="red">2个电阻串联——2</font></b>（AB或AC），且<b><font color="red">为NMOS管——1</font></b>，故$W_{N-abc}&#x3D;2·1&#x3D;2$</p>
+<p>​					根据$D$​​​​和<b><font color="red">2个电阻并联——2</font></b>（AB或AC），故$W_{N-d}&#x3D;\frac{2}{2}&#x3D;1$​​​​</p>
+</li>
+</ol>
+<h3 id="3-Elmore延时模型"><a href="#3-Elmore延时模型" class="headerlink" title="3. Elmore延时模型"></a>3. <code>Elmore</code>延时模型</h3><p> 【用途】：用于大概估算具有<strong>众多电容、电阻电路</strong>的延时，适用于<strong>【RC树】</strong></p>
+<p>最基本的公式：<br>$$<br>t_p&#x3D;0.69RC&#x3D;0.69\tau<br>$$<br>何为【RC树】？</p>
+<ul>
+<li><p>电路仅有<strong>一个输入节点</strong></p>
+</li>
+<li><p>电容均在<strong>节点和地</strong>之间</p>
+</li>
+<li><p>电路不包含任何<strong>电阻环路</strong></p>
+</li>
+<li><p>两概念：路径电阻、共享路径电阻</p>
+<ol>
+<li>路径电阻：输入节点到所求节点之间的<strong>唯一电阻通路</strong>上的电阻</li>
+<li>共享路径电阻：输入节点到$i、A$两个节点之间<strong>共享的【路径电阻】上</strong>的电阻</li>
+</ol>
+<p>如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925161257847.png" srcset="/img/loading.gif" lazyload alt="image-20210925161257847"></p>
+</li>
+</ul>
+<p>**$i$​​节点的路径电阻$R_{ii}$**​​：$R_1、R_3、R_i$​​；</p>
+<p>1节点的路径电阻$R_{11}$：$R_1$</p>
+<p>…</p>
+<p>节点$i$​、1的共享路径电阻$R_{i1}$：$R_1$​</p>
+<p>节点$i$​、2的共享路径电阻$R_{i2}$​：$R_1$​</p>
+<p>节点$i$​、3的共享路径电阻$R_{i3}$​：$R_1、R_3$​</p>
+<p>节点$i$​、4的共享路径电阻$R_{i4}$​：$R_1、R_3$​</p>
+<p><strong>节点$i、i$​的共享路径电阻$R_{ii}$​</strong>：$R_1、R_3、R_i$​；</p>
+<p>…</p>
+<p>可以看到，<strong>路径电阻可以认为是一种特殊的共享电阻</strong>。</p>
+<p>于是有计算公式如下：<br>$$<br>\tau_{D i}&#x3D;\sum_{k&#x3D;1}^{i} C_{k} R_{i k}<br>$$<br>注意：计算延时的时候，电容$C_k$为RC树中的所有电容。也就是<strong>该RC树的延时和所有电容有关</strong></p>
+<p>以上文图中的RC树为例子<br>$$<br>\tau&#x3D;R_1C_1+R_1C_2+(R_1+R_3)C_3+(R_1+R_3)C_4+(R_1+R_3+R_i)C_i<br>$$<br>于是<br>$$<br>t_p&#x3D;0.69·[R_1(C_1+C_2)+(R_1+R_3)(C_3+C_4)+(R_1+R_3+R_i)C_i]<br>$$</p>
+<h3 id="4-【Elmore延时】计算复合门延时——【多扇入】"><a href="#4-【Elmore延时】计算复合门延时——【多扇入】" class="headerlink" title="4. 【Elmore延时】计算复合门延时——【多扇入】"></a>4. 【<code>Elmore</code>延时】计算复合门延时——【多扇入】</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925170854676.png" srcset="/img/loading.gif" lazyload alt="image-20210925170854676"></p>
+<center>四输入与非门</center>
+
+<p>考虑延时的时候，常常考虑<strong>最坏的情况</strong>——所有的电容都充电或者所有电容都放电。</p>
+<p>如果原本$ABCD&#x3D;1110$，则此时所有电容均充电到$V_{DD}$</p>
+<p>在零时刻，$ABCD&#x3D;1111$​​，此时所有的电容进行放电。</p>
+<p>此时$S&#x3D;⑥，i&#x3D;②、③、④、⑤$</p>
+<p>即：</p>
+<p>$⑤$​​​​​​​​​​​节点$C_1$​​​​​​​​​​​通过$R_{ND}$​​​​​​​​​​​​放电（$1R$​），</p>
+<p>$④$​​​​​​​​​​​节点$C_2$​​​​​​​​​​​通过$R_{ND}+R_{NC}$​​​​​​​​​​​放电（$2R$），</p>
+<p>$③$​​​​​​​​​​​​节点$C_3$​​​​​​​​​​​​通过$R_{ND}+R_{NC}+R_{NB}$​​​​​​​​​​​​放电（$3R$），</p>
+<p>$②$​​​​​​​​​​​​​节点$C_L$​​​​​​​​​​​​​通过$R_{ND}+R_{NC}+R_{NB}+R_{NA}$​​​​​​​​​​​​​​放电（$4R$）</p>
+<p>若NMOS管的电阻均相等，为$R_{eqn}$</p>
+<p>于是，<br>$$<br>{t}_{pHL}&#x3D;0.69 {R}_{eqn}\ ({C}_{1}+2 C_{2}+3 C_{3}+4 C_{\mathrm{L}})<br>$$<br><strong>分析【多扇入】：</strong></p>
+<ul>
+<li>晶体管串联导致电阻增大，传播延时随着<strong>扇入数的</strong>增大而增大</li>
+<li>一个门的无负载本征延时最坏情况下，延时约为扇入数的<strong>二次函数</strong></li>
+<li>实际应用中，<strong>一般扇入数不超过4</strong></li>
+</ul>
+<h3 id="5-降低【多扇入】的电路的延时"><a href="#5-降低【多扇入】的电路的延时" class="headerlink" title="5. 降低【多扇入】的电路的延时"></a>5. 降低【多扇入】的电路的延时</h3><ol>
+<li><p>调整管子尺寸</p>
+<p>​	——逐级加大晶体管尺寸，即在Elmore分析中出现<strong>最多次的管子的电阻</strong>应该减小（$W$增大）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925191633262.png" srcset="/img/loading.gif" lazyload alt="image-20210925191633262"></p>
+<p>尺寸：$M_1&gt;M_2&gt;M_3&gt;…&gt;M_N$​</p>
+<p><strong>缺点：</strong>画版图困难</p>
+</li>
+<li><p>重新安排输入</p>
+<p>​	——关键路径上的晶体管应该<strong>靠近输出端</strong>。</p>
+<p><strong>关键信号</strong>：一个门的输出信号中，在所有输入中最后到达稳定的信号。</p>
+<p><strong>关键路径</strong>：决定一个结构最终速度的逻辑路径称为关键路径。</p>
+<p>原理：越靠近输出端，信号需要经过的管子少，$RC$​​延时短。</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128003928853.png" srcset="/img/loading.gif" lazyload alt="image-20211128003928853" style="zoom: 67%;" />
+
+<p>最坏情况，<strong>全部的电容放电</strong>——即下拉网络对地有通路。关键信号应为$0→1$，其他信号为$1$</p>
+<p>如左图，关键输入信号远离输出端，则$In_1&#x3D;0→1$时，$C_1、C_2、C_L$放电，延时最大。</p>
+<p>如右图，关键输入信号靠近输出端，当$In_1$还等于$0$时，其他电容已经放电完毕。当$In_1&#x3D;0→1$时，只有$C_L$放电，延时小。</p>
+</li>
+<li><p>重构逻辑结构</p>
+<p>​	——多扇入逻辑电路拆解成若干个较低扇入的逻辑电路。</p>
+<p>前面<code>Elmore</code>延时模型已经知道，延时和扇入数接近平方关系增长。</p>
+<p>于是降低扇入数，可以降低电路的整体延时。</p>
+</li>
+<li><p>加入<code>buffer</code>隔开大扇入和大扇出</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002162122634.png" srcset="/img/loading.gif" lazyload alt="image-20211002162122634"></p>
+<ul>
+<li><code>buffer</code>的$C_G$​比较小，一定程度上削弱了大扇入的延时；</li>
+<li>根据$C_L$的大小，按照$f&#x3D;\sqrt[N]{F}$​​比例​设置反相器的尺寸，可以降低大扇出带来的大延时。</li>
+</ul>
+</li>
+</ol>
+<h3 id="6-延时和【扇出】"><a href="#6-延时和【扇出】" class="headerlink" title="6. 延时和【扇出】"></a>6. 延时和【扇出】</h3><p>公式：<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{C_{ext}}{C_{int}})&#x3D;t_{p0}·(1+ \frac{f}{\gamma})<br>$$<br>一般，进行归一化后取$\gamma&#x3D;1$，即有<br>$$<br>t_p&#x3D;t_{p0}·(1+ f)<br>$$<br>呈现<strong>线性关系</strong>。</p>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>关于逻辑门的延时，给出如下的公式进行描述<br>$$<br>t_p&#x3D;a_1F_I+a_2F_I^2+a_3F_O<br>$$<br>$F_I$​表示总的等效扇入，$F_O$表示总的等效扇出。</p>
+<p>可见，<strong>延时与扇入成平方关系，同扇出成线性关系。</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E3%80%8B%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">《数字集成电路》课程笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97IC%E5%9F%BA%E7%A1%80/">数字IC基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%885%EF%BC%89%E5%8A%AA%E5%8A%9B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字集成电路（5）努力</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%883%EF%BC%89%E5%8F%8D%E7%9B%B8%E5%99%A8/">
+                        <span class="hidden-mobile">数字集成电路（3）反相器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'mohun-8052/mohun-8052.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

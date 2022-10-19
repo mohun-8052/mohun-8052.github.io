@@ -1,0 +1,795 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/mohun.png">
+  <link rel="icon" href="/img/mohun.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述时序电路中的基础元件：锁存器、寄存器（触发器）、施密特触发器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字集成电路（9）时序逻辑电路设计">
+<meta property="og:url" content="http://example.com/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%889%EF%BC%89%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="墨魂">
+<meta property="og:description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述时序电路中的基础元件：锁存器、寄存器（触发器）、施密特触发器。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010162502952.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010164426948.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010165303845.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010211358792.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010170652507.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010191547153.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010192010991.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010194213324.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160355289.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160542210.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220502144029350.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220501232734462.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011162522262.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011163927553.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011170957239.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011172513451.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194200702.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194307002.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194622279.png">
+<meta property="article:published_time" content="2022-05-01T15:23:40.000Z">
+<meta property="article:modified_time" content="2022-10-19T09:29:33.757Z">
+<meta property="article:author" content="shi">
+<meta property="article:tag" content="数字IC基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010162502952.png">
+  
+  
+  <title>数字集成电路（9）时序逻辑电路设计 - 墨魂</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨魂</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-notebook"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background1.webp') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数字集成电路（9）时序逻辑电路设计">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-01 23:23" pubdate>
+        2022年5月1日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数字集成电路（9）时序逻辑电路设计</h1>
+            
+            <div class="markdown-body">
+              <p>本人《数字集成电路设计》课程笔记，老师为王仁平。</p>
+<p>本文主要讲述时序电路中的基础元件：锁存器、寄存器（触发器）、施密特触发器。</p>
+<hr>
+<span id="more"></span>
+
+
+
+<h1 id="第七章-时序逻辑电路设计"><a href="#第七章-时序逻辑电路设计" class="headerlink" title="第七章 时序逻辑电路设计"></a>第七章 时序逻辑电路设计</h1><h1 id="1-时序电路的相关概念"><a href="#1-时序电路的相关概念" class="headerlink" title="1. 时序电路的相关概念"></a>1. 时序电路的相关概念</h1><h2 id="1-时序电路"><a href="#1-时序电路" class="headerlink" title="1. 时序电路"></a>1. 时序电路</h2><p>框架：<br>$$<br>\text{时序电路}&#x3D;\text{组合电路}+\text{存储电路}<br>$$<br>结果：取决于<strong>当前的输入和过去的状态</strong>。</p>
+<h2 id="2-静态-x2F-动态存储器"><a href="#2-静态-x2F-动态存储器" class="headerlink" title="2. 静态&#x2F;动态存储器"></a>2. 静态&#x2F;动态存储器</h2><ol>
+<li><p>静态存储器：</p>
+<ul>
+<li><p>上电就保持存储状态</p>
+</li>
+<li><p>通过<strong>正反馈</strong>，有意将<strong>输入和输出连接</strong></p>
+</li>
+<li><p>如果长时间不用可以用门控时钟关闭（起到降低功耗的作用）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010162502952.png" srcset="/img/loading.gif" lazyload alt="静态存储器（以正锁存器为例）"></p>
+</li>
+</ul>
+</li>
+<li><p>动态存储器：</p>
+<ul>
+<li><p>简单而言，即<strong>传输门+反相器</strong>，如下图。</p>
+</li>
+<li><p>利用<strong>寄生电容</strong>存储高低电平</p>
+</li>
+<li><p>只能存储较短的时间（$ms$级别）（电容小等原因使得存储时间短）</p>
+</li>
+<li><p>需要<strong>周期性刷新</strong>来补偿泄露电荷（参见（8）动态门）</p>
+</li>
+<li><p>结构简单，有<strong>较高性能</strong>（管子少，$RC$​小）和<strong>较低功耗</strong>（不存在静态功耗）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010164426948.png" srcset="/img/loading.gif" lazyload alt="image-20211010164426948"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-时序参数"><a href="#3-时序参数" class="headerlink" title="3. 时序参数"></a>3. 时序参数</h2><ol>
+<li><p>建立时间$t_{Setup}$​</p>
+<p>输入数据$D$在时钟有效沿到来前，必须有效的时间</p>
+</li>
+<li><p>保持时间（维持时间）$t_{Hold}$​​</p>
+<p>输入数据$D$在时钟有效沿到来之后，必须保持稳定的时间</p>
+</li>
+<li><p>传播时间$t_{Propagate\ Time}$​</p>
+<p>当<strong>满足建立时间和保持时间</strong>时，数据从输入端复制到输出端所需要的时间（$50%$对$50%$）。</p>
+<p>即<font color=red><b>时钟</b>$CLK50%$<b>对输出端数据</b>$50%$​​</font>，如下图。</p>
+<p><strong>为何这么说？</strong></p>
+<p>因为只有当满足了建立时间，此时时钟$CLK$​​​​才可以翻转，即<strong>此时的数据才是输入端输入的数据</strong></p>
+<p>所以<strong>输入端数据的$50%$即为时钟的$50%$</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010165303845.png" srcset="/img/loading.gif" lazyload alt="D触发器的建立时间、保持时间、传播时间"></p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010211358792.png" srcset="/img/loading.gif" lazyload alt="仿真实例中的传播时间（CLK50%对输出端数据50%）"></p>
+<p><strong>小贴士：</strong></p>
+<ol>
+<li><p>建立时间$t_{su}$和保持时间$t_{hold}$​​​都是<strong>​针对时钟的有效沿</strong>而言的。</p>
+<p>即，输入数据$50%$的时间对时钟有效沿$50%$的时间；对于传播延时$t_{c-q}$，输入信号$50%$（即时钟信号$50%$）时间对输出信号$50%$时间</p>
+</li>
+</ol>
+<h2 id="4-时序约束条件"><a href="#4-时序约束条件" class="headerlink" title="4. 时序约束条件"></a>4. 时序约束条件</h2><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010170652507.png" srcset="/img/loading.gif" lazyload alt="image-20211010170652507"></p>
+<ol>
+<li><p>时钟周期$T$​</p>
+<p>只有当<strong>当前所有计算全部完成，系统闲置</strong>，下个时钟（即下一个操作）才可到来。</p>
+<p>其公式如下，<br>$$<br>T&gt;t_{c-q}+t_{p-logic}+t_{su}<br>$$<br>其中，</p>
+<p>$t_{c-q}$：时序电路的传播时间（图中为D触发器的传播时间）</p>
+<p>$t_{p-logic}$​：组合逻辑的<strong>最坏</strong>传播延时（图中为$ALGO$​的传播延时）</p>
+<p>$t_{su}$​：时序电路的建立时间（图中为D触发器的建立时间）</p>
+</li>
+<li><p>保持时间$t_{hold}$</p>
+<p>保证数据可以在有效沿保持足够长的时间，不会因新进入的数据而过早改变</p>
+<p>其公式如下，<br>$$<br>t_{cdreg}+t_{cdlogic}&gt;t_{hold}<br>$$<br>其中，</p>
+<p>$t_{hold}$：保持时间</p>
+<p>$t_{cd}$​：最小传播延时&#x2F;时间，又称为污染延时，于是有</p>
+<p>$t_{cdreg}$：寄存器的最小传播时间</p>
+<p>$t_{cdlogic}$​：组合逻辑的最小传播延时</p>
+</li>
+</ol>
+<h2 id="5-锁存器和寄存器"><a href="#5-锁存器和寄存器" class="headerlink" title="5. 锁存器和寄存器"></a>5. 锁存器和寄存器</h2><table>
+<thead>
+<tr>
+<th align="center">项目</th>
+<th align="center">锁存器</th>
+<th align="center">寄存器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">敏感类型</td>
+<td align="center">电平敏感<br>（有效电平内随意反转）</td>
+<td align="center">边沿敏感</td>
+</tr>
+<tr>
+<td align="center">波形</td>
+<td align="center"><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010191547153.png" srcset="/img/loading.gif" lazyload alt="" style="zoom: 50%;" /></td>
+<td align="center"><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010192010991.png" srcset="/img/loading.gif" lazyload alt="image-20211010194213324" style="zoom:50%;" /></td>
+</tr>
+<tr>
+<td align="center">波形解释</td>
+<td align="center">图为正锁存器。<br>当$CLK&#x3D;1$，$Q&#x3D;D$（<strong>透明模式</strong>）<br>当$CLK&#x3D;0$，$Q&#x3D;Q$（<strong>保持模式</strong>）</td>
+<td align="center">图为上升沿有效D触发器<br>上升沿到来，$Q&#x3D;D$<br>其他时候，$Q&#x3D;Q$</td>
+</tr>
+<tr>
+<td align="center">需要注意的边沿<br>（该边沿到来需要考虑建立时间保持时间）</td>
+<td align="center">正锁存器：时钟下降沿<br>负锁存器：时钟上升沿</td>
+<td align="center">有效沿</td>
+</tr>
+<tr>
+<td align="center">备注</td>
+<td align="center"></td>
+<td align="center">由锁存器作为基本单元构成</td>
+</tr>
+</tbody></table>
+<h1 id="2-静态锁存器-x2F-寄存器"><a href="#2-静态锁存器-x2F-寄存器" class="headerlink" title="2. 静态锁存器&#x2F;寄存器"></a>2. 静态锁存器&#x2F;寄存器</h1><h2 id="1-静态锁存器"><a href="#1-静态锁存器" class="headerlink" title="1. 静态锁存器"></a>1. 静态锁存器</h2><h3 id="1-电路图与分析"><a href="#1-电路图与分析" class="headerlink" title="1. 电路图与分析"></a>1. 电路图与分析</h3><p>以正锁存器为例，电路图如下，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010194213324.png" srcset="/img/loading.gif" lazyload alt="正锁存器电路图"></p>
+<p><strong>电路结构</strong>：以传输门为主体的<em>二选一选择器</em>；$CLK&#x3D;1$，$Q&#x3D;D$；而$CLK&#x3D;0$，通过<strong>正反馈</strong>，输出端和输入端连接。</p>
+<h3 id="2-时序参数分析"><a href="#2-时序参数分析" class="headerlink" title="2. 时序参数分析"></a>2. 时序参数分析</h3><p>1.5中提到，分析正锁存器时，需要注意的时钟边沿是时钟的下降沿。</p>
+<p>这是因为，在$CLK&#x3D;1$时，$Q&#x3D;D$​，属于<strong>透明传输</strong>，即输出随输入随时变化。其信号传播路径：D-①-②-③-Q</p>
+<p>当$CLK&#x3D;1→0$时，锁存器将要对输入数据进行所存。因此需要考虑<strong>建立时间$t_{su}$​</strong>。</p>
+<p>如果要让数据可以正确锁存下来，需要④⑤之间的节点的电平等于③⑤之间节点的电平，即<br>$$<br>D_{④⑤}&#x3D;D_{③⑤}<br>$$<br>即，如果要所锁存数据A，则当数据A到达④⑤节点之前，$D&#x3D;A$​​不可以改变，其信号传播路径：D-①-②-③-④-$Node_{④⑤}$​​</p>
+<h2 id="2-静态寄存器——边沿触发寄存器"><a href="#2-静态寄存器——边沿触发寄存器" class="headerlink" title="2. 静态寄存器——边沿触发寄存器"></a>2. 静态寄存器——边沿触发寄存器</h2><p>边沿触发寄存器，又称主-从寄存器，由主、从两个锁存器组成</p>
+<h3 id="1-电路图与分析-1"><a href="#1-电路图与分析-1" class="headerlink" title="1. 电路图与分析"></a>1. 电路图与分析</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160355289.png" srcset="/img/loading.gif" lazyload alt="框架图"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png" srcset="/img/loading.gif" lazyload alt="传输门电路原理图"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160542210.png" srcset="/img/loading.gif" lazyload alt="时序图"></p>
+<p>主-从寄存器，由主锁存器——负锁存器、从锁存器——正锁存器组成。</p>
+<ul>
+<li>$CLK&#x3D;0→1$​​​​​时，主锁存器锁存数据。</li>
+<li>在①阶段，即$CLK&#x3D;1$，主锁存器输出$Q_M$保持不变，从锁存器随主锁存器输出值$Q_M$而变化（就是不变、<strong>从锁存器透明传输</strong>）；</li>
+<li>$CLK&#x3D;1→0$时，从锁存器锁存数据。​</li>
+<li>在②阶段，即$CLK&#x3D;0$​​，​​​从锁存器持续输出锁存的数据。</li>
+</ul>
+<center><b>过程总结</b></center>
+
+
+<table>
+<thead>
+<tr>
+<th align="center">$CLK$</th>
+<th align="center">$0→1$（上升沿）</th>
+<th align="center">阶段①：$CLK&#x3D;1$</th>
+<th align="center">$1→0$（下降沿）</th>
+<th align="center">阶段②：$CLK&#x3D;0$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">主锁存器</td>
+<td align="center">锁存数据</td>
+<td align="center">保持锁存</td>
+<td align="center"></td>
+<td align="center">透明传输</td>
+</tr>
+<tr>
+<td align="center">从锁存器</td>
+<td align="center"></td>
+<td align="center">透明传输</td>
+<td align="center">锁存数据</td>
+<td align="center">保持锁存</td>
+</tr>
+</tbody></table>
+<p>于是，有以下结论：</p>
+<ul>
+<li>寄存器的有效沿同从锁存器的敏感电平相关。<strong>对于从锁存器，如是正锁存器，则为上升沿；反之，下降沿。</strong></li>
+<li>从锁存器可以持续输出一个值长达一个时钟周期。</li>
+</ul>
+<h3 id="2-时序参数分析-1"><a href="#2-时序参数分析-1" class="headerlink" title="2. 时序参数分析"></a>2. 时序参数分析</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png" srcset="/img/loading.gif" lazyload alt="传输门电路原理图"></p>
+<p><strong>设定</strong>反相器延时为$t_{pd-inv}$，传输门延时为$t_{pd-tx}$​，时钟INV无延时。</p>
+<p><strong>明确</strong>：**<font color=red>有效时钟沿为上升沿，一切参数均以有效时钟沿作为基准</font>**</p>
+<h4 id="1-建立时间-t-su"><a href="#1-建立时间-t-su" class="headerlink" title="1. 建立时间$t_{su}$"></a>1. 建立时间$t_{su}$</h4><p>类似于2.1.2 静态锁存器时序参数的分析，可知需要满足$D_{I2-T2}&#x3D;D_{T2-I3}$</p>
+<p>即信号传输到$Node_{I2-T2}$之前，输入数据$D$​不能变化，数据路径为$D-I_1-T_1-I_3-I_2$​（3个INV，1个TX）</p>
+<p>即有<br>$$<br>t_{su}&#x3D;3t_{pd-inv}+t_{pd-tx}<br>$$</p>
+<h4 id="2-保持时间-t-hold"><a href="#2-保持时间-t-hold" class="headerlink" title="2. 保持时间$t_{hold}$"></a>2. 保持时间$t_{hold}$</h4><p>当$CLK&#x3D;1$时，$T_1$就会关断，因此需要保证$CLK&#x3D;1$之前，数据$D$已经通过传输门$T_1$</p>
+<p>因为数据$D$​进入$T_1$之前需要经过$I_1$；而时钟作用于$T_1$之前，同样需要经过$INV$​​；故而二者作用域于$T_1$时间差不多。</p>
+<p>于是只需要留一定的余量给$t_{hold}$即可，即有<br>$$<br>t_{hold}≈0<br>$$</p>
+<h4 id="3-传播时间-t-c-q"><a href="#3-传播时间-t-c-q" class="headerlink" title="3. 传播时间$t_{c-q}$"></a>3. 传播时间$t_{c-q}$</h4><p>前面1.3提到，传播时间是<strong>满足建立时间和保持时间</strong>之后，数据从输入端到输出端的时间（$50%$​对$50%$​）或者时钟$CLK50%$对输出端数据$50%$的时间（原因见1.3）。</p>
+<p>满足了<strong>建立时间</strong>，此时输入数据$D$​​​已经到达了$Node_{I4-T3}$​​​（<strong>因为为了满足建立时间，数据到达$Node_{I3-I4}$​​之后，还要经历$I_2$​​。经历$I_2$​​的延时同数据经历$I_4$​​的延时相互抵消了</strong>）</p>
+<p>此时传播时间即为$Node_{I4-T3}$​到达$Q$​的时间</p>
+<p>而又因为此时$CLK&#x3D;1$，从锁存器处于透明模式，故数据路径为$Node_{I4-T3}-T_3-I_6-Q$​（1个INV、1个TX）</p>
+<p>即有，<br>$$<br>t_{c-q}&#x3D;t_{pd-inv}+t_{pd-tx}<br>$$</p>
+<h3 id="3-寄存器复位——同步-x2F-异步"><a href="#3-寄存器复位——同步-x2F-异步" class="headerlink" title="3. 寄存器复位——同步&#x2F;异步"></a>3. 寄存器复位——同步&#x2F;异步</h3><h4 id="1-同步复位（RST-x3D-0时复位）"><a href="#1-同步复位（RST-x3D-0时复位）" class="headerlink" title="1. 同步复位（RST&#x3D;0时复位）"></a>1. 同步复位（RST&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220502144029350.png" srcset="/img/loading.gif" lazyload alt="同步复位"></p>
+<h4 id="2-异步复位（clr-x3D-0时复位）"><a href="#2-异步复位（clr-x3D-0时复位）" class="headerlink" title="2. 异步复位（clr&#x3D;0时复位）"></a>2. 异步复位（clr&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220501232734462.png" srcset="/img/loading.gif" lazyload alt="异步复位"></p>
+<h1 id="3-动态锁存器-x2F-寄存器"><a href="#3-动态锁存器-x2F-寄存器" class="headerlink" title="3. 动态锁存器&#x2F;寄存器"></a>3. 动态锁存器&#x2F;寄存器</h1><h2 id="1-动态锁存器"><a href="#1-动态锁存器" class="headerlink" title="1. 动态锁存器"></a>1. 动态锁存器</h2><p>电路图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011162522262.png" srcset="/img/loading.gif" lazyload alt="动态锁存器电路图"></p>
+<p>使用<strong>电容电荷</strong>表示一个逻辑信号。</p>
+<p>但是值的保存时间有限（$ms$）（漏电时间），需要周期性进行刷新。</p>
+<h2 id="2-动态寄存器"><a href="#2-动态寄存器" class="headerlink" title="2. 动态寄存器"></a>2. 动态寄存器</h2><h3 id="1-电路图"><a href="#1-电路图" class="headerlink" title="1. 电路图"></a>1. 电路图</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011163927553.png" srcset="/img/loading.gif" lazyload alt="动态锁存器电路图"></p>
+<h3 id="2-工作原理："><a href="#2-工作原理：" class="headerlink" title="2. 工作原理："></a>2. 工作原理：</h3><p>$CLK&#x3D;0$，$T_1$导通，$A$对$D$进行采样，并通过$C_1$充放电进行保存。</p>
+<p>$CLK&#x3D;1$​，$T_1$​关端，$T_2$​导通，从$A$​看$T_1$​和反相器$I_1$都呈现高阻态，$C_1$无法充放电，于是$C_1$​电荷值锁存。根据$D_A$​值，反相器$I_1$​进行对数据进行反向（即$I_1$​输出端上拉或者下拉），实现$C_2$​的充电或者放电。</p>
+<p>$CLK&#x3D;0$​​，$T_1$​​导通，$A$​​对$D$​​进行采样，并通过$C_1$​​​充放电进行保存。此时$T_2$​​截止，从$B$​​看$T_2$​​​和反相器$I_2$​都呈现高阻态，于是$C_2$​​只能保持电荷。</p>
+<p>….</p>
+<h3 id="3-时间参数分析："><a href="#3-时间参数分析：" class="headerlink" title="3. 时间参数分析："></a>3. 时间参数分析：</h3><ul>
+<li><p>建立时间$t_{su}$​：</p>
+<p>输入信号$D$传输到$A$，并且$A$节点完成$C_1$​充电或放电时间（电容容值小，电荷量小，充电放电时间极短，可忽略不计）。<br>$$<br>t_{su}&#x3D;1t_{pd-tx}<br>$$</p>
+</li>
+<li><p>保持时间$t_{hold}$：</p>
+<p>传输门在时钟边沿关断，近似0。<br>$$<br>t_{hold}≈0<br>$$</p>
+</li>
+<li><p>传播延时$t_{c-q}$：</p>
+<p>满足建立时间和保持时间之后，此时信号已经到$A$​节点。传播延时（时间）即为信号从$A$到$Q$的时间。</p>
+<p>即2个反相器+1个传输门+$C_2$​​充放电时间。<br>$$<br>t_{c-q}&#x3D;2t_{pd-inv}+t_{pd-tx}<br>$$</p>
+</li>
+</ul>
+<h3 id="4-存在的问题"><a href="#4-存在的问题" class="headerlink" title="4. 存在的问题"></a>4. 存在的问题</h3><ol>
+<li><p>通过$C_1$、$C_2$​​​电容进行存储，抗干扰能力差（<strong>噪声容限低</strong>）。</p>
+</li>
+<li><p>$C_1$、$C_2$​电容存在漏电现象，需要不断刷新。</p>
+</li>
+<li><p><strong>时钟重叠问题</strong>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011170957239.png" srcset="/img/loading.gif" lazyload alt="时间重叠问题"></p>
+<p>$\overline{CLK}$是通过$CLK$反相而来，于是需要用到<strong>反相器</strong>，于是$CLK$和$\overline{CLK}$之间存在延时。</p>
+<p>于是在时钟跳转的时候，二者会有一段时间电平相当，这样子工作是有问题的，即存在<strong>竞争行为</strong>。</p>
+<p><strong>解决办法</strong>：</p>
+<ol>
+<li>（0，0）重叠：<strong>PMOS均导通</strong>，需保证在$D$输入和节点$B$（数据不会影响到$C_2$电平）之间有足够的延时，以使主级采样的新数据不会传送到从级。</li>
+<li>（1，1）重叠：<strong>NMOS均导通</strong>，需要强加一个<strong>保持（维持）时间</strong>，使得$D$保持一段时间不变，即可。</li>
+</ol>
+</li>
+</ol>
+<h3 id="5-优化——提高噪声容限"><a href="#5-优化——提高噪声容限" class="headerlink" title="5. 优化——提高噪声容限"></a>5. 优化——提高噪声容限</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011172513451.png" srcset="/img/loading.gif" lazyload alt="image-20211011170957239"></p>
+<p>增加<strong>弱反馈——反相器$I_1$​</strong>，形成“伪静态电路”​​，可提高抗噪能力。</p>
+<p>缺点：增加少量延时。</p>
+<h1 id="4-流水线和多周期路径"><a href="#4-流水线和多周期路径" class="headerlink" title="4. 流水线和多周期路径"></a>4. 流水线和多周期路径</h1><h2 id="1-流水线"><a href="#1-流水线" class="headerlink" title="1. 流水线"></a>1. 流水线</h2><p>电路的工作速度取决于<strong>时序电路间的组合逻辑</strong></p>
+<ul>
+<li>可以通过将复杂、延迟大的组合逻辑（如计算$lg(A·B)$​）通过寄存器进行分割，提高做工效率。</li>
+<li><font color=red><b>需要注意时序设计</b></font>。每增加一个寄存器，结果就落后一拍！</li>
+</ul>
+<h2 id="2-多周期路径"><a href="#2-多周期路径" class="headerlink" title="2. 多周期路径"></a>2. 多周期路径</h2><p>主要是写<strong>RTL</strong>代码时需要注意。</p>
+<p>如果一个组合逻辑计算需要多个时间周期完成，可以通过一个<code>cnt</code>进行移位（移位运算量小）。当满足某个条件时，寄存器<code>en=1</code>，输出结果。</p>
+<p>如：某运算需要经过四个周期完成，可以声明<code>cnt=4&#39;b0001</code>，每个时钟进行左移，当<code>cnt[3]==1&#39;b1</code>时，<code>en=1</code>，输出结果。</p>
+<h1 id="5-双稳态时序电路"><a href="#5-双稳态时序电路" class="headerlink" title="5. 双稳态时序电路"></a>5. 双稳态时序电路</h1><h2 id="1-施密特触发器"><a href="#1-施密特触发器" class="headerlink" title="1. 施密特触发器"></a>1. 施密特触发器</h2><p>符号：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194200702.png" srcset="/img/loading.gif" lazyload alt="施密特触发器符号"></p>
+<p>波形：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194307002.png" srcset="/img/loading.gif" lazyload alt="施密特触发器波形图"></p>
+<p><strong>用处</strong>：将含有<strong>噪声或者缓慢变化</strong>的信号转变为一个干净的数字输出信号，即<strong>“0”或者“1”</strong>。</p>
+<p>​			或者说：<font color=red><b>抑制信号的振荡，使输入信号迅速翻转。</b></font></p>
+<p><strong>原理</strong>：一般采用互补CMOS进行搭建，改变PMOS管和NMOS管的$W$之比，实现$V_M$的改变。</p>
+<p>​			（增大PMOS管的尺寸，$V_M$​​后移）</p>
+<p><strong>施密特触发器互补CMOS电路图</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194622279.png" srcset="/img/loading.gif" lazyload alt="施密特触发器互补CMOS电路图"></p>
+<p>分析：</p>
+<ol>
+<li><p>$V_{in}&#x3D;0→1$​​​，故最初，$V_{out}&#x3D;0$​​，此时下拉网络$M_1$​​导通、上拉网络$M_2$​​、$M_4$​​​导通，即$\frac{W_P}{W_N}$增大，$V_M$​​​<strong>往后移</strong>。</p>
+<p>当$V_{in}&gt;V_M$之后，则$M_4$截至而$M_3$导通，此时$\frac{W_P}{W_N}$减小，于是$X$信号可以加速$1→0$的翻转，从而可以得到<strong>高速翻转</strong>的$V_{out}(0→1)$</p>
+</li>
+<li><p>$V_{in}&#x3D;1→0$​，故最初，$V_{out}&#x3D;1$​，此时下拉网络$M_1$​、$M_3$​导通、上拉网络$M_2$​导通，即$\frac{W_P}{W_N}$​减小，$V_M$​<strong>往前移</strong>。</p>
+<p>当$V_{in}&lt;V_M$之后，则$M_3$截至而$M_4$导通，此时$\frac{W_P}{W_N}$增大，于是$X$信号可以加速$0→1$的翻转，从而可以得到<strong>高速翻转</strong>的$V_{out}(1→0)$</p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E3%80%8B%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">《数字集成电路》课程笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97IC%E5%9F%BA%E7%A1%80/">数字IC基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8810%EF%BC%89%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字集成电路（10）时序逻辑电路设计</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%888%EF%BC%89%E5%8A%A8%E6%80%81CMOS/">
+                        <span class="hidden-mobile">数字集成电路（8）动态CMOS</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'mohun-8052/mohun-8052.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

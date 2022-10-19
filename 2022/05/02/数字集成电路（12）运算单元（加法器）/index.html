@@ -1,0 +1,946 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/mohun.png">
+  <link rel="icon" href="/img/mohun.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述数据通路上的基本元件——加法器，包括一位全加器和多位全加器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字集成电路（12）运算单元（加法器）">
+<meta property="og:url" content="http://example.com/2022/05/02/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8812%EF%BC%89%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%EF%BC%88%E5%8A%A0%E6%B3%95%E5%99%A8%EF%BC%89/index.html">
+<meta property="og:site_name" content="墨魂">
+<meta property="og:description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述数据通路上的基本元件——加法器，包括一位全加器和多位全加器。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027110224284.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215116844.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215549134.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027161741814.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027164457679.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027173910194.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112191714798.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112193418399.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112194234891.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112200847816.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112203526675.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112204347485.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113091127097.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112211243886.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113094101759.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113100801109.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113100147091.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113102608611.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113145434666.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113163711000.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113160739198.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113161228146.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113170432313.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113174550237.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113203342125.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113173725268.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113205502577.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128005910220.png">
+<meta property="article:published_time" content="2022-05-01T16:13:37.000Z">
+<meta property="article:modified_time" content="2022-10-19T09:30:05.718Z">
+<meta property="article:author" content="shi">
+<meta property="article:tag" content="数字IC基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027110224284.png">
+  
+  
+  <title>数字集成电路（12）运算单元（加法器） - 墨魂</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨魂</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-notebook"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background1.webp') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数字集成电路（12）运算单元（加法器）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-02 00:13" pubdate>
+        2022年5月2日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      56 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数字集成电路（12）运算单元（加法器）</h1>
+            
+            <div class="markdown-body">
+              <p>本人《数字集成电路设计》课程笔记，老师为王仁平。</p>
+<p>本文主要讲述数据通路上的基本元件——加法器，包括一位全加器和多位全加器。</p>
+<hr>
+<span id="more"></span>
+
+
+
+<h1 id="第十一章-设计运算功能块"><a href="#第十一章-设计运算功能块" class="headerlink" title="第十一章 设计运算功能块"></a>第十一章 设计运算功能块</h1><h1 id="1-总论"><a href="#1-总论" class="headerlink" title="1. 总论"></a>1. 总论</h1><p>在时序电路中，时序电路&#x3D;组合电路+存储电路</p>
+<p>在（9）~（11）中，已经详细介绍了存储电路（寄存器）</p>
+<p>在本文中，将介绍<strong>组合电路</strong>中比较重要的<strong>数据通路</strong>上的电路，可以认为是在时序电路中提到的$logic$​​，即用于<strong>逻辑运算和算数运算</strong>。</p>
+<p>在数集中，常用的数据通路组合电路有</p>
+<ul>
+<li>加法器</li>
+<li>乘法器</li>
+<li>移位器</li>
+</ul>
+<p>我们的目的，是追求以下几个方面的优化</p>
+<ul>
+<li>性能</li>
+<li>面积</li>
+<li>功耗</li>
+</ul>
+<p>如何优化：</p>
+<ul>
+<li>逻辑层次优化：利用状态机、真值表等，优化布尔方程得到一个速度更快、面积更小的电路</li>
+<li>电路层次优化：改变管子的尺寸；改变电路的拓扑连接（互补CMOS、动态CMOS等）</li>
+</ul>
+<h1 id="2-加法器"><a href="#2-加法器" class="headerlink" title="2. 加法器"></a>2. 加法器</h1><p>加法器在数据通路电路中的地位类似于反相器在与或等简单逻辑电路的位置</p>
+<ul>
+<li><p><strong>数据通路的电路的基础是加法器</strong></p>
+<p>乘法器也是加法器扩展而来的</p>
+</li>
+<li><p>加法器是限制数据通路运算<strong>速度</strong>的元件。</p>
+</li>
+</ul>
+<h2 id="1-一位全加器（-FA-）"><a href="#1-一位全加器（-FA-）" class="headerlink" title="1. 一位全加器（$FA$）"></a>1. 一位全加器（$FA$）</h2><h3 id="1-传统表达方式"><a href="#1-传统表达方式" class="headerlink" title="1. 传统表达方式"></a>1. 传统表达方式</h3><p>定义：根据输入的二值数据、进位信号，计算得到结果和进位。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027110224284.png" srcset="/img/loading.gif" lazyload></p>
+<p>其中，</p>
+<p>$A、B$：输入的数据，或为0、或为1</p>
+<p>$Cin&#x2F;\ C_{i}$​​：输入的前级的进位信号，或0或1</p>
+<p>$Sum&#x2F;\ S$​：计算得到的结果​​</p>
+<p>$Cout&#x2F;\ C_o$​​：计算得到的进位信号</p>
+<p>其逻辑关系为<br>$$<br>S&#x3D;A\bigoplus B \bigoplus C_i&#x3D;A·\overline{B}·\overline{C_i}+\overline{A}·B·\overline{C_i}+\overline{A}·\overline{B}·C_i+ABC_i \<br>$$</p>
+<p>$$<br>C_o&#x3D;AB+BC_i+AC_i<br>$$</p>
+<p>【注】：</p>
+<ol>
+<li><p>$\bigoplus$：异或，常见结构有：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215116844.png" srcset="/img/loading.gif" lazyload alt="image-20220622215116844" style="zoom: 67%;" />
+
+<p>$\bigodot$：同或，结构如下（即“异或门结构2”的“非”）：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215549134.png" srcset="/img/loading.gif" lazyload alt="image-20220622215549134" style="zoom: 45%;" /></li>
+</ol>
+<h3 id="2-P、G、D-​函数表达"><a href="#2-P、G、D-​函数表达" class="headerlink" title="2. $P、G、D$​函数表达"></a>2. $P、G、D$​函数表达</h3><p>真值表如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027161741814.png" srcset="/img/loading.gif" lazyload alt="一位加法器真值表"></p>
+<p>$P、G、D$的表达式如下（根据真值表可得）：<br>$$<br>P&#x3D;A\bigoplus B\<br>G&#x3D;A·B\<br>D&#x3D;\overline{A}·\overline{B}<br>$$<br>现对$P、G、D$进行解释：</p>
+<ul>
+<li><p>$P$：只要$P&#x3D;1$，则只要$C_i&#x3D;1$，即前级有进位，则本级进位输出$C_o$输出等于1​。故称，$P$为<font color=red><b>进位传播</b></font>。</p>
+</li>
+<li><p>$G$：只要$G&#x3D;1$，则本级进位输出$C_o&#x3D;1$，且与$C_i$无关，故称$G$为<font color=red><b>进位产生</b></font>。</p>
+</li>
+<li><p>$D$​：只要$D&#x3D;1$​，则本级进位输出$C_o&#x3D;0$​，且与$C_i$​无关，故称$D$​为<font color=red><b>进位取消</b></font></p>
+</li>
+<li><p>注意：<strong>三者为互斥</strong></p>
+</li>
+</ul>
+<p>将$f(A,B,C_i)$​​改写为$f(P,G(或D))$​​，即有<br>$$<br>C_o&#x3D;G+PC_i\<br>S&#x3D;P\bigoplus C_i<br>$$<br><strong>小贴士</strong>：</p>
+<ul>
+<li>$G$和$D$在表征进位上功能类似，其值<strong>直接表征</strong>了$C_o$的输出值，与$C_i$​​的输入无关。故而常常把二者合一（如上式，仅用$P、G$作为自变量）。</li>
+<li>$P、G(或D)$​的值仅仅与$A、B$​值有关，而与$C_i$​无关</li>
+<li>用这三个中间变量表征$S、C_o$​十分有用</li>
+</ul>
+<h3 id="3-逐位（行波）加法器"><a href="#3-逐位（行波）加法器" class="headerlink" title="3. 逐位（行波）加法器"></a>3. 逐位（行波）加法器</h3><p>所谓逐位（行波）加法器，指的是将$N$个​一位全加器（$FA$​​​​）串联在一起构成加法器。如下图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027164457679.png" srcset="/img/loading.gif" lazyload alt="image-20211027161741814"></p>
+<p>此处主要讨论其<font color=red><b>性能（延时）</b></font>。</p>
+<ul>
+<li><p>根据电路图，可知，设计行波加法器，<strong>提高优化进位运算$t_{carry}$​比优化和运算$t_{sum}$重要得多</strong>。</p>
+<p>原因：由图可知，输入各级$FA$​的信号中，$A、B$​在理想状态下，在零时刻即输入到各级$FA$​的输入端；而$C_i$​需要等待上一级运算之后，才能到达本级$FA$​​的输入端。故，<strong>关键信号是$C_i$​</strong>（概念见（4）.5.3），只有提高$t_{carry}$​​，才能从根本上优化行波加法器的运算速度。</p>
+</li>
+<li><p>最坏情况，$t_d&#x3D;O(N)$​</p>
+<p>最坏情况下，延时正比于全加器串联级数$N$</p>
+</li>
+</ul>
+<h2 id="2-【结构】设计全加器FA"><a href="#2-【结构】设计全加器FA" class="headerlink" title="2. 【结构】设计全加器FA"></a>2. 【结构】设计全加器FA</h2><h3 id="1-互补静态CMOS结构FA"><a href="#1-互补静态CMOS结构FA" class="headerlink" title="1. 互补静态CMOS结构FA"></a>1. 互补静态CMOS结构FA</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027173910194.png" srcset="/img/loading.gif" lazyload></p>
+<p>根据电路图可知，该电路对一些逻辑进行了变化</p>
+<table>
+<thead>
+<tr>
+<th align="center">传统</th>
+<th align="center">该电路</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$C_o&#x3D;AB+BC_i+AC_i$</td>
+<td align="center">$C_o&#x3D;AB+BC_i+AC_i$</td>
+<td align="center">未改变</td>
+</tr>
+<tr>
+<td align="center">$S&#x3D;A\bigoplus B \bigoplus C_i$</td>
+<td align="center">$S&#x3D;ABC_i+\overline{C_o}(A+B+C_i)$</td>
+<td align="center">改变</td>
+</tr>
+</tbody></table>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>可知，$S$​在计算的时候，复用了$C_o$​​的逻辑，使得管子数量有所减小，一共使用了<font color=red><b>28个管子</b></font></li>
+<li>【<strong>小技巧</strong>】在（4）.3.5中已经提到，关键信号应该靠近输出端。如图中<font color=red>红圈</font>，$C_i$</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<p>​	<strong>——（主要考虑对于$C_o$的影响）</strong>——<font color=red><b>工作速度较慢</b></font>：</p>
+<ul>
+<li>虽然管子数量有所减少，但是28个管子依旧消耗了较大的面积</li>
+<li>作为关键信号$C_o$​​，其产生电路中堆叠了太多的PMOS管（？为啥提到PMOS管）</li>
+<li>$C_o$​的本征负载电容很大，根据$t_p&#x3D;C_L·R_{eq}$​​可知，产生$C_o$​​​的延迟较大</li>
+</ul>
+<h3 id="2-镜像加法器"><a href="#2-镜像加法器" class="headerlink" title="2. 镜像加法器"></a>2. 镜像加法器</h3><p>该加法器是根据互补静态CMOS结构FA改进得到的，<strong>镜像加法器的下拉网络和互补CMOS结构FA完全相同</strong>。</p>
+<p>电路图如图所示，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112191714798.png" srcset="/img/loading.gif" lazyload></p>
+<table>
+<thead>
+<tr>
+<th align="center">项目</th>
+<th align="center">公式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">进位输出：$\overline{C_o}$</td>
+<td align="center">$\overline{C_o}&#x3D;\overline{AB+(A+B)C_i}$</td>
+</tr>
+<tr>
+<td align="center">求和输出：$\overline{S}$​</td>
+<td align="center">$\overline{S}&#x3D;\overline{ABC_i+\overline{C_o}(A+B+C_i)}$</td>
+</tr>
+</tbody></table>
+<p><strong>注意点</strong>：</p>
+<ol>
+<li><p><font color=red><b>24个管子</b></font></p>
+</li>
+<li><p>NMOS管（下拉网络）和PMOS管(上拉网络)完全对称，利用的是 <strong>求和 和 进位</strong> 的”自对偶性”</p>
+</li>
+<li><p>同互补CMOS加法器，关键信号$C_i$应该靠近输出端。</p>
+</li>
+<li><p><strong>进位输出电路需要考虑管子尺寸匹配问题，提高进位运算速度。</strong></p>
+<p>求和输出电路不需要考了管子尺寸，可以全部使用最小尺寸。</p>
+</li>
+<li><p><font color=red><b>⭐需要掌握镜像加法器的棍棒图</b></font></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112193418399.png" srcset="/img/loading.gif" lazyload alt="image-20211112193418399"></p>
+</li>
+</ol>
+<h3 id="3-传输门型加法器——传统型"><a href="#3-传输门型加法器——传统型" class="headerlink" title="3. 传输门型加法器——传统型"></a>3. 传输门型加法器——传统型</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112194234891.png" srcset="/img/loading.gif" lazyload alt="传输门加法器——传统型电路图"></p>
+<p><strong>注意点</strong>：</p>
+<ol>
+<li><p><strong><font color=red>24个管子</font></strong></p>
+</li>
+<li><p>使用模块：多路开关+反相器</p>
+</li>
+<li><p><strong>进位产生和求和输出的延时几乎相同</strong></p>
+</li>
+<li><p>真值表</p>
+<table>
+<thead>
+<tr>
+<th align="center">结果\建立信号</th>
+<th align="center">$P&#x3D;0$</th>
+<th align="center">$P&#x3D;1$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$S$</td>
+<td align="center">$C_i$</td>
+<td align="center">$\overline{C_i}$</td>
+</tr>
+<tr>
+<td align="center">$C_o$</td>
+<td align="center">$A$</td>
+<td align="center">$C_i$</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h3 id="4-传输门型加法器——曼切斯特FA"><a href="#4-传输门型加法器——曼切斯特FA" class="headerlink" title="4. 传输门型加法器——曼切斯特FA"></a>4. 传输门型加法器——曼切斯特FA</h3><h4 id="1-静态电路"><a href="#1-静态电路" class="headerlink" title="1. 静态电路"></a>1. 静态电路</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112200847816.png" srcset="/img/loading.gif" lazyload></p>
+<p>分析：</p>
+<ul>
+<li><p>第一部分：传输门</p>
+<p>该传输门的表达式很容易写，为：$C_iP_i$​</p>
+<p>因为**$P、G、D$​​互斥**，当$P_i&#x3D;1$​​​时，$D_i&#x3D;0$​且$G_i&#x3D;0(\overline{G_i}&#x3D;1)$​，第二部分上下拉网络均截止，输出取决于$C_i$​​​</p>
+</li>
+<li><p>第二部门：上下拉网络</p>
+<p>当$P_i&#x3D;0$时，根据<strong>互斥</strong>原理，存在以下两种情况：</p>
+<ul>
+<li><p>当$D_i&#x3D;1$​​​​时，表示进位为0，故输出需要下拉到地，即下拉网络导通，故下拉网络栅极输入为$D_i$​</p>
+</li>
+<li><p>当$G_i&#x3D;1$​时，表示进位为1，故输出需要上拉到$VCC$​​​，即上拉网络导通，又因为上拉网络需要栅极输入为0时才能实现上拉功能，故上拉网络的栅极输入为$\overline{G_i}$​</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-动态电路"><a href="#2-动态电路" class="headerlink" title="2. 动态电路"></a>2. 动态电路</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112203526675.png" srcset="/img/loading.gif" lazyload alt="image-20211112200847816"></p>
+<ul>
+<li>动态电路简单</li>
+<li>动态电路单向工作，传输门使用NMOS管实现</li>
+<li>该电路不需要$D$​</li>
+</ul>
+<h4 id="3-曼切斯特进位链加法器"><a href="#3-曼切斯特进位链加法器" class="headerlink" title="3. 曼切斯特进位链加法器"></a>3. 曼切斯特进位链加法器</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112204347485.png" srcset="/img/loading.gif" lazyload alt="image-20211112203526675"></p>
+<p><strong>最坏情况：</strong></p>
+<p>$P_0P_1P_2P_3&#x3D;1111$​，则$G_0G_1G_2G_3&#x3D;0000$​，当$\overline{C_{i,0}}&#x3D;0$​时，电路通过$P_0$​、$P_1P_0$​、$P_2P_1P_0$​、$P_3P_2P_1P_0$​放电​，可知最坏情况下，$t_p&#x3D;O(N^2)$​（1+2+3+4…）​</p>
+<h4 id="4-【会画会认】两位曼切斯特进位链棍棒图"><a href="#4-【会画会认】两位曼切斯特进位链棍棒图" class="headerlink" title="4. 【会画会认】两位曼切斯特进位链棍棒图"></a>4. 【会画会认】两位曼切斯特进位链棍棒图</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113091127097.png" srcset="/img/loading.gif" lazyload alt="image-20211113091127097"></p>
+<p>特点：</p>
+<ul>
+<li>动态逻辑上下管子数差很多，上少下多。</li>
+</ul>
+<h2 id="3-【逻辑】设计全加器FA"><a href="#3-【逻辑】设计全加器FA" class="headerlink" title="3. 【逻辑】设计全加器FA"></a>3. 【逻辑】设计全加器FA</h2><h3 id="1-旁路进位加法器"><a href="#1-旁路进位加法器" class="headerlink" title="1. 旁路进位加法器"></a>1. 旁路进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112211243886.png" srcset="/img/loading.gif" lazyload alt="image-20211112211243886"></p>
+<p>当$BP&#x3D;P_0P_1P_2P_3&#x3D;1$时，即最坏情况下，可以直接得到$C_{o,3}&#x3D;C_{i,0}$​；</p>
+<p>只要有一个$P&#x3D;0$​​，则只能按照正常路径计算进位​​。</p>
+<p><font color=red><b>特点：逐位加法器进行最坏情况优化</b></font></p>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>对速度提升不多，一般用得很少</li>
+<li>主要考虑了<font color=red><b>最坏情况</b></font>单种情况，对速度提升不大</li>
+<li>增加了旁路，使得电路不够规则，画版图不方便</li>
+</ol>
+<p><strong>优点</strong>：</p>
+<ol>
+<li>速度提升虽然不多，但是面积增加也不多。</li>
+<li>速度的提升在<font color=red><b>高位进位</b></font>时显现优势。</li>
+</ol>
+<p><strong>延时（了解）</strong>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113094101759.png" srcset="/img/loading.gif" lazyload alt="image-20211113100147091"></p>
+<center>图中阴影为关键路径</center>
+
+<p>$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\frac{N}{M}-1)t_{bypass}+(M-1)t_{carry}+t_{sum}$</p>
+<h3 id="2-线性进位选择加法器"><a href="#2-线性进位选择加法器" class="headerlink" title="2. 线性进位选择加法器"></a>2. 线性进位选择加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113100801109.png" srcset="/img/loading.gif" lazyload alt="图中阴影为关键路径"></p>
+<p><font color=red><b>特点：逐位加法器进行需要等待前一级的</b>$C_o$<b>输出之后才能进位。线性加法器先计算出</b>$C_o&#x3D;1$<b>或</b>$0$<b>的结果，等待出现了进位，直接通过选择器选出。</b></font></p>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>以面积换取速度，使得整个放大器的面积大大增加。</li>
+</ol>
+<p><strong>优点</strong>：</p>
+<ol>
+<li>速度提升了</li>
+</ol>
+<p><strong>延时</strong>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113100147091.png" srcset="/img/loading.gif" lazyload alt="image-20211113094101759"></p>
+<p>$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\frac{N}{M})t_{mux}+t_{sum}$</p>
+<p>实际上，由于第一级只需要计算出$P、G$就可以直接根据$C_{i,0}$得到$C_{o,1}$​，故第一级不需要选择器。</p>
+<p>因此延时公式修正为：$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\frac{N}{M}-1)t_{mux}+t_{sum}$​</p>
+<h3 id="3-平方根进位加法器"><a href="#3-平方根进位加法器" class="headerlink" title="3. 平方根进位加法器"></a>3. 平方根进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113102608611.png" srcset="/img/loading.gif" lazyload alt="image-20211113102608611"></p>
+<p><font color=red><b>特点：相比线性进位加法器，每一个单元的计算位数都是M。导致了后面单元计算完了之后需要等待很久前面单元</b>$C_o$<b>传来，浪费了需要时间。平方根进位加法器每个单元的计算位数不同，为逐个单元递增。如上图所示，其计算位数为2、3、4、5……</b></font></p>
+<p><strong>优点</strong>：运算速度最快</p>
+<p><strong>延时</strong>：</p>
+<p>$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\sqrt{2N})t_{mux}+t_{sum}$</p>
+<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><table>
+<thead>
+<tr>
+<th align="center">加法器</th>
+<th align="center">传统FA：逐位加法器</th>
+<th align="center">旁路进位加法器</th>
+<th align="center">线性进位加法器</th>
+<th align="center">平方根进位加法器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">速度</td>
+<td align="center">※</td>
+<td align="center">※※</td>
+<td align="center">※※※</td>
+<td align="center">※※※※</td>
+</tr>
+<tr>
+<td align="center">优点</td>
+<td align="center">规规矩矩</td>
+<td align="center">考虑了最坏情况</td>
+<td align="center">实现计算好两种$C_i$的情况，【等待真实$C_i$信号】到来然后进行选择</td>
+<td align="center">【一边】计算好两种$C_i$的情况，【一边】根据$C_i$进行选择</td>
+</tr>
+<tr>
+<td align="center">备注</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">每个单元都是M位的运算</td>
+<td align="center">单元的运算位数逐级递增</td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113145434666.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-超前进位加法器"><a href="#5-超前进位加法器" class="headerlink" title="5. 超前进位加法器"></a>5. 超前进位加法器</h3><p>见下文</p>
+<h2 id="4-【重要】超前进位加法器"><a href="#4-【重要】超前进位加法器" class="headerlink" title="4. 【重要】超前进位加法器"></a>4. 【重要】超前进位加法器</h2><h3 id="1-原理"><a href="#1-原理" class="headerlink" title="1. 原理"></a>1. 原理</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113163711000.png" srcset="/img/loading.gif" lazyload alt="image-20211113163711000"></p>
+<p>根据$C_{o,k}&#x3D;G_k+C_{o,k-1}P_k$可知只要将$C_{o,k-1}$利用递归拆开，就可以让$C_{o,k}$摆脱$C_{o,k-1}$的束缚，使得<br>$$<br>C_{o,k}&#x3D;f(G,P,C_{i,0})<br>$$<br>只要知道了各级的$G、P$和最初的$C_{i,0}$即可计算出$C_{o,k}$​。</p>
+<p>容易知道，只要经过简单的逻辑运算：$G&#x3D;AB$​​、$P&#x3D;A\bigoplus B$​即可得到数据，而$C_{i,0}$​​是输入信号之一。</p>
+<p><strong>缺点</strong>：随着计算位数的增多，<strong>整个加法器的扇入非常大</strong>。</p>
+<p>一些电路图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113160739198.png" srcset="/img/loading.gif" lazyload alt="【镜像电路】4位超前进位加法器"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113161228146.png" srcset="/img/loading.gif" lazyload alt="【动态实现】4位超前进位加法器"></p>
+<h3 id="2-块运算"><a href="#2-块运算" class="headerlink" title="2. 块运算"></a>2. 块运算</h3><p>令：<br>$$<br>G_{a:b}&#x3D;G_a+P_aG_{a-1}+P_aP_{a-1}G_{a-2}+…+P_aP_{a-1}P_{a-2}…G_{b}<br>$$</p>
+<p>$$<br>P_{a:b}&#x3D;P_aP_{a-1}…P_{b+1}P_b<br>$$</p>
+<p>$G_{a:b}$​和$P_{a:b}$​分别表示从第$a$​位到第$b$​位的进位产生和进位传播信号，称为<font color=red><b>块进位产生和块进位传播</b></font></p>
+<p>$eg：$</p>
+<p>$G_{2:0}&#x3D;G_2+P_2G_1+P_2P_1G_0$​</p>
+<p>$G_{3:1}&#x3D;G_3+P_3G_2+P_3P_2G_1$​</p>
+<p>$P_{3:0}&#x3D;P_3P_2P_1P_1$​</p>
+<p>$P_{3:1}&#x3D;P_3P_2P_1$</p>
+<p>经过推导，有<br>$$<br>C_{o,k}&#x3D;G_{k:0}+P_{k:0}C_{i,0}<br>$$<br>即：<font color=red><b>只要算出块进位产生和块进位传播，就可以轻松算出任何一位的进位输出</b></font></p>
+<p>其中，</p>
+<p>$C_{o,k}$：第$k$级的进位输出</p>
+<p>$G_{k:0}$​：第$k$​级到第$0$​级的块进位产生</p>
+<p>$ P_{k:0}$​​​：第$k$​​​级到第$0$​​​​级的块进位传播</p>
+<p>$C_{i,0}$​：第0级的进位输入，即加法器系统的进位输入</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113170432313.png" srcset="/img/loading.gif" lazyload></p>
+<p>根据上图，可以很形象理解，并且得到以下式子<br>$$<br>C_{o,3}&#x3D;G_{3:0}+P_{3:0}C_{i,0}<br>$$</p>
+<p>$$<br>&#x3D;(G_3+P_3G_2+P_3P_2G_1+P_3P_2P_1G_0)+P_3P_2P_1P_1C_{i,0}<br>$$</p>
+<h3 id="3-点操作"><a href="#3-点操作" class="headerlink" title="3. 点操作"></a>3. 点操作</h3><p>步骤如下：</p>
+<ol>
+<li><p>判断计算位数，分别计算出各个$G_k,P_k$​</p>
+<p>其中：$G_k&#x3D;A_kB_k$​​、$P_k&#x3D;A_k\bigoplus B_k$​​</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113174550237.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图分别是使用静态逻辑实现的<strong>进位传播、进位产生</strong></p>
+</li>
+<li><p>根据你要求的$C_{o,k}$​列出表达式</p>
+<p>即：<br>$$<br>C_{o,k}&#x3D;G_{k:0}+P_{k:0}C_{i,0}<br>$$</p>
+</li>
+<li><p>根据2得到的$G_{k:0}$​、$P_{k:0}$​​​列出<font color=red><b>点操作表达式</b></font>，下面以4位加法器为例子</p>
+<ol>
+<li><p>列式子</p>
+<p>$(G_{3:0},P_{3:0})&#x3D;(G_3,P_3)·(G_2,P_2)·(G_1,P_1)·(G_0,P_0)\$​​</p>
+<p>​					  $&#x3D;[(G_3,P_3)·(G_2,P_2)]·[(G_1,P_1)·(G_0,P_0)]$​</p>
+<p>​				  	$&#x3D;(G_{3:2},P_{3:2})·(G_{1:0},P_{1:0})$​</p>
+</li>
+</ol>
+<p>​					         $&#x3D;(G_{3:2}+P_{3:2}G_{1:0},P_{3:2}P_{1:0})$​</p>
+<p>此时已将多位加法器转换为2位加法器​​</p>
+<ol>
+<li><p>画出树结构图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113203342125.png" srcset="/img/loading.gif" lazyload alt="image-20211113174550237"></p>
+<p>最上面一个点，表示$(G_{3:0},P_{3:0})$</p>
+<p>中间两个点分别为$(G_{3:2},P_{3:2})$和$(G_{1:0},P_{1:0})$​</p>
+<p>最下面四个方块点分别为$(G_3,P_3)、(G_2,P_2)、(G_1,P_1)、(G_0,P_0)$</p>
+</li>
+</ol>
+</li>
+<li><p><strong>计算各个节点</strong>：</p>
+<p>根据上文<strong>块运算</strong>已知，以其中一个节点$(G_{1:0},P_{1:0})$为例</p>
+<p>$G_{1:0}&#x3D;G_1+P_1G_0$</p>
+<p>$P_{1:0}&#x3D;P_1P_0$​</p>
+<p>再如节点$(G_{3:0},P_{3:0})$为例</p>
+<p>$G_{3:0}&#x3D;G_{3:2}+P_{3:2}G_{1:0}$</p>
+<p>$P_{3:0}&#x3D;P_{3:2}P_{1:0}$</p>
+<p>即2位的块运算，只需要简单的一个<strong>或-与门</strong>和<strong>与门</strong>就可以完成运算。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113173725268.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ol>
+<h3 id="4-Kogge-Stone-16位超前进位加法器"><a href="#4-Kogge-Stone-16位超前进位加法器" class="headerlink" title="4. Kogge-Stone 16位超前进位加法器"></a>4. Kogge-Stone 16位超前进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113205502577.png" srcset="/img/loading.gif" lazyload alt="image-20211113203342125"></p>
+<ol>
+<li><p>运算速度快。</p>
+<p>在位置$2^i-1$上的进位，只需要$i$次操作就可以计算出来。</p>
+</li>
+<li><p>面积、功耗较大</p>
+</li>
+<li><p>关键路径上的扇出基本是一个常数</p>
+</li>
+<li><p>互连结构，实现容易</p>
+</li>
+</ol>
+<p><strong>例子</strong>：计算$C_5$​​</p>
+<ol>
+<li>$C_5&#x3D;G_{5:0}+P_{5:0}C_{i,0}$</li>
+<li><font color=red><b>注意：需要严格按照图中的连线来</b></font></li>
+</ol>
+<p>$$<br>(G_{5:0},P_{5:0})<br>$$</p>
+<p>$$<br>&#x3D;[(G_5,P_5)·(G_4,P_4)]·[(G_3,P_3)·(G_2,P_2)]·[(G_1,P_1)·(G_0,P_0)]\ —— \ 第一层节点<br>$$</p>
+<p>$$<br>&#x3D;[(G_{5:4},P_{5:4})·(G_{3:2},P_{3:2})]·(G_{1:0},P_{1:0})\ ——\ 第二层节点<br>$$</p>
+<p>$$<br>&#x3D;(G_{5:2},P_{5:2})·(G_{1:0},P_{1:0})\ —— \ 第三层节点<br>$$</p>
+<p><strong>小贴士</strong>：</p>
+<ol>
+<li>需要严格按照图中连线，否则将判定为错误。</li>
+<li><font color=red><b>有几层节点，就需要写几行</b></font></li>
+</ol>
+<h3 id="5-Brent-Kung-16位超前进位加法器"><a href="#5-Brent-Kung-16位超前进位加法器" class="headerlink" title="5. Brent-Kung 16位超前进位加法器"></a>5. Brent-Kung 16位超前进位加法器</h3><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128005910220.png" srcset="/img/loading.gif" lazyload alt="image-20211113205502577" style="zoom:67%;" />
+
+<ol>
+<li><p>分为正向树和反向树。如图，黑点为正向树，灰点为反向树。</p>
+<p><strong>正向树只计算$2^N-1$​​的点</strong>，如图中0、3、7、15位；反向树利用正向树计算出来的节点，补全其他位</p>
+</li>
+<li><p>布线少，但是布线不规则</p>
+</li>
+<li><p>每个门的扇出不同，优化困难</p>
+</li>
+<li><p>不同于K-S加法器，在位置$2^{i-1}$~$2^i-1$上的进位，只需要$i$次操作就可以计算出来。</p>
+<p>B-K 16位加法器中，最长路径的$C_{14}$需要计算6个节点</p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E3%80%8B%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">《数字集成电路》课程笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97IC%E5%9F%BA%E7%A1%80/">数字IC基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/02/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8813%EF%BC%89%E5%AF%BC%E7%BA%BF%E4%BA%92%E8%BF%9E/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字集成电路（13）导线互连</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/02/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8811%EF%BC%89%E6%97%B6%E5%BA%8F%E6%8A%A5%E5%91%8A/">
+                        <span class="hidden-mobile">数字集成电路（11）时序报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'mohun-8052/mohun-8052.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

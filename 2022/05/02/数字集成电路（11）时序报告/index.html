@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/mohun.png">
+  <link rel="icon" href="/img/mohun.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述如何查看时序报告。如何书写时序约束，可以参见《DC-lab4和lab6的略解》一文。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字集成电路（11）时序报告">
+<meta property="og:url" content="http://example.com/2022/05/02/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8811%EF%BC%89%E6%97%B6%E5%BA%8F%E6%8A%A5%E5%91%8A/index.html">
+<meta property="og:site_name" content="墨魂">
+<meta property="og:description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述如何查看时序报告。如何书写时序约束，可以参见《DC-lab4和lab6的略解》一文。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125175830676.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184608609.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184935488.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185441369.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185521836.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125190351622.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191128178.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191903536.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192313593.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192836430.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194853863.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194930684.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125195012065.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202435173.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202511055.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202603447.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125203620946.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211556540.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211751676.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212006757.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212049653.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125214133403.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125215658364.png">
+<meta property="article:published_time" content="2022-05-01T16:03:04.000Z">
+<meta property="article:modified_time" content="2022-10-19T09:29:55.696Z">
+<meta property="article:author" content="shi">
+<meta property="article:tag" content="数字IC基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125175830676.png">
+  
+  
+  <title>数字集成电路（11）时序报告 - 墨魂</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨魂</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-notebook"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background1.webp') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数字集成电路（11）时序报告">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-02 00:03" pubdate>
+        2022年5月2日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数字集成电路（11）时序报告</h1>
+            
+            <div class="markdown-body">
+              <p>本人《数字集成电路设计》课程笔记，老师为王仁平。</p>
+<p>本文主要讲述如何查看时序报告。如何书写时序约束，可以参见《DC-lab4和lab6的略解》一文。</p>
+<hr>
+<span id="more"></span>
+
+
+
+<h1 id="第七章-时序组合电路设计"><a href="#第七章-时序组合电路设计" class="headerlink" title="第七章 时序组合电路设计"></a>第七章 时序组合电路设计</h1><h1 id="3-时序报告——求裕量slack"><a href="#3-时序报告——求裕量slack" class="headerlink" title="3. 时序报告——求裕量slack"></a>3. 时序报告——求裕量slack</h1><h2 id="1-建立时间"><a href="#1-建立时间" class="headerlink" title="1. 建立时间"></a>1. 建立时间</h2><p>建立时间定义：对于捕获沿到来之前，数据需要保持稳定的<strong>最小时间</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125175830676.png" srcset="/img/loading.gif" lazyload alt="image-20211125175830676" style="zoom:67%;" />
+
+<p>关于**<font color=red>建立时间裕量$slack_{setup}$​</font>**的定义，需要以下几个参数：</p>
+<ol>
+<li><p><strong>数据要求到达的时间——Date Required Time</strong>，令为$t_{date\ required}$<br>$$<br>t_{date\ required}&#x3D;T-t_{su}<br>$$<br>其中，</p>
+<p>$T$：周期，如图整段的阴影部分</p>
+<p>$t_{su}$：建立时间</p>
+</li>
+<li><p><strong>数据实际到达的时间——Date Arrival Time</strong>，令为$t_{date\ arrival}$<br>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}<br>$$<br>其中，</p>
+<p>$t_{c-q}$：寄存器的（最坏）传播延时</p>
+<p>$t_{logic}$：两个寄存器之间组合逻辑的（最坏）传播延时</p>
+</li>
+</ol>
+<p>则有<br>$$<br>slack_{setup}&#x3D;t_{date\ required}-t_{date\ arrival}<br>$$<br>为了充分考虑各种情况下，组合逻辑的建立时间裕量$slack_{setup}$​，以下将分情况讨论。</p>
+<p>在此之前，先明确几个概念：</p>
+<ul>
+<li>理想时钟（ideal clock）：以下的情况均不存在。</li>
+<li>时钟偏差（clock skew）：指同一个时钟域之间，时钟信号到达各个寄存器的**<font color=red>最大时间差</font>**</li>
+<li>时钟抖动（clock jitter）：芯片某一给定点上，时钟周期宽度发生变化，或缩短或变宽。一般我们会考虑**<font color=red>最坏情况</font>**，具体见下文。</li>
+<li>（网络）时钟延迟（latency 或 network latency）：外部时钟输入该模块后，时钟信号达到寄存器时钟输入端的延时。</li>
+<li>源时钟延迟（source latency）：从整个系统时钟源产生的时钟，到该模块时钟输入端的延时。</li>
+</ul>
+<h3 id="1-理想时钟——ideal-clock"><a href="#1-理想时钟——ideal-clock" class="headerlink" title="1. 理想时钟——ideal clock"></a>1. 理想时钟——ideal clock</h3><p>指令：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184608609.png" srcset="/img/loading.gif" lazyload alt="image-20211125184608609"></p>
+<p>报告：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184935488.png" srcset="/img/loading.gif" lazyload alt="image-20211125184935488" style="zoom:67%;" />
+
+<p>波形图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185441369.png" srcset="/img/loading.gif" lazyload alt="image-20211125185441369" style="zoom:80%;" />
+
+<p>根据公式$slack_{setup}&#x3D;t_{date\ required}-t_{date\ arrival}$​：<br>$$<br>slack_{setup}&#x3D;9.79-0.72&#x3D;9.07<br>$$</p>
+<h3 id="2-时钟偏差——clock-skew"><a href="#2-时钟偏差——clock-skew" class="headerlink" title="2. 时钟偏差——clock skew"></a>2. 时钟偏差——clock skew</h3><p>指令：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185521836.png" srcset="/img/loading.gif" lazyload alt="image-20211125185521836" style="zoom: 80%;" />
+
+
+
+<p>报告：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125190351622.png" srcset="/img/loading.gif" lazyload alt="image-20211125192836430" style="zoom:67%;" />
+
+<p>波形图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191128178.png" srcset="/img/loading.gif" lazyload alt="image-20211125190351622" style="zoom: 67%;" />
+
+
+
+<p>可知，引入<strong>时钟偏差</strong>之后，（注意：因为负偏差对于建立时间不利，因此取$-t_{skew}$）<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}-t_{su}<br>$$<br>即，$t_{date\ required}&#x3D;10-0.5-0.21&#x3D;9.29$​</p>
+<p>因此，<br>$$<br>slack_{setup}&#x3D;9.29-0.72&#x3D;8.57<br>$$<br><strong>小贴士</strong>：</p>
+<p>​	和理想时钟相比，最坏情况下，捕获沿向前移动了$t_{skew}$，使得$t_{date\ required}$减小，从而减小了建立时间裕量。​</p>
+<h3 id="3-时钟网络延时——latency或network-latency"><a href="#3-时钟网络延时——latency或network-latency" class="headerlink" title="3. 时钟网络延时——latency或network latency"></a>3. 时钟网络延时——latency或network latency</h3><p>代码：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191903536.png" srcset="/img/loading.gif" lazyload alt="image-20211125191128178" style="zoom:67%;" />
+
+<p>报告：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192313593.png" srcset="/img/loading.gif" lazyload alt="image-20211125191903536"></p>
+<p>波形图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192836430.png" srcset="/img/loading.gif" lazyload alt="image-20211125192313593" style="zoom:67%;" />
+
+
+
+
+
+<p>引入时钟网络延时后，<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{network\ latency}&#x3D;1$​</p>
+<p>相比理想：<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}-t_{su}+t_{network\ latency}<br>$$</p>
+<p>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}+t_{network\ latency}<br>$$</p>
+<p>其中，$T-t_{skew}-t_{su}&#x3D;10-0.5-0.21&#x3D;9.29$​，$t_{c-q}+t_{logic}&#x3D;0.72$​</p>
+<p>因此，<br>$$<br>slack_{setup}&#x3D;(9.29+1)-(0.72+1)&#x3D;8.57<br>$$</p>
+<p><strong>小贴士：</strong></p>
+<p>​	和理想时钟相比，时钟网络延时是输入模块之后，时钟到寄存器时钟输入端的延时。</p>
+<p>​	对于模块内的各个寄存器，相当于<strong>整体偏差了一个$t_{network\ latency}$​</strong></p>
+<p>​	如时序报告所示，整体偏差了$t_{network\ latency}&#x3D;1$</p>
+<p>​	</p>
+<h3 id="4-源时钟延时——source-latency"><a href="#4-源时钟延时——source-latency" class="headerlink" title="4. 源时钟延时——source latency"></a>4. 源时钟延时——source latency</h3><p>代码：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br>set_clock_latency -<span class="hljs-keyword">source</span> <span class="hljs-number">3</span> [get_ports CLK] <br><span class="hljs-comment"># 设置3的源时钟延时</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194853863.png" srcset="/img/loading.gif" lazyload alt="image-20211125194853863" style="zoom:80%;" />
+
+<p>报告：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194930684.png" srcset="/img/loading.gif" lazyload alt="image-20211125195012065" style="zoom:67%;" />
+
+
+
+<p>波形图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125195012065.png" srcset="/img/loading.gif" lazyload alt="image-20211125194930684" style="zoom:80%;" />
+
+
+
+<p>引入源时钟延时后，输入<strong>模块</strong>的时钟同时钟源整体偏移一个$t_{source\ latency}&#x3D;3$​​​，也相当于<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{source\ latency}&#x3D;3$​</p>
+<p>相比理想：​​<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}+t_{network\ latency}-t_{su}+t_{source\ latency}<br>$$</p>
+<p>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}+t_{network\ latency}+t_{source\ latency}<br>$$</p>
+<p>其中，$T-t_{skew}+t_{network\ latency}-t_{su}&#x3D;10-0.5+1-0.21&#x3D;10.29$​，$t_{c-q}+t_{logic}+t_{network\ latency}&#x3D;0.72+1&#x3D;1.72$​</p>
+<p>因此，<br>$$<br>slack_{setup}&#x3D;(10.29+3)-(1.72+3)&#x3D;8.57<br>$$<br><strong>小贴士：</strong></p>
+<p>​	和理想时钟相比，引入源时钟延时后，输入<strong>模块</strong>的时钟同时钟源整体偏移一个$t_{source\ latency}&#x3D;3$</p>
+<p>​	也相当于<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{source\ latency}&#x3D;3$</p>
+<p>​	对于模块内的各个寄存器，相当于<strong>整体偏差了一个$t_{source\ latency}$​​</strong></p>
+<p>​	如时序报告所示，整体偏差了$t_{source\ latency}&#x3D;3$​</p>
+<h3 id="5-时钟抖动——clock-jitter"><a href="#5-时钟抖动——clock-jitter" class="headerlink" title="5. 时钟抖动——clock jitter"></a>5. 时钟抖动——clock jitter</h3><p>代码：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br><br><span class="hljs-comment"># set_clock_latency -source 3 [get_ports CLK] </span><br><span class="hljs-comment"># 设置3的源时钟延时</span><br><br>set_clock_latency <span class="hljs-number">2.5</span> -<span class="hljs-keyword">source</span> -early [get_ports CLK] <br><span class="hljs-comment"># 设置源时钟，最小绝对时钟抖动2.5</span><br>set_clock_latency <span class="hljs-number">3.5</span> -<span class="hljs-keyword">source</span> -late [get_ports CLK] <br><span class="hljs-comment"># 设置源时钟，最大绝对时钟抖动3.5</span><br><br><span class="hljs-comment"># 如下电路图，设置时间抖动为±0.5</span><br><span class="hljs-comment"># 上面代码取最坏情况，即前级向后抖动0.5，后级向前抖动0.5</span><br><span class="hljs-comment"># 故前级延时为3+0.5=3.5，后级为3-0.5=2.5</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202435173.png" srcset="/img/loading.gif" lazyload alt="image-20211125202435173"></p>
+<p>报告：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202511055.png" srcset="/img/loading.gif" lazyload alt="image-20211125202511055" style="zoom: 80%;" />
+
+
+
+<p>波形图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202603447.png" srcset="/img/loading.gif" lazyload alt="image-20211125202603447" style="zoom:67%;" />
+
+<p><strong><font color=red>取最差情况——前一级时钟向后抖动，本级时钟向前抖动</font></strong> ，如下图</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125203620946.png" srcset="/img/loading.gif" lazyload alt="image-20211125203620946" style="zoom:67%;" />
+
+<p>最坏情况下，前一级时钟向后抖动0.5，本级时钟向前抖动0.5</p>
+<p>因此，<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}+t_{network\ latency}-t_{su}+(t_{source\ latency}-0.5)<br>$$</p>
+<p>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}+t_{network\ latency}+(t_{source\ latency}+0.5)<br>$$</p>
+<p>其中，$T-t_{skew}+t_{network\ latency}-t_{su}&#x3D;10-0.5+1-0.21&#x3D;10.29$，$t_{c-q}+t_{logic}+t_{network\ latency}&#x3D;0.72+1&#x3D;1.72$</p>
+<p>因此，<br>$$<br>slack_{setup}&#x3D;[10.29+(3-0.5)]-[1.72+(3+0.5)]&#x3D;7.57<br>$$</p>
+<h2 id="2-保持时间"><a href="#2-保持时间" class="headerlink" title="2. 保持时间"></a>2. 保持时间</h2><p>保持时间定义：对于捕获沿到来之后，数据需要保持稳定的<strong>最小时间</strong></p>
+<p><strong><font color=red>注意：保持时间看的是同一个时刻</font></strong> </p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211556540.png" srcset="/img/loading.gif" lazyload alt="image-20211125211751676"></p>
+<p>同样的，对于保持时间裕度$slack_{hold}$​，有<br>$$<br>slack_{hold}&#x3D;t_{date\ arrival}-t_{date\ required}<br>$$</p>
+<h3 id="1-理想时钟——ideal-clock-1"><a href="#1-理想时钟——ideal-clock-1" class="headerlink" title="1.理想时钟——ideal clock"></a>1.理想时钟——ideal clock</h3><p>代码：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211751676.png" srcset="/img/loading.gif" lazyload alt="image-20211125211556540" style="zoom:80%;" />
+
+<p>报告：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212006757.png" srcset="/img/loading.gif" lazyload alt="image-20211125214133403"></p>
+<p>波形图：</p>
+<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212049653.png" srcset="/img/loading.gif" lazyload alt="image-20211125212006757" style="zoom: 80%;" />
+
+
+
+<p><strong><font color=red>注意：保持时间看的是同一个时刻</font><strong>，即</strong>同一时刻</strong>的$u_1$​​寄存器时钟和$u_4$​寄存器时钟。</p>
+<p>因此，<br>$$<br>slack_{hold}&#x3D;0.75-0.23&#x3D;0.53<br>$$<br>此处报告中，$slack_{hold}&#x3D;0.53$应该是小数点近似的结果。​</p>
+<h3 id="2-源时钟延时、时钟网络延时——latency"><a href="#2-源时钟延时、时钟网络延时——latency" class="headerlink" title="2. 源时钟延时、时钟网络延时——latency"></a>2. 源时钟延时、时钟网络延时——latency</h3><p>代码：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br>set_clock_latency -<span class="hljs-keyword">source</span> <span class="hljs-number">3</span> [get_ports CLK] <br><span class="hljs-comment"># 设置3的源时钟延时</span><br></code></pre></td></tr></table></figure>
+
+<p>电路图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125214133403.png" srcset="/img/loading.gif" lazyload alt="image-20211125212049653"></p>
+<p>波形图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125215658364.png" srcset="/img/loading.gif" lazyload alt="image-20211125215658364"><br>$$<br>t_{date\ arrival}&#x3D;t_{network\ latency}+t_{source\ latency}+t_{ideal\ date\ arrival}<br>$$</p>
+<p>$$<br>t_{date\ required}&#x3D;t_{network\ latency}+t_{source\ latency}+t_{skew}+t_{ideal\ date\ required}<br>$$</p>
+<p>$$<br>slack_{hold}&#x3D;t_{date\ arrival}-t_{date\ required}&#x3D;t_{ideal\ date\ arrival}-(t_{skew}+t_{ideal\ date\ required})<br>$$</p>
+<p>因为正偏差对于保持时间不利，故此使用的是$+t_{skew}$</p>
+<p>因此，<br>$$<br>slack_{hold}&#x3D;t_{ideal\ date\ arrival}-(t_{skew}+t_{ideal\ date\ required})&#x3D;4.1-(3.5+0.29+0.5)&#x3D;-0.19<br>$$</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E3%80%8B%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">《数字集成电路》课程笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97IC%E5%9F%BA%E7%A1%80/">数字IC基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/02/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8812%EF%BC%89%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%EF%BC%88%E5%8A%A0%E6%B3%95%E5%99%A8%EF%BC%89/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字集成电路（12）运算单元（加法器）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%8810%EF%BC%89%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/">
+                        <span class="hidden-mobile">数字集成电路（10）时序逻辑电路设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'mohun-8052/mohun-8052.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

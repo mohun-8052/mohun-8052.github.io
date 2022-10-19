@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/mohun.png">
+  <link rel="icon" href="/img/mohun.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述如何根据延时和功耗设计反相器（INV）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字集成电路（3）反相器">
+<meta property="og:url" content="http://example.com/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%883%EF%BC%89%E5%8F%8D%E7%9B%B8%E5%99%A8/index.html">
+<meta property="og:site_name" content="墨魂">
+<meta property="og:description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述如何根据延时和功耗设计反相器（INV）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908173438566.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908174017914.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908192819600.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210909212850990.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908193244083.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210912145608966.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210915190315032.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908174017914.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922101325179.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922102112590.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922102917417.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922111612083.png">
+<meta property="article:published_time" content="2022-05-01T12:59:29.000Z">
+<meta property="article:modified_time" content="2022-10-19T09:28:23.244Z">
+<meta property="article:author" content="shi">
+<meta property="article:tag" content="数字IC基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908173438566.png">
+  
+  
+  <title>数字集成电路（3）反相器 - 墨魂</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨魂</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-notebook"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background1.webp') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数字集成电路（3）反相器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-01 20:59" pubdate>
+        2022年5月1日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      67 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数字集成电路（3）反相器</h1>
+            
+            <div class="markdown-body">
+              <p>本人《数字集成电路设计》课程笔记，老师为王仁平。</p>
+<p>本文主要讲述如何根据延时和功耗设计反相器（INV）。</p>
+<hr>
+<span id="more"></span>
+
+
+
+
+
+<h1 id="第五章-反相器"><a href="#第五章-反相器" class="headerlink" title="第五章 反相器"></a>第五章 反相器</h1><h2 id="1-设计指标"><a href="#1-设计指标" class="headerlink" title="1. 设计指标"></a>1. 设计指标</h2><p>明确：<strong>反相器是数字电路设计的核心</strong>。</p>
+<ol>
+<li><p>成本：</p>
+<p>主要是指标就是<strong>面积</strong>。在数集中，最小尺寸是$L&#x3D;2\lambda$，于是【$W$】就成了设计的要点。</p>
+<p>$Eg：$</p>
+<p>以反相器（$INV$​）为例，不同的$W$​的INV应用于不同的场合。如：“CLKINV”和”INVD”。CLKINV应用于时间通路上，对延迟要求较高，希望可以做到$t_p≈t_{pLH}≈t_{pHL}$，且尽可能小（或者达到指标）。而对于INVD，并不要求$t_p≈t_{pLH}≈t_{pHL}$，仅需要$t_p&#x3D;\frac{t_{pLH}+t_{pHL}}{2}$的数值满足要求即可，即如果$t_{pLH}、t_{pHL}$​其中一个较小，一个较大，但是平均值满足要求也是可以的。</p>
+</li>
+<li><p>完整性和稳定性：</p>
+<p>主要考虑<strong>静态特性</strong></p>
+<p>在INV等门电路的设计中，常采用<strong>互补CMOS</strong>的结构。互补CMOS结构可以让输出的电压上拉到$VDD$或者下拉到$GND$，提高稳定性。</p>
+</li>
+<li><p>性能：</p>
+<p>主要考虑<strong>动态特性</strong></p>
+<p>也就是【$t_p$】数值大小。</p>
+</li>
+<li><p>功耗：</p>
+<p>使用”关断“等技术</p>
+</li>
+</ol>
+<h2 id="2-INV综述"><a href="#2-INV综述" class="headerlink" title="2. INV综述"></a>2. INV综述</h2><h3 id="1-INV的数集模型"><a href="#1-INV的数集模型" class="headerlink" title="1. INV的数集模型"></a>1. INV的数集模型</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908173438566.png" srcset="/img/loading.gif" lazyload alt="image-20210908173438566"></p>
+<p>由组成的图可以知道，INV是由两个CMOS管串联组成的。而<strong>CMOS的数集模型是理想开关+有限导通电阻or无限关断电阻</strong>，故INV的数集模型如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908174017914.png" srcset="/img/loading.gif" lazyload alt="image-20210908174017914"></p>
+<center><b><font color=red >INV的开关模型</font></b></center>
+
+<p>即<strong>两个电阻开关并联</strong>。</p>
+<p>图中的$C_L$表示<strong>晶体管的漏极电容、连线电容、扇出门的输入电容</strong></p>
+<h3 id="2-INV的特性综述"><a href="#2-INV的特性综述" class="headerlink" title="2. INV的特性综述"></a>2. INV的特性综述</h3><h4 id="1-动态特性："><a href="#1-动态特性：" class="headerlink" title="1. 动态特性："></a>1. 动态特性：</h4><p>主要由$C_L$决定，$C_L$表示<strong>晶体管的漏极电容、连线电容、扇出门的输入电容</strong></p>
+<h4 id="2-静态特性："><a href="#2-静态特性：" class="headerlink" title="2. 静态特性："></a>2. 静态特性：</h4><ol>
+<li><p>噪声容量大：</p>
+<p>电压摆幅&#x3D;电源电压。因为是CMOS互补结构。</p>
+</li>
+<li><p><strong>无比逻辑</strong>:</p>
+<p>逻辑电平和器件的尺寸无关。故而可以采用最小的尺寸：$L&#x3D;2\lambda$</p>
+</li>
+<li><p><strong>稳态下有限的（低）的输出电阻</strong></p>
+<p>稳态输出时，输出和VDD或GND之间用于存在一条<strong>有限电阻的通路</strong>，使他对<strong>噪声不敏感</strong></p>
+</li>
+<li><p><strong>高的输入电阻</strong></p>
+<ul>
+<li>输入是从栅极输入，栅极电流几乎为零，故而电阻极高</li>
+<li>因为极低的栅极电流，故而理论上，一个INV可以驱动多穷多个INV。但是由于<strong>栅极寄生电容</strong>的原因，过多的扇出会使得输出电容$C_L$过大，<strong>使得$t_p$过高，动态特性变差</strong>。</li>
+</ul>
+</li>
+<li><p>稳态的下，无$I_D$电流——<strong>无功耗</strong></p>
+<p>稳态条件下，互补CMOS中始终有一个”开关“打开，故而没有电流的存在，意味着没有静态功耗</p>
+</li>
+</ol>
+<h4 id="3-VTC（电压传输特性）"><a href="#3-VTC（电压传输特性）" class="headerlink" title="3. VTC（电压传输特性）"></a>3. VTC（电压传输特性）</h4><ol>
+<li><strong>所有的工作点不是输出高电平就是输出低电平</strong>，如下图：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908192819600.png" srcset="/img/loading.gif" lazyload alt="image-20210908192819600"></p>
+<center>静态CMOS反向中PMOS和NMOS的负载曲线，<b><font color=red>原点表示直流工作点</font></b></center>
+
+<ol start="2">
+<li><p><strong>过渡区的电平范围很窄</strong>，如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210909212850990.png" srcset="/img/loading.gif" lazyload alt="image-20210908193244083"></p>
+</li>
+</ol>
+<h2 id="3-INV的静态特性"><a href="#3-INV的静态特性" class="headerlink" title="3. INV的静态特性"></a>3. INV的静态特性</h2><h3 id="1-开关阈值（-V-M-）"><a href="#1-开关阈值（-V-M-）" class="headerlink" title="1. 开关阈值（$V_M$）"></a>1. 开关阈值（$V_M$）</h3><ul>
+<li><p>定义：**$V_M$被定义为$V_{in}&#x3D;V_{out}$的点。<strong>对于INV而言，此时</strong>$V_{GS}&#x3D;V_{DS}$**</p>
+</li>
+<li><p>结论：</p>
+</li>
+</ul>
+<p>$$<br>V_M≈\frac{rV_{DD}}{1+r}<br>$$</p>
+<p>其中，<strong>r为PMOS与NMOS相对驱动强度之比</strong></p>
+<ul>
+<li>希望值：</li>
+</ul>
+<p>$$<br>V_M&#x3D;\frac{V_{DD}}{2}<br>$$</p>
+<p>因为这样可以使得<strong>低电平噪声门限和高电平噪声门限的值相近</strong>，于是得到【<strong>r应该尽可能等于1</strong>】</p>
+<p>经过推导，可以把$V_M&#x3D;\frac{V_{DD}}{2}$映射为<strong>PMOS管和NMOS管的W之比</strong>，如下：<br>$$<br>\frac{(W&#x2F;L)_p}{(W&#x2F;L)_n}&#x3D;\frac{W_p}{W_n}(数集中L相等)&#x3D;…<br>$$<br>以下结论：</p>
+<ol>
+<li>$V_M$对于器件$\frac{W_p}{W_n}$尺寸的变化不敏感。意味着工艺上的偏差，并不会使$V_M$偏差希望值很多。</li>
+<li>增加$W_p$会使得$V_M$移向$V_{DD}$，增加$W_n$会使得$V_M$移向$GND$</li>
+</ol>
+<h3 id="2-噪声门限"><a href="#2-噪声门限" class="headerlink" title="2. 噪声门限"></a>2. 噪声门限</h3><p>注：数集中，噪声容限都很大，接近$\frac{V_{DD}}{2}$，故而过度讨论他并没有太大的用处，此处仅作了解。</p>
+<p>定义$V_{IH}$和$V_{IL}$分别是VTC中<strong>增益&#x3D;-1</strong>的点。</p>
+<p>定义<strong>噪声门限</strong>为：<br>$$<br>NM_H&#x3D;V_{DD}-V_{IH} \ NM_L&#x3D;V_{IL}-0<br>$$<br>实际实验中，$NM_H$和$NM_L$并不完全相等，但是基本都可以到达1V左右，属于很大的噪声门限了。</p>
+<h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><ol>
+<li><p>器件参数变化对器件稳定性的影响：</p>
+<p><strong>仿真测试：PVT（process voltage temperature）</strong>：常常在设计中，采用三者组合仿真。</p>
+<ul>
+<li>工艺角（process corner）分析，常见的五种：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog">fast <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> fast <span class="hljs-keyword">pmos</span> （ff）<br>slow <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> slow <span class="hljs-keyword">pmos</span> （ss）<br>slow <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> fast <span class="hljs-keyword">pmos</span> （sf）<br>fast <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> slow <span class="hljs-keyword">pmos</span> （fs）<br>typical <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> typical <span class="hljs-keyword">pmos</span> （tt）<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">t,代表typical (平均值)<br>s,代表slow（电流小）<br>f,代表fast（电流大）<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>电压（voltage）分析，常见的三种：</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">v</span>+<span class="hljs-number">10</span>% ,v ,v-<span class="hljs-number">10</span>%<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>温度（temperature）分析，常见的四种</li>
+</ul>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs diff"><span class="hljs-deletion">-40℃, 0℃,25℃, 125℃</span><br></code></pre></td></tr></table></figure>
+
+<p>在进行不同的组合，仿真最好最坏的等多种情况。</p>
+</li>
+<li><p>器件电源电压降低对器件稳定的影响</p>
+<p><strong>不可使用过低的电压</strong></p>
+<ol>
+<li>低电压可以减小功耗（$P&#x3D;C·V_{DD}^2$），但是会增加门延时。</li>
+<li>电源电压减低使得dc特性（开关阈值）对器件的尺寸越来越敏感。</li>
+<li>$V_{DD}$减小，信号摆幅减小，有利于减小系统内部噪声。</li>
+</ol>
+</li>
+</ol>
+<h2 id="4-【重点】INV的动态特性——-t-p-（计算-R-eq-和-C-L-）"><a href="#4-【重点】INV的动态特性——-t-p-（计算-R-eq-和-C-L-）" class="headerlink" title="4. 【重点】INV的动态特性——$t_p$（计算$R_{eq}$和$C_L$）"></a>4. 【重点】INV的动态特性——$t_p$（计算$R_{eq}$和$C_L$）</h2><h3 id="1-设计角度"><a href="#1-设计角度" class="headerlink" title="1. 设计角度"></a>1. 设计角度</h3><ol>
+<li><p>最小的传播延时</p>
+<p>这是厂家最希望的</p>
+</li>
+<li><p>满足性能的同时，做到面积最小</p>
+<p>面积最小，意味着成本最低。这里的面积取决于$W$，也就是选择合适的$W$</p>
+</li>
+<li><p>根据扇出设计反相器链的级数</p>
+<p>对于时钟树、复位树等需要多扇出的、且要求$t_p$小的，如何设计一个<strong>合理的高扇出的反相器链</strong></p>
+</li>
+<li><p>输入信号的上升下降时间对传播延时的影响</p>
+</li>
+</ol>
+<h3 id="2-计算-C-L"><a href="#2-计算-C-L" class="headerlink" title="2. 计算$C_L$"></a>2. 计算$C_L$</h3><p>$$<br>C_L&#x3D;晶体管的漏极电容+连线电容+扇出门的输入电容<br>$$</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908193244083.png" srcset="/img/loading.gif" lazyload alt="image-20210908193244083"></p>
+<ul>
+<li><p>晶体管的漏极电容：$C_{db2}+C_{db1}+C_{gd12}$</p>
+<p>即：两个管子的漏极电容，即管子1和2的结构电容总和$C_{gd12}$，管子1的结电容$C_{db1}$，管子2的结电容$C_{db2}$</p>
+<p>其中，</p>
+<ol>
+<li>结构（覆盖）电容是固定的（有时候会使用<strong>密勒效应</strong>）：$C_{gd12}&#x3D;2C_{gdo}&#x3D;2C_oW$</li>
+<li>PN结电容：$C_{db}&#x3D;C_{diff}&#x3D;C_{bottom}+C_{sw}$；或者使用线性化的值：$C_{eq}&#x3D;K_{eq}C_{j0}$（推导见P55）</li>
+</ol>
+</li>
+<li><p>连线电容</p>
+<p>与连线的长度、宽度，扇出门离驱动门的距离、扇出门的数量有关。</p>
+</li>
+<li><p>扇出的栅电容：$C_{g3}+C_{g4}$</p>
+<p>即：两个扇出CMOS管的栅极电容。</p>
+<p>而栅极电容具体看前文，1个CMOS管的栅极电容&#x3D;2个结构电容+3个沟道电容</p>
+</li>
+</ul>
+<h3 id="3-等效电阻-R-eq"><a href="#3-等效电阻-R-eq" class="headerlink" title="3. 等效电阻$R_{eq}$"></a>3. 等效电阻$R_{eq}$</h3><p>$$<br>R_{eq}&#x3D;\frac{1}{V_{DD}&#x2F;2}\int_{V_{DD}&#x2F;2}^{V_{DD}}\frac{V}{I_{DSAT(1+\lambda V)}}dV≈\frac{3}{4}\frac{V_{DD}}{I_{DSAT}}(1+\frac{7}{9}\lambda V_{DD})<br>$$</p>
+<p>具体推导见书本P70</p>
+<h3 id="4-【※重要】计算延时-t-p-——计算、优化"><a href="#4-【※重要】计算延时-t-p-——计算、优化" class="headerlink" title="4. 【※重要】计算延时$t_p$——计算、优化"></a>4. 【※重要】计算延时$t_p$——计算、优化</h3><p>$$<br>t_{pHL}&#x3D;0.69R_{on}C_L\<br>$$</p>
+<p>使用等效$R_{eq}$，则<br>$$<br>t_{pHL}&#x3D;0.69R_{eqn}C_L\<br>同理，t_{pLH}&#x3D;0.69R_{eqp}C_L<br>$$<br>上面两个值不一定相等！！</p>
+<p>故，<br>$$<br>t_p&#x3D;\frac{0.69(R_{eqn}+R_{eqp})C_L}{2}<br>$$<br>又经过一波推导，得出<br>$$<br>t_{pHL&#x2F;LH}\varpropto \frac{C_L}{(W&#x2F;L)V_{DSAT}}<br>$$<br>故【<strong>减小延时的方法</strong>】</p>
+<ol>
+<li>减小$C_L$</li>
+<li>增加$(W&#x2F;L)$。增加$W$也会使得$C_L$增加，故有一个增加的范围。</li>
+<li>提高$V_{DD}$。会增加能耗，而且增加到一定程度之后优化的效果有限。</li>
+</ol>
+<h2 id="5-根据【延时】设计电路"><a href="#5-根据【延时】设计电路" class="headerlink" title="5. 根据【延时】设计电路"></a>5. 根据【延时】设计电路</h2><h3 id="1-对称反相器"><a href="#1-对称反相器" class="headerlink" title="1. 对称反相器"></a>1. 对称反相器</h3><ol>
+<li><p><strong>如何得到对称反相器——调整宽长比</strong></p>
+<p>对称反相器常常用于<strong>时钟网络（CLKINV）</strong>中，其有以下几个特点：</p>
+<ol>
+<li>充电电流和放电电流相等</li>
+<li>上升延时时间$t_{pLH}$​和下降延时$t_{pHL}$​大致相等</li>
+<li>晶体管电阻$R_P&#x3D;R_N$</li>
+</ol>
+<p>在.25工艺中，要得到<strong>对称反相器</strong>，一般要求：<br>$$<br>\frac{W_P}{W_N}&#x3D;2\sim 3.5<br>$$</p>
+<p>可以认为，设计一个对称反相器，其<strong>目标</strong>是使得上下两个MOS管匹配。然而，这并不意味着反相器有着最短的延时（<strong>性能不是最佳</strong>）</p>
+<p>※ 其<strong>原因</strong>是较宽的$W_P$​可以改善反相器的$t_{pLH}$​（$W_P\uparrow ,R_P \downarrow ,t_{pLH} \downarrow $​），但是会导致$t_{pHL}$​增大（$W_P\uparrow ,C_L \uparrow ,t_{pHL} \uparrow $​​​​）。如下图所示：</p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210912145608966.png" srcset="/img/loading.gif" lazyload alt="image-20210912145608966"></p>
+   <center>CMOS反相器延时和<b>宽长比之比β</b>的关系</center>
+
+<p>   根据上图，我们可以知道，在$\beta&#x3D;2.4$​时，得到对称反相器；而当$\beta&#x3D;1.9$​​​时​，得到传播延时的最小值——性能最佳的INV。</p>
+<ol start="2">
+<li><p><strong>如何根据【性能—负载】选择对称反相器的尺寸</strong></p>
+<p>计算延时的时候，我们利用公式：<br>$$<br>t_{p}&#x3D;0.69R_{eq}C_L\<br>$$<br>其中，令<br>$$<br>C_L&#x3D;C_{int}+C_{ext}<br>$$<br>$C_{int}$​表示反相器的本征输出电容，常常为（驱动管）$N$​管和$P$​管的漏电容。</p>
+<p>$C_{ext}$：表示下一级反相器的输入电容，常常为（负载管）栅电容（忽略导线电容）。</p>
+<p><strong>引入参数$S$​​：尺寸系数</strong>，即该反相器的晶体管和最小晶体管尺寸之比。</p>
+<p><strong>如果P管和N管的$W$同时增大$S$倍，</strong></p>
+<ul>
+<li><strong>本征电容$C_{int}$​增大$S$​​倍</strong></li>
+<li><strong>等效电阻$R_{eq}$减小$S$倍</strong></li>
+</ul>
+<p>经过推导（看书），有以下结论：<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{C_{ext}}{C_{int}})&#x3D;t_{p0}·(1+ \frac{C_{ext}}{SC_{int-ref}})<br>$$<br>$C_{int-ref}$​​​​​​：<strong>最小尺寸的INV的本征输出电容</strong>，因为对于有一个反向器而言，本身的漏极电容是确定的，故称为本征输出电容。</p>
+<p>$C_{int}$​​​​：（驱动管）$N$​​​​管和$P$​​​​管的漏电容。</p>
+<p>$C_{ext}$​​​​​​​：（负载管）栅电容（忽略导线电容）。​</p>
+<p>$t_{p0}$​：本征延时——尺寸变化$S$​倍，则$R \rightarrow R&#x2F;S,C \rightarrow SC$​，如果令$t_{p0}&#x3D;0.69RC$​，则 $t_p&#x3D;0.69·R&#x2F;S·SC&#x3D;t_{p0}$​</p>
+<ul>
+<li><p>反相器的本征延时和门尺寸无关，但是外界负载电容会导致影响反相器的传播延时</p>
+</li>
+<li><p>适当增加$S$可以减弱外界负载的影响。$S\rightarrow \infty ，\frac{C_{ext}}{SC_{int-ref}} \rightarrow 0$，此时$t_p&#x3D;t_{p0}$</p>
+<p><font color=red><b>一般而言，S&#x3D;5已经可以改善外界负载带来的延时，S&gt;10之后收益很小</b></font>。$S$增加过多之后，会导致<strong>面积</strong>变得非常大，然而电容减低不多。</p>
+<p>$eg$​：</p>
+<p>假如某反相器的本征输出电容值$C_{int-ref}&#x3D;1$​，外部电容$C_{ext}&#x3D;100$​，而因为本征延时$t_{p0}$​与尺寸无关。故而如果把尺寸增加5倍，即$S&#x3D;5$​，就可以把延时从$101t_{p0}$​降为$21t_{p0}$​，相当于延时降低了5倍。​​​</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-性能最好（-t-p-min-）的反相器"><a href="#2-性能最好（-t-p-min-）的反相器" class="headerlink" title="2. 性能最好（$t_{p-min}$）的反相器"></a>2. 性能最好（$t_{p-min}$）的反相器</h3><p>上面可以知道对称反相器并不是最佳的反向器，如何调整<strong>宽长比之比$\beta$​</strong>得到最佳性能的反相器？</p>
+<p>最佳性能INV的宽长比之比满足<br>$$<br>\beta &#x3D; \sqrt{r}<br>$$<br>其中，$r$为P管和N管<strong>尺寸相同</strong>时的电阻比，即<br>$$<br>r&#x3D;\frac{R_{eqp}}{R_{eqn}}<br>$$<br><font color=red><b>最佳性能的INV需要以对称性和噪声容量为代价</b></font>。如上图，$\beta &#x3D; 1.9$​​时，得到性能最佳的INV。</p>
+<h3 id="3-反相链的设计"><a href="#3-反相链的设计" class="headerlink" title="3. 反相链的设计"></a>3. 反相链的设计</h3><p>反相链结构图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210915190315032.png" srcset="/img/loading.gif" lazyload alt="image-20210915190315032"></p>
+<p>假设此处的反相链是由<strong>对称反相器</strong>构成的，根据对称反相器的延迟公式：<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{C_{ext}}{C_{int}})<br>$$<br>如果令<br>$$<br>C_{int}&#x3D;\gamma C_g\<br>C_{ext}&#x3D;f C_g\<br>$$<br>这里的$C_g$指的是<strong>驱动管的栅极输入电容</strong>（对比上文的几个电容。$C_{int-ref}$指<strong>最小尺寸驱动管的输出电容</strong>；$C_{int}$指驱动管的输入电容，其大小是$SC_{int-ref}$；$C_{ext}$指驱动管的输入电容和线电容，这边$C_g$<strong>并没有要求是最小尺寸</strong>）；$\gamma $：<strong>比例系数，只与工艺有关</strong>；$f$：<strong>等效扇出，即第$j+1$级管子相对于第$j$级管子的尺寸</strong>。</p>
+<p>于是，可以得到<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{f}{\gamma})<br>$$<br>经过推导，要让<strong>反相链的延时最短</strong>，第$j$​个反相器需要满足<br>$$<br>C_{g,j}&#x3D;\sqrt{C_{g,j-1}·C_{g,j+1}}<br>$$<br>如果要达到这个，需要满足第$j$级的反相器尺寸永远是第$j-1$级反相器尺寸的$f$倍（前文提到，令$C_{ext,j+1}&#x3D;C_{g,j+1}&#x3D;f C_{g,j}$，故而只有满足$C_{g,j}&#x3D;\sqrt{C_{g,j}&#x2F;f·fC_{g,j+1}}$，等式才永远成立。）。</p>
+<p>对于由$N$个反相器组成的反相链，可以得到<br>$$<br>f&#x3D;\sqrt[N]{C_{ext}&#x2F;C_{g1}}&#x3D;\sqrt[N]{F}<br>$$<br>其中，$F$为<strong>总等效的扇出</strong>，$F&#x3D;C_{ext,N}&#x2F;C_{g,1}&#x3D;C_{g,N+1}&#x2F;C_{g,1}&#x3D;C_L&#x2F;C_{g,1}$（忽略导线电容）</p>
+<p>【<strong>总结</strong>】：反相器链中，<strong>每个反相器尺寸都是前一个反相器的$f$倍</strong>，则说明每一级反相器拥有相同的等效扇出（等效扇出就是$f$），并且有相同的延时，链总延时最小。</p>
+<p>【<strong>公式总结</strong>】：</p>
+<p>链的总延时：<br>$$<br>t_p&#x3D;Nt_{p0}·(1+ \frac{\sqrt[N]{F}}{\gamma})<br>$$<br>其中，$N$为反相链链数；$F$为总等效的扇出，$\gamma$为比例系数，只与工艺有关。</p>
+<p>$N$大，则反相器本身延迟$t_{p0}$占主导，需要降低本征延时$t_{p0}$</p>
+<p>$N$小，则反相器的扇出占主导，应该适当降低每一级反相器的等效扇出$f$——经过推导，一般$f&#x3D;3\sim4$</p>
+<h2 id="6-功耗"><a href="#6-功耗" class="headerlink" title="6. 功耗"></a>6. 功耗</h2><h3 id="1-功耗组成"><a href="#1-功耗组成" class="headerlink" title="1. 功耗组成"></a>1. 功耗组成</h3><ol>
+<li><p><strong>动态功耗</strong>：</p>
+<p>来源于电容充放电</p>
+</li>
+<li><p><strong>短路电流</strong>：</p>
+<p>当输入电压在某一个区域时，使得上下两管同时导通，从而形成短路电流。</p>
+</li>
+<li><p><strong>漏电流</strong>：</p>
+<p>属于静态功耗</p>
+</li>
+</ol>
+<h3 id="2-动态功耗"><a href="#2-动态功耗" class="headerlink" title="2. 动态功耗"></a>2. 动态功耗</h3><h4 id="1-工作过程——能量分配"><a href="#1-工作过程——能量分配" class="headerlink" title="1. 工作过程——能量分配"></a>1. 工作过程——能量分配</h4><p>来源于<strong>电容充放电</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908174017914.png" srcset="/img/loading.gif" lazyload alt="image-20210908174017914"></p>
+<ol>
+<li><p><strong>充电：P管导通，N管截止</strong></p>
+<p>能量分配——从电源摄取能量：$EV_{DD}$​：</p>
+<ul>
+<li><p>充电过程，P管消耗能量：$\frac{1}{2}EV_{DD}$​</p>
+<p>注意：此处P管消耗的功耗，<strong>和P管的尺寸无关</strong></p>
+</li>
+<li><p>充电结束，电容$C_L$存储能量：$\frac{1}{2}EV_{DD}$</p>
+</li>
+</ul>
+</li>
+<li><p><strong>放电：N管导通，P管截止</strong></p>
+<p>能量分配——电容$C_L$存储的能量：$\frac{1}{2}EV_{DD}$​</p>
+<ul>
+<li>放电过程，N管消耗能量：$\frac{1}{2}EV_{DD}$</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-公式"><a href="#2-公式" class="headerlink" title="2. 公式"></a>2. 公式</h4><p>定义：每一次<strong>开关周期</strong>（由低到高，再由高到低）所需要的固定能量，即<strong>动态功耗</strong>。为<br>$$<br>E_{dyn}&#x3D;C_LV_{DD}^2<br>$$</p>
+<p>于是，定义<strong>每秒</strong>的<strong>平均动态功耗</strong>大小为<br>$$<br>P_{dyn}&#x3D;C_LV_{DD}^2f_{0 \rightarrow 1}<br>$$<br>其中，$f_{0 \rightarrow 1}$​为这个门电路每秒通断的次数，称为<strong>开关活动率</strong>​</p>
+<h4 id="3-如何降低功耗"><a href="#3-如何降低功耗" class="headerlink" title="3. 如何降低功耗"></a>3. 如何降低功耗</h4><p>从上文的公式中，可以得到动态功耗同三个参数有关。</p>
+<ul>
+<li>降低电源电压。电源电压太低，电路性能会变差到难以接受。</li>
+<li>减少反转率。逻辑和结构层次实现——<code>en信号+与门</code></li>
+<li>减少电容。考察$C_L$的组成（见上文），主要在于减少器件的<strong>尺寸</strong></li>
+</ul>
+<h3 id="3-短路电流引起功耗"><a href="#3-短路电流引起功耗" class="headerlink" title="3. 短路电流引起功耗"></a>3. 短路电流引起功耗</h3><h4 id="1-公式"><a href="#1-公式" class="headerlink" title="1. 公式"></a>1. 公式</h4><p>每个<strong>开关周期</strong>消耗的能量：<br>$$<br>E_{dp}&#x3D;t_{sc}V_{DD}I_{peak}<br>$$<br><strong>每秒</strong>平均功耗为<br>$$<br>P_{dp}&#x3D;t_{sc}V_{DD}I_{peak}f_{0 \rightarrow 1}<br>$$<br>其中，</p>
+<p>$t_{sc}$​​​：上下两管同时导通的时间，如下图中的$t_2-t_1$​​和$t_4-t_3$​​​。当输入信号大小满足$V_{TH}&lt;V_{in}&lt;V_{DD}-|V_{TH}|$​​，两个管子同时导通。​</p>
+<p>$I_{peak}$​：短路电流峰值大小，如下图。​</p>
+<p>$f_{0 \rightarrow 1}$：开关活动率。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922101325179.png" srcset="/img/loading.gif" lazyload alt="image-20210922101325179"></p>
+<h4 id="2-同负载电容-C-L-的关系"><a href="#2-同负载电容-C-L-的关系" class="headerlink" title="2. 同负载电容$C_L$的关系"></a>2. 同负载电容$C_L$的关系</h4><ol>
+<li><p>$C_L$很大</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922102112590.png" srcset="/img/loading.gif" lazyload alt="image-20210922102112590"></p>
+<p>特征：输出下降时间&gt;输入上升时间</p>
+<p>结果：输入在输出改变之间已经通过了过渡区（指$V_{TH}&lt;V_{in}&lt;V_{DD}-|V_{TH}|$​​​），此时<strong>短路电流小</strong></p>
+<p>电路功耗：主要来自动态功耗。</p>
+</li>
+<li><p>$C_L$​较小</p>
+<p>特征：输出下降时间&lt;输入上升时间</p>
+<p>结果：输入在输出降到0还在过渡区，此时PMOS管漏-源电压近似为$V_{DD}$​，此时<strong>短路电流极大</strong>。</p>
+<p>电路功耗：主要来自短路电流</p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922102917417.png" srcset="/img/loading.gif" lazyload alt="image-20210922102917417"></p>
+<center>负载电容大小与短路电流的关系</center>
+
+<h3 id="4-静态功耗（漏电流）"><a href="#4-静态功耗（漏电流）" class="headerlink" title="4. 静态功耗（漏电流）"></a>4. 静态功耗（漏电流）</h3><h4 id="1-公式-1"><a href="#1-公式-1" class="headerlink" title="1. 公式"></a>1. 公式</h4><p>$$<br>P_{stat}&#x3D;V_{DD}I_{stat}<br>$$</p>
+<p>其中，$I_{stat}$为没有开关活动时，电源两条轨道之间流动的电流。</p>
+<h4 id="2-组成部分"><a href="#2-组成部分" class="headerlink" title="2. 组成部分"></a>2. 组成部分</h4><p>静态功耗主要组成</p>
+<ul>
+<li>亚阈值漏电功耗</li>
+<li>PN结漏电功耗</li>
+</ul>
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h3><p>$$<br>P_{tatol}&#x3D;P_{dyn}+P_{dp}+P_{stat}<br>$$</p>
+<p>其中，</p>
+<p>动态功耗$P_{dyn}$​：主导位置。</p>
+<p>短路电流功耗$P_{dp}$：可以经过把控$C_L$​的大小，把功耗控制在限定的范围之内。</p>
+<p>静态功耗$P_{stat}$：正在变得与来越重要。</p>
+<h2 id="7-利用【功耗】设计电路"><a href="#7-利用【功耗】设计电路" class="headerlink" title="7. 利用【功耗】设计电路"></a>7. 利用【功耗】设计电路</h2><p>这边主要利用【动态功耗】设计【反相器链】</p>
+<p>设计目的：使整个电路<strong>功耗最小</strong>，且满足最低性能要求。</p>
+<p>可变的设计参数：反相器等效扇出系数$f$​（后级反相器与前级反相器尺寸比）、电源电压$V_{DD}$</p>
+<p>设计目标：<strong>延迟不大于参数为$f，V_{DD}&#x3D;V_{ref}$的参考电路</strong></p>
+<p><strong>考虑降低电压</strong></p>
+<p>①随着$f$的增加，电路的性能有所增加，此时可适当降低电源电压$V_{DD}$</p>
+<p>②当$f$满足，<br>$$<br>f&#x3D;\sqrt{F}<br>$$<br>得到最理想的尺寸系数。此时，<strong>电源电压可以降到最低</strong>。</p>
+<p>PS：当$F&#x3D;1$时，$f&#x3D;1$是最好的情况，如下图。</p>
+<p>③当$f&gt;\sqrt{F}$​​，器件本征电容增加，性能降低，此时需要提高电源电压。​</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922111612083.png" srcset="/img/loading.gif" lazyload alt="image-20210922111612083"></p>
+<p><strong>【小贴士】</strong>：延迟最低的等效扇出系数为$f&#x3D;\sqrt[N]{F}$</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E3%80%8B%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">《数字集成电路》课程笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97IC%E5%9F%BA%E7%A1%80/">数字IC基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%884%EF%BC%89CMOS%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E9%97%A8%E7%94%B5%E8%B7%AF/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字集成电路（4）CMOS组合逻辑门电路</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%882%EF%BC%89MOS%E6%99%B6%E4%BD%93%E7%AE%A1/">
+                        <span class="hidden-mobile">数字集成电路（2）MOS晶体管</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'mohun-8052/mohun-8052.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

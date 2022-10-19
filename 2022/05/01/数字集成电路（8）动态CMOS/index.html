@@ -1,0 +1,748 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/mohun.png">
+  <link rel="icon" href="/img/mohun.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述动态逻辑门的基本概念和多米诺逻辑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字集成电路（8）动态CMOS">
+<meta property="og:url" content="http://example.com/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%888%EF%BC%89%E5%8A%A8%E6%80%81CMOS/index.html">
+<meta property="og:site_name" content="墨魂">
+<meta property="og:description" content="本人《数字集成电路设计》课程笔记，老师为王仁平。 本文主要讲述动态逻辑门的基本概念和多米诺逻辑。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006183050542.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006194414006.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006194347868.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006195455550.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006200314654.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006202315657.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006202444751.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127093045819.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127103528067.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006203758438.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006205648830.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006213224199.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010155234054.png">
+<meta property="article:published_time" content="2022-05-01T15:10:04.000Z">
+<meta property="article:modified_time" content="2022-10-19T09:29:22.136Z">
+<meta property="article:author" content="shi">
+<meta property="article:tag" content="数字IC基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006183050542.png">
+  
+  
+  <title>数字集成电路（8）动态CMOS - 墨魂</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨魂</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-notebook"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background1.webp') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数字集成电路（8）动态CMOS">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-01 23:10" pubdate>
+        2022年5月1日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数字集成电路（8）动态CMOS</h1>
+            
+            <div class="markdown-body">
+              <p>本人《数字集成电路设计》课程笔记，老师为王仁平。</p>
+<p>本文主要讲述动态逻辑门的基本概念和多米诺逻辑。</p>
+<hr>
+<span id="more"></span>
+
+
+
+<h1 id="第六章-CMOS组合逻辑门电路"><a href="#第六章-CMOS组合逻辑门电路" class="headerlink" title="第六章 CMOS组合逻辑门电路"></a>第六章 CMOS组合逻辑门电路</h1><h2 id="9-动态CMOS"><a href="#9-动态CMOS" class="headerlink" title="9. 动态CMOS"></a>9. 动态CMOS</h2><p>静态CMOS：稳态时，通过<strong>低阻</strong>路径连接$V_{DD}$或$GND$</p>
+<ul>
+<li>互补CMOS：上下网络互补，上拉到$V_{DD}$，下拉到$GND$​。管子数为$2N$</li>
+<li>传输管逻辑：上拉网络用其他代替，有比逻辑，存在$V_{TH}$。管子数为$N+1$</li>
+</ul>
+<p>动态CMOS：依靠<strong>高阻抗</strong>上的<strong>电容</strong>存储临时的信号。管子数为$N+2$</p>
+<h3 id="1-动态门"><a href="#1-动态门" class="headerlink" title="1. 动态门"></a>1. 动态门</h3><h4 id="1-综述"><a href="#1-综述" class="headerlink" title="1. 综述"></a>1. 综述</h4><p>结构如下，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006183050542.png" srcset="/img/loading.gif" lazyload alt="image-20211006183050542"></p>
+<p><strong>工作方式</strong>：工作分为两个阶段</p>
+<ul>
+<li><font color=red><b>预充电</b></font>：$CLK&#x3D;0$，$M_P$导通，对$C_L$充电</li>
+<li><font color=red><b>求值</b></font>：$CLK&#x3D;1$，$M_N$导通，$OUT$和$GND$之间存在低阻通路。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>全电压摆幅</li>
+<li>无比逻辑（同互补CMOS，异传输管逻辑）</li>
+<li>噪声容限低。因为$out$​在预充电阶段已经充电到$V_{DD}$，即$V_{DS}$已经满足$&gt;V_{OV}$，于是只要$V_{IN}&gt;V_{TH}$，管子就会导通。</li>
+<li>需要预充电和求值的<strong>时钟</strong>。</li>
+<li>较快的开关速度。原因如下，<ul>
+<li>相对互补CMOS，缺少了上拉网络的一个门，相对负载是互补CMOS，负载是动态门的$C_L$比较小</li>
+<li>动态门没有短路电流（同一个时刻，只能一个$M$导通），由下拉网络提供的所有电流都用于$C_L$​电容的放电(?)</li>
+<li>如果$IN&#x3D;0$​，则不存在输出延时（预充电完输出即为1）；如果$IN&#x3D;1$​，则需要$C_L$​放电</li>
+</ul>
+</li>
+<li>晶体管重复利用，减小面积（多输出多米诺）</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>提高速度</li>
+<li>减小面积（多输出多米诺；$N+2$​个管子）</li>
+<li>没有短路功耗</li>
+<li>没有毛刺（因为一次只能翻转一次，$C_L$放电完只能等效下一次预充电才能回到1）</li>
+</ul>
+<h4 id="2-存在的问题——信号完整性问题"><a href="#2-存在的问题——信号完整性问题" class="headerlink" title="2. 存在的问题——信号完整性问题"></a>2. 存在的问题——信号完整性问题</h4><ol>
+<li><p><strong>电荷泄露</strong></p>
+<ul>
+<li><p>来源：与$C_L$​相连的管子存在反偏二极管和亚阈值漏电。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006194414006.png" srcset="/img/loading.gif" lazyload alt="image-20211006194414006"></p>
+</li>
+<li><p>解决办法：使用<strong>泄露晶体管</strong></p>
+<ul>
+<li>反馈形式的伪NMOS型上拉器件。</li>
+<li>该晶体管为了减小功耗和尺寸，一般选用尺寸较小（电阻值大）的管子。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006194347868.png" srcset="/img/loading.gif" lazyload alt="image-20211006194347868"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>电荷分享</strong></p>
+<ul>
+<li><p>来源：下拉网络中存在的节点电容$C_A$。当$A&#x3D;0→1、B&#x3D;0$，则原本存储在电容$C_L$上的电荷在$C_L$和$C_A$​​之间重新分配，造成输出电压有所下降。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006195455550.png" srcset="/img/loading.gif" lazyload alt="image-20211006195455550"></p>
+<p>※需要满足$A&#x3D;0→1、B&#x3D;0$才能进行电荷分享，否则当$B&#x3D;1$​的时候，求值过程中（$CLK&#x3D;1$​），$C_L$存储的电荷将全部被释放掉，不存在点电荷分享现象。</p>
+</li>
+<li><p><strong>【重点】【计算】</strong>计算电荷分享对于输出电压的影响</p>
+<p><strong>根据的是</strong><font color=red><b>电荷守恒</b></font></p>
+<p>关于计算，会在后面详解</p>
+</li>
+<li><p>解决办法：使用<strong>泄露晶体管</strong></p>
+<p>这种方法几乎不用。会增加面积和电容。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006200314654.png" srcset="/img/loading.gif" lazyload alt="image-20211006200314654"></p>
+<p>使用泄露晶体管$M_{kp}$​​对<strong>关键的内部节点预充电</strong>，但是会增加面积和电容。</p>
+<p>注意：和上文中的“电荷泄露”中的泄露晶体管进行区分。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>电容耦合</strong>（略）</p>
+<p>使得$V_{out}$略有下降</p>
+</li>
+<li><p><strong>时钟馈通</strong>（略）</p>
+<ul>
+<li><p>起因：<strong>时钟输入和动态节点输出</strong>之间的耦合电容引起</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006202315657.png" srcset="/img/loading.gif" lazyload alt="image-20211006202315657"></p>
+</li>
+<li><p>现象：时钟反转过快，则当$CLK$​​ $0\rightarrow 1$​​时，动态节点输出$&gt;V_{DD}$​​；则当$CLK$​​ $1\rightarrow 0$​​时，动态节点输出$&lt;0$​​</p>
+</li>
+<li><p>危害：时钟馈通危险在于可能使正常情况下<strong>反偏二极管变为正向偏置</strong>，导致出错  </p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006202444751.png" srcset="/img/loading.gif" lazyload alt="image-20211006202444751"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-【计算】计算电荷分享对于输出电压的影响"><a href="#3-【计算】计算电荷分享对于输出电压的影响" class="headerlink" title="3. 【计算】计算电荷分享对于输出电压的影响"></a>3. 【<strong>计算</strong>】计算电荷分享对于输出电压的影响</h4><p>前提：没有加泄露晶体管的时候，电荷分享对于输出电压的影响</p>
+<p>根据：电荷守恒定律</p>
+<p>例1：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127093045819.png" srcset="/img/loading.gif" lazyload alt="image-20211006200314654"></p>
+<p>可知求值期间，$CLK&#x3D;1$​，因此电路如果存在电荷分享现象，则$A&#x3D;1、B&#x3D;0$​才能存在电荷分享。</p>
+<p>如果$A&#x3D;B&#x3D;CLK&#x3D;1$​，则$Out$​对地有直接通路，则$C_L$​的电荷将被全部放掉，不存在电荷分享的现象。</p>
+<p>对于计算电荷分享，需要<strong>输出电压降$\Delta V_{out}$​</strong>分两种情况：</p>
+<p>首先<strong>假设其他参与电荷分享的电容上的电压和输出电压相等，即$V_{Cx}(t)&#x3D;V_{out}(t)$</strong></p>
+<ul>
+<li>$\Delta V_{out}&gt;V_{Tn}$​</li>
+<li>$\Delta V_{out}&lt;V_{Tn}$​</li>
+</ul>
+<p>其中，</p>
+<p>$\Delta V_{out}&#x3D;V_{DD}-V_{out}(t)$​​​。</p>
+<p>$V_{DD}$​​​​为初始输出电压，因为$CLK&#x3D;0$​​时输出预充电到$V_{DD}$​​​​</p>
+<p>$V_{out}(t)$​​​​​为电压分享之后的输出电压。​</p>
+<p><strong>情况①：</strong>$\Delta V_{out}&gt;V_{Tn}$​，则<strong>实际上</strong>$V_{Cx}(t)&#x3D;V_{out}(t)$​</p>
+<p><strong>情况①：</strong>$\Delta V_{out}&lt;V_{Tn}$​，则<strong>实际上</strong>$V_{Cx}(t)&#x3D;V_{DD}-V_{Tn}$​</p>
+<p>​	即电压分享之后，$C_L$上的电压或者说输出电压和其他参与电荷分享的电容上的电压相等。</p>
+<p>​	因为$PDN$都是NMOS管，对于其他参与电荷分享的电容最多只能充电充到$V_{DD}-V_{Tn}$</p>
+<p>​	如图中$X$点，当$A&#x3D;1$时，即$V_{A}&#x3D;V_{DD}$，则$V_X-max&#x3D;V_{DD}-V_{Tn}$，因此$\Delta V_{X}(t)<em>{min}&#x3D;V</em>{DD}-V_X-max&#x3D;V_{Tn}$</p>
+<p>​	因此如果$\Delta V_{out}&gt;V_{Tn}$，则说明<strong>假设</strong>的参与电荷分享电容上的压降和$V_{DD}$之间的差值大于$\Delta V_{X}(t)_{min}$，满足假设</p>
+<p>解题：</p>
+<p>设$C_a&#x3D;V_{out}$​，则根据电荷守恒定律<br>$$<br>C_LV_{DD}&#x3D;(C_a+C_L)V_{out}<br>$$<br>计算得到$V_{out}$</p>
+<p>根据$\Delta V_{out}&#x3D;V_{DD}-V_{out}$和$V_{Tn}$的值</p>
+<p>分为两种情况：</p>
+<p>①$\Delta V_{out}&gt;V_{Tn}$，则上面计算得到的$V_{out}$即为正确的值</p>
+<p>②$\Delta V_{out}&lt;V_{Tn}$，则<br>$$<br>C_LV_{DD}&#x3D;C_LV_{out}+C_a(V_{DD}-V_{Tn})<br>$$<br>计算得到$V_{out}$</p>
+<p>例2：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127103528067.png" srcset="/img/loading.gif" lazyload alt="image-20211006200314654"></p>
+<p>解题方法如上。</p>
+<h4 id="4-串联动态门"><a href="#4-串联动态门" class="headerlink" title="4. 串联动态门"></a>4. 串联动态门</h4><ol>
+<li><p>存在的问题：前级的输出可能会影响到后级，从而使后级预充电完的$C_L$放电</p>
+</li>
+<li><p>解决办法：</p>
+<p>规定<strong>预充电</strong>的时候，所有的输入均为0；当<strong>求值</strong>的时候，输入只能从0变化到1。</p>
+<p>故在两级之间放一个<code>buffer</code>（反相器）。当前一级预充电到1的时候，1经过反相器之后得到0，并且作为后一级的输入，确保预充电时所有的输入为0。</p>
+</li>
+</ol>
+<h3 id="2-多米诺逻辑"><a href="#2-多米诺逻辑" class="headerlink" title="2. 多米诺逻辑"></a>2. 多米诺逻辑</h3><h4 id="1-综述-1"><a href="#1-综述-1" class="headerlink" title="1. 综述"></a>1. 综述</h4><p>多米诺逻辑即为前文所述的<strong>串联动态门</strong>，<strong>目的</strong>就是<font color=red><b>保证预充电时，输入均为0；求值时，输入只做0→1的翻转</b></font><br>$$<br>多米诺逻辑&#x3D;n型动态门+反相器<br>$$<br><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006203758438.png" srcset="/img/loading.gif" lazyload alt="image-20211006203758438"></p>
+<p>初始状态均为0，求值的时候根据前一级输出确定下一级输入，从而求下一级输出。</p>
+<p>特点：</p>
+<ul>
+<li>求值层层传播，如多米诺骨牌</li>
+<li>求值阶段的时间取决于<strong>逻辑深度</strong>（因为求值时候的特性，见上）</li>
+<li>只能实现<strong>非反向</strong>逻辑</li>
+<li><strong>无比逻辑</strong></li>
+<li>节点需要在预充电充完电，求值的过程中，输入需要特别稳定。</li>
+<li><strong>速度非常快</strong>（因为当上一级的输入都是0时，下一级相当于无延迟传播）</li>
+<li>输入电容小（和互补CMOS比，只有一个管子）</li>
+</ul>
+<h4 id="2-去掉下拉时钟网络"><a href="#2-去掉下拉时钟网络" class="headerlink" title="2. 去掉下拉时钟网络"></a>2. 去掉下拉时钟网络</h4><p>如下图所示，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006205648830.png" srcset="/img/loading.gif" lazyload alt="image-20211006205648830"></p>
+<p>优点：</p>
+<ul>
+<li>只需要第一级的下拉时钟负载，后面的不用。<strong>减少时钟负载</strong>。</li>
+<li>速度和性能可以得到大大提升</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>去掉下拉时钟网络，需要满足该动态门$CLK&#x3D;0$​​时，该<strong>动态门输入均为0</strong>，否则可能导致<strong>短路</strong></li>
+<li>为了达到上文的目标，需要<strong>精确把控时钟</strong>。</li>
+</ul>
+<p><strong>方法：</strong></p>
+<p>​	不同级的动态门的$CLK$​并不是同时的，需要<font color=red><b>逐级推迟时钟时间</b></font>。</p>
+<p>​	也就是该时钟必须通过逻辑网络传输，不同级之间可能需要<code>Buffer</code>进行缓冲延迟。这对于时钟的把控特别严格。</p>
+<h4 id="3-多米诺逻辑的性能优化"><a href="#3-多米诺逻辑的性能优化" class="headerlink" title="3. 多米诺逻辑的性能优化"></a>3. 多米诺逻辑的性能优化</h4><ol>
+<li><p>调整反相器的晶体管尺寸</p>
+<p>分析可知，</p>
+<p><strong>预充电过程中</strong>，主要经过两个门的延迟：</p>
+<ul>
+<li>$V_{DD}$通过<strong>上拉时钟PMOS管</strong>对$C_L$进行充电</li>
+<li>本级动态门输出逻辑1经过<strong>反相器（INV的PMOS管）</strong>输出逻辑0，作为下一级输入</li>
+</ul>
+<p><strong>求值过程中</strong>，如果存在该动态门输入存在从$0→1$​​​跳变，主要经过两部分延迟：</p>
+<ul>
+<li>本级动态门<strong>下拉网络</strong>对$C_L$进行放电</li>
+<li>本级动态门输出逻辑0经过<strong>反相器（INV的PMOS管）</strong>输出输出逻辑1，作为下一级的求值输入</li>
+</ul>
+<p>可根据情况进行反相器尺寸的调整（一般为了减低求值时间，会<strong>增大INV的PMOS尺寸</strong>）</p>
+</li>
+<li><p>面积优化</p>
+<ul>
+<li><p>采用<strong>多输出多米诺逻辑</strong>，见下文。</p>
+<p>多输出多米诺逻辑中，<strong>动态逻辑门可以实现多种逻辑，可以重复利用一些晶体管，使得晶体管数目减小</strong>。</p>
+</li>
+<li><p>或者使用组<strong>合多米诺逻辑</strong>，见下文。</p>
+<p>组合多米诺逻辑，并<strong>不需要</strong>在每个动态门之后加<strong>反相器</strong>，而是借助一个复合互补CMOS门将多个动态门组合起来。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="4-多输出多米诺"><a href="#4-多输出多米诺" class="headerlink" title="4. 多输出多米诺"></a>4. 多输出多米诺</h4><p>多输出多米诺可以重复利用一些晶体管，一个复合逻辑门里面可以实现多种逻辑，减小了晶体管数量，大大减小面积。</p>
+<p>$eg$：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211006213224199.png" srcset="/img/loading.gif" lazyload alt="image-20211006213224199"></p>
+<p>如上图所示，$P_{3:0}$和$G_{3:0}$共用$P_1$、$P_3$管子。</p>
+<p>其中，$P_{3:0}&#x3D;P_0P_1P_2P_3$；$G_{3:0}&#x3D;G_3+$</p>
+<h4 id="5-组合多米诺逻辑"><a href="#5-组合多米诺逻辑" class="headerlink" title="5. 组合多米诺逻辑"></a>5. 组合多米诺逻辑</h4><p>组合多米诺逻辑，并<strong>不需要</strong>在每个动态门之后加<strong>反相器</strong>，而是借助一个复合互补CMOS门将多个动态门组合起来。</p>
+<pre><code class=" mermaid">graph LR
+动态门1 ==Y1==&gt; 复合CMOS门
+动态门2 ==Y2==&gt; 复合CMOS门
+动态门... ==Y...==&gt; 复合CMOS门
+复合CMOS门 ==&gt; 结果
+</code></pre>
+
+<p>$eg:$</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010155234054.png" srcset="/img/loading.gif" lazyload alt="image-20211010155234054"></p>
+<p>如上图，动态门组成逻辑：$Y1&#x3D;\overline{A·B}$；经过静态互补CMOS门，组成逻辑$Y2&#x3D;\overline{Y1·In}$​</p>
+<p>注意，$Y1$结果并<strong>不需要经过反相器</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E3%80%8A%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E3%80%8B%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">《数字集成电路》课程笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97IC%E5%9F%BA%E7%A1%80/">数字IC基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%889%EF%BC%89%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字集成电路（9）时序逻辑电路设计</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/01/%E6%95%B0%E5%AD%97%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%EF%BC%887%EF%BC%89%E4%BC%A0%E8%BE%93%E7%AE%A1%E5%92%8C%E4%BC%A0%E8%BE%93%E9%97%A8%E9%80%BB%E8%BE%91/">
+                        <span class="hidden-mobile">数字集成电路（7）传输管和传输门逻辑</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'mohun-8052/mohun-8052.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
