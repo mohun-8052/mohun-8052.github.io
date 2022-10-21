@@ -16,21 +16,24 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MOS工艺库参数提取">
+    <meta name="description" content="该电流镜用于二级运放中，作为偏置电路。 widlar电流镜所提供的偏置电压和偏置电流和电源电压无关，仅仅有一个电阻和器件尺寸决定。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="两级运放设计纪实【1】参数提取">
-<meta property="og:url" content="http://example.com/2022/10/19/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%901%E3%80%91%E5%8F%82%E6%95%B0%E6%8F%90%E5%8F%96/index.html">
+<meta property="og:title" content="两级运放设计纪实【2】widlar电流镜">
+<meta property="og:url" content="http://example.com/2022/10/20/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%902%E3%80%91widlar%E7%94%B5%E6%B5%81%E9%95%9C/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="MOS工艺库参数提取">
+<meta property="og:description" content="该电流镜用于二级运放中，作为偏置电路。 widlar电流镜所提供的偏置电压和偏置电流和电源电压无关，仅仅有一个电阻和器件尺寸决定。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-10-19T01:48:27.000Z">
-<meta property="article:modified_time" content="2022-10-19T09:27:43.963Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221020163504038.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221021084216991.png">
+<meta property="article:published_time" content="2022-10-20T08:29:47.730Z">
+<meta property="article:modified_time" content="2022-10-21T00:52:18.841Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221020163504038.png">
   
   
-  <title>两级运放设计纪实【1】参数提取 - 墨魂</title>
+  <title>两级运放设计纪实【2】widlar电流镜 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -180,7 +183,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="两级运放设计纪实【1】参数提取">
+            <span class="h2" id="subtitle" title="两级运放设计纪实【2】widlar电流镜">
               
             </span>
 
@@ -190,8 +193,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-10-19 09:48" pubdate>
-        2022年10月19日 上午
+      <time datetime="2022-10-20 16:29" pubdate>
+        2022年10月20日 下午
       </time>
     </span>
   
@@ -201,7 +204,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      2.4k 字
     </span>
   
 
@@ -210,7 +213,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15 分钟
+      20 分钟
     </span>
   
 
@@ -239,204 +242,70 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">两级运放设计纪实【1】参数提取</h1>
+            <h1 style="display: none">两级运放设计纪实【2】widlar电流镜</h1>
             
             <div class="markdown-body">
-              <p>MOS工艺库参数提取</p>
+              <p>该电流镜用于二级运放中，作为偏置电路。</p>
+<p>widlar电流镜所提供的偏置电压和偏置电流和电源电压无关，仅仅有一个电阻和器件尺寸决定。</p>
 <hr>
 <span id="more"></span>
 
 
 
-<h1 id="1-提取参数的必要性"><a href="#1-提取参数的必要性" class="headerlink" title="1. 提取参数的必要性"></a>1. 提取参数的必要性</h1><p>以MOS一阶模型，饱和区公式为例，<br>$$<br>i_D&#x3D; \frac{1}{2} ·KP· \frac{W}{L}·(v_{GS}-V_{th})^2·(1+\lambda v_{DS} )<br>$$<br>其中，$KP$、$V_{TH}$、$\lambda$均是和工艺相关的参数。因此在设计之前，需要先提取工艺参数才可以进行设计。</p>
-<h1 id="2-相关公式"><a href="#2-相关公式" class="headerlink" title="2. 相关公式"></a>2. 相关公式</h1><p>相关公式如下：</p>
-<p>（1）阈值电压</p>
-<p>$$<br>V_{TH}&#x3D;V_{TH0}+\gamma (\sqrt{|2\Phi_F+V_{SB}|}-\sqrt{|2\Phi_F|})<br>$$<br>又有<br>$$<br>|2\Phi_F|&#x3D;2·\frac{kT}{q}·ln(\frac{n_{ch}}{n_i})<br>$$<br>（2）参数因子<br>$$<br>KP&#x3D;\mu C_{ox}&#x3D;\mu \frac{\varepsilon_{ox}}{t_{ox}}<br>$$<br>（3）衬片调制系数<br>$$<br>\gamma &#x3D;\frac{\sqrt{2q·\varepsilon_{Si}·n_{ch}}}{\varepsilon_{ox}&#x2F;{t_{ox}}}<br>$$<br>（4）沟长调制系数<br>$$<br>\frac{1}{\lambda}&#x3D;{L·V_A’}&#x3D;V_A<br>$$<br>目前不太清楚$\lambda$和$P_{CLM}$之间关系</p>
-<p>可知需要提取的参数主要如下</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$V_{TH0}$</td>
-<td align="center">当$v_{BS}&#x3D;0$且$v_{DS}$很小时，长沟道器件的阈值电压</td>
-</tr>
-<tr>
-<td align="center">$\mu_0$</td>
-<td align="center">参数提取温度下的表面迁移率（$\mu \neq \mu_0$，因为温度可能不同）</td>
-</tr>
-<tr>
-<td align="center">$t_{ox}$</td>
-<td align="center">氧化层厚度</td>
-</tr>
-<tr>
-<td align="center">$n_{ch}$</td>
-<td align="center">沟道掺杂浓度</td>
-</tr>
-<tr>
-<td align="center">$P_{CLM}$</td>
-<td align="center">沟长调制系数</td>
-</tr>
-</tbody></table>
-<p>以上参数均可以在<code>.lib</code>、<code>.mdl</code>、<code>.scs</code>（取决于具体工艺）文件中得到。</p>
-<h1 id="3-参数提取"><a href="#3-参数提取" class="headerlink" title="3.参数提取"></a>3.参数提取</h1><p>以smic018 1P6M工艺为例子：</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">NMOS（n18）</th>
-<th align="center">PMOS（p18）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$V_{TH0}$</td>
-<td align="center">0.390+ $V$</td>
-<td align="center">-0.402+ $V$</td>
-</tr>
-<tr>
-<td align="center">$\mu_0$</td>
-<td align="center">3.4e-02+ $m^2·V^{-1}·s^{-1}$</td>
-<td align="center">3.74e-09+ $m^2·V^{-1}·s^{-1}$</td>
-</tr>
-<tr>
-<td align="center">$t_{ox}$</td>
-<td align="center">3.87e-09+ $cm$</td>
-<td align="center">3.74e-09+ $cm$</td>
-</tr>
-<tr>
-<td align="center">$n_{ch}$</td>
-<td align="center">3.869e+17 $cm^{-3}$</td>
-<td align="center">5.500e+17 $cm^{-3}$</td>
-</tr>
-<tr>
-<td align="center">$P_{CLM}$</td>
-<td align="center">1.2</td>
-<td align="center">0.7</td>
-</tr>
-</tbody></table>
-<p>其他需要的常数</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">含义</th>
-<th align="center">值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$k$</td>
-<td align="center">波尔兹曼常数</td>
-<td align="center">1.381e-23 $J&#x2F;K$</td>
-</tr>
-<tr>
-<td align="center">$n_i$</td>
-<td align="center">本征载流子浓度(@300K)</td>
-<td align="center">1.45e10 $cm^{-3}$</td>
-</tr>
-<tr>
-<td align="center">$\varepsilon_0$</td>
-<td align="center">真空介电常数</td>
-<td align="center">8.854e-14 $F&#x2F;cm$</td>
-</tr>
-<tr>
-<td align="center">$\varepsilon_{Si}&#x3D;11.7 \varepsilon_0$</td>
-<td align="center">硅介电常数</td>
-<td align="center">1.036e-12 $F&#x2F;cm$</td>
-</tr>
-<tr>
-<td align="center">$\varepsilon_{ox}&#x3D;3.9 \varepsilon_0$</td>
-<td align="center">二氧化硅介电常数</td>
-<td align="center">3.453e-13 $F&#x2F;cm$</td>
-</tr>
-<tr>
-<td align="center">$q$</td>
-<td align="center">电子电荷</td>
-<td align="center">1.6e-19 $C$</td>
-</tr>
-</tbody></table>
-<p>根据以上公式，即可<strong>计算或直接</strong>得到</p>
-<p>（1）阈值电压</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">NMOS（n18）</th>
-<th align="center">PMOS（p18）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$\vert 2\Phi_F \vert$</td>
-<td align="center">0.8855</td>
-<td align="center">0.9037</td>
-</tr>
-<tr>
-<td align="center">$V_{TH}$</td>
-<td align="center">$0.390+0.4014(\sqrt{0.8855+V_{SB}}-\sqrt{0.8855})$</td>
-<td align="center">$0.390+0.4014(\sqrt{0.9037+V_{SB}}-\sqrt{0.9037})$</td>
-</tr>
-</tbody></table>
-<p>一般设计中，直接采用$V_{TH}&#x3D;V_{TH0}$进行设计</p>
-<p>（2）参数因子</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">NMOS（n18）</th>
-<th align="center">PMOS（p18）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$KP$</td>
-<td align="center">3.0336e-4 $A·V^{-2}$</td>
-<td align="center">7.9964e-5 $A·V^{-2}$</td>
-</tr>
-</tbody></table>
-<p>（3）衬偏调制系数</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">NMOS（n18）</th>
-<th align="center">PMOS（p18）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$\gamma$</td>
-<td align="center">0.4014 $V^{1&#x2F;2}$</td>
-<td align="center">0.4625 $V^{1&#x2F;2}$</td>
-</tr>
-</tbody></table>
-<p>（3）沟长调制系数</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">NMOS（n18）</th>
-<th align="center">PMOS（p18）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$P_{CLM}$</td>
-<td align="center">1.2</td>
-<td align="center">0.7</td>
-</tr>
-</tbody></table>
-<p>一般设计中，直接令$L&#x3D;1\mu$进行仿真，然后再进行调试。</p>
+<h1 id="1-电路图"><a href="#1-电路图" class="headerlink" title="1. 电路图"></a>1. 电路图</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221020163504038.png" srcset="/img/loading.gif" lazyload alt="图1 widlar电流镜偏置"></p>
+<h2 id="1-1-特点"><a href="#1-1-特点" class="headerlink" title="1.1 特点"></a>1.1 特点</h2><p>电路提供的<strong>偏置电流</strong>$I_B$与直流电源和MOSFET的开启电压无关。</p>
+<p>更进一步说，被偏置的晶体管的<strong>跨导</strong>$g_m$仅由一个电阻和器件的尺寸决定。</p>
+<h2 id="1-2-组成"><a href="#1-2-组成" class="headerlink" title="1.2 组成"></a>1.2 组成</h2><p>偏置电路包括</p>
+<ul>
+<li>$Q_{12}$和$Q_{13}$：两个故意<strong>失配</strong>的晶体管。</li>
+<li>$Q_{10}$和$Q_{11}$：最大程度地降低$Q_{12}$的沟道长度调制效应。用了cascode连接的晶体管$Q_{10}$和<strong>匹配</strong>的连接成二极管的晶体管$Q_{11}$来提供$Q_{10}$的偏置电压。</li>
+<li>$Q_{8}$和$Q_{9}$：由<strong>匹配</strong>的P沟道器件$Q_{8}$和$Q_{9}$构成的镜像电流源将电流$I_B$复制到$Q_{13}$和$Q_{11}$。</li>
+</ul>
+<p>注：</p>
+<ol>
+<li><p>通常$Q_{12}$沟道宽度是$Q_{13}$的<strong>4倍</strong>，即$(\frac{W}{L})<em>{12}&#x3D;4(\frac{W}{L})</em>{13}$。参见（Steininger,1990; Johns and Martin, 1997）</p>
+</li>
+<li><p>电阻$R_B$串联在$Q_{12}$的源极。其中$R_B$决定了偏置电流$I_B$和跨导$g_{m12}$，因此它的值必须是稳定且精确的。故在大多数应用中，$R_B$<strong>都是片外电阻</strong>。</p>
+</li>
+<li><p>失配，即表示$(\frac{W}{L})$不相等；匹配，即表示$(\frac{W}{L})$相等。即<br>$$<br>(\frac{W}{L})<em>{12}&#x3D;4(\frac{W}{L})</em>{13}\tag{1}<br>$$</p>
+<p>$$<br>(\frac{W}{L})<em>{10}&#x3D;4(\frac{W}{L})</em>{11}\tag{2}<br>$$</p>
+<p>$$<br>(\frac{W}{L})<em>{8}&#x3D;4(\frac{W}{L})</em>{9}\tag{3}<br>$$</p>
+</li>
+<li><p>可以认为：只要<strong>所有管子都工作在饱和区</strong>，</p>
+<ul>
+<li>$Q_{12}$、$Q_{13}$和$R_B$：负责产生特定大小的$I_B$</li>
+<li>$Q_{10}$和$Q_{11}$：负责减小$Q_{12}$的沟长调制效应；负责产生一个偏置电压值（如本设计）</li>
+<li>$Q_{8}$和$Q_{9}$：负责镜像电流，使得流过$Q_{12}$、$Q_{13}$相等（因为$V_{GS8}&#x3D;V_{GS9}$、$(\frac{W}{L})<em>{8}&#x3D;4(\frac{W}{L})</em>{9}$）；负责产生一个偏置电压值（如本设计）</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-工作原理"><a href="#2-工作原理" class="headerlink" title="2. 工作原理"></a>2. 工作原理</h1><h2 id="2-1-电流-I-B-由-Q-12-、-Q-13-和-R-B-决定"><a href="#2-1-电流-I-B-由-Q-12-、-Q-13-和-R-B-决定" class="headerlink" title="2.1 电流$I_B$由$Q_{12}$、$Q_{13}$和$R_B$决定"></a>2.1 电流$I_B$由$Q_{12}$、$Q_{13}$和$R_B$决定</h2><p>由于$Q_{8}$和$Q_{9}$的作用（$V_{GS8}&#x3D;V_{GS9}$、$(\frac{W}{L})<em>{8}&#x3D;4(\frac{W}{L})</em>{9}$），使得$I_{D12}&#x3D;I_{D13}&#x3D;I_B$，于是有<br>$$<br>I_B&#x3D;\frac{1}{2}·KP·(\frac{W}{L})<em>{12}(V</em>{GS12}-V_{TH})&#x3D;\frac{1}{2}·KP·(\frac{W}{L})<em>{13}(V</em>{GS13}-V_{TH})\tag{4}<br>$$<br>同时，根据直流分析可知<br>$$<br>V_{GS12}+I_BR_B&#x3D;V_{GS13} \tag{5}<br>$$<br>联立（4）（5），可得<br>$$<br>I_B&#x3D;\frac{2}{KP·(W&#x2F;L)<em>{12}R_B^2}(\sqrt{\frac{(W&#x2F;L)</em>{12}}{(W&#x2F;12)_{13}}}-1)^2\tag{6}<br>$$<br>可知，$I_B$<strong>大小由</strong></p>
+<ul>
+<li>$Q_{12}$的尺寸</li>
+<li>$R_B$的大小</li>
+<li>$Q_{12}$和$Q_{13}$的尺寸比</li>
+</ul>
+<p>决定。</p>
+<h2 id="2-1-跨导-g-m-由-Q-12-、-Q-13-和-R-B-决定"><a href="#2-1-跨导-g-m-由-Q-12-、-Q-13-和-R-B-决定" class="headerlink" title="2.1 跨导$g_m$由$Q_{12}$、$Q_{13}$和$R_B$决定"></a>2.1 跨导$g_m$由$Q_{12}$、$Q_{13}$和$R_B$决定</h2><p>将式子（6）重写可得到，<br>$$<br>R_B&#x3D;\frac{2}{\sqrt{2·KP·(W&#x2F;L)<em>{12}I_B}}(\sqrt{\frac{(W&#x2F;L)</em>{12}}{(W&#x2F;12)<em>{13}}}-1)\tag{7}<br>$$<br>而其中，$g</em>{m12}&#x3D;\sqrt{2·KP·(W&#x2F;L)<em>{12}I_B}$，于是<br>$$<br>g</em>{m12}&#x3D;\frac{2}{R_B}(\sqrt{\frac{(W&#x2F;L)<em>{12}}{(W&#x2F;12)</em>{13}}}-1)\tag{8}<br>$$<br>又因为，$g_m$<strong>正比于</strong>$\sqrt{I_D(W&#x2F;L)}$<strong>，而偏置电路中，电流处处相等。</strong></p>
+<p>于是，对于第$i$个NMOS管，<br>$$<br>g_{mi}&#x3D;g_{m12}\sqrt{\frac{I_{Di}(W&#x2F;L)<em>i}{I_B(W&#x2F;L)</em>{12}}} \tag{9}<br>$$<br>对于第$i$个PMOS管，<br>$$<br>g_{mi}&#x3D;g_{m12}\sqrt{\frac{\mu_pI_{Di}(W&#x2F;L)<em>i}{\mu_nI_B(W&#x2F;L)</em>{12}}}\tag{10}<br>$$</p>
+<p>可知，电路中<strong>所有管子的</strong>$g_m$，由</p>
+<ul>
+<li>$R_B$值</li>
+<li>$Q_{12}$和$Q_{13}$的尺寸比</li>
+<li>$Q_{i}$和$Q_{12}$的尺寸比</li>
+<li>迁移率比</li>
+</ul>
+<p><strong>决定，与其他无关</strong>。</p>
+<h1 id="3-偏置电压值"><a href="#3-偏置电压值" class="headerlink" title="3. 偏置电压值"></a>3. 偏置电压值</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221021084216991.png" srcset="/img/loading.gif" lazyload alt="图2 两个电压值"></p>
+<p>如上图所示，该电路可以产生两个偏置电压。</p>
+<p>当$Q_{12}$、$Q_{13}$以及$R_B$值确定之后，$I_B$也就确定了。</p>
+<p>当管子均工作在<strong>饱和区</strong>，根据$I_B&#x3D;I_B&#x3D;\frac{1}{2}·KP·(\frac{W}{L})<em>i(V</em>{GSi}-V_{TH})$，<strong>改变另外四个管子（两组管子）的宽长比</strong>，即可得<br>$$<br>V_1&#x3D;V_{DD}-|V_{GS8}|\tag{11}<br>$$</p>
+<p>$$<br>V_2&#x3D;V_{GS13}+V_{GS11}\tag{12}<br>$$</p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E6%A8%A1%E6%8B%9FIC/">模拟IC</a>
-                    
-                  </div>
                 
                 
                   <div class="post-meta">
@@ -459,18 +328,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/10/20/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%902%E3%80%91widlar%E7%94%B5%E6%B5%81%E9%95%9C/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">两级运放设计纪实【2】widlar电流镜</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/05/%E6%A0%91%E8%8E%93%E6%B4%BEnas%E7%94%B5%E8%84%91%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C/">
-                        <span class="hidden-mobile">树莓派nas电脑连接网络</span>
+                      <a href="/2022/10/19/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%901%E3%80%91%E5%8F%82%E6%95%B0%E6%8F%90%E5%8F%96/">
+                        <span class="hidden-mobile">两级运放设计纪实【1】参数提取</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
