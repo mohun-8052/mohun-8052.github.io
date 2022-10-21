@@ -204,7 +204,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.5k 字
+      7.9k 字
     </span>
   
 
@@ -213,7 +213,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      72 分钟
+      66 分钟
     </span>
   
 
@@ -249,24 +249,21 @@
 <p>系统为debian系统，主要内容包括：linux文档结构（也就是各个文件是干嘛的）</p>
 <hr>
 <span id="more"></span>
-
-
-
-<h1 id="1-文档结构略图"><a href="#1-文档结构略图" class="headerlink" title="1. 文档结构略图"></a>1. 文档结构略图</h1><p>.—————————————————————————————————————根目录（档案最上层）<br>├── bin————————————————————————————–给所有使用者使用之必要执行档<br>├── boot———————————————————————开机核心及boot loader（grub&#x2F;）存放目录<br>│   └── grub——————————————————————————–boot loader（grub&#x2F;）存放目录<br>├── cdrom<br>├── dev<br>├── etc<br>│   └── X11<br>├── home<br>├── lib<br>│   └── modules<br>├── lib64<br>├── lost+found<br>├── media<br>├── mnt<br>├── opt<br>├── proc<br>├── sbin<br>├── sys<br>├── tmp<br>├── usr<br>│   ├── bin<br>│   ├── games<br>│   ├── include<br>│   ├── lib<br>│   ├── local<br>│   │   ├── bin<br>│   │   ├── etc<br>│   │   ├── games<br>│   │   ├── include<br>│   │   ├── lib<br>│   │   ├── man -&gt; share&#x2F;man<br>│   │   ├── sbin<br>│   │   ├── share<br>│   │   └── src<br>│   ├── sbin<br>│   ├── share<br>│   └── src<br>└── var<br>     ├── cache<br>     ├── backups<br>     ├── log<br>     ├── locked<br>     └── spool</p>
-<h1 id="2-x2F-bin、-x2F-usr-x2F-bin、-x2F-usr-x2F-local-x2F-bin"><a href="#2-x2F-bin、-x2F-usr-x2F-bin、-x2F-usr-x2F-local-x2F-bin" class="headerlink" title="2. &#x2F;bin、&#x2F;usr&#x2F;bin、&#x2F;usr&#x2F;local&#x2F;bin"></a>2. &#x2F;bin、&#x2F;usr&#x2F;bin、&#x2F;usr&#x2F;local&#x2F;bin</h1><p>这三个目录均存放<strong>可执行档</strong>，其差别在于：</p>
+<h1 id="1-文档结构略图"><a href="#1-文档结构略图" class="headerlink" title="1. 文档结构略图"></a>1. 文档结构略图</h1><p>.———————————————————————————————————————————————————————-根目录（档案最上层）<br>├── bin———————————————————————————————————————————给所有使用者使用之必要执行档<br>├── boot——————————————————————————————————-开机核心及boot loader（grub/）存放目录<br>│   └── grub————————————————————————————————————————boot loader（grub/）存放目录<br>├── cdrom<br>├── dev<br>├── etc<br>│   └── X11<br>├── home<br>├── lib<br>│   └── modules<br>├── lib64<br>├── lost+found<br>├── media<br>├── mnt<br>├── opt<br>├── proc<br>├── sbin<br>├── sys<br>├── tmp<br>├── usr<br>│   ├── bin<br>│   ├── games<br>│   ├── include<br>│   ├── lib<br>│   ├── local<br>│   │   ├── bin<br>│   │   ├── etc<br>│   │   ├── games<br>│   │   ├── include<br>│   │   ├── lib<br>│   │   ├── man -&gt; share/man<br>│   │   ├── sbin<br>│   │   ├── share<br>│   │   └── src<br>│   ├── sbin<br>│   ├── share<br>│   └── src<br>└── var<br>     ├── cache<br>     ├── backups<br>     ├── log<br>     ├── locked<br>     └── spool</p>
+<h1 id="2-bin、-usr-bin、-usr-local-bin"><a href="#2-bin、-usr-bin、-usr-local-bin" class="headerlink" title="2. /bin、/usr/bin、/usr/local/bin"></a>2. /bin、/usr/bin、/usr/local/bin</h1><p>这三个目录均存放<strong>可执行档</strong>，其差别在于：</p>
 <ul>
 <li><code>/bin</code>：放最基本、最必要执行的可执行档以供<strong>单人模式</strong>使用者使用。即可认为<strong>相当重要、最基础、没有这个没法进行Linux操作</strong>。比如：<code>ls</code>、<code>mkdir</code>、<code>cat</code>…等指令</li>
 <li><code>/usr/bin</code>：大部分的可执行档，这些执行档并不是必须的。比如：<code>zip</code>、<code>vim</code>、<code>shell</code></li>
 <li><code>/usr/local/bin</code>：<strong>使用者自行安装的可执行档</strong>。比如：<code>iverilog</code></li>
 </ul>
 <p>小贴士：为何要分<code>/bin</code>和<code>/usr/bin</code>两个文件呢？久远以前，用磁带进行存储，磁带容量的限制。如今，二者已经趋于合并，如centos</p>
-<h1 id="3-x2F-sbin、-x2F-usr-x2F-sbin、-x2F-usr-x2F-local-x2F-sbin"><a href="#3-x2F-sbin、-x2F-usr-x2F-sbin、-x2F-usr-x2F-local-x2F-sbin" class="headerlink" title="3. &#x2F;sbin、&#x2F;usr&#x2F;sbin、&#x2F;usr&#x2F;local&#x2F;sbin"></a>3. &#x2F;sbin、&#x2F;usr&#x2F;sbin、&#x2F;usr&#x2F;local&#x2F;sbin</h1><p>类似于<code>/bin</code>、<code>/usr/bin</code>、<code>/usr/local/bin</code></p>
+<h1 id="3-sbin、-usr-sbin、-usr-local-sbin"><a href="#3-sbin、-usr-sbin、-usr-local-sbin" class="headerlink" title="3. /sbin、/usr/sbin、/usr/local/sbin"></a>3. /sbin、/usr/sbin、/usr/local/sbin</h1><p>类似于<code>/bin</code>、<code>/usr/bin</code>、<code>/usr/local/bin</code></p>
 <ul>
 <li><code>/sbin</code>：放最基本、最必要执行的<strong>系统管理</strong>可执行档以供<strong>系统管理员</strong>使用。比如：<code>ifconfig</code>、<code>fdisk</code></li>
 <li><code>/usr/sbin</code>：给应用程序使用的系统管理工具。比如：<code>sshd</code></li>
 <li><code>/usr/local/sbin</code>：用户自行安装的系统管理工具。目前没有接触到，比如略。</li>
 </ul>
-<h1 id="4-x2F-boot"><a href="#4-x2F-boot" class="headerlink" title="4. &#x2F;boot"></a>4. &#x2F;boot</h1><p>存放<strong>Linux的核心</strong>，粗略介绍几个文件。</p>
+<h1 id="4-boot"><a href="#4-boot" class="headerlink" title="4. /boot"></a>4. /boot</h1><p>存放<strong>Linux的核心</strong>，粗略介绍几个文件。</p>
 <ul>
 <li><p><strong>config-xxxx文档</strong>：</p>
 <p>核心编译设定档，该设定档方便我们依照其设定自行编译Linux核心。</p>
@@ -281,84 +278,89 @@
 <li><p><strong>vmlinuz-xxxx文档</strong>：真正编译完的Linux核心。</p>
 </li>
 </ul>
-<h2 id="x2F-boot-x2F-grub"><a href="#x2F-boot-x2F-grub" class="headerlink" title="&#x2F;boot&#x2F;grub"></a>&#x2F;boot&#x2F;grub</h2><p>比较重要的<code>/boot/grub/grub.cfg</code>文档，它是<strong>开机设定档</strong>，使用者可以参考里面的设定了解自己的电脑是如何开机的。</p>
-<h1 id="5-x2F-dev"><a href="#5-x2F-dev" class="headerlink" title="5. &#x2F;dev"></a>5. &#x2F;dev</h1><p>&#x2F;dev文档存放了Linux的<strong>装置档案</strong>。</p>
+<h2 id="boot-grub"><a href="#boot-grub" class="headerlink" title="/boot/grub"></a>/boot/grub</h2><p>比较重要的<code>/boot/grub/grub.cfg</code>文档，它是<strong>开机设定档</strong>，使用者可以参考里面的设定了解自己的电脑是如何开机的。</p>
+<h1 id="5-dev"><a href="#5-dev" class="headerlink" title="5. /dev"></a>5. /dev</h1><p>/dev文档存放了Linux的<strong>装置档案</strong>。</p>
 <p>何为装置档？我们可以认为在Linux系统中，每一种装置都化身为一个文档，对于相应文档的操作就是对于相应装置的操作。</p>
 <h2 id="5-1-装置类别"><a href="#5-1-装置类别" class="headerlink" title="5.1 装置类别"></a>5.1 装置类别</h2><p>在终端窗口输入 <code>ls -la</code>，可以获取如以下例子的列表。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">d</th>
-<th align="center">rwxr-xr-x</th>
-<th align="center">2</th>
-<th align="center">root</th>
-<th align="center">root</th>
-<th align="center">4096</th>
-<th align="center">9月 3 2021</th>
-<th align="center">my_dir</th>
+<th style="text-align:center">d</th>
+<th style="text-align:center">rwxr-xr-x</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">root</th>
+<th style="text-align:center">root</th>
+<th style="text-align:center">4096</th>
+<th style="text-align:center">9月 3 2021</th>
+<th style="text-align:center">my_dir</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">类别</td>
-<td align="center">属性</td>
-<td align="center">连结的节点数</td>
-<td align="center">所有人</td>
-<td align="center">群组</td>
-<td align="center">大小</td>
-<td align="center">最后的修改时间</td>
-<td align="center">文件名</td>
+<tbody>
+<tr>
+<td style="text-align:center">类别</td>
+<td style="text-align:center">属性</td>
+<td style="text-align:center">连结的节点数</td>
+<td style="text-align:center">所有人</td>
+<td style="text-align:center">群组</td>
+<td style="text-align:center">大小</td>
+<td style="text-align:center">最后的修改时间</td>
+<td style="text-align:center">文件名</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>其中，第一个就是<strong>类别</strong>。以下进行解释。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">类别</th>
+<th style="text-align:left">类别</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>-</strong></td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>-</strong></td>
 <td>正常文档</td>
 </tr>
 <tr>
-<td align="left"><strong>d</strong>(irectory)</td>
+<td style="text-align:left"><strong>d</strong>(irectory)</td>
 <td>目录（俗称文件夹）</td>
 </tr>
 <tr>
-<td align="left"><strong>l</strong>(ink)</td>
+<td style="text-align:left"><strong>l</strong>(ink)</td>
 <td>链接档（可理解为win中的快捷方式）</td>
 </tr>
 <tr>
-<td align="left"><strong>c</strong>(haracter)<strong>&#x2F;u</strong></td>
-<td>字元档，一种装置档案（只会出现在&#x2F;dev）。字元档就是一次传输字元，<strong>没有缓冲</strong>，以串行方式进行通信。比如<strong>鼠标、键盘、虚拟终端机（shell）</strong></td>
+<td style="text-align:left"><strong>c</strong>(haracter)<strong>/u</strong></td>
+<td>字元档，一种装置档案（只会出现在/dev）。字元档就是一次传输字元，<strong>没有缓冲</strong>，以串行方式进行通信。比如<strong>鼠标、键盘、虚拟终端机（shell）</strong></td>
 </tr>
 <tr>
-<td align="left"><strong>b</strong>(lock)</td>
-<td>区块档，一种装置档案（只会出现在&#x2F;dev）。区块档是指系统在传输资料时，以块为单位进行传输。区块档有<strong>缓存</strong>，因此在传输数据的过程中，先传输到缓存在传输到真正的设备。比如<strong>硬盘、光碟、U盘</strong>。</td>
+<td style="text-align:left"><strong>b</strong>(lock)</td>
+<td>区块档，一种装置档案（只会出现在/dev）。区块档是指系统在传输资料时，以块为单位进行传输。区块档有<strong>缓存</strong>，因此在传输数据的过程中，先传输到缓存在传输到真正的设备。比如<strong>硬盘、光碟、U盘</strong>。</td>
 </tr>
 <tr>
-<td align="left"><strong>s</strong>(ocket)</td>
+<td style="text-align:left"><strong>s</strong>(ocket)</td>
 <td>网络通信连结的端点。略</td>
 </tr>
 <tr>
-<td align="left"><strong>p</strong>(ipe)</td>
+<td style="text-align:left"><strong>p</strong>(ipe)</td>
 <td>称为导管或者FIFO的装置。略</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>其中最常见的两种装置档——字元档和区块档。</p>
 <p><strong>字元档</strong>例子：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> /dev</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> -l</span><br>...<br>crw-------	1 root tty   13,63 9月 3 15：34 tty		#终端机<br>...<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> /dev/input</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> -l</span><br>...<br>crw-rw----	1 root input 13,63 9月 3 15：34 event0	#事件（如键盘等）<br>crw-rw----	1 root input 13,32 9月 3 15：34 mouse0    #鼠标<br>...<br></code></pre></td></tr></table></figure>
-
 <p><strong>区块档</strong>例子：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> /dev/</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> -l</span><br>...<br>crw-rw----	1 root cdrom 21, 0 9月 3 15：34 sr0		#光碟<br>crw-rw----	1 root disk   8, 0 9月 3 15：34 sda		#硬盘<br>crw-rw----	1 root disk   8, 1 9月 3 15：34 sdb<br>...<br></code></pre></td></tr></table></figure>
-
 <p><strong>小贴士</strong>：</p>
 <p>①在终端中执行<code>lsblk</code>、<code>df -kh</code>，可以查看硬盘的挂载和使用情况</p>
 <p>②在终端中执行<code>file &lt;filename&gt;</code>、<code>stat &lt;filename&gt;</code>，可以查看文件信息</p>
 <h2 id="5-2-Major-Number-和Mimor-Number"><a href="#5-2-Major-Number-和Mimor-Number" class="headerlink" title="5.2 Major Number 和Mimor Number"></a>5.2 Major Number 和Mimor Number</h2><p>装置档和不同的文件（-、d、l）不同，原本表示<strong>大小</strong>的地方，不在表示大小，而是Major Number 和Mimor Number。</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">crw</span>-rw----	<span class="hljs-number">1</span> root cdrom <span class="hljs-number">21</span>, <span class="hljs-number">0</span> <span class="hljs-number">9</span>月 <span class="hljs-number">3</span> <span class="hljs-number">15</span>：<span class="hljs-number">34</span> sr0	<br></code></pre></td></tr></table></figure>
-
 <p>如上文所示的”21，0“。那何为Major Number 和Mimor Number？</p>
 <p>此处仅仅引入这两个概念，不做深入探究。因为这并非普通用户需要知道的，而是给写驱动的用户看的。</p>
 <h2 id="5-3-虚拟终端机和实体终端机"><a href="#5-3-虚拟终端机和实体终端机" class="headerlink" title="5.3 虚拟终端机和实体终端机"></a>5.3 虚拟终端机和实体终端机</h2><h3 id="5-3-1-实体终端机"><a href="#5-3-1-实体终端机" class="headerlink" title="5.3.1 实体终端机"></a>5.3.1 实体终端机</h3><p>Linux或者说Unix系统，是一个<strong>多人多工</strong>的操作系统。也就是一台电脑，可以多人登录并且同时使用。</p>
@@ -368,71 +370,64 @@
 <p>如下所示，即”shi“账号，通过两个实体终端机连入主机。</p>
 <p>所谓是实体终端机，就是看得到、摸得到鼠标键盘的机器。比如：显示器+鼠标键盘、手机</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> /dev</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> -l</span><br>...<br>crw-------	1 shi tty   13,63 9月 3 15：34 tty1		#终端机<br>crw-------	1 shi tty   13,63 9月 3 15：34 tty2		#终端机<br>...<br></code></pre></td></tr></table></figure>
-
 <h3 id="5-3-2-虚拟终端机"><a href="#5-3-2-虚拟终端机" class="headerlink" title="5.3.2 虚拟终端机"></a>5.3.2 虚拟终端机</h3><p>简单而言，<strong>虚拟终端机</strong>就是在你鼠标右键，”打开终端“所打开的终端。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210903185451635.png" srcset="/img/loading.gif" lazyload alt="image-20210903185451635"></p>
-<p>**虚拟终端机所占的位置在<code>/dev/pts</code>**（pts：pseudo terminal slave），</p>
+<p><strong>虚拟终端机所占的位置在<code>/dev/pts</code></strong>（pts：pseudo terminal slave），</p>
 <p>如下所示：此处打开了两个虚拟终端机。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> /dev/pts</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> -l</span><br>crw--w----	1 shi  tty   136,0 9月 3 15：34 0		#终端机<br>crw--w----	1 shi  tty   136,2 9月 3 15：34 1		#终端机<br>c---------  1 root root    5,2 9月 3 15：34 ptmx<br>...<br></code></pre></td></tr></table></figure>
-
-<p>在某个虚拟终端机，输入<code>tty</code>，如下所示，表示这个虚拟终端化身为&#x2F;dev&#x2F;pts&#x2F;2</p>
+<p>在某个虚拟终端机，输入<code>tty</code>，如下所示，表示这个虚拟终端化身为/dev/pts/2</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">tty</span></span><br>/dev/pts/2<br>...<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="5-4-x2F-dev下的串行线"><a href="#5-4-x2F-dev下的串行线" class="headerlink" title="5.4 &#x2F;dev下的串行线"></a>5.4 &#x2F;dev下的串行线</h2><p>ttys和tty的很像，在&#x2F;dev中显示为</p>
+<h2 id="5-4-dev下的串行线"><a href="#5-4-dev下的串行线" class="headerlink" title="5.4 /dev下的串行线"></a>5.4 /dev下的串行线</h2><p>ttys和tty的很像，在/dev中显示为</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">crw</span>-rw----	<span class="hljs-number">1</span> root dialout   <span class="hljs-number">4</span>,<span class="hljs-number">86</span> <span class="hljs-number">9</span>月 <span class="hljs-number">3</span> <span class="hljs-number">15</span>：<span class="hljs-number">34</span> ttys23		#串行线<br></code></pre></td></tr></table></figure>
-
-<p>ttyS专门用于网络连接，如今常用于<strong>外界电路板&#x2F;开发板</strong></p>
-<h2 id="5-5-x2F-dev下的USB设备"><a href="#5-5-x2F-dev下的USB设备" class="headerlink" title="5.5 &#x2F;dev下的USB设备"></a>5.5 &#x2F;dev下的USB设备</h2><p>USB设备存在于<code>/dev/input</code>下面</p>
-<h2 id="5-6-x2F-dev下其他有趣的设备"><a href="#5-6-x2F-dev下其他有趣的设备" class="headerlink" title="5.6 &#x2F;dev下其他有趣的设备"></a>5.6 &#x2F;dev下其他有趣的设备</h2><ol>
+<p>ttyS专门用于网络连接，如今常用于<strong>外界电路板/开发板</strong></p>
+<h2 id="5-5-dev下的USB设备"><a href="#5-5-dev下的USB设备" class="headerlink" title="5.5 /dev下的USB设备"></a>5.5 /dev下的USB设备</h2><p>USB设备存在于<code>/dev/input</code>下面</p>
+<h2 id="5-6-dev下其他有趣的设备"><a href="#5-6-dev下其他有趣的设备" class="headerlink" title="5.6 /dev下其他有趣的设备"></a>5.6 /dev下其他有趣的设备</h2><ol>
 <li><p><code>/dev/null</code></p>
 <p>”黑洞“，可以接收任何信息，但是并不会产生任何输出。永远不会满。</p>
 <p>应用的地方嘛~比如在”开机时，会产生许多的log信息，这些信息不需要呈现给用户，就可以把这些信息扔到’黑洞‘中“。</p>
 <p>如<code>/etc/init.d/exim4</code>程序片段</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">if pidofproc -p &quot;$QRPIDFILE&quot; &quot;$DAEMON&quot; &gt;/dev/null; then<br>	log_action_end_msg 0 &quot;running&quot;<br></code></pre></td></tr></table></figure>
-
 <p>再如：把<code>ls - l /dev</code>的所有输出内容扔到黑洞中。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> -l /dev &gt; /dev/null</span><br></code></pre></td></tr></table></figure>
 </li>
 <li><p><code>/dev/zero</code></p>
 <p>专门产生”空字节“，常和<code>dd</code>指令一起使用</p>
 <p>如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> ~</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/dev/zero of=test.img bs=1M count=1</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">创建以一个名为test.img的文件，其他大小为1MB，其内容全部用0填充，只执1次</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">使用hexdump查看文件（以16进制查看文件）</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">hexdump test.img</span> <br>000000 0000 0000 0000 0000 0000<br>*<br>010000<br><span class="hljs-meta prompt_">#</span><span class="language-bash">文件全部用0x00填充</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> ~</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/dev/zero of=test.img bs=1M count=1</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">创建以一个名为test.img的文件，其他大小为1MB，其内容全部用0填充，只执1次</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">使用hexdump查看文件（以16进制查看文件）</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">hexdump test.img</span> <br>000000 0000 0000 0000 0000 0000<br>*<br>010000<br><span class="hljs-meta prompt_">#</span><span class="language-bash">文件全部用0x00填充</span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
-<h1 id="6-x2F-etc"><a href="#6-x2F-etc" class="headerlink" title="6. &#x2F;etc"></a>6. &#x2F;etc</h1><p>&#x2F;etc存放<strong>整个系统的设定</strong>，包括网络设定、开机设定、服务器设定等等。</p>
-<p>注意：如果作Linux系统的备份的时候，<strong>需要注意备份&#x2F;etc</strong></p>
-<h2 id="x2F-etc-x2F-init-d"><a href="#x2F-etc-x2F-init-d" class="headerlink" title="&#x2F;etc&#x2F;init.d"></a>&#x2F;etc&#x2F;init.d</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">drwxr-xr-x 2 root root 4096 &lt;time&gt; init.d<br></code></pre></td></tr></table></figure>
-
+<h1 id="6-etc"><a href="#6-etc" class="headerlink" title="6. /etc"></a>6. /etc</h1><p>/etc存放<strong>整个系统的设定</strong>，包括网络设定、开机设定、服务器设定等等。</p>
+<p>注意：如果作Linux系统的备份的时候，<strong>需要注意备份/etc</strong></p>
+<h2 id="etc-init-d"><a href="#etc-init-d" class="headerlink" title="/etc/init.d"></a>/etc/init.d</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">drwxr-xr-x 2 root root 4096 &lt;time&gt; init.d<br></code></pre></td></tr></table></figure>
 <p>存放所有系统启动的服务，包括初始化网络、键盘对应等等</p>
-<h1 id="7-x2F-etc-x2F-X11"><a href="#7-x2F-etc-x2F-X11" class="headerlink" title="7. &#x2F;etc&#x2F;X11"></a>7. &#x2F;etc&#x2F;X11</h1><p>与x window有关。该目录就是用于设定x window相关的，其中包括 XServer的设定和视窗管理员(Window Manager)的设定</p>
-<h2 id="7-1-x2F-etc-x2F-skel"><a href="#7-1-x2F-etc-x2F-skel" class="headerlink" title="7.1 &#x2F;etc&#x2F;skel"></a>7.1 &#x2F;etc&#x2F;skel</h2><p>该目录是一个<strong>型版目录</strong>，当我们新增一个使用者时，系统会将此型版目录的内容一字不漏的复制过去每一个使用者的家目录。这样一来，我们基于可以不必为每一个新增使用者设置一些环境设定档。</p>
-<h2 id="7-2-x2F-etc-x2F-rc-d"><a href="#7-2-x2F-etc-x2F-rc-d" class="headerlink" title="7.2 &#x2F;etc&#x2F;rc*.d"></a>7.2 &#x2F;etc&#x2F;rc*.d</h2><p>包括了<code>rc0.d</code>~&#96;&#96;rc6.d<code>和</code>rcS.d<code>。这些文档存放的内容是来告诉Linux在那个</code>runlevel<code>时要执行哪些工作。所谓的</code>runlevel&#96;&#96;，是指<strong>系统在开机时进入哪个层级</strong>，这个可以维基百科一下。</p>
+<h1 id="7-etc-X11"><a href="#7-etc-X11" class="headerlink" title="7. /etc/X11"></a>7. /etc/X11</h1><p>与x window有关。该目录就是用于设定x window相关的，其中包括 XServer的设定和视窗管理员(Window Manager)的设定</p>
+<h2 id="7-1-etc-skel"><a href="#7-1-etc-skel" class="headerlink" title="7.1 /etc/skel"></a>7.1 /etc/skel</h2><p>该目录是一个<strong>型版目录</strong>，当我们新增一个使用者时，系统会将此型版目录的内容一字不漏的复制过去每一个使用者的家目录。这样一来，我们基于可以不必为每一个新增使用者设置一些环境设定档。</p>
+<h2 id="7-2-etc-rc-d"><a href="#7-2-etc-rc-d" class="headerlink" title="7.2 /etc/rc*.d"></a>7.2 /etc/rc*.d</h2><p>包括了<code>rc0.d</code>~<code>rc6.d</code>和<code>rcS.d</code>。这些文档存放的内容是来告诉Linux在那个<code>runlevel</code>时要执行哪些工作。所谓的<code>runlevel</code>，是指<strong>系统在开机时进入哪个层级</strong>，这个可以维基百科一下。</p>
 <p>需记住的是：</p>
-<p>​	rc0.d ——runlevel0：关机</p>
-<p>​	rc1.d ——runlevel1：单一使用者模式。常用于系统管理员进行维修，不希望其他使用者进入。</p>
-<p>​	其他略</p>
-<p>​	rc6.d ——runlevel6：重新开机</p>
-<h1 id="8-x2F-home-和-x2F-root"><a href="#8-x2F-home-和-x2F-root" class="headerlink" title="8. &#x2F;home 和 &#x2F;root"></a>8. &#x2F;home 和 &#x2F;root</h1><p>分别表示使用者家目录和管理员家目录。</p>
-<h1 id="9-x2F-lib、-x2F-usr-x2F-lib、-x2F-usr-x2F-local-x2F-lib"><a href="#9-x2F-lib、-x2F-usr-x2F-lib、-x2F-usr-x2F-local-x2F-lib" class="headerlink" title="9. &#x2F;lib、&#x2F;usr&#x2F;lib、&#x2F;usr&#x2F;local&#x2F;lib"></a>9. &#x2F;lib、&#x2F;usr&#x2F;lib、&#x2F;usr&#x2F;local&#x2F;lib</h1><p>用于存放<strong>动态连接函数库</strong>。</p>
+<p>​    rc0.d ——runlevel0：关机</p>
+<p>​    rc1.d ——runlevel1：单一使用者模式。常用于系统管理员进行维修，不希望其他使用者进入。</p>
+<p>​    其他略</p>
+<p>​    rc6.d ——runlevel6：重新开机</p>
+<h1 id="8-home-和-root"><a href="#8-home-和-root" class="headerlink" title="8. /home 和 /root"></a>8. /home 和 /root</h1><p>分别表示使用者家目录和管理员家目录。</p>
+<h1 id="9-lib、-usr-lib、-usr-local-lib"><a href="#9-lib、-usr-lib、-usr-local-lib" class="headerlink" title="9. /lib、/usr/lib、/usr/local/lib"></a>9. /lib、/usr/lib、/usr/local/lib</h1><p>用于存放<strong>动态连接函数库</strong>。</p>
 <p><strong>Linux中，即为<code>.so</code>或者<code>.a</code>文件。在win系统中，即为<code>.dll</code>文件</strong></p>
 <p>所谓的动态连接函数库，是指但我们程序运行的时候才需要连接的函数库。</p>
 <p>用win系统的理解，可以如此理解：</p>
-<p>游戏运行的时候需要<code>DirectX </code>（DirectX 是 Windows 中的一组组件，允许软件（主要且尤其是游戏）直接与视频和音频硬件结合使用。），一般游戏打包的时候是不将这个组件放到游戏包里面的。如果将所有的组件放到游戏包中，会使得游戏包十分的臃肿。于是常常将一些通用的组件&#x2F;库让用户自己安装。游戏运行需要的时候，<strong>动态链接</strong>用户的组件&#x2F;库即可。如此，即使1000个游戏，也只需要1个库即可，而不需要将库都放到1000个游戏中。（<strong>共享</strong>的概念）</p>
-<p>&#x2F;lib：系统程序才会用到的动态连接函数库以及核心组件。</p>
-<p>&#x2F;usr&#x2F;lib：动态连接函数库存放目录。</p>
-<p>&#x2F;usr&#x2F;local&#x2F;lib：使用者自行安装的动态连接函数库存放目录。</p>
-<h1 id="10-x2F-mnt、-x2F-media"><a href="#10-x2F-mnt、-x2F-media" class="headerlink" title="10. &#x2F;mnt、&#x2F;media"></a>10. &#x2F;mnt、&#x2F;media</h1><p>均使用来挂在<strong>存储媒体</strong>的目录，存储媒体可能是SD卡、U盘等。</p>
+<p>游戏运行的时候需要<code>DirectX</code>（DirectX 是 Windows 中的一组组件，允许软件（主要且尤其是游戏）直接与视频和音频硬件结合使用。），一般游戏打包的时候是不将这个组件放到游戏包里面的。如果将所有的组件放到游戏包中，会使得游戏包十分的臃肿。于是常常将一些通用的组件/库让用户自己安装。游戏运行需要的时候，<strong>动态链接</strong>用户的组件/库即可。如此，即使1000个游戏，也只需要1个库即可，而不需要将库都放到1000个游戏中。（<strong>共享</strong>的概念）</p>
+<p>/lib：系统程序才会用到的动态连接函数库以及核心组件。</p>
+<p>/usr/lib：动态连接函数库存放目录。</p>
+<p>/usr/local/lib：使用者自行安装的动态连接函数库存放目录。</p>
+<h1 id="10-mnt、-media"><a href="#10-mnt、-media" class="headerlink" title="10. /mnt、/media"></a>10. /mnt、/media</h1><p>均使用来挂在<strong>存储媒体</strong>的目录，存储媒体可能是SD卡、U盘等。</p>
 <p>没有挂载的时候，目录是空的。</p>
-<h1 id="11-x2F-opt、-x2F-usr-x2F-local"><a href="#11-x2F-opt、-x2F-usr-x2F-local" class="headerlink" title="11. &#x2F;opt、&#x2F;usr&#x2F;local"></a>11. &#x2F;opt、&#x2F;usr&#x2F;local</h1><p>均是用来存放<strong>自行安装的软件</strong></p>
+<h1 id="11-opt、-usr-local"><a href="#11-opt、-usr-local" class="headerlink" title="11. /opt、/usr/local"></a>11. /opt、/usr/local</h1><p>均是用来存放<strong>自行安装的软件</strong></p>
 <p>其差别在于：</p>
 <ul>
-<li>&#x2F;opt用来保存外加的应用程序软件套件</li>
-<li>&#x2F;usr&#x2F;local是给系统管理员安装软件的位置</li>
+<li>/opt用来保存外加的应用程序软件套件</li>
+<li>/usr/local是给系统管理员安装软件的位置</li>
 </ul>
-<p>按照李博明老师的作法，大型商用软件（如EDA）等工具统一安装在&#x2F;opt目录下；而自行安装的小型工具（Firefox浏览器）则统一安装在&#x2F;usr&#x2F;local目录下。</p>
-<h1 id="12-x2F-proc、-x2F-sys"><a href="#12-x2F-proc、-x2F-sys" class="headerlink" title="12. &#x2F;proc、&#x2F;sys"></a>12. &#x2F;proc、&#x2F;sys</h1><p>两个档案有相似之处，同样都十分重要。</p>
-<h2 id="12-1-x2F-proc"><a href="#12-1-x2F-proc" class="headerlink" title="12.1 &#x2F;proc"></a>12.1 &#x2F;proc</h2><p>存放<strong>核心及进程所需要的虚拟档案文件</strong>，意思是&#x2F;proc反应了当前系统的状态。</p>
+<p>按照李博明老师的作法，大型商用软件（如EDA）等工具统一安装在/opt目录下；而自行安装的小型工具（Firefox浏览器）则统一安装在/usr/local目录下。</p>
+<h1 id="12-proc、-sys"><a href="#12-proc、-sys" class="headerlink" title="12. /proc、/sys"></a>12. /proc、/sys</h1><p>两个档案有相似之处，同样都十分重要。</p>
+<h2 id="12-1-proc"><a href="#12-1-proc" class="headerlink" title="12.1 /proc"></a>12.1 /proc</h2><p>存放<strong>核心及进程所需要的虚拟档案文件</strong>，意思是/proc反应了当前系统的状态。</p>
 <p>如：</p>
 <ol>
 <li>cpuinfo：查看CPU型号、CPU核心等信息</li>
@@ -445,62 +440,61 @@
 <li>uptime：目前系统启动时间、空闲时间状态</li>
 <li>version：目前系统核心状态</li>
 </ol>
-<p>由于&#x2F;proc中的文档大多为纯文字档，使用<code>cat</code>即可进行浏览。</p>
-<h2 id="12-2-x2F-sys"><a href="#12-2-x2F-sys" class="headerlink" title="12.2 &#x2F;sys"></a>12.2 &#x2F;sys</h2><p>&#x2F;sys是在Linux核心第2.6版之后出现的目录，主要作为<strong>即插即用的设定</strong>。</p>
+<p>由于/proc中的文档大多为纯文字档，使用<code>cat</code>即可进行浏览。</p>
+<h2 id="12-2-sys"><a href="#12-2-sys" class="headerlink" title="12.2 /sys"></a>12.2 /sys</h2><p>/sys是在Linux核心第2.6版之后出现的目录，主要作为<strong>即插即用的设定</strong>。</p>
 <p>也可以查看一些系统的状态。</p>
 <p>具体遇到之后再详查。</p>
-<h1 id="13-x2F-tmp"><a href="#13-x2F-tmp" class="headerlink" title="13. &#x2F;tmp"></a>13. &#x2F;tmp</h1><p>用<strong>存放程序执行时的一些暂存档</strong></p>
+<h1 id="13-tmp"><a href="#13-tmp" class="headerlink" title="13. /tmp"></a>13. /tmp</h1><p>用<strong>存放程序执行时的一些暂存档</strong></p>
 <p>每个使用者均有读写的权限。</p>
 <p>但是<strong>不要将重要的数据存放在此处</strong>，因为此目录的内容在重启之后就不见了</p>
 <p>等同于window下的 C:\Temp目录</p>
-<h1 id="14-x2F-usr"><a href="#14-x2F-usr" class="headerlink" title="14. &#x2F;usr"></a>14. &#x2F;usr</h1><p>最杂、最集大成的目录。</p>
+<h1 id="14-usr"><a href="#14-usr" class="headerlink" title="14. /usr"></a>14. /usr</h1><p>最杂、最集大成的目录。</p>
 <p>约等于window系统下，”C:\Window”和”C:\Program Files”两个目录的混合体。</p>
 <p>下面对一些重要的目录进行介绍。</p>
-<h2 id="14-1-x2F-usr-x2F-bin"><a href="#14-1-x2F-usr-x2F-bin" class="headerlink" title="14.1 &#x2F;usr&#x2F;bin"></a>14.1 &#x2F;usr&#x2F;bin</h2><p>存放使用者需要的一些可执行档，这些可执行档不是系统必要的执行档</p>
-<h2 id="14-2-x2F-usr-x2F-games"><a href="#14-2-x2F-usr-x2F-games" class="headerlink" title="14.2 &#x2F;usr&#x2F;games"></a>14.2 &#x2F;usr&#x2F;games</h2><p>玩游戏</p>
-<h2 id="14-3-x2F-usr-x2F-include"><a href="#14-3-x2F-usr-x2F-include" class="headerlink" title="14.3 &#x2F;usr&#x2F;include"></a>14.3 &#x2F;usr&#x2F;include</h2><p>C语言所必须包含的档头目录，即.h文件。</p>
-<h2 id="14-4-x2F-usr-x2F-lib"><a href="#14-4-x2F-usr-x2F-lib" class="headerlink" title="14.4 &#x2F;usr&#x2F;lib"></a>14.4 &#x2F;usr&#x2F;lib</h2><p>存放懂动态连接函数库的目录</p>
-<h2 id="14-5-x2F-usr-x2F-local"><a href="#14-5-x2F-usr-x2F-local" class="headerlink" title="14.5 &#x2F;usr&#x2F;local"></a>14.5 &#x2F;usr&#x2F;local</h2><p>存放管理员自行安装的软件，一般存放比较小的软件或者工具（个人觉得1G以下丢可以存放在这个）</p>
-<h2 id="14-6-x2F-usr-x2F-local-x2F-bin"><a href="#14-6-x2F-usr-x2F-local-x2F-bin" class="headerlink" title="14.6 &#x2F;usr&#x2F;local&#x2F;bin"></a>14.6 &#x2F;usr&#x2F;local&#x2F;bin</h2><p>使用者自行安装的可执行档</p>
-<h2 id="14-7-x2F-usr-x2F-local-x2F-include"><a href="#14-7-x2F-usr-x2F-local-x2F-include" class="headerlink" title="14.7 &#x2F;usr&#x2F;local&#x2F;include"></a>14.7 &#x2F;usr&#x2F;local&#x2F;include</h2><p>使用者自行安装的C语言的档头文件，即.h文件</p>
-<h2 id="14-8-x2F-usr-x2F-local-x2F-lib"><a href="#14-8-x2F-usr-x2F-local-x2F-lib" class="headerlink" title="14.8 &#x2F;usr&#x2F;local&#x2F;lib"></a>14.8 &#x2F;usr&#x2F;local&#x2F;lib</h2><p>使用者自行安装的动态连接函数库</p>
-<h2 id="14-9-x2F-usr-x2F-local-x2F-sbin"><a href="#14-9-x2F-usr-x2F-local-x2F-sbin" class="headerlink" title="14.9 &#x2F;usr&#x2F;local&#x2F;sbin"></a>14.9 &#x2F;usr&#x2F;local&#x2F;sbin</h2><p>使用者自行安装的关于系统管理的可执行档</p>
-<h2 id="14-10-x2F-usr-x2F-local-x2F-share"><a href="#14-10-x2F-usr-x2F-local-x2F-share" class="headerlink" title="14.10 &#x2F;usr&#x2F;local&#x2F;share"></a>14.10 &#x2F;usr&#x2F;local&#x2F;share</h2><p>使用者自行安装的共享档案的目录，没有安装即为空目录</p>
-<h2 id="14-11-x2F-usr-x2F-sbin"><a href="#14-11-x2F-usr-x2F-sbin" class="headerlink" title="14.11 &#x2F;usr&#x2F;sbin"></a>14.11 &#x2F;usr&#x2F;sbin</h2><p>给应用程序使用的系统管理相关的可执行档</p>
-<h2 id="14-12-x2F-usr-x2F-share"><a href="#14-12-x2F-usr-x2F-share" class="headerlink" title="14.12 &#x2F;usr&#x2F;share"></a>14.12 &#x2F;usr&#x2F;share</h2><p>与系统架构无关的资料档案目录。<em>如，中文字体文件</em></p>
-<h2 id="14-13-x2F-usr-x2F-src"><a href="#14-13-x2F-usr-x2F-src" class="headerlink" title="14.13 &#x2F;usr&#x2F;src"></a>14.13 &#x2F;usr&#x2F;src</h2><p>linux原始码编译目录（主要是Linux核心），主要用来存放Linux原始码。</p>
+<h2 id="14-1-usr-bin"><a href="#14-1-usr-bin" class="headerlink" title="14.1 /usr/bin"></a>14.1 /usr/bin</h2><p>存放使用者需要的一些可执行档，这些可执行档不是系统必要的执行档</p>
+<h2 id="14-2-usr-games"><a href="#14-2-usr-games" class="headerlink" title="14.2 /usr/games"></a>14.2 /usr/games</h2><p>玩游戏</p>
+<h2 id="14-3-usr-include"><a href="#14-3-usr-include" class="headerlink" title="14.3 /usr/include"></a>14.3 /usr/include</h2><p>C语言所必须包含的档头目录，即.h文件。</p>
+<h2 id="14-4-usr-lib"><a href="#14-4-usr-lib" class="headerlink" title="14.4 /usr/lib"></a>14.4 /usr/lib</h2><p>存放懂动态连接函数库的目录</p>
+<h2 id="14-5-usr-local"><a href="#14-5-usr-local" class="headerlink" title="14.5 /usr/local"></a>14.5 /usr/local</h2><p>存放管理员自行安装的软件，一般存放比较小的软件或者工具（个人觉得1G以下丢可以存放在这个）</p>
+<h2 id="14-6-usr-local-bin"><a href="#14-6-usr-local-bin" class="headerlink" title="14.6 /usr/local/bin"></a>14.6 /usr/local/bin</h2><p>使用者自行安装的可执行档</p>
+<h2 id="14-7-usr-local-include"><a href="#14-7-usr-local-include" class="headerlink" title="14.7 /usr/local/include"></a>14.7 /usr/local/include</h2><p>使用者自行安装的C语言的档头文件，即.h文件</p>
+<h2 id="14-8-usr-local-lib"><a href="#14-8-usr-local-lib" class="headerlink" title="14.8 /usr/local/lib"></a>14.8 /usr/local/lib</h2><p>使用者自行安装的动态连接函数库</p>
+<h2 id="14-9-usr-local-sbin"><a href="#14-9-usr-local-sbin" class="headerlink" title="14.9 /usr/local/sbin"></a>14.9 /usr/local/sbin</h2><p>使用者自行安装的关于系统管理的可执行档</p>
+<h2 id="14-10-usr-local-share"><a href="#14-10-usr-local-share" class="headerlink" title="14.10 /usr/local/share"></a>14.10 /usr/local/share</h2><p>使用者自行安装的共享档案的目录，没有安装即为空目录</p>
+<h2 id="14-11-usr-sbin"><a href="#14-11-usr-sbin" class="headerlink" title="14.11 /usr/sbin"></a>14.11 /usr/sbin</h2><p>给应用程序使用的系统管理相关的可执行档</p>
+<h2 id="14-12-usr-share"><a href="#14-12-usr-share" class="headerlink" title="14.12 /usr/share"></a>14.12 /usr/share</h2><p>与系统架构无关的资料档案目录。<em>如，中文字体文件</em></p>
+<h2 id="14-13-usr-src"><a href="#14-13-usr-src" class="headerlink" title="14.13 /usr/src"></a>14.13 /usr/src</h2><p>linux原始码编译目录（主要是Linux核心），主要用来存放Linux原始码。</p>
 <p>如果修习有关<strong>Linux嵌入式开发</strong>相关的内容，则会用到</p>
-<h1 id="15-x2F-var"><a href="#15-x2F-var" class="headerlink" title="15. &#x2F;var"></a>15. &#x2F;var</h1><p>是黑客入侵系统后第一个需要<strong>处理</strong>的目录，有时候，一些重要的系统进程也要用到该目录。</p>
-<h2 id="15-1-x2F-var-x2F-log"><a href="#15-1-x2F-var-x2F-log" class="headerlink" title="15.1 &#x2F;var&#x2F;log"></a>15.1 &#x2F;var&#x2F;log</h2><p>主要记录系统的日志档（log）目录，包含了使用者自某一个IP登录系统、是否成功登录系统以及失败等信息。这些信息可以有助于我们跟踪黑客是否正在入侵我们的系统。故而黑客入侵的第一件事情就是删除该目录，从而隐藏自己的行踪。而对于管理员而言，管理员需要确保该目录资料的存在，从而追踪系统的登录状态。以下介绍几个重要的日志档。</p>
-<h3 id="15-1-1-x2F-var-x2F-log-x2F-auth-log"><a href="#15-1-1-x2F-var-x2F-log-x2F-auth-log" class="headerlink" title="15.1.1 &#x2F;var&#x2F;log&#x2F;auth.log"></a>15.1.1 &#x2F;var&#x2F;log&#x2F;auth.log</h3><p>此档案十分重要，它告诉我们<strong>有什么人连进我们的系统、有谁取到了root的权限、有人试图连接我们的系统但是失败等记录</strong>。如果遇到黑客入侵，我们需要第一检查这个文件。</p>
+<h1 id="15-var"><a href="#15-var" class="headerlink" title="15. /var"></a>15. /var</h1><p>是黑客入侵系统后第一个需要<strong>处理</strong>的目录，有时候，一些重要的系统进程也要用到该目录。</p>
+<h2 id="15-1-var-log"><a href="#15-1-var-log" class="headerlink" title="15.1 /var/log"></a>15.1 /var/log</h2><p>主要记录系统的日志档（log）目录，包含了使用者自某一个IP登录系统、是否成功登录系统以及失败等信息。这些信息可以有助于我们跟踪黑客是否正在入侵我们的系统。故而黑客入侵的第一件事情就是删除该目录，从而隐藏自己的行踪。而对于管理员而言，管理员需要确保该目录资料的存在，从而追踪系统的登录状态。以下介绍几个重要的日志档。</p>
+<h3 id="15-1-1-var-log-auth-log"><a href="#15-1-1-var-log-auth-log" class="headerlink" title="15.1.1 /var/log/auth.log"></a>15.1.1 /var/log/auth.log</h3><p>此档案十分重要，它告诉我们<strong>有什么人连进我们的系统、有谁取到了root的权限、有人试图连接我们的系统但是失败等记录</strong>。如果遇到黑客入侵，我们需要第一检查这个文件。</p>
 <p>需要注意的是该文件的权限如下：</p>
 <figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tap">-rw-r-----	1 syslog adm  <span class="hljs-number"> 9690 </span>9月<span class="hljs-number"> 3 </span>15：34 auth.log		<br></code></pre></td></tr></table></figure>
-
 <p>因此需要取得<strong>adm群组或者管理员root的权限</strong>才能观看此档案。</p>
-<h3 id="15-1-2-x2F-var-x2F-log-x2F-dmseg"><a href="#15-1-2-x2F-var-x2F-log-x2F-dmseg" class="headerlink" title="15.1.2 &#x2F;var&#x2F;log&#x2F;dmseg"></a>15.1.2 &#x2F;var&#x2F;log&#x2F;dmseg</h3><p>相关指令dmseg，遇到再说。</p>
-<h3 id="15-1-3-x2F-var-x2F-log-x2F-lastlog"><a href="#15-1-3-x2F-var-x2F-log-x2F-lastlog" class="headerlink" title="15.1.3 &#x2F;var&#x2F;log&#x2F;lastlog"></a>15.1.3 &#x2F;var&#x2F;log&#x2F;lastlog</h3><p>当我们执行<code>last</code>指令时，可以看见系统登入的使用者以及何时登入、从哪里登录的信息。</p>
-<h3 id="15-1-4-x2F-var-x2F-log-x2F-Xorg-0-log"><a href="#15-1-4-x2F-var-x2F-log-x2F-Xorg-0-log" class="headerlink" title="15.1.4 &#x2F;var&#x2F;log&#x2F;Xorg.0.log"></a>15.1.4 &#x2F;var&#x2F;log&#x2F;Xorg.0.log</h3><p>系统启动X Window之后留下来的日志信息。</p>
-<h2 id="15-2-x2F-var-x2F-cache"><a href="#15-2-x2F-var-x2F-cache" class="headerlink" title="15.2 &#x2F;var&#x2F;cache"></a>15.2 &#x2F;var&#x2F;cache</h2><p>存于暂存资料。其中有一个重要的子目录<code>/var/cache/apt</code>用来存储我们下载的<code>.deb</code>档。当我们使用指令<code>apt-get install 套件名</code>下载下来的<code>.deb</code>文档就存储在这个目录下。</p>
+<h3 id="15-1-2-var-log-dmseg"><a href="#15-1-2-var-log-dmseg" class="headerlink" title="15.1.2 /var/log/dmseg"></a>15.1.2 /var/log/dmseg</h3><p>相关指令dmseg，遇到再说。</p>
+<h3 id="15-1-3-var-log-lastlog"><a href="#15-1-3-var-log-lastlog" class="headerlink" title="15.1.3 /var/log/lastlog"></a>15.1.3 /var/log/lastlog</h3><p>当我们执行<code>last</code>指令时，可以看见系统登入的使用者以及何时登入、从哪里登录的信息。</p>
+<h3 id="15-1-4-var-log-Xorg-0-log"><a href="#15-1-4-var-log-Xorg-0-log" class="headerlink" title="15.1.4 /var/log/Xorg.0.log"></a>15.1.4 /var/log/Xorg.0.log</h3><p>系统启动X Window之后留下来的日志信息。</p>
+<h2 id="15-2-var-cache"><a href="#15-2-var-cache" class="headerlink" title="15.2 /var/cache"></a>15.2 /var/cache</h2><p>存于暂存资料。其中有一个重要的子目录<code>/var/cache/apt</code>用来存储我们下载的<code>.deb</code>档。当我们使用指令<code>apt-get install 套件名</code>下载下来的<code>.deb</code>文档就存储在这个目录下。</p>
 <p>使用指令<code>apt-get clean</code>可以对下载完已经安装的套件的.deb文件进行清理（类似于删除安装包）。</p>
 <p>使用指令<code>df -h</code>或者<code>du -sh *</code>可以查看空间使用量</p>
-<h2 id="15-3-x2F-var-x2F-mail"><a href="#15-3-x2F-var-x2F-mail" class="headerlink" title="15.3 &#x2F;var&#x2F;mail"></a>15.3 &#x2F;var&#x2F;mail</h2><p>存放每个使用者的电子邮件，一旦使用者收信之后，其邮件内容就会从此目录中删除。</p>
-<h2 id="15-4-x2F-var-x2F-lock"><a href="#15-4-x2F-var-x2F-lock" class="headerlink" title="15.4 &#x2F;var&#x2F;lock"></a>15.4 &#x2F;var&#x2F;lock</h2><p>有些程序执行的过程中，要求只能只有一个该程序执行，不得有分身程序同时执行的规定。</p>
-<p>最常见的例子是<code>aptitude</code>，该程序一次只能有一个在执行中的进程，否则系统的软件安装&#x2F;移除就会乱掉。因此在<code>aptitude</code>程序执行的时候，会在<code>/var/lock</code>中新建一个<code>aptitude</code>档案，告诉系统当前<code>aptitude</code>正在执行，此时如果还有人要再执行<code>aptitude</code>的话，系统就会发生错误。</p>
-<h2 id="15-5-x2F-var-x2F-spool"><a href="#15-5-x2F-var-x2F-spool" class="headerlink" title="15.5 &#x2F;var&#x2F;spool"></a>15.5 &#x2F;var&#x2F;spool</h2><p>这是一个暂存的空间，这边存储的时候程序还没执行完的资料。</p>
+<h2 id="15-3-var-mail"><a href="#15-3-var-mail" class="headerlink" title="15.3 /var/mail"></a>15.3 /var/mail</h2><p>存放每个使用者的电子邮件，一旦使用者收信之后，其邮件内容就会从此目录中删除。</p>
+<h2 id="15-4-var-lock"><a href="#15-4-var-lock" class="headerlink" title="15.4 /var/lock"></a>15.4 /var/lock</h2><p>有些程序执行的过程中，要求只能只有一个该程序执行，不得有分身程序同时执行的规定。</p>
+<p>最常见的例子是<code>aptitude</code>，该程序一次只能有一个在执行中的进程，否则系统的软件安装/移除就会乱掉。因此在<code>aptitude</code>程序执行的时候，会在<code>/var/lock</code>中新建一个<code>aptitude</code>档案，告诉系统当前<code>aptitude</code>正在执行，此时如果还有人要再执行<code>aptitude</code>的话，系统就会发生错误。</p>
+<h2 id="15-5-var-spool"><a href="#15-5-var-spool" class="headerlink" title="15.5 /var/spool"></a>15.5 /var/spool</h2><p>这是一个暂存的空间，这边存储的时候程序还没执行完的资料。</p>
 <p>比如，在打印机进行打印的时候，未打印的文件就会暂存在该目录下，一一排队等待打印。</p>
 <p>当然这个目录并不是一个程序专享的。其他程序的一些未执行的资料文件也会存放在该目录下。</p>
 <h1 id="16-关于Linux文件备份问题"><a href="#16-关于Linux文件备份问题" class="headerlink" title="16 关于Linux文件备份问题"></a>16 关于Linux文件备份问题</h1><p>当我需要重装Linux系统的时候，我需要备份哪些文件？</p>
 <p>文件备份原则是：</p>
 <center><b>不能拷贝到的资料一定要备份</b></center>
 
-<p>&#x2F;bin：不需要</p>
-<p>&#x2F;dev：不需要</p>
-<p>&#x2F;etc：需要。系统设定档。对于稳定的服务器而言，需要进行的实时的更新修补漏洞，而对于更新系统之后的相关设定（希望还原原本系统的功能 ），需要依照原本的系统设定进行设定。这些设定是个人的，网络上找不到的。</p>
-<p>&#x2F;home：需要。个人文档，包括个人作业、论文等重要的资料，一定要备份。而且需要多备份！！！</p>
-<p>&#x2F;opt：需要。虽然对于很多软件，网络上均可以下载得到，但是很多软件安装十分的麻烦，于是最好还是备份。</p>
-<p>&#x2F;root：根据情况进行备份。一般而言，我们将资料存在自己的家目录（&#x2F;home）中，而不存储在&#x2F;root下。</p>
-<p>&#x2F;sbin：不需要。</p>
-<p>&#x2F;var：需要备份。&#x2F;var中存储了十分重要的日志信息（log），当系统由于黑客入侵或者其他外界因素遭到破坏，此时主机处于<strong>不安全状态</strong>，此时需要日志信息进行辅助修补主机的漏洞，确保新装的或者更新维护之后的主机是安全可靠的。</p>
+<p>/bin：不需要</p>
+<p>/dev：不需要</p>
+<p>/etc：需要。系统设定档。对于稳定的服务器而言，需要进行的实时的更新修补漏洞，而对于更新系统之后的相关设定（希望还原原本系统的功能 ），需要依照原本的系统设定进行设定。这些设定是个人的，网络上找不到的。</p>
+<p>/home：需要。个人文档，包括个人作业、论文等重要的资料，一定要备份。而且需要多备份！！！</p>
+<p>/opt：需要。虽然对于很多软件，网络上均可以下载得到，但是很多软件安装十分的麻烦，于是最好还是备份。</p>
+<p>/root：根据情况进行备份。一般而言，我们将资料存在自己的家目录（/home）中，而不存储在/root下。</p>
+<p>/sbin：不需要。</p>
+<p>/var：需要备份。/var中存储了十分重要的日志信息（log），当系统由于黑客入侵或者其他外界因素遭到破坏，此时主机处于<strong>不安全状态</strong>，此时需要日志信息进行辅助修补主机的漏洞，确保新装的或者更新维护之后的主机是安全可靠的。</p>
 <p><strong>重点三个文件</strong>：</p>
 <ol>
 <li>你的资料</li>

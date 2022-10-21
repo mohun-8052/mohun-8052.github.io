@@ -223,7 +223,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.1k 字
+      4.8k 字
     </span>
   
 
@@ -232,7 +232,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      43 分钟
+      41 分钟
     </span>
   
 
@@ -268,11 +268,10 @@
 <p>本文主要讲述时序电路中的基础元件：锁存器、寄存器（触发器）、施密特触发器。</p>
 <hr>
 <span id="more"></span>
-
-
-
-<h1 id="第七章-时序逻辑电路设计"><a href="#第七章-时序逻辑电路设计" class="headerlink" title="第七章 时序逻辑电路设计"></a>第七章 时序逻辑电路设计</h1><h1 id="1-时序电路的相关概念"><a href="#1-时序电路的相关概念" class="headerlink" title="1. 时序电路的相关概念"></a>1. 时序电路的相关概念</h1><h2 id="1-时序电路"><a href="#1-时序电路" class="headerlink" title="1. 时序电路"></a>1. 时序电路</h2><p>框架：<br>$$<br>\text{时序电路}&#x3D;\text{组合电路}+\text{存储电路}<br>$$<br>结果：取决于<strong>当前的输入和过去的状态</strong>。</p>
-<h2 id="2-静态-x2F-动态存储器"><a href="#2-静态-x2F-动态存储器" class="headerlink" title="2. 静态&#x2F;动态存储器"></a>2. 静态&#x2F;动态存储器</h2><ol>
+<h1 id="第七章-时序逻辑电路设计"><a href="#第七章-时序逻辑电路设计" class="headerlink" title="第七章 时序逻辑电路设计"></a>第七章 时序逻辑电路设计</h1><h1 id="1-时序电路的相关概念"><a href="#1-时序电路的相关概念" class="headerlink" title="1. 时序电路的相关概念"></a>1. 时序电路的相关概念</h1><h2 id="1-时序电路"><a href="#1-时序电路" class="headerlink" title="1. 时序电路"></a>1. 时序电路</h2><p>框架：</p>
+<script type="math/tex; mode=display">
+\text{时序电路}=\text{组合电路}+\text{存储电路}</script><p>结果：取决于<strong>当前的输入和过去的状态</strong>。</p>
+<h2 id="2-静态-动态存储器"><a href="#2-静态-动态存储器" class="headerlink" title="2. 静态/动态存储器"></a>2. 静态/动态存储器</h2><ol>
 <li><p>静态存储器：</p>
 <ul>
 <li><p>上电就保持存储状态</p>
@@ -284,6 +283,8 @@
 </li>
 </ul>
 </li>
+</ol>
+<ol>
 <li><p>动态存储器：</p>
 <ul>
 <li><p>简单而言，即<strong>传输门+反相器</strong>，如下图。</p>
@@ -308,119 +309,135 @@
 <p>输入数据$D$在时钟有效沿到来之后，必须保持稳定的时间</p>
 </li>
 <li><p>传播时间$t_{Propagate\ Time}$​</p>
-<p>当<strong>满足建立时间和保持时间</strong>时，数据从输入端复制到输出端所需要的时间（$50%$对$50%$）。</p>
-<p>即<font color=red><b>时钟</b>$CLK50%$<b>对输出端数据</b>$50%$​​</font>，如下图。</p>
-<p><strong>为何这么说？</strong></p>
-<p>因为只有当满足了建立时间，此时时钟$CLK$​​​​才可以翻转，即<strong>此时的数据才是输入端输入的数据</strong></p>
-<p>所以<strong>输入端数据的$50%$即为时钟的$50%$</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010165303845.png" srcset="/img/loading.gif" lazyload alt="D触发器的建立时间、保持时间、传播时间"></p>
+<p>当<strong>满足建立时间和保持时间</strong>时，数据从输入端复制到输出端所需要的时间（$50\%$对$50\%$）。</p>
+<p>即<font color=red><b>时钟</b>$CLK50\%$<b>对输出端数据</b>$50\%$​​</font>，如下图。</p>
 </li>
 </ol>
+<p>   <strong>为何这么说？</strong></p>
+<p>   因为只有当满足了建立时间，此时时钟$CLK$​​​​才可以翻转，即<strong>此时的数据才是输入端输入的数据</strong></p>
+<p>   所以<strong>输入端数据的$50\%$即为时钟的$50\%$</strong></p>
+<p>   <img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010165303845.png" srcset="/img/loading.gif" lazyload alt="D触发器的建立时间、保持时间、传播时间"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010211358792.png" srcset="/img/loading.gif" lazyload alt="仿真实例中的传播时间（CLK50%对输出端数据50%）"></p>
 <p><strong>小贴士：</strong></p>
 <ol>
 <li><p>建立时间$t_{su}$和保持时间$t_{hold}$​​​都是<strong>​针对时钟的有效沿</strong>而言的。</p>
-<p>即，输入数据$50%$的时间对时钟有效沿$50%$的时间；对于传播延时$t_{c-q}$，输入信号$50%$（即时钟信号$50%$）时间对输出信号$50%$时间</p>
+<p>即，输入数据$50\%$的时间对时钟有效沿$50\%$的时间；对于传播延时$t_{c-q}$，输入信号$50\%$（即时钟信号$50\%$）时间对输出信号$50\%$时间</p>
 </li>
 </ol>
 <h2 id="4-时序约束条件"><a href="#4-时序约束条件" class="headerlink" title="4. 时序约束条件"></a>4. 时序约束条件</h2><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010170652507.png" srcset="/img/loading.gif" lazyload alt="image-20211010170652507"></p>
 <ol>
 <li><p>时钟周期$T$​</p>
 <p>只有当<strong>当前所有计算全部完成，系统闲置</strong>，下个时钟（即下一个操作）才可到来。</p>
-<p>其公式如下，<br>$$<br>T&gt;t_{c-q}+t_{p-logic}+t_{su}<br>$$<br>其中，</p>
+<p>其公式如下，</p>
+<script type="math/tex; mode=display">
+T>t_{c-q}+t_{p-logic}+t_{su}</script><p>其中，</p>
 <p>$t_{c-q}$：时序电路的传播时间（图中为D触发器的传播时间）</p>
 <p>$t_{p-logic}$​：组合逻辑的<strong>最坏</strong>传播延时（图中为$ALGO$​的传播延时）</p>
 <p>$t_{su}$​：时序电路的建立时间（图中为D触发器的建立时间）</p>
 </li>
+</ol>
+<ol>
 <li><p>保持时间$t_{hold}$</p>
 <p>保证数据可以在有效沿保持足够长的时间，不会因新进入的数据而过早改变</p>
-<p>其公式如下，<br>$$<br>t_{cdreg}+t_{cdlogic}&gt;t_{hold}<br>$$<br>其中，</p>
+<p>其公式如下，</p>
+<script type="math/tex; mode=display">
+t_{cdreg}+t_{cdlogic}>t_{hold}</script><p>其中，</p>
 <p>$t_{hold}$：保持时间</p>
-<p>$t_{cd}$​：最小传播延时&#x2F;时间，又称为污染延时，于是有</p>
+<p>$t_{cd}$​：最小传播延时/时间，又称为污染延时，于是有</p>
 <p>$t_{cdreg}$：寄存器的最小传播时间</p>
 <p>$t_{cdlogic}$​：组合逻辑的最小传播延时</p>
 </li>
 </ol>
-<h2 id="5-锁存器和寄存器"><a href="#5-锁存器和寄存器" class="headerlink" title="5. 锁存器和寄存器"></a>5. 锁存器和寄存器</h2><table>
+<h2 id="5-锁存器和寄存器"><a href="#5-锁存器和寄存器" class="headerlink" title="5. 锁存器和寄存器"></a>5. 锁存器和寄存器</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">项目</th>
-<th align="center">锁存器</th>
-<th align="center">寄存器</th>
+<th style="text-align:center">项目</th>
+<th style="text-align:center">锁存器</th>
+<th style="text-align:center">寄存器</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">敏感类型</td>
-<td align="center">电平敏感<br>（有效电平内随意反转）</td>
-<td align="center">边沿敏感</td>
+<tbody>
+<tr>
+<td style="text-align:center">敏感类型</td>
+<td style="text-align:center">电平敏感<br>（有效电平内随意反转）</td>
+<td style="text-align:center">边沿敏感</td>
 </tr>
 <tr>
-<td align="center">波形</td>
-<td align="center"><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010191547153.png" srcset="/img/loading.gif" lazyload alt="" style="zoom: 50%;" /></td>
-<td align="center"><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010192010991.png" srcset="/img/loading.gif" lazyload alt="image-20211010194213324" style="zoom:50%;" /></td>
+<td style="text-align:center">波形</td>
+<td style="text-align:center"><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010191547153.png" srcset="/img/loading.gif" lazyload alt="" style="zoom: 50%;" /></td>
+<td style="text-align:center"><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010192010991.png" srcset="/img/loading.gif" lazyload alt="image-20211010194213324" style="zoom:50%;" /></td>
 </tr>
 <tr>
-<td align="center">波形解释</td>
-<td align="center">图为正锁存器。<br>当$CLK&#x3D;1$，$Q&#x3D;D$（<strong>透明模式</strong>）<br>当$CLK&#x3D;0$，$Q&#x3D;Q$（<strong>保持模式</strong>）</td>
-<td align="center">图为上升沿有效D触发器<br>上升沿到来，$Q&#x3D;D$<br>其他时候，$Q&#x3D;Q$</td>
+<td style="text-align:center">波形解释</td>
+<td style="text-align:center">图为正锁存器。<br>当$CLK=1$，$Q=D$（<strong>透明模式</strong>）<br>当$CLK=0$，$Q=Q$（<strong>保持模式</strong>）</td>
+<td style="text-align:center">图为上升沿有效D触发器<br>上升沿到来，$Q=D$<br>其他时候，$Q=Q$</td>
 </tr>
 <tr>
-<td align="center">需要注意的边沿<br>（该边沿到来需要考虑建立时间保持时间）</td>
-<td align="center">正锁存器：时钟下降沿<br>负锁存器：时钟上升沿</td>
-<td align="center">有效沿</td>
+<td style="text-align:center">需要注意的边沿<br>（该边沿到来需要考虑建立时间保持时间）</td>
+<td style="text-align:center">正锁存器：时钟下降沿<br>负锁存器：时钟上升沿</td>
+<td style="text-align:center">有效沿</td>
 </tr>
 <tr>
-<td align="center">备注</td>
-<td align="center"></td>
-<td align="center">由锁存器作为基本单元构成</td>
+<td style="text-align:center">备注</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">由锁存器作为基本单元构成</td>
 </tr>
-</tbody></table>
-<h1 id="2-静态锁存器-x2F-寄存器"><a href="#2-静态锁存器-x2F-寄存器" class="headerlink" title="2. 静态锁存器&#x2F;寄存器"></a>2. 静态锁存器&#x2F;寄存器</h1><h2 id="1-静态锁存器"><a href="#1-静态锁存器" class="headerlink" title="1. 静态锁存器"></a>1. 静态锁存器</h2><h3 id="1-电路图与分析"><a href="#1-电路图与分析" class="headerlink" title="1. 电路图与分析"></a>1. 电路图与分析</h3><p>以正锁存器为例，电路图如下，</p>
+</tbody>
+</table>
+</div>
+<h1 id="2-静态锁存器-寄存器"><a href="#2-静态锁存器-寄存器" class="headerlink" title="2. 静态锁存器/寄存器"></a>2. 静态锁存器/寄存器</h1><h2 id="1-静态锁存器"><a href="#1-静态锁存器" class="headerlink" title="1. 静态锁存器"></a>1. 静态锁存器</h2><h3 id="1-电路图与分析"><a href="#1-电路图与分析" class="headerlink" title="1. 电路图与分析"></a>1. 电路图与分析</h3><p>以正锁存器为例，电路图如下，</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010194213324.png" srcset="/img/loading.gif" lazyload alt="正锁存器电路图"></p>
-<p><strong>电路结构</strong>：以传输门为主体的<em>二选一选择器</em>；$CLK&#x3D;1$，$Q&#x3D;D$；而$CLK&#x3D;0$，通过<strong>正反馈</strong>，输出端和输入端连接。</p>
+<p><strong>电路结构</strong>：以传输门为主体的<em>二选一选择器</em>；$CLK=1$，$Q=D$；而$CLK=0$，通过<strong>正反馈</strong>，输出端和输入端连接。</p>
 <h3 id="2-时序参数分析"><a href="#2-时序参数分析" class="headerlink" title="2. 时序参数分析"></a>2. 时序参数分析</h3><p>1.5中提到，分析正锁存器时，需要注意的时钟边沿是时钟的下降沿。</p>
-<p>这是因为，在$CLK&#x3D;1$时，$Q&#x3D;D$​，属于<strong>透明传输</strong>，即输出随输入随时变化。其信号传播路径：D-①-②-③-Q</p>
-<p>当$CLK&#x3D;1→0$时，锁存器将要对输入数据进行所存。因此需要考虑<strong>建立时间$t_{su}$​</strong>。</p>
-<p>如果要让数据可以正确锁存下来，需要④⑤之间的节点的电平等于③⑤之间节点的电平，即<br>$$<br>D_{④⑤}&#x3D;D_{③⑤}<br>$$<br>即，如果要所锁存数据A，则当数据A到达④⑤节点之前，$D&#x3D;A$​​不可以改变，其信号传播路径：D-①-②-③-④-$Node_{④⑤}$​​</p>
+<p>这是因为，在$CLK=1$时，$Q=D$​，属于<strong>透明传输</strong>，即输出随输入随时变化。其信号传播路径：D-①-②-③-Q</p>
+<p>当$CLK=1→0$时，锁存器将要对输入数据进行所存。因此需要考虑<strong>建立时间$t_{su}$​</strong>。</p>
+<p>如果要让数据可以正确锁存下来，需要④⑤之间的节点的电平等于③⑤之间节点的电平，即</p>
+<script type="math/tex; mode=display">
+D_{④⑤}=D_{③⑤}</script><p>即，如果要所锁存数据A，则当数据A到达④⑤节点之前，$D=A$​​不可以改变，其信号传播路径：D-①-②-③-④-$Node_{④⑤}$​​</p>
 <h2 id="2-静态寄存器——边沿触发寄存器"><a href="#2-静态寄存器——边沿触发寄存器" class="headerlink" title="2. 静态寄存器——边沿触发寄存器"></a>2. 静态寄存器——边沿触发寄存器</h2><p>边沿触发寄存器，又称主-从寄存器，由主、从两个锁存器组成</p>
 <h3 id="1-电路图与分析-1"><a href="#1-电路图与分析-1" class="headerlink" title="1. 电路图与分析"></a>1. 电路图与分析</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160355289.png" srcset="/img/loading.gif" lazyload alt="框架图"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png" srcset="/img/loading.gif" lazyload alt="传输门电路原理图"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026160542210.png" srcset="/img/loading.gif" lazyload alt="时序图"></p>
 <p>主-从寄存器，由主锁存器——负锁存器、从锁存器——正锁存器组成。</p>
 <ul>
-<li>$CLK&#x3D;0→1$​​​​​时，主锁存器锁存数据。</li>
-<li>在①阶段，即$CLK&#x3D;1$，主锁存器输出$Q_M$保持不变，从锁存器随主锁存器输出值$Q_M$而变化（就是不变、<strong>从锁存器透明传输</strong>）；</li>
-<li>$CLK&#x3D;1→0$时，从锁存器锁存数据。​</li>
-<li>在②阶段，即$CLK&#x3D;0$​​，​​​从锁存器持续输出锁存的数据。</li>
+<li>$CLK=0→1$​​​​​时，主锁存器锁存数据。</li>
+<li>在①阶段，即$CLK=1$，主锁存器输出$Q_M$保持不变，从锁存器随主锁存器输出值$Q_M$而变化（就是不变、<strong>从锁存器透明传输</strong>）；</li>
+<li>$CLK=1→0$时，从锁存器锁存数据。​</li>
+<li>在②阶段，即$CLK=0$​​，​​​从锁存器持续输出锁存的数据。</li>
 </ul>
 <center><b>过程总结</b></center>
 
 
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">$CLK$</th>
-<th align="center">$0→1$（上升沿）</th>
-<th align="center">阶段①：$CLK&#x3D;1$</th>
-<th align="center">$1→0$（下降沿）</th>
-<th align="center">阶段②：$CLK&#x3D;0$</th>
+<th style="text-align:center">$CLK$</th>
+<th style="text-align:center">$0→1$（上升沿）</th>
+<th style="text-align:center">阶段①：$CLK=1$</th>
+<th style="text-align:center">$1→0$（下降沿）</th>
+<th style="text-align:center">阶段②：$CLK=0$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">主锁存器</td>
-<td align="center">锁存数据</td>
-<td align="center">保持锁存</td>
-<td align="center"></td>
-<td align="center">透明传输</td>
+<tbody>
+<tr>
+<td style="text-align:center">主锁存器</td>
+<td style="text-align:center">锁存数据</td>
+<td style="text-align:center">保持锁存</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">透明传输</td>
 </tr>
 <tr>
-<td align="center">从锁存器</td>
-<td align="center"></td>
-<td align="center">透明传输</td>
-<td align="center">锁存数据</td>
-<td align="center">保持锁存</td>
+<td style="text-align:center">从锁存器</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">透明传输</td>
+<td style="text-align:center">锁存数据</td>
+<td style="text-align:center">保持锁存</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>于是，有以下结论：</p>
 <ul>
 <li>寄存器的有效沿同从锁存器的敏感电平相关。<strong>对于从锁存器，如是正锁存器，则为上升沿；反之，下降沿。</strong></li>
@@ -428,40 +445,46 @@
 </ul>
 <h3 id="2-时序参数分析-1"><a href="#2-时序参数分析-1" class="headerlink" title="2. 时序参数分析"></a>2. 时序参数分析</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211010200528010.png" srcset="/img/loading.gif" lazyload alt="传输门电路原理图"></p>
 <p><strong>设定</strong>反相器延时为$t_{pd-inv}$，传输门延时为$t_{pd-tx}$​，时钟INV无延时。</p>
-<p><strong>明确</strong>：**<font color=red>有效时钟沿为上升沿，一切参数均以有效时钟沿作为基准</font>**</p>
-<h4 id="1-建立时间-t-su"><a href="#1-建立时间-t-su" class="headerlink" title="1. 建立时间$t_{su}$"></a>1. 建立时间$t_{su}$</h4><p>类似于2.1.2 静态锁存器时序参数的分析，可知需要满足$D_{I2-T2}&#x3D;D_{T2-I3}$</p>
+<p><strong>明确</strong>：<strong><font color=red>有效时钟沿为上升沿，一切参数均以有效时钟沿作为基准</font></strong></p>
+<h4 id="1-建立时间-t-su"><a href="#1-建立时间-t-su" class="headerlink" title="1. 建立时间$t_{su}$"></a>1. 建立时间$t_{su}$</h4><p>类似于2.1.2 静态锁存器时序参数的分析，可知需要满足$D_{I2-T2}=D_{T2-I3}$</p>
 <p>即信号传输到$Node_{I2-T2}$之前，输入数据$D$​不能变化，数据路径为$D-I_1-T_1-I_3-I_2$​（3个INV，1个TX）</p>
-<p>即有<br>$$<br>t_{su}&#x3D;3t_{pd-inv}+t_{pd-tx}<br>$$</p>
-<h4 id="2-保持时间-t-hold"><a href="#2-保持时间-t-hold" class="headerlink" title="2. 保持时间$t_{hold}$"></a>2. 保持时间$t_{hold}$</h4><p>当$CLK&#x3D;1$时，$T_1$就会关断，因此需要保证$CLK&#x3D;1$之前，数据$D$已经通过传输门$T_1$</p>
+<p>即有</p>
+<script type="math/tex; mode=display">
+t_{su}=3t_{pd-inv}+t_{pd-tx}</script><h4 id="2-保持时间-t-hold"><a href="#2-保持时间-t-hold" class="headerlink" title="2. 保持时间$t_{hold}$"></a>2. 保持时间$t_{hold}$</h4><p>当$CLK=1$时，$T_1$就会关断，因此需要保证$CLK=1$之前，数据$D$已经通过传输门$T_1$</p>
 <p>因为数据$D$​进入$T_1$之前需要经过$I_1$；而时钟作用于$T_1$之前，同样需要经过$INV$​​；故而二者作用域于$T_1$时间差不多。</p>
-<p>于是只需要留一定的余量给$t_{hold}$即可，即有<br>$$<br>t_{hold}≈0<br>$$</p>
-<h4 id="3-传播时间-t-c-q"><a href="#3-传播时间-t-c-q" class="headerlink" title="3. 传播时间$t_{c-q}$"></a>3. 传播时间$t_{c-q}$</h4><p>前面1.3提到，传播时间是<strong>满足建立时间和保持时间</strong>之后，数据从输入端到输出端的时间（$50%$​对$50%$​）或者时钟$CLK50%$对输出端数据$50%$的时间（原因见1.3）。</p>
+<p>于是只需要留一定的余量给$t_{hold}$即可，即有</p>
+<script type="math/tex; mode=display">
+t_{hold}≈0</script><h4 id="3-传播时间-t-c-q"><a href="#3-传播时间-t-c-q" class="headerlink" title="3. 传播时间$t_{c-q}$"></a>3. 传播时间$t_{c-q}$</h4><p>前面1.3提到，传播时间是<strong>满足建立时间和保持时间</strong>之后，数据从输入端到输出端的时间（$50\%$​对$50\%$​）或者时钟$CLK50\%$对输出端数据$50\%$的时间（原因见1.3）。</p>
 <p>满足了<strong>建立时间</strong>，此时输入数据$D$​​​已经到达了$Node_{I4-T3}$​​​（<strong>因为为了满足建立时间，数据到达$Node_{I3-I4}$​​之后，还要经历$I_2$​​。经历$I_2$​​的延时同数据经历$I_4$​​的延时相互抵消了</strong>）</p>
 <p>此时传播时间即为$Node_{I4-T3}$​到达$Q$​的时间</p>
-<p>而又因为此时$CLK&#x3D;1$，从锁存器处于透明模式，故数据路径为$Node_{I4-T3}-T_3-I_6-Q$​（1个INV、1个TX）</p>
-<p>即有，<br>$$<br>t_{c-q}&#x3D;t_{pd-inv}+t_{pd-tx}<br>$$</p>
-<h3 id="3-寄存器复位——同步-x2F-异步"><a href="#3-寄存器复位——同步-x2F-异步" class="headerlink" title="3. 寄存器复位——同步&#x2F;异步"></a>3. 寄存器复位——同步&#x2F;异步</h3><h4 id="1-同步复位（RST-x3D-0时复位）"><a href="#1-同步复位（RST-x3D-0时复位）" class="headerlink" title="1. 同步复位（RST&#x3D;0时复位）"></a>1. 同步复位（RST&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220502144029350.png" srcset="/img/loading.gif" lazyload alt="同步复位"></p>
-<h4 id="2-异步复位（clr-x3D-0时复位）"><a href="#2-异步复位（clr-x3D-0时复位）" class="headerlink" title="2. 异步复位（clr&#x3D;0时复位）"></a>2. 异步复位（clr&#x3D;0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220501232734462.png" srcset="/img/loading.gif" lazyload alt="异步复位"></p>
-<h1 id="3-动态锁存器-x2F-寄存器"><a href="#3-动态锁存器-x2F-寄存器" class="headerlink" title="3. 动态锁存器&#x2F;寄存器"></a>3. 动态锁存器&#x2F;寄存器</h1><h2 id="1-动态锁存器"><a href="#1-动态锁存器" class="headerlink" title="1. 动态锁存器"></a>1. 动态锁存器</h2><p>电路图：</p>
+<p>而又因为此时$CLK=1$，从锁存器处于透明模式，故数据路径为$Node_{I4-T3}-T_3-I_6-Q$​（1个INV、1个TX）</p>
+<p>即有，</p>
+<script type="math/tex; mode=display">
+t_{c-q}=t_{pd-inv}+t_{pd-tx}</script><h3 id="3-寄存器复位——同步-异步"><a href="#3-寄存器复位——同步-异步" class="headerlink" title="3. 寄存器复位——同步/异步"></a>3. 寄存器复位——同步/异步</h3><h4 id="1-同步复位（RST-0时复位）"><a href="#1-同步复位（RST-0时复位）" class="headerlink" title="1. 同步复位（RST=0时复位）"></a>1. 同步复位（RST=0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220502144029350.png" srcset="/img/loading.gif" lazyload alt="同步复位"></p>
+<h4 id="2-异步复位（clr-0时复位）"><a href="#2-异步复位（clr-0时复位）" class="headerlink" title="2. 异步复位（clr=0时复位）"></a>2. 异步复位（clr=0时复位）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220501232734462.png" srcset="/img/loading.gif" lazyload alt="异步复位"></p>
+<h1 id="3-动态锁存器-寄存器"><a href="#3-动态锁存器-寄存器" class="headerlink" title="3. 动态锁存器/寄存器"></a>3. 动态锁存器/寄存器</h1><h2 id="1-动态锁存器"><a href="#1-动态锁存器" class="headerlink" title="1. 动态锁存器"></a>1. 动态锁存器</h2><p>电路图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011162522262.png" srcset="/img/loading.gif" lazyload alt="动态锁存器电路图"></p>
 <p>使用<strong>电容电荷</strong>表示一个逻辑信号。</p>
 <p>但是值的保存时间有限（$ms$）（漏电时间），需要周期性进行刷新。</p>
 <h2 id="2-动态寄存器"><a href="#2-动态寄存器" class="headerlink" title="2. 动态寄存器"></a>2. 动态寄存器</h2><h3 id="1-电路图"><a href="#1-电路图" class="headerlink" title="1. 电路图"></a>1. 电路图</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011163927553.png" srcset="/img/loading.gif" lazyload alt="动态锁存器电路图"></p>
-<h3 id="2-工作原理："><a href="#2-工作原理：" class="headerlink" title="2. 工作原理："></a>2. 工作原理：</h3><p>$CLK&#x3D;0$，$T_1$导通，$A$对$D$进行采样，并通过$C_1$充放电进行保存。</p>
-<p>$CLK&#x3D;1$​，$T_1$​关端，$T_2$​导通，从$A$​看$T_1$​和反相器$I_1$都呈现高阻态，$C_1$无法充放电，于是$C_1$​电荷值锁存。根据$D_A$​值，反相器$I_1$​进行对数据进行反向（即$I_1$​输出端上拉或者下拉），实现$C_2$​的充电或者放电。</p>
-<p>$CLK&#x3D;0$​​，$T_1$​​导通，$A$​​对$D$​​进行采样，并通过$C_1$​​​充放电进行保存。此时$T_2$​​截止，从$B$​​看$T_2$​​​和反相器$I_2$​都呈现高阻态，于是$C_2$​​只能保持电荷。</p>
+<h3 id="2-工作原理："><a href="#2-工作原理：" class="headerlink" title="2. 工作原理："></a>2. 工作原理：</h3><p>$CLK=0$，$T_1$导通，$A$对$D$进行采样，并通过$C_1$充放电进行保存。</p>
+<p>$CLK=1$​，$T_1$​关端，$T_2$​导通，从$A$​看$T_1$​和反相器$I_1$都呈现高阻态，$C_1$无法充放电，于是$C_1$​电荷值锁存。根据$D_A$​值，反相器$I_1$​进行对数据进行反向（即$I_1$​输出端上拉或者下拉），实现$C_2$​的充电或者放电。</p>
+<p>$CLK=0$​​，$T_1$​​导通，$A$​​对$D$​​进行采样，并通过$C_1$​​​充放电进行保存。此时$T_2$​​截止，从$B$​​看$T_2$​​​和反相器$I_2$​都呈现高阻态，于是$C_2$​​只能保持电荷。</p>
 <p>….</p>
 <h3 id="3-时间参数分析："><a href="#3-时间参数分析：" class="headerlink" title="3. 时间参数分析："></a>3. 时间参数分析：</h3><ul>
 <li><p>建立时间$t_{su}$​：</p>
-<p>输入信号$D$传输到$A$，并且$A$节点完成$C_1$​充电或放电时间（电容容值小，电荷量小，充电放电时间极短，可忽略不计）。<br>$$<br>t_{su}&#x3D;1t_{pd-tx}<br>$$</p>
-</li>
+<p>输入信号$D$传输到$A$，并且$A$节点完成$C_1$​充电或放电时间（电容容值小，电荷量小，充电放电时间极短，可忽略不计）。</p>
+<script type="math/tex; mode=display">
+t_{su}=1t_{pd-tx}</script></li>
 <li><p>保持时间$t_{hold}$：</p>
-<p>传输门在时钟边沿关断，近似0。<br>$$<br>t_{hold}≈0<br>$$</p>
-</li>
+<p>传输门在时钟边沿关断，近似0。</p>
+<script type="math/tex; mode=display">
+t_{hold}≈0</script></li>
 <li><p>传播延时$t_{c-q}$：</p>
 <p>满足建立时间和保持时间之后，此时信号已经到$A$​节点。传播延时（时间）即为信号从$A$到$Q$的时间。</p>
-<p>即2个反相器+1个传输门+$C_2$​​充放电时间。<br>$$<br>t_{c-q}&#x3D;2t_{pd-inv}+t_{pd-tx}<br>$$</p>
-</li>
+<p>即2个反相器+1个传输门+$C_2$​​充放电时间。</p>
+<script type="math/tex; mode=display">
+t_{c-q}=2t_{pd-inv}+t_{pd-tx}</script></li>
 </ul>
 <h3 id="4-存在的问题"><a href="#4-存在的问题" class="headerlink" title="4. 存在的问题"></a>4. 存在的问题</h3><ol>
 <li><p>通过$C_1$、$C_2$​​​电容进行存储，抗干扰能力差（<strong>噪声容限低</strong>）。</p>
@@ -470,14 +493,14 @@
 </li>
 <li><p><strong>时钟重叠问题</strong>：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011170957239.png" srcset="/img/loading.gif" lazyload alt="时间重叠问题"></p>
-<p>$\overline{CLK}$是通过$CLK$反相而来，于是需要用到<strong>反相器</strong>，于是$CLK$和$\overline{CLK}$之间存在延时。</p>
-<p>于是在时钟跳转的时候，二者会有一段时间电平相当，这样子工作是有问题的，即存在<strong>竞争行为</strong>。</p>
-<p><strong>解决办法</strong>：</p>
+</li>
+</ol>
+<p>   $\overline{CLK}$是通过$CLK$反相而来，于是需要用到<strong>反相器</strong>，于是$CLK$和$\overline{CLK}$之间存在延时。</p>
+<p>   于是在时钟跳转的时候，二者会有一段时间电平相当，这样子工作是有问题的，即存在<strong>竞争行为</strong>。</p>
+<p>   <strong>解决办法</strong>：</p>
 <ol>
 <li>（0，0）重叠：<strong>PMOS均导通</strong>，需保证在$D$输入和节点$B$（数据不会影响到$C_2$电平）之间有足够的延时，以使主级采样的新数据不会传送到从级。</li>
 <li>（1，1）重叠：<strong>NMOS均导通</strong>，需要强加一个<strong>保持（维持）时间</strong>，使得$D$保持一段时间不变，即可。</li>
-</ol>
-</li>
 </ol>
 <h3 id="5-优化——提高噪声容限"><a href="#5-优化——提高噪声容限" class="headerlink" title="5. 优化——提高噪声容限"></a>5. 优化——提高噪声容限</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211011172513451.png" srcset="/img/loading.gif" lazyload alt="image-20211011170957239"></p>
 <p>增加<strong>弱反馈——反相器$I_1$​</strong>，形成“伪静态电路”​​，可提高抗噪能力。</p>
@@ -495,17 +518,17 @@
 <p>波形：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194307002.png" srcset="/img/loading.gif" lazyload alt="施密特触发器波形图"></p>
 <p><strong>用处</strong>：将含有<strong>噪声或者缓慢变化</strong>的信号转变为一个干净的数字输出信号，即<strong>“0”或者“1”</strong>。</p>
-<p>​			或者说：<font color=red><b>抑制信号的振荡，使输入信号迅速翻转。</b></font></p>
+<p>​            或者说：<font color=red><b>抑制信号的振荡，使输入信号迅速翻转。</b></font></p>
 <p><strong>原理</strong>：一般采用互补CMOS进行搭建，改变PMOS管和NMOS管的$W$之比，实现$V_M$的改变。</p>
-<p>​			（增大PMOS管的尺寸，$V_M$​​后移）</p>
+<p>​            （增大PMOS管的尺寸，$V_M$​​后移）</p>
 <p><strong>施密特触发器互补CMOS电路图</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019194622279.png" srcset="/img/loading.gif" lazyload alt="施密特触发器互补CMOS电路图"></p>
 <p>分析：</p>
 <ol>
-<li><p>$V_{in}&#x3D;0→1$​​​，故最初，$V_{out}&#x3D;0$​​，此时下拉网络$M_1$​​导通、上拉网络$M_2$​​、$M_4$​​​导通，即$\frac{W_P}{W_N}$增大，$V_M$​​​<strong>往后移</strong>。</p>
+<li><p>$V_{in}=0→1$​​​，故最初，$V_{out}=0$​​，此时下拉网络$M_1$​​导通、上拉网络$M_2$​​、$M_4$​​​导通，即$\frac{W_P}{W_N}$增大，$V_M$​​​<strong>往后移</strong>。</p>
 <p>当$V_{in}&gt;V_M$之后，则$M_4$截至而$M_3$导通，此时$\frac{W_P}{W_N}$减小，于是$X$信号可以加速$1→0$的翻转，从而可以得到<strong>高速翻转</strong>的$V_{out}(0→1)$</p>
 </li>
-<li><p>$V_{in}&#x3D;1→0$​，故最初，$V_{out}&#x3D;1$​，此时下拉网络$M_1$​、$M_3$​导通、上拉网络$M_2$​导通，即$\frac{W_P}{W_N}$​减小，$V_M$​<strong>往前移</strong>。</p>
+<li><p>$V_{in}=1→0$​，故最初，$V_{out}=1$​，此时下拉网络$M_1$​、$M_3$​导通、上拉网络$M_2$​导通，即$\frac{W_P}{W_N}$​减小，$V_M$​<strong>往前移</strong>。</p>
 <p>当$V_{in}&lt;V_M$之后，则$M_3$截至而$M_4$导通，此时$\frac{W_P}{W_N}$增大，于是$X$信号可以加速$0→1$的翻转，从而可以得到<strong>高速翻转</strong>的$V_{out}(1→0)$</p>
 </li>
 </ol>

@@ -214,7 +214,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8k 字
+      7.5k 字
     </span>
   
 
@@ -223,7 +223,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      67 分钟
+      63 分钟
     </span>
   
 
@@ -259,17 +259,12 @@
 <p>本文主要讲述如何根据延时和功耗设计反相器（INV）。</p>
 <hr>
 <span id="more"></span>
-
-
-
-
-
 <h1 id="第五章-反相器"><a href="#第五章-反相器" class="headerlink" title="第五章 反相器"></a>第五章 反相器</h1><h2 id="1-设计指标"><a href="#1-设计指标" class="headerlink" title="1. 设计指标"></a>1. 设计指标</h2><p>明确：<strong>反相器是数字电路设计的核心</strong>。</p>
 <ol>
 <li><p>成本：</p>
-<p>主要是指标就是<strong>面积</strong>。在数集中，最小尺寸是$L&#x3D;2\lambda$，于是【$W$】就成了设计的要点。</p>
+<p>主要是指标就是<strong>面积</strong>。在数集中，最小尺寸是$L=2\lambda$，于是【$W$】就成了设计的要点。</p>
 <p>$Eg：$</p>
-<p>以反相器（$INV$​）为例，不同的$W$​的INV应用于不同的场合。如：“CLKINV”和”INVD”。CLKINV应用于时间通路上，对延迟要求较高，希望可以做到$t_p≈t_{pLH}≈t_{pHL}$，且尽可能小（或者达到指标）。而对于INVD，并不要求$t_p≈t_{pLH}≈t_{pHL}$，仅需要$t_p&#x3D;\frac{t_{pLH}+t_{pHL}}{2}$的数值满足要求即可，即如果$t_{pLH}、t_{pHL}$​其中一个较小，一个较大，但是平均值满足要求也是可以的。</p>
+<p>以反相器（$INV$​）为例，不同的$W$​的INV应用于不同的场合。如：“CLKINV”和”INVD”。CLKINV应用于时间通路上，对延迟要求较高，希望可以做到$t_p≈t_{pLH}≈t_{pHL}$，且尽可能小（或者达到指标）。而对于INVD，并不要求$t_p≈t_{pLH}≈t_{pHL}$，仅需要$t_p=\frac{t_{pLH}+t_{pHL}}{2}$的数值满足要求即可，即如果$t_{pLH}、t_{pHL}$​其中一个较小，一个较大，但是平均值满足要求也是可以的。</p>
 </li>
 <li><p>完整性和稳定性：</p>
 <p>主要考虑<strong>静态特性</strong></p>
@@ -293,10 +288,10 @@
 <h3 id="2-INV的特性综述"><a href="#2-INV的特性综述" class="headerlink" title="2. INV的特性综述"></a>2. INV的特性综述</h3><h4 id="1-动态特性："><a href="#1-动态特性：" class="headerlink" title="1. 动态特性："></a>1. 动态特性：</h4><p>主要由$C_L$决定，$C_L$表示<strong>晶体管的漏极电容、连线电容、扇出门的输入电容</strong></p>
 <h4 id="2-静态特性："><a href="#2-静态特性：" class="headerlink" title="2. 静态特性："></a>2. 静态特性：</h4><ol>
 <li><p>噪声容量大：</p>
-<p>电压摆幅&#x3D;电源电压。因为是CMOS互补结构。</p>
+<p>电压摆幅=电源电压。因为是CMOS互补结构。</p>
 </li>
 <li><p><strong>无比逻辑</strong>:</p>
-<p>逻辑电平和器件的尺寸无关。故而可以采用最小的尺寸：$L&#x3D;2\lambda$</p>
+<p>逻辑电平和器件的尺寸无关。故而可以采用最小的尺寸：$L=2\lambda$</p>
 </li>
 <li><p><strong>稳态下有限的（低）的输出电阻</strong></p>
 <p>稳态输出时，输出和VDD或GND之间用于存在一条<strong>有限电阻的通路</strong>，使他对<strong>噪声不敏感</strong></p>
@@ -317,32 +312,36 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908192819600.png" srcset="/img/loading.gif" lazyload alt="image-20210908192819600"></p>
 <center>静态CMOS反向中PMOS和NMOS的负载曲线，<b><font color=red>原点表示直流工作点</font></b></center>
 
-<ol start="2">
+<ol>
 <li><p><strong>过渡区的电平范围很窄</strong>，如下图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210909212850990.png" srcset="/img/loading.gif" lazyload alt="image-20210908193244083"></p>
 </li>
 </ol>
 <h2 id="3-INV的静态特性"><a href="#3-INV的静态特性" class="headerlink" title="3. INV的静态特性"></a>3. INV的静态特性</h2><h3 id="1-开关阈值（-V-M-）"><a href="#1-开关阈值（-V-M-）" class="headerlink" title="1. 开关阈值（$V_M$）"></a>1. 开关阈值（$V_M$）</h3><ul>
-<li><p>定义：**$V_M$被定义为$V_{in}&#x3D;V_{out}$的点。<strong>对于INV而言，此时</strong>$V_{GS}&#x3D;V_{DS}$**</p>
+<li><p>定义：<strong>$V_M$被定义为$V_{in}=V_{out}$的点。</strong>对于INV而言，此时<strong>$V_{GS}=V_{DS}$</strong></p>
 </li>
 <li><p>结论：</p>
 </li>
 </ul>
-<p>$$<br>V_M≈\frac{rV_{DD}}{1+r}<br>$$</p>
-<p>其中，<strong>r为PMOS与NMOS相对驱动强度之比</strong></p>
+<script type="math/tex; mode=display">
+V_M≈\frac{rV_{DD}}{1+r}</script><p>其中，<strong>r为PMOS与NMOS相对驱动强度之比</strong></p>
 <ul>
 <li>希望值：</li>
 </ul>
-<p>$$<br>V_M&#x3D;\frac{V_{DD}}{2}<br>$$</p>
-<p>因为这样可以使得<strong>低电平噪声门限和高电平噪声门限的值相近</strong>，于是得到【<strong>r应该尽可能等于1</strong>】</p>
-<p>经过推导，可以把$V_M&#x3D;\frac{V_{DD}}{2}$映射为<strong>PMOS管和NMOS管的W之比</strong>，如下：<br>$$<br>\frac{(W&#x2F;L)_p}{(W&#x2F;L)_n}&#x3D;\frac{W_p}{W_n}(数集中L相等)&#x3D;…<br>$$<br>以下结论：</p>
+<script type="math/tex; mode=display">
+V_M=\frac{V_{DD}}{2}</script><p>因为这样可以使得<strong>低电平噪声门限和高电平噪声门限的值相近</strong>，于是得到【<strong>r应该尽可能等于1</strong>】</p>
+<p>经过推导，可以把$V_M=\frac{V_{DD}}{2}$映射为<strong>PMOS管和NMOS管的W之比</strong>，如下：</p>
+<script type="math/tex; mode=display">
+\frac{(W/L)_p}{(W/L)_n}=\frac{W_p}{W_n}(数集中L相等)=...</script><p>以下结论：</p>
 <ol>
 <li>$V_M$对于器件$\frac{W_p}{W_n}$尺寸的变化不敏感。意味着工艺上的偏差，并不会使$V_M$偏差希望值很多。</li>
 <li>增加$W_p$会使得$V_M$移向$V_{DD}$，增加$W_n$会使得$V_M$移向$GND$</li>
 </ol>
 <h3 id="2-噪声门限"><a href="#2-噪声门限" class="headerlink" title="2. 噪声门限"></a>2. 噪声门限</h3><p>注：数集中，噪声容限都很大，接近$\frac{V_{DD}}{2}$，故而过度讨论他并没有太大的用处，此处仅作了解。</p>
-<p>定义$V_{IH}$和$V_{IL}$分别是VTC中<strong>增益&#x3D;-1</strong>的点。</p>
-<p>定义<strong>噪声门限</strong>为：<br>$$<br>NM_H&#x3D;V_{DD}-V_{IH} \ NM_L&#x3D;V_{IL}-0<br>$$<br>实际实验中，$NM_H$和$NM_L$并不完全相等，但是基本都可以到达1V左右，属于很大的噪声门限了。</p>
+<p>定义$V_{IH}$和$V_{IL}$分别是VTC中<strong>增益=-1</strong>的点。</p>
+<p>定义<strong>噪声门限</strong>为：</p>
+<script type="math/tex; mode=display">
+NM_H=V_{DD}-V_{IH} \\ NM_L=V_{IL}-0</script><p>实际实验中，$NM_H$和$NM_L$并不完全相等，但是基本都可以到达1V左右，属于很大的噪声门限了。</p>
 <h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><ol>
 <li><p>器件参数变化对器件稳定性的影响：</p>
 <p><strong>仿真测试：PVT（process voltage temperature）</strong>：常常在设计中，采用三者组合仿真。</p>
@@ -350,25 +349,23 @@
 <li>工艺角（process corner）分析，常见的五种：</li>
 </ul>
 <figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog">fast <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> fast <span class="hljs-keyword">pmos</span> （ff）<br>slow <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> slow <span class="hljs-keyword">pmos</span> （ss）<br>slow <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> fast <span class="hljs-keyword">pmos</span> （sf）<br>fast <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> slow <span class="hljs-keyword">pmos</span> （fs）<br>typical <span class="hljs-keyword">nmos</span> <span class="hljs-keyword">and</span> typical <span class="hljs-keyword">pmos</span> （tt）<br></code></pre></td></tr></table></figure>
-
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">t,代表typical (平均值)<br>s,代表slow（电流小）<br>f,代表fast（电流大）<br></code></pre></td></tr></table></figure>
-
 <ul>
 <li>电压（voltage）分析，常见的三种：</li>
 </ul>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">v</span>+<span class="hljs-number">10</span>% ,v ,v-<span class="hljs-number">10</span>%<br></code></pre></td></tr></table></figure>
-
 <ul>
 <li>温度（temperature）分析，常见的四种</li>
 </ul>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs diff"><span class="hljs-deletion">-40℃, 0℃,25℃, 125℃</span><br></code></pre></td></tr></table></figure>
-
 <p>在进行不同的组合，仿真最好最坏的等多种情况。</p>
 </li>
+</ol>
+<ol>
 <li><p>器件电源电压降低对器件稳定的影响</p>
 <p><strong>不可使用过低的电压</strong></p>
 <ol>
-<li>低电压可以减小功耗（$P&#x3D;C·V_{DD}^2$），但是会增加门延时。</li>
+<li>低电压可以减小功耗（$P=C·V_{DD}^2$），但是会增加门延时。</li>
 <li>电源电压减低使得dc特性（开关阈值）对器件的尺寸越来越敏感。</li>
 <li>$V_{DD}$减小，信号摆幅减小，有利于减小系统内部噪声。</li>
 </ol>
@@ -387,15 +384,15 @@
 <li><p>输入信号的上升下降时间对传播延时的影响</p>
 </li>
 </ol>
-<h3 id="2-计算-C-L"><a href="#2-计算-C-L" class="headerlink" title="2. 计算$C_L$"></a>2. 计算$C_L$</h3><p>$$<br>C_L&#x3D;晶体管的漏极电容+连线电容+扇出门的输入电容<br>$$</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908193244083.png" srcset="/img/loading.gif" lazyload alt="image-20210908193244083"></p>
+<h3 id="2-计算-C-L"><a href="#2-计算-C-L" class="headerlink" title="2. 计算$C_L$"></a>2. 计算$C_L$</h3><script type="math/tex; mode=display">
+C_L=晶体管的漏极电容+连线电容+扇出门的输入电容</script><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210908193244083.png" srcset="/img/loading.gif" lazyload alt="image-20210908193244083"></p>
 <ul>
 <li><p>晶体管的漏极电容：$C_{db2}+C_{db1}+C_{gd12}$</p>
 <p>即：两个管子的漏极电容，即管子1和2的结构电容总和$C_{gd12}$，管子1的结电容$C_{db1}$，管子2的结电容$C_{db2}$</p>
 <p>其中，</p>
 <ol>
-<li>结构（覆盖）电容是固定的（有时候会使用<strong>密勒效应</strong>）：$C_{gd12}&#x3D;2C_{gdo}&#x3D;2C_oW$</li>
-<li>PN结电容：$C_{db}&#x3D;C_{diff}&#x3D;C_{bottom}+C_{sw}$；或者使用线性化的值：$C_{eq}&#x3D;K_{eq}C_{j0}$（推导见P55）</li>
+<li>结构（覆盖）电容是固定的（有时候会使用<strong>密勒效应</strong>）：$C_{gd12}=2C_{gdo}=2C_oW$</li>
+<li>PN结电容：$C_{db}=C_{diff}=C_{bottom}+C_{sw}$；或者使用线性化的值：$C_{eq}=K_{eq}C_{j0}$（推导见P55）</li>
 </ol>
 </li>
 <li><p>连线电容</p>
@@ -403,17 +400,24 @@
 </li>
 <li><p>扇出的栅电容：$C_{g3}+C_{g4}$</p>
 <p>即：两个扇出CMOS管的栅极电容。</p>
-<p>而栅极电容具体看前文，1个CMOS管的栅极电容&#x3D;2个结构电容+3个沟道电容</p>
+<p>而栅极电容具体看前文，1个CMOS管的栅极电容=2个结构电容+3个沟道电容</p>
 </li>
 </ul>
-<h3 id="3-等效电阻-R-eq"><a href="#3-等效电阻-R-eq" class="headerlink" title="3. 等效电阻$R_{eq}$"></a>3. 等效电阻$R_{eq}$</h3><p>$$<br>R_{eq}&#x3D;\frac{1}{V_{DD}&#x2F;2}\int_{V_{DD}&#x2F;2}^{V_{DD}}\frac{V}{I_{DSAT(1+\lambda V)}}dV≈\frac{3}{4}\frac{V_{DD}}{I_{DSAT}}(1+\frac{7}{9}\lambda V_{DD})<br>$$</p>
-<p>具体推导见书本P70</p>
-<h3 id="4-【※重要】计算延时-t-p-——计算、优化"><a href="#4-【※重要】计算延时-t-p-——计算、优化" class="headerlink" title="4. 【※重要】计算延时$t_p$——计算、优化"></a>4. 【※重要】计算延时$t_p$——计算、优化</h3><p>$$<br>t_{pHL}&#x3D;0.69R_{on}C_L\<br>$$</p>
-<p>使用等效$R_{eq}$，则<br>$$<br>t_{pHL}&#x3D;0.69R_{eqn}C_L\<br>同理，t_{pLH}&#x3D;0.69R_{eqp}C_L<br>$$<br>上面两个值不一定相等！！</p>
-<p>故，<br>$$<br>t_p&#x3D;\frac{0.69(R_{eqn}+R_{eqp})C_L}{2}<br>$$<br>又经过一波推导，得出<br>$$<br>t_{pHL&#x2F;LH}\varpropto \frac{C_L}{(W&#x2F;L)V_{DSAT}}<br>$$<br>故【<strong>减小延时的方法</strong>】</p>
+<h3 id="3-等效电阻-R-eq"><a href="#3-等效电阻-R-eq" class="headerlink" title="3. 等效电阻$R_{eq}$"></a>3. 等效电阻$R_{eq}$</h3><script type="math/tex; mode=display">
+R_{eq}=\frac{1}{V_{DD}/2}\int_{V_{DD}/2}^{V_{DD}}\frac{V}{I_{DSAT(1+\lambda V)}}dV≈\frac{3}{4}\frac{V_{DD}}{I_{DSAT}}(1+\frac{7}{9}\lambda V_{DD})</script><p>具体推导见书本P70</p>
+<h3 id="4-【※重要】计算延时-t-p-——计算、优化"><a href="#4-【※重要】计算延时-t-p-——计算、优化" class="headerlink" title="4. 【※重要】计算延时$t_p$——计算、优化"></a>4. 【※重要】计算延时$t_p$——计算、优化</h3><script type="math/tex; mode=display">
+t_{pHL}=0.69R_{on}C_L\\</script><p>使用等效$R_{eq}$，则</p>
+<script type="math/tex; mode=display">
+t_{pHL}=0.69R_{eqn}C_L\\
+同理，t_{pLH}=0.69R_{eqp}C_L</script><p>上面两个值不一定相等！！</p>
+<p>故，</p>
+<script type="math/tex; mode=display">
+t_p=\frac{0.69(R_{eqn}+R_{eqp})C_L}{2}</script><p>又经过一波推导，得出</p>
+<script type="math/tex; mode=display">
+t_{pHL/LH}\varpropto \frac{C_L}{(W/L)V_{DSAT}}</script><p>故【<strong>减小延时的方法</strong>】</p>
 <ol>
 <li>减小$C_L$</li>
-<li>增加$(W&#x2F;L)$。增加$W$也会使得$C_L$增加，故有一个增加的范围。</li>
+<li>增加$(W/L)$。增加$W$也会使得$C_L$增加，故有一个增加的范围。</li>
 <li>提高$V_{DD}$。会增加能耗，而且增加到一定程度之后优化的效果有限。</li>
 </ol>
 <h2 id="5-根据【延时】设计电路"><a href="#5-根据【延时】设计电路" class="headerlink" title="5. 根据【延时】设计电路"></a>5. 根据【延时】设计电路</h2><h3 id="1-对称反相器"><a href="#1-对称反相器" class="headerlink" title="1. 对称反相器"></a>1. 对称反相器</h3><ol>
@@ -422,54 +426,79 @@
 <ol>
 <li>充电电流和放电电流相等</li>
 <li>上升延时时间$t_{pLH}$​和下降延时$t_{pHL}$​大致相等</li>
-<li>晶体管电阻$R_P&#x3D;R_N$</li>
+<li>晶体管电阻$R_P=R_N$</li>
 </ol>
-<p>在.25工艺中，要得到<strong>对称反相器</strong>，一般要求：<br>$$<br>\frac{W_P}{W_N}&#x3D;2\sim 3.5<br>$$</p>
-<p>可以认为，设计一个对称反相器，其<strong>目标</strong>是使得上下两个MOS管匹配。然而，这并不意味着反相器有着最短的延时（<strong>性能不是最佳</strong>）</p>
-<p>※ 其<strong>原因</strong>是较宽的$W_P$​可以改善反相器的$t_{pLH}$​（$W_P\uparrow ,R_P \downarrow ,t_{pLH} \downarrow $​），但是会导致$t_{pHL}$​增大（$W_P\uparrow ,C_L \uparrow ,t_{pHL} \uparrow $​​​​）。如下图所示：</p>
-</li>
+<p>在.25工艺中，要得到<strong>对称反相器</strong>，一般要求：</p>
+<script type="math/tex; mode=display">
+\frac{W_P}{W_N}=2\sim 3.5</script></li>
 </ol>
+<p>   可以认为，设计一个对称反相器，其<strong>目标</strong>是使得上下两个MOS管匹配。然而，这并不意味着反相器有着最短的延时（<strong>性能不是最佳</strong>）</p>
+<p>   ※ 其<strong>原因</strong>是较宽的$W_P$​可以改善反相器的$t_{pLH}$​（$W_P\uparrow ,R_P \downarrow ,t_{pLH} \downarrow $​），但是会导致$t_{pHL}$​增大（$W_P\uparrow ,C_L \uparrow ,t_{pHL} \uparrow $​​​​）。如下图所示：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210912145608966.png" srcset="/img/loading.gif" lazyload alt="image-20210912145608966"></p>
    <center>CMOS反相器延时和<b>宽长比之比β</b>的关系</center>
 
-<p>   根据上图，我们可以知道，在$\beta&#x3D;2.4$​时，得到对称反相器；而当$\beta&#x3D;1.9$​​​时​，得到传播延时的最小值——性能最佳的INV。</p>
-<ol start="2">
+<p>   根据上图，我们可以知道，在$\beta=2.4$​时，得到对称反相器；而当$\beta=1.9$​​​时​，得到传播延时的最小值——性能最佳的INV。</p>
+<ol>
 <li><p><strong>如何根据【性能—负载】选择对称反相器的尺寸</strong></p>
-<p>计算延时的时候，我们利用公式：<br>$$<br>t_{p}&#x3D;0.69R_{eq}C_L\<br>$$<br>其中，令<br>$$<br>C_L&#x3D;C_{int}+C_{ext}<br>$$<br>$C_{int}$​表示反相器的本征输出电容，常常为（驱动管）$N$​管和$P$​管的漏电容。</p>
+<p>计算延时的时候，我们利用公式：</p>
+<script type="math/tex; mode=display">
+t_{p}=0.69R_{eq}C_L\\</script><p>其中，令</p>
+<script type="math/tex; mode=display">
+C_L=C_{int}+C_{ext}</script><p>$C_{int}$​表示反相器的本征输出电容，常常为（驱动管）$N$​管和$P$​管的漏电容。</p>
 <p>$C_{ext}$：表示下一级反相器的输入电容，常常为（负载管）栅电容（忽略导线电容）。</p>
-<p><strong>引入参数$S$​​：尺寸系数</strong>，即该反相器的晶体管和最小晶体管尺寸之比。</p>
-<p><strong>如果P管和N管的$W$同时增大$S$倍，</strong></p>
+</li>
+</ol>
+<p>   <strong>引入参数$S$​​：尺寸系数</strong>，即该反相器的晶体管和最小晶体管尺寸之比。</p>
+<p>   <strong>如果P管和N管的$W$同时增大$S$倍，</strong></p>
 <ul>
 <li><strong>本征电容$C_{int}$​增大$S$​​倍</strong></li>
-<li><strong>等效电阻$R_{eq}$减小$S$倍</strong></li>
-</ul>
-<p>经过推导（看书），有以下结论：<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{C_{ext}}{C_{int}})&#x3D;t_{p0}·(1+ \frac{C_{ext}}{SC_{int-ref}})<br>$$<br>$C_{int-ref}$​​​​​​：<strong>最小尺寸的INV的本征输出电容</strong>，因为对于有一个反向器而言，本身的漏极电容是确定的，故称为本征输出电容。</p>
+<li><p><strong>等效电阻$R_{eq}$减小$S$倍</strong></p>
+<p>经过推导（看书），有以下结论：</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(1+ \frac{C_{ext}}{C_{int}})=t_{p0}·(1+ \frac{C_{ext}}{SC_{int-ref}})</script><p>$C_{int-ref}$​​​​​​：<strong>最小尺寸的INV的本征输出电容</strong>，因为对于有一个反向器而言，本身的漏极电容是确定的，故称为本征输出电容。</p>
 <p>$C_{int}$​​​​：（驱动管）$N$​​​​管和$P$​​​​管的漏电容。</p>
 <p>$C_{ext}$​​​​​​​：（负载管）栅电容（忽略导线电容）。​</p>
-<p>$t_{p0}$​：本征延时——尺寸变化$S$​倍，则$R \rightarrow R&#x2F;S,C \rightarrow SC$​，如果令$t_{p0}&#x3D;0.69RC$​，则 $t_p&#x3D;0.69·R&#x2F;S·SC&#x3D;t_{p0}$​</p>
+<p>$t_{p0}$​：本征延时——尺寸变化$S$​倍，则$R \rightarrow R/S,C \rightarrow SC$​，如果令$t_{p0}=0.69RC$​，则 $t_p=0.69·R/S·SC=t_{p0}$​</p>
+</li>
+</ul>
 <ul>
 <li><p>反相器的本征延时和门尺寸无关，但是外界负载电容会导致影响反相器的传播延时</p>
 </li>
-<li><p>适当增加$S$可以减弱外界负载的影响。$S\rightarrow \infty ，\frac{C_{ext}}{SC_{int-ref}} \rightarrow 0$，此时$t_p&#x3D;t_{p0}$</p>
-<p><font color=red><b>一般而言，S&#x3D;5已经可以改善外界负载带来的延时，S&gt;10之后收益很小</b></font>。$S$增加过多之后，会导致<strong>面积</strong>变得非常大，然而电容减低不多。</p>
+<li><p>适当增加$S$可以减弱外界负载的影响。$S\rightarrow \infty ，\frac{C_{ext}}{SC_{int-ref}} \rightarrow 0$，此时$t_p=t_{p0}$</p>
+<p><font color=red><b>一般而言，S=5已经可以改善外界负载带来的延时，S&gt;10之后收益很小</b></font>。$S$增加过多之后，会导致<strong>面积</strong>变得非常大，然而电容减低不多。</p>
 <p>$eg$​：</p>
-<p>假如某反相器的本征输出电容值$C_{int-ref}&#x3D;1$​，外部电容$C_{ext}&#x3D;100$​，而因为本征延时$t_{p0}$​与尺寸无关。故而如果把尺寸增加5倍，即$S&#x3D;5$​，就可以把延时从$101t_{p0}$​降为$21t_{p0}$​，相当于延时降低了5倍。​​​</p>
+<p>假如某反相器的本征输出电容值$C_{int-ref}=1$​，外部电容$C_{ext}=100$​，而因为本征延时$t_{p0}$​与尺寸无关。故而如果把尺寸增加5倍，即$S=5$​，就可以把延时从$101t_{p0}$​降为$21t_{p0}$​，相当于延时降低了5倍。​​​</p>
 </li>
 </ul>
-</li>
-</ol>
 <h3 id="2-性能最好（-t-p-min-）的反相器"><a href="#2-性能最好（-t-p-min-）的反相器" class="headerlink" title="2. 性能最好（$t_{p-min}$）的反相器"></a>2. 性能最好（$t_{p-min}$）的反相器</h3><p>上面可以知道对称反相器并不是最佳的反向器，如何调整<strong>宽长比之比$\beta$​</strong>得到最佳性能的反相器？</p>
-<p>最佳性能INV的宽长比之比满足<br>$$<br>\beta &#x3D; \sqrt{r}<br>$$<br>其中，$r$为P管和N管<strong>尺寸相同</strong>时的电阻比，即<br>$$<br>r&#x3D;\frac{R_{eqp}}{R_{eqn}}<br>$$<br><font color=red><b>最佳性能的INV需要以对称性和噪声容量为代价</b></font>。如上图，$\beta &#x3D; 1.9$​​时，得到性能最佳的INV。</p>
+<p>最佳性能INV的宽长比之比满足</p>
+<script type="math/tex; mode=display">
+\beta = \sqrt{r}</script><p>其中，$r$为P管和N管<strong>尺寸相同</strong>时的电阻比，即</p>
+<script type="math/tex; mode=display">
+r=\frac{R_{eqp}}{R_{eqn}}</script><p><font color=red><b>最佳性能的INV需要以对称性和噪声容量为代价</b></font>。如上图，$\beta = 1.9$​​时，得到性能最佳的INV。</p>
 <h3 id="3-反相链的设计"><a href="#3-反相链的设计" class="headerlink" title="3. 反相链的设计"></a>3. 反相链的设计</h3><p>反相链结构图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210915190315032.png" srcset="/img/loading.gif" lazyload alt="image-20210915190315032"></p>
-<p>假设此处的反相链是由<strong>对称反相器</strong>构成的，根据对称反相器的延迟公式：<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{C_{ext}}{C_{int}})<br>$$<br>如果令<br>$$<br>C_{int}&#x3D;\gamma C_g\<br>C_{ext}&#x3D;f C_g\<br>$$<br>这里的$C_g$指的是<strong>驱动管的栅极输入电容</strong>（对比上文的几个电容。$C_{int-ref}$指<strong>最小尺寸驱动管的输出电容</strong>；$C_{int}$指驱动管的输入电容，其大小是$SC_{int-ref}$；$C_{ext}$指驱动管的输入电容和线电容，这边$C_g$<strong>并没有要求是最小尺寸</strong>）；$\gamma $：<strong>比例系数，只与工艺有关</strong>；$f$：<strong>等效扇出，即第$j+1$级管子相对于第$j$级管子的尺寸</strong>。</p>
-<p>于是，可以得到<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{f}{\gamma})<br>$$<br>经过推导，要让<strong>反相链的延时最短</strong>，第$j$​个反相器需要满足<br>$$<br>C_{g,j}&#x3D;\sqrt{C_{g,j-1}·C_{g,j+1}}<br>$$<br>如果要达到这个，需要满足第$j$级的反相器尺寸永远是第$j-1$级反相器尺寸的$f$倍（前文提到，令$C_{ext,j+1}&#x3D;C_{g,j+1}&#x3D;f C_{g,j}$，故而只有满足$C_{g,j}&#x3D;\sqrt{C_{g,j}&#x2F;f·fC_{g,j+1}}$，等式才永远成立。）。</p>
-<p>对于由$N$个反相器组成的反相链，可以得到<br>$$<br>f&#x3D;\sqrt[N]{C_{ext}&#x2F;C_{g1}}&#x3D;\sqrt[N]{F}<br>$$<br>其中，$F$为<strong>总等效的扇出</strong>，$F&#x3D;C_{ext,N}&#x2F;C_{g,1}&#x3D;C_{g,N+1}&#x2F;C_{g,1}&#x3D;C_L&#x2F;C_{g,1}$（忽略导线电容）</p>
+<p>假设此处的反相链是由<strong>对称反相器</strong>构成的，根据对称反相器的延迟公式：</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(1+ \frac{C_{ext}}{C_{int}})</script><p>如果令</p>
+<script type="math/tex; mode=display">
+C_{int}=\gamma C_g\\
+C_{ext}=f C_g\\</script><p>这里的$C_g$指的是<strong>驱动管的栅极输入电容</strong>（对比上文的几个电容。$C_{int-ref}$指<strong>最小尺寸驱动管的输出电容</strong>；$C_{int}$指驱动管的输入电容，其大小是$SC_{int-ref}$；$C_{ext}$指驱动管的输入电容和线电容，这边$C_g$<strong>并没有要求是最小尺寸</strong>）；$\gamma $：<strong>比例系数，只与工艺有关</strong>；$f$：<strong>等效扇出，即第$j+1$级管子相对于第$j$级管子的尺寸</strong>。</p>
+<p>于是，可以得到</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(1+ \frac{f}{\gamma})</script><p>经过推导，要让<strong>反相链的延时最短</strong>，第$j$​个反相器需要满足</p>
+<script type="math/tex; mode=display">
+C_{g,j}=\sqrt{C_{g,j-1}·C_{g,j+1}}</script><p>如果要达到这个，需要满足第$j$级的反相器尺寸永远是第$j-1$级反相器尺寸的$f$倍（前文提到，令$C_{ext,j+1}=C_{g,j+1}=f C_{g,j}$，故而只有满足$C_{g,j}=\sqrt{C_{g,j}/f·fC_{g,j+1}}$，等式才永远成立。）。</p>
+<p>对于由$N$个反相器组成的反相链，可以得到</p>
+<script type="math/tex; mode=display">
+f=\sqrt[N]{C_{ext}/C_{g1}}=\sqrt[N]{F}</script><p>其中，$F$为<strong>总等效的扇出</strong>，$F=C_{ext,N}/C_{g,1}=C_{g,N+1}/C_{g,1}=C_L/C_{g,1}$（忽略导线电容）</p>
 <p>【<strong>总结</strong>】：反相器链中，<strong>每个反相器尺寸都是前一个反相器的$f$倍</strong>，则说明每一级反相器拥有相同的等效扇出（等效扇出就是$f$），并且有相同的延时，链总延时最小。</p>
 <p>【<strong>公式总结</strong>】：</p>
-<p>链的总延时：<br>$$<br>t_p&#x3D;Nt_{p0}·(1+ \frac{\sqrt[N]{F}}{\gamma})<br>$$<br>其中，$N$为反相链链数；$F$为总等效的扇出，$\gamma$为比例系数，只与工艺有关。</p>
+<p>链的总延时：</p>
+<script type="math/tex; mode=display">
+t_p=Nt_{p0}·(1+ \frac{\sqrt[N]{F}}{\gamma})</script><p>其中，$N$为反相链链数；$F$为总等效的扇出，$\gamma$为比例系数，只与工艺有关。</p>
 <p>$N$大，则反相器本身延迟$t_{p0}$占主导，需要降低本征延时$t_{p0}$</p>
-<p>$N$小，则反相器的扇出占主导，应该适当降低每一级反相器的等效扇出$f$——经过推导，一般$f&#x3D;3\sim4$</p>
+<p>$N$小，则反相器的扇出占主导，应该适当降低每一级反相器的等效扇出$f$——经过推导，一般$f=3\sim4$</p>
 <h2 id="6-功耗"><a href="#6-功耗" class="headerlink" title="6. 功耗"></a>6. 功耗</h2><h3 id="1-功耗组成"><a href="#1-功耗组成" class="headerlink" title="1. 功耗组成"></a>1. 功耗组成</h3><ol>
 <li><p><strong>动态功耗</strong>：</p>
 <p>来源于电容充放电</p>
@@ -501,15 +530,22 @@
 </ul>
 </li>
 </ol>
-<h4 id="2-公式"><a href="#2-公式" class="headerlink" title="2. 公式"></a>2. 公式</h4><p>定义：每一次<strong>开关周期</strong>（由低到高，再由高到低）所需要的固定能量，即<strong>动态功耗</strong>。为<br>$$<br>E_{dyn}&#x3D;C_LV_{DD}^2<br>$$</p>
-<p>于是，定义<strong>每秒</strong>的<strong>平均动态功耗</strong>大小为<br>$$<br>P_{dyn}&#x3D;C_LV_{DD}^2f_{0 \rightarrow 1}<br>$$<br>其中，$f_{0 \rightarrow 1}$​为这个门电路每秒通断的次数，称为<strong>开关活动率</strong>​</p>
+<h4 id="2-公式"><a href="#2-公式" class="headerlink" title="2. 公式"></a>2. 公式</h4><p>定义：每一次<strong>开关周期</strong>（由低到高，再由高到低）所需要的固定能量，即<strong>动态功耗</strong>。为</p>
+<script type="math/tex; mode=display">
+E_{dyn}=C_LV_{DD}^2</script><p>于是，定义<strong>每秒</strong>的<strong>平均动态功耗</strong>大小为</p>
+<script type="math/tex; mode=display">
+P_{dyn}=C_LV_{DD}^2f_{0 \rightarrow 1}</script><p>其中，$f_{0 \rightarrow 1}$​为这个门电路每秒通断的次数，称为<strong>开关活动率</strong>​</p>
 <h4 id="3-如何降低功耗"><a href="#3-如何降低功耗" class="headerlink" title="3. 如何降低功耗"></a>3. 如何降低功耗</h4><p>从上文的公式中，可以得到动态功耗同三个参数有关。</p>
 <ul>
 <li>降低电源电压。电源电压太低，电路性能会变差到难以接受。</li>
 <li>减少反转率。逻辑和结构层次实现——<code>en信号+与门</code></li>
 <li>减少电容。考察$C_L$的组成（见上文），主要在于减少器件的<strong>尺寸</strong></li>
 </ul>
-<h3 id="3-短路电流引起功耗"><a href="#3-短路电流引起功耗" class="headerlink" title="3. 短路电流引起功耗"></a>3. 短路电流引起功耗</h3><h4 id="1-公式"><a href="#1-公式" class="headerlink" title="1. 公式"></a>1. 公式</h4><p>每个<strong>开关周期</strong>消耗的能量：<br>$$<br>E_{dp}&#x3D;t_{sc}V_{DD}I_{peak}<br>$$<br><strong>每秒</strong>平均功耗为<br>$$<br>P_{dp}&#x3D;t_{sc}V_{DD}I_{peak}f_{0 \rightarrow 1}<br>$$<br>其中，</p>
+<h3 id="3-短路电流引起功耗"><a href="#3-短路电流引起功耗" class="headerlink" title="3. 短路电流引起功耗"></a>3. 短路电流引起功耗</h3><h4 id="1-公式"><a href="#1-公式" class="headerlink" title="1. 公式"></a>1. 公式</h4><p>每个<strong>开关周期</strong>消耗的能量：</p>
+<script type="math/tex; mode=display">
+E_{dp}=t_{sc}V_{DD}I_{peak}</script><p><strong>每秒</strong>平均功耗为</p>
+<script type="math/tex; mode=display">
+P_{dp}=t_{sc}V_{DD}I_{peak}f_{0 \rightarrow 1}</script><p>其中，</p>
 <p>$t_{sc}$​​​：上下两管同时导通的时间，如下图中的$t_2-t_1$​​和$t_4-t_3$​​​。当输入信号大小满足$V_{TH}&lt;V_{in}&lt;V_{DD}-|V_{TH}|$​​，两个管子同时导通。​</p>
 <p>$I_{peak}$​：短路电流峰值大小，如下图。​</p>
 <p>$f_{0 \rightarrow 1}$：开关活动率。</p>
@@ -530,29 +566,31 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922102917417.png" srcset="/img/loading.gif" lazyload alt="image-20210922102917417"></p>
 <center>负载电容大小与短路电流的关系</center>
 
-<h3 id="4-静态功耗（漏电流）"><a href="#4-静态功耗（漏电流）" class="headerlink" title="4. 静态功耗（漏电流）"></a>4. 静态功耗（漏电流）</h3><h4 id="1-公式-1"><a href="#1-公式-1" class="headerlink" title="1. 公式"></a>1. 公式</h4><p>$$<br>P_{stat}&#x3D;V_{DD}I_{stat}<br>$$</p>
-<p>其中，$I_{stat}$为没有开关活动时，电源两条轨道之间流动的电流。</p>
+<h3 id="4-静态功耗（漏电流）"><a href="#4-静态功耗（漏电流）" class="headerlink" title="4. 静态功耗（漏电流）"></a>4. 静态功耗（漏电流）</h3><h4 id="1-公式-1"><a href="#1-公式-1" class="headerlink" title="1. 公式"></a>1. 公式</h4><script type="math/tex; mode=display">
+P_{stat}=V_{DD}I_{stat}</script><p>其中，$I_{stat}$为没有开关活动时，电源两条轨道之间流动的电流。</p>
 <h4 id="2-组成部分"><a href="#2-组成部分" class="headerlink" title="2. 组成部分"></a>2. 组成部分</h4><p>静态功耗主要组成</p>
 <ul>
 <li>亚阈值漏电功耗</li>
 <li>PN结漏电功耗</li>
 </ul>
-<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h3><p>$$<br>P_{tatol}&#x3D;P_{dyn}+P_{dp}+P_{stat}<br>$$</p>
-<p>其中，</p>
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h3><script type="math/tex; mode=display">
+P_{tatol}=P_{dyn}+P_{dp}+P_{stat}</script><p>其中，</p>
 <p>动态功耗$P_{dyn}$​：主导位置。</p>
 <p>短路电流功耗$P_{dp}$：可以经过把控$C_L$​的大小，把功耗控制在限定的范围之内。</p>
 <p>静态功耗$P_{stat}$：正在变得与来越重要。</p>
 <h2 id="7-利用【功耗】设计电路"><a href="#7-利用【功耗】设计电路" class="headerlink" title="7. 利用【功耗】设计电路"></a>7. 利用【功耗】设计电路</h2><p>这边主要利用【动态功耗】设计【反相器链】</p>
 <p>设计目的：使整个电路<strong>功耗最小</strong>，且满足最低性能要求。</p>
 <p>可变的设计参数：反相器等效扇出系数$f$​（后级反相器与前级反相器尺寸比）、电源电压$V_{DD}$</p>
-<p>设计目标：<strong>延迟不大于参数为$f，V_{DD}&#x3D;V_{ref}$的参考电路</strong></p>
+<p>设计目标：<strong>延迟不大于参数为$f，V_{DD}=V_{ref}$的参考电路</strong></p>
 <p><strong>考虑降低电压</strong></p>
 <p>①随着$f$的增加，电路的性能有所增加，此时可适当降低电源电压$V_{DD}$</p>
-<p>②当$f$满足，<br>$$<br>f&#x3D;\sqrt{F}<br>$$<br>得到最理想的尺寸系数。此时，<strong>电源电压可以降到最低</strong>。</p>
-<p>PS：当$F&#x3D;1$时，$f&#x3D;1$是最好的情况，如下图。</p>
+<p>②当$f$满足，</p>
+<script type="math/tex; mode=display">
+f=\sqrt{F}</script><p>得到最理想的尺寸系数。此时，<strong>电源电压可以降到最低</strong>。</p>
+<p>PS：当$F=1$时，$f=1$是最好的情况，如下图。</p>
 <p>③当$f&gt;\sqrt{F}$​​，器件本征电容增加，性能降低，此时需要提高电源电压。​</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210922111612083.png" srcset="/img/loading.gif" lazyload alt="image-20210922111612083"></p>
-<p><strong>【小贴士】</strong>：延迟最低的等效扇出系数为$f&#x3D;\sqrt[N]{F}$</p>
+<p><strong>【小贴士】</strong>：延迟最低的等效扇出系数为$f=\sqrt[N]{F}$</p>
 
             </div>
             <hr>

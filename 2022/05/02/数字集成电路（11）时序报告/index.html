@@ -225,7 +225,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.9k 字
+      4.5k 字
     </span>
   
 
@@ -234,7 +234,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      41 分钟
+      38 分钟
     </span>
   
 
@@ -270,165 +270,146 @@
 <p>本文主要讲述如何查看时序报告。如何书写时序约束，可以参见《DC-lab4和lab6的略解》一文。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第七章-时序组合电路设计"><a href="#第七章-时序组合电路设计" class="headerlink" title="第七章 时序组合电路设计"></a>第七章 时序组合电路设计</h1><h1 id="3-时序报告——求裕量slack"><a href="#3-时序报告——求裕量slack" class="headerlink" title="3. 时序报告——求裕量slack"></a>3. 时序报告——求裕量slack</h1><h2 id="1-建立时间"><a href="#1-建立时间" class="headerlink" title="1. 建立时间"></a>1. 建立时间</h2><p>建立时间定义：对于捕获沿到来之前，数据需要保持稳定的<strong>最小时间</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125175830676.png" srcset="/img/loading.gif" lazyload alt="image-20211125175830676" style="zoom:67%;" />
-
-<p>关于**<font color=red>建立时间裕量$slack_{setup}$​</font>**的定义，需要以下几个参数：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125175830676.png" srcset="/img/loading.gif" lazyload alt="image-20211125175830676" style="zoom:67%;" /></p>
+<p>关于<strong><font color=red>建立时间裕量$slack_{setup}$​</font></strong>的定义，需要以下几个参数：</p>
 <ol>
-<li><p><strong>数据要求到达的时间——Date Required Time</strong>，令为$t_{date\ required}$<br>$$<br>t_{date\ required}&#x3D;T-t_{su}<br>$$<br>其中，</p>
+<li><p><strong>数据要求到达的时间——Date Required Time</strong>，令为$t_{date\ required}$</p>
+<script type="math/tex; mode=display">
+t_{date\ required}=T-t_{su}</script><p>其中，</p>
 <p>$T$：周期，如图整段的阴影部分</p>
 <p>$t_{su}$：建立时间</p>
 </li>
-<li><p><strong>数据实际到达的时间——Date Arrival Time</strong>，令为$t_{date\ arrival}$<br>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}<br>$$<br>其中，</p>
+<li><p><strong>数据实际到达的时间——Date Arrival Time</strong>，令为$t_{date\ arrival}$</p>
+<script type="math/tex; mode=display">
+t_{date\ arrival}=t_{c-q}+t_{logic}</script><p>其中，</p>
 <p>$t_{c-q}$：寄存器的（最坏）传播延时</p>
 <p>$t_{logic}$：两个寄存器之间组合逻辑的（最坏）传播延时</p>
 </li>
 </ol>
-<p>则有<br>$$<br>slack_{setup}&#x3D;t_{date\ required}-t_{date\ arrival}<br>$$<br>为了充分考虑各种情况下，组合逻辑的建立时间裕量$slack_{setup}$​，以下将分情况讨论。</p>
+<p>则有</p>
+<script type="math/tex; mode=display">
+slack_{setup}=t_{date\ required}-t_{date\ arrival}</script><p>为了充分考虑各种情况下，组合逻辑的建立时间裕量$slack_{setup}$​，以下将分情况讨论。</p>
 <p>在此之前，先明确几个概念：</p>
 <ul>
 <li>理想时钟（ideal clock）：以下的情况均不存在。</li>
-<li>时钟偏差（clock skew）：指同一个时钟域之间，时钟信号到达各个寄存器的**<font color=red>最大时间差</font>**</li>
-<li>时钟抖动（clock jitter）：芯片某一给定点上，时钟周期宽度发生变化，或缩短或变宽。一般我们会考虑**<font color=red>最坏情况</font>**，具体见下文。</li>
+<li>时钟偏差（clock skew）：指同一个时钟域之间，时钟信号到达各个寄存器的<strong><font color=red>最大时间差</font></strong></li>
+<li>时钟抖动（clock jitter）：芯片某一给定点上，时钟周期宽度发生变化，或缩短或变宽。一般我们会考虑<strong><font color=red>最坏情况</font></strong>，具体见下文。</li>
 <li>（网络）时钟延迟（latency 或 network latency）：外部时钟输入该模块后，时钟信号达到寄存器时钟输入端的延时。</li>
 <li>源时钟延迟（source latency）：从整个系统时钟源产生的时钟，到该模块时钟输入端的延时。</li>
 </ul>
 <h3 id="1-理想时钟——ideal-clock"><a href="#1-理想时钟——ideal-clock" class="headerlink" title="1. 理想时钟——ideal clock"></a>1. 理想时钟——ideal clock</h3><p>指令：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184608609.png" srcset="/img/loading.gif" lazyload alt="image-20211125184608609"></p>
 <p>报告：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184935488.png" srcset="/img/loading.gif" lazyload alt="image-20211125184935488" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125184935488.png" srcset="/img/loading.gif" lazyload alt="image-20211125184935488" style="zoom:67%;" /></p>
 <p>波形图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185441369.png" srcset="/img/loading.gif" lazyload alt="image-20211125185441369" style="zoom:80%;" />
-
-<p>根据公式$slack_{setup}&#x3D;t_{date\ required}-t_{date\ arrival}$​：<br>$$<br>slack_{setup}&#x3D;9.79-0.72&#x3D;9.07<br>$$</p>
-<h3 id="2-时钟偏差——clock-skew"><a href="#2-时钟偏差——clock-skew" class="headerlink" title="2. 时钟偏差——clock skew"></a>2. 时钟偏差——clock skew</h3><p>指令：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185441369.png" srcset="/img/loading.gif" lazyload alt="image-20211125185441369" style="zoom:80%;" /></p>
+<p>根据公式$slack_{setup}=t_{date\ required}-t_{date\ arrival}$​：</p>
+<script type="math/tex; mode=display">
+slack_{setup}=9.79-0.72=9.07</script><h3 id="2-时钟偏差——clock-skew"><a href="#2-时钟偏差——clock-skew" class="headerlink" title="2. 时钟偏差——clock skew"></a>2. 时钟偏差——clock skew</h3><p>指令：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185521836.png" srcset="/img/loading.gif" lazyload alt="image-20211125185521836" style="zoom: 80%;" />
-
-
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125185521836.png" srcset="/img/loading.gif" lazyload alt="image-20211125185521836" style="zoom: 80%;" /></p>
 <p>报告：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125190351622.png" srcset="/img/loading.gif" lazyload alt="image-20211125192836430" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125190351622.png" srcset="/img/loading.gif" lazyload alt="image-20211125192836430" style="zoom:67%;" /></p>
 <p>波形图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191128178.png" srcset="/img/loading.gif" lazyload alt="image-20211125190351622" style="zoom: 67%;" />
-
-
-
-<p>可知，引入<strong>时钟偏差</strong>之后，（注意：因为负偏差对于建立时间不利，因此取$-t_{skew}$）<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}-t_{su}<br>$$<br>即，$t_{date\ required}&#x3D;10-0.5-0.21&#x3D;9.29$​</p>
-<p>因此，<br>$$<br>slack_{setup}&#x3D;9.29-0.72&#x3D;8.57<br>$$<br><strong>小贴士</strong>：</p>
-<p>​	和理想时钟相比，最坏情况下，捕获沿向前移动了$t_{skew}$，使得$t_{date\ required}$减小，从而减小了建立时间裕量。​</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191128178.png" srcset="/img/loading.gif" lazyload alt="image-20211125190351622" style="zoom: 67%;" /></p>
+<p>可知，引入<strong>时钟偏差</strong>之后，（注意：因为负偏差对于建立时间不利，因此取$-t_{skew}$）</p>
+<script type="math/tex; mode=display">
+t_{date\ required}=T-t_{skew}-t_{su}</script><p>即，$t_{date\ required}=10-0.5-0.21=9.29$​</p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+slack_{setup}=9.29-0.72=8.57</script><p><strong>小贴士</strong>：</p>
+<p>​    和理想时钟相比，最坏情况下，捕获沿向前移动了$t_{skew}$，使得$t_{date\ required}$减小，从而减小了建立时间裕量。​</p>
 <h3 id="3-时钟网络延时——latency或network-latency"><a href="#3-时钟网络延时——latency或network-latency" class="headerlink" title="3. 时钟网络延时——latency或network latency"></a>3. 时钟网络延时——latency或network latency</h3><p>代码：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191903536.png" srcset="/img/loading.gif" lazyload alt="image-20211125191128178" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125191903536.png" srcset="/img/loading.gif" lazyload alt="image-20211125191128178" style="zoom:67%;" /></p>
 <p>报告：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192313593.png" srcset="/img/loading.gif" lazyload alt="image-20211125191903536"></p>
 <p>波形图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192836430.png" srcset="/img/loading.gif" lazyload alt="image-20211125192313593" style="zoom:67%;" />
-
-
-
-
-
-<p>引入时钟网络延时后，<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{network\ latency}&#x3D;1$​</p>
-<p>相比理想：<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}-t_{su}+t_{network\ latency}<br>$$</p>
-<p>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}+t_{network\ latency}<br>$$</p>
-<p>其中，$T-t_{skew}-t_{su}&#x3D;10-0.5-0.21&#x3D;9.29$​，$t_{c-q}+t_{logic}&#x3D;0.72$​</p>
-<p>因此，<br>$$<br>slack_{setup}&#x3D;(9.29+1)-(0.72+1)&#x3D;8.57<br>$$</p>
-<p><strong>小贴士：</strong></p>
-<p>​	和理想时钟相比，时钟网络延时是输入模块之后，时钟到寄存器时钟输入端的延时。</p>
-<p>​	对于模块内的各个寄存器，相当于<strong>整体偏差了一个$t_{network\ latency}$​</strong></p>
-<p>​	如时序报告所示，整体偏差了$t_{network\ latency}&#x3D;1$</p>
-<p>​	</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125192836430.png" srcset="/img/loading.gif" lazyload alt="image-20211125192313593" style="zoom:67%;" /></p>
+<p>引入时钟网络延时后，<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{network\ latency}=1$​</p>
+<p>相比理想：</p>
+<script type="math/tex; mode=display">
+t_{date\ required}=T-t_{skew}-t_{su}+t_{network\ latency}</script><script type="math/tex; mode=display">
+t_{date\ arrival}=t_{c-q}+t_{logic}+t_{network\ latency}</script><p>其中，$T-t_{skew}-t_{su}=10-0.5-0.21=9.29$​，$t_{c-q}+t_{logic}=0.72$​</p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+slack_{setup}=(9.29+1)-(0.72+1)=8.57</script><p><strong>小贴士：</strong></p>
+<p>​    和理想时钟相比，时钟网络延时是输入模块之后，时钟到寄存器时钟输入端的延时。</p>
+<p>​    对于模块内的各个寄存器，相当于<strong>整体偏差了一个$t_{network\ latency}$​</strong></p>
+<p>​    如时序报告所示，整体偏差了$t_{network\ latency}=1$</p>
+<p>​    </p>
 <h3 id="4-源时钟延时——source-latency"><a href="#4-源时钟延时——source-latency" class="headerlink" title="4. 源时钟延时——source latency"></a>4. 源时钟延时——source latency</h3><p>代码：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br>set_clock_latency -<span class="hljs-keyword">source</span> <span class="hljs-number">3</span> [get_ports CLK] <br><span class="hljs-comment"># 设置3的源时钟延时</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194853863.png" srcset="/img/loading.gif" lazyload alt="image-20211125194853863" style="zoom:80%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194853863.png" srcset="/img/loading.gif" lazyload alt="image-20211125194853863" style="zoom:80%;" /></p>
 <p>报告：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194930684.png" srcset="/img/loading.gif" lazyload alt="image-20211125195012065" style="zoom:67%;" />
-
-
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194930684.png" srcset="/img/loading.gif" lazyload alt="image-20211125195012065" style="zoom:67%;" /></p>
 <p>波形图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125195012065.png" srcset="/img/loading.gif" lazyload alt="image-20211125194930684" style="zoom:80%;" />
-
-
-
-<p>引入源时钟延时后，输入<strong>模块</strong>的时钟同时钟源整体偏移一个$t_{source\ latency}&#x3D;3$​​​，也相当于<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{source\ latency}&#x3D;3$​</p>
-<p>相比理想：​​<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}+t_{network\ latency}-t_{su}+t_{source\ latency}<br>$$</p>
-<p>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}+t_{network\ latency}+t_{source\ latency}<br>$$</p>
-<p>其中，$T-t_{skew}+t_{network\ latency}-t_{su}&#x3D;10-0.5+1-0.21&#x3D;10.29$​，$t_{c-q}+t_{logic}+t_{network\ latency}&#x3D;0.72+1&#x3D;1.72$​</p>
-<p>因此，<br>$$<br>slack_{setup}&#x3D;(10.29+3)-(1.72+3)&#x3D;8.57<br>$$<br><strong>小贴士：</strong></p>
-<p>​	和理想时钟相比，引入源时钟延时后，输入<strong>模块</strong>的时钟同时钟源整体偏移一个$t_{source\ latency}&#x3D;3$</p>
-<p>​	也相当于<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{source\ latency}&#x3D;3$</p>
-<p>​	对于模块内的各个寄存器，相当于<strong>整体偏差了一个$t_{source\ latency}$​​</strong></p>
-<p>​	如时序报告所示，整体偏差了$t_{source\ latency}&#x3D;3$​</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125195012065.png" srcset="/img/loading.gif" lazyload alt="image-20211125194930684" style="zoom:80%;" /></p>
+<p>引入源时钟延时后，输入<strong>模块</strong>的时钟同时钟源整体偏移一个$t_{source\ latency}=3$​​​，也相当于<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{source\ latency}=3$​</p>
+<p>相比理想：​​</p>
+<script type="math/tex; mode=display">
+t_{date\ required}=T-t_{skew}+t_{network\ latency}-t_{su}+t_{source\ latency}</script><script type="math/tex; mode=display">
+t_{date\ arrival}=t_{c-q}+t_{logic}+t_{network\ latency}+t_{source\ latency}</script><p>其中，$T-t_{skew}+t_{network\ latency}-t_{su}=10-0.5+1-0.21=10.29$​，$t_{c-q}+t_{logic}+t_{network\ latency}=0.72+1=1.72$​</p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+slack_{setup}=(10.29+3)-(1.72+3)=8.57</script><p><strong>小贴士：</strong></p>
+<p>​    和理想时钟相比，引入源时钟延时后，输入<strong>模块</strong>的时钟同时钟源整体偏移一个$t_{source\ latency}=3$</p>
+<p>​    也相当于<strong>模块内</strong>的各个寄存器整体偏移了一个$t_{source\ latency}=3$</p>
+<p>​    对于模块内的各个寄存器，相当于<strong>整体偏差了一个$t_{source\ latency}$​​</strong></p>
+<p>​    如时序报告所示，整体偏差了$t_{source\ latency}=3$​</p>
 <h3 id="5-时钟抖动——clock-jitter"><a href="#5-时钟抖动——clock-jitter" class="headerlink" title="5. 时钟抖动——clock jitter"></a>5. 时钟抖动——clock jitter</h3><p>代码：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br><br><span class="hljs-comment"># set_clock_latency -source 3 [get_ports CLK] </span><br><span class="hljs-comment"># 设置3的源时钟延时</span><br><br>set_clock_latency <span class="hljs-number">2.5</span> -<span class="hljs-keyword">source</span> -early [get_ports CLK] <br><span class="hljs-comment"># 设置源时钟，最小绝对时钟抖动2.5</span><br>set_clock_latency <span class="hljs-number">3.5</span> -<span class="hljs-keyword">source</span> -late [get_ports CLK] <br><span class="hljs-comment"># 设置源时钟，最大绝对时钟抖动3.5</span><br><br><span class="hljs-comment"># 如下电路图，设置时间抖动为±0.5</span><br><span class="hljs-comment"># 上面代码取最坏情况，即前级向后抖动0.5，后级向前抖动0.5</span><br><span class="hljs-comment"># 故前级延时为3+0.5=3.5，后级为3-0.5=2.5</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202435173.png" srcset="/img/loading.gif" lazyload alt="image-20211125202435173"></p>
 <p>报告：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202511055.png" srcset="/img/loading.gif" lazyload alt="image-20211125202511055" style="zoom: 80%;" />
-
-
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202511055.png" srcset="/img/loading.gif" lazyload alt="image-20211125202511055" style="zoom: 80%;" /></p>
 <p>波形图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202603447.png" srcset="/img/loading.gif" lazyload alt="image-20211125202603447" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125202603447.png" srcset="/img/loading.gif" lazyload alt="image-20211125202603447" style="zoom:67%;" /></p>
 <p><strong><font color=red>取最差情况——前一级时钟向后抖动，本级时钟向前抖动</font></strong> ，如下图</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125203620946.png" srcset="/img/loading.gif" lazyload alt="image-20211125203620946" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125203620946.png" srcset="/img/loading.gif" lazyload alt="image-20211125203620946" style="zoom:67%;" /></p>
 <p>最坏情况下，前一级时钟向后抖动0.5，本级时钟向前抖动0.5</p>
-<p>因此，<br>$$<br>t_{date\ required}&#x3D;T-t_{skew}+t_{network\ latency}-t_{su}+(t_{source\ latency}-0.5)<br>$$</p>
-<p>$$<br>t_{date\ arrival}&#x3D;t_{c-q}+t_{logic}+t_{network\ latency}+(t_{source\ latency}+0.5)<br>$$</p>
-<p>其中，$T-t_{skew}+t_{network\ latency}-t_{su}&#x3D;10-0.5+1-0.21&#x3D;10.29$，$t_{c-q}+t_{logic}+t_{network\ latency}&#x3D;0.72+1&#x3D;1.72$</p>
-<p>因此，<br>$$<br>slack_{setup}&#x3D;[10.29+(3-0.5)]-[1.72+(3+0.5)]&#x3D;7.57<br>$$</p>
-<h2 id="2-保持时间"><a href="#2-保持时间" class="headerlink" title="2. 保持时间"></a>2. 保持时间</h2><p>保持时间定义：对于捕获沿到来之后，数据需要保持稳定的<strong>最小时间</strong></p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+t_{date\ required}=T-t_{skew}+t_{network\ latency}-t_{su}+(t_{source\ latency}-0.5)</script><script type="math/tex; mode=display">
+t_{date\ arrival}=t_{c-q}+t_{logic}+t_{network\ latency}+(t_{source\ latency}+0.5)</script><p>其中，$T-t_{skew}+t_{network\ latency}-t_{su}=10-0.5+1-0.21=10.29$，$t_{c-q}+t_{logic}+t_{network\ latency}=0.72+1=1.72$</p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+slack_{setup}=[10.29+(3-0.5)]-[1.72+(3+0.5)]=7.57</script><h2 id="2-保持时间"><a href="#2-保持时间" class="headerlink" title="2. 保持时间"></a>2. 保持时间</h2><p>保持时间定义：对于捕获沿到来之后，数据需要保持稳定的<strong>最小时间</strong></p>
 <p><strong><font color=red>注意：保持时间看的是同一个时刻</font></strong> </p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211556540.png" srcset="/img/loading.gif" lazyload alt="image-20211125211751676"></p>
-<p>同样的，对于保持时间裕度$slack_{hold}$​，有<br>$$<br>slack_{hold}&#x3D;t_{date\ arrival}-t_{date\ required}<br>$$</p>
-<h3 id="1-理想时钟——ideal-clock-1"><a href="#1-理想时钟——ideal-clock-1" class="headerlink" title="1.理想时钟——ideal clock"></a>1.理想时钟——ideal clock</h3><p>代码：</p>
+<p>同样的，对于保持时间裕度$slack_{hold}$​，有</p>
+<script type="math/tex; mode=display">
+slack_{hold}=t_{date\ arrival}-t_{date\ required}</script><h3 id="1-理想时钟——ideal-clock-1"><a href="#1-理想时钟——ideal-clock-1" class="headerlink" title="1.理想时钟——ideal clock"></a>1.理想时钟——ideal clock</h3><p>代码：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211751676.png" srcset="/img/loading.gif" lazyload alt="image-20211125211556540" style="zoom:80%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125211751676.png" srcset="/img/loading.gif" lazyload alt="image-20211125211556540" style="zoom:80%;" /></p>
 <p>报告：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212006757.png" srcset="/img/loading.gif" lazyload alt="image-20211125214133403"></p>
 <p>波形图：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212049653.png" srcset="/img/loading.gif" lazyload alt="image-20211125212006757" style="zoom: 80%;" />
-
-
-
-<p><strong><font color=red>注意：保持时间看的是同一个时刻</font><strong>，即</strong>同一时刻</strong>的$u_1$​​寄存器时钟和$u_4$​寄存器时钟。</p>
-<p>因此，<br>$$<br>slack_{hold}&#x3D;0.75-0.23&#x3D;0.53<br>$$<br>此处报告中，$slack_{hold}&#x3D;0.53$应该是小数点近似的结果。​</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125212049653.png" srcset="/img/loading.gif" lazyload alt="image-20211125212006757" style="zoom: 80%;" /></p>
+<p><strong><font color=red>注意：保持时间看的是同一个时刻</font></strong>，即<strong>同一时刻</strong>的$u_1$​​寄存器时钟和$u_4$​寄存器时钟。</p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+slack_{hold}=0.75-0.23=0.53</script><p>此处报告中，$slack_{hold}=0.53$应该是小数点近似的结果。​</p>
 <h3 id="2-源时钟延时、时钟网络延时——latency"><a href="#2-源时钟延时、时钟网络延时——latency" class="headerlink" title="2. 源时钟延时、时钟网络延时——latency"></a>2. 源时钟延时、时钟网络延时——latency</h3><p>代码：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs TCL">create_clock -period <span class="hljs-number">10</span> [get_ports CLK] <br><span class="hljs-comment"># 产生一个周期为10的时钟</span><br>set_clock_uncertainty <span class="hljs-number">0.5</span> [get_ports CLK] <br><span class="hljs-comment"># 设置0.5的时钟偏差</span><br>set_clock_latency <span class="hljs-number">1</span> [get_ports CLK] <br><span class="hljs-comment"># 设置1的时钟网络延时</span><br>set_clock_latency -<span class="hljs-keyword">source</span> <span class="hljs-number">3</span> [get_ports CLK] <br><span class="hljs-comment"># 设置3的源时钟延时</span><br></code></pre></td></tr></table></figure>
-
 <p>电路图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125214133403.png" srcset="/img/loading.gif" lazyload alt="image-20211125212049653"></p>
 <p>波形图：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125215658364.png" srcset="/img/loading.gif" lazyload alt="image-20211125215658364"><br>$$<br>t_{date\ arrival}&#x3D;t_{network\ latency}+t_{source\ latency}+t_{ideal\ date\ arrival}<br>$$</p>
-<p>$$<br>t_{date\ required}&#x3D;t_{network\ latency}+t_{source\ latency}+t_{skew}+t_{ideal\ date\ required}<br>$$</p>
-<p>$$<br>slack_{hold}&#x3D;t_{date\ arrival}-t_{date\ required}&#x3D;t_{ideal\ date\ arrival}-(t_{skew}+t_{ideal\ date\ required})<br>$$</p>
-<p>因为正偏差对于保持时间不利，故此使用的是$+t_{skew}$</p>
-<p>因此，<br>$$<br>slack_{hold}&#x3D;t_{ideal\ date\ arrival}-(t_{skew}+t_{ideal\ date\ required})&#x3D;4.1-(3.5+0.29+0.5)&#x3D;-0.19<br>$$</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125215658364.png" srcset="/img/loading.gif" lazyload alt="image-20211125215658364"></p>
+<script type="math/tex; mode=display">
+t_{date\ arrival}=t_{network\ latency}+t_{source\ latency}+t_{ideal\ date\ arrival}</script><script type="math/tex; mode=display">
+t_{date\ required}=t_{network\ latency}+t_{source\ latency}+t_{skew}+t_{ideal\ date\ required}</script><script type="math/tex; mode=display">
+slack_{hold}=t_{date\ arrival}-t_{date\ required}=t_{ideal\ date\ arrival}-(t_{skew}+t_{ideal\ date\ required})</script><p>因为正偏差对于保持时间不利，故此使用的是$+t_{skew}$</p>
+<p>因此，</p>
+<script type="math/tex; mode=display">
+slack_{hold}=t_{ideal\ date\ arrival}-(t_{skew}+t_{ideal\ date\ required})=4.1-(3.5+0.29+0.5)=-0.19</script>
             </div>
             <hr>
             <div>

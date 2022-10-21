@@ -205,7 +205,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      961 字
     </span>
   
 
@@ -250,9 +250,6 @@
 <p>本文主要讲述静态互补CMOS电路中的传输管逻辑和传输门逻辑，其中传输门逻辑未整理成笔记。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第六章-CMOS组合逻辑门电路"><a href="#第六章-CMOS组合逻辑门电路" class="headerlink" title="第六章 CMOS组合逻辑门电路"></a>第六章 CMOS组合逻辑门电路</h1><h2 id="6-传输管逻辑"><a href="#6-传输管逻辑" class="headerlink" title="6. 传输管逻辑"></a>6. 传输管逻辑</h2><h3 id="1-有比逻辑"><a href="#1-有比逻辑" class="headerlink" title="1. 有比逻辑"></a>1. 有比逻辑</h3><p>传输管逻辑是有比逻辑；互补CMOS是无比逻辑。</p>
 <p>简单而言，</p>
 <ul>
@@ -283,40 +280,44 @@
 </li>
 </ul>
 <h3 id="2-传输管逻辑"><a href="#2-传输管逻辑" class="headerlink" title="2. 传输管逻辑"></a>2. 传输管逻辑</h3><h4 id="1-区别"><a href="#1-区别" class="headerlink" title="1. 区别"></a>1. 区别</h4><p>传输管逻辑和互补CMOS有以下差别：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center"></th>
-<th align="center">传输管</th>
-<th align="center">互补CMOS</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">传输管</th>
+<th style="text-align:center">互补CMOS</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">逻辑</td>
-<td align="center">有比逻辑</td>
-<td align="center">无比逻辑</td>
+<tbody>
+<tr>
+<td style="text-align:center">逻辑</td>
+<td style="text-align:center">有比逻辑</td>
+<td style="text-align:center">无比逻辑</td>
 </tr>
 <tr>
-<td align="center">输入端</td>
-<td align="center">漏极<code>D</code>、栅极<code>G</code></td>
-<td align="center">只能栅极<code>D</code></td>
+<td style="text-align:center">输入端</td>
+<td style="text-align:center">漏极<code>D</code>、栅极<code>G</code></td>
+<td style="text-align:center">只能栅极<code>D</code></td>
 </tr>
 <tr>
-<td align="center">面积&#x2F;管子数&#x2F;寄生电容</td>
-<td align="center">小&#x2F;少&#x2F;小</td>
-<td align="center">大&#x2F;多&#x2F;大</td>
+<td style="text-align:center">面积/管子数/寄生电容</td>
+<td style="text-align:center">小/少/小</td>
+<td style="text-align:center">大/多/大</td>
 </tr>
 <tr>
-<td align="center">摆幅</td>
-<td align="center">存在$V_{TH}$，无法达到最大摆幅</td>
-<td align="center">可上拉到$V_{DD}$​下拉到$GND$​，实现最大摆幅</td>
+<td style="text-align:center">摆幅</td>
+<td style="text-align:center">存在$V_{TH}$，无法达到最大摆幅</td>
+<td style="text-align:center">可上拉到$V_{DD}$​下拉到$GND$​，实现最大摆幅</td>
 </tr>
 <tr>
-<td align="center">静态功耗</td>
-<td align="center">可能存在“关不断”情况，静态功耗较大</td>
-<td align="center">完全关断，静态功耗小</td>
+<td style="text-align:center">静态功耗</td>
+<td style="text-align:center">可能存在“关不断”情况，静态功耗较大</td>
+<td style="text-align:center">完全关断，静态功耗小</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="2-串联"><a href="#2-串联" class="headerlink" title="2. 串联"></a>2. 串联</h4><p>综合以上的区别，<strong>原因</strong>主要出在于输入端可以从<code>D</code>、<code>G</code>，而输出从<code>S</code>，从而使<strong>输出和输入之间存在$V_{TH}$​的压降</strong></p>
 <p>为了减小$V_{TH}$​带来的影响，<strong>传输管串联</strong>采用<code>D-S-D-S</code>的方式，而不采用<code>D-S-G-S</code>的方式</p>
 <p>前者只有一个$V_{TH}$压降，而后者有两个</p>
@@ -337,8 +338,8 @@
 <p><strong>确定输出：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211003155630034.png" srcset="/img/loading.gif" lazyload alt="image-20211003155630034"></p>
 <p>以<code>AND/NAND</code>为例，</p>
-<p><code>AND</code>：$F&#x3D;AB+B\overline{B}&#x3D;AB$</p>
-<p><code>NAND</code>：$\overline{F}&#x3D;\overline{A}B+\overline{B}·\overline{B}&#x3D;\overline{AB}$</p>
+<p><code>AND</code>：$F=AB+B\overline{B}=AB$</p>
+<p><code>NAND</code>：$\overline{F}=\overline{A}B+\overline{B}·\overline{B}=\overline{AB}$</p>
 <h2 id="7-传输门逻辑"><a href="#7-传输门逻辑" class="headerlink" title="7. 传输门逻辑"></a>7. 传输门逻辑</h2><p>笔者：时间有点久远，忘了为啥没写了</p>
 
             </div>

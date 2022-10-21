@@ -248,9 +248,6 @@
               <p>Linux板子安装完最难受的就是连上网络，只要能连上网络，一切都好办，这里记录一下如何在树莓派下载镜像安装后，连接上网络。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="1-下载系统"><a href="#1-下载系统" class="headerlink" title="1. 下载系统"></a>1. 下载系统</h1><h2 id="1-1-系统选择"><a href="#1-1-系统选择" class="headerlink" title="1.1 系统选择"></a>1.1 系统选择</h2><p>由于这个项目就是要做个nas电视，于是不需要特别牛逼的图形界面，于是这里选用简单方便的树莓派lite版本。</p>
 <p>直接下载就行</p>
 <h2 id="1-2-系统烧录"><a href="#1-2-系统烧录" class="headerlink" title="1.2 系统烧录"></a>1.2 系统烧录</h2><p>准备16G的sd卡，一个硬盘</p>
@@ -258,27 +255,17 @@
 <h1 id="2-网络"><a href="#2-网络" class="headerlink" title="2. 网络"></a>2. 网络</h1><h2 id="2-1-准备工作"><a href="#2-1-准备工作" class="headerlink" title="2.1 准备工作"></a>2.1 准备工作</h2><p>网上的方法都不好用</p>
 <p>最好用的方法就是找一个miniHDMI转HDMI，HDMI转VGA的线，将树莓派和一台显示器接起来，然后去设置就行</p>
 <h2 id="2-2-开启无线网络"><a href="#2-2-开启无线网络" class="headerlink" title="2.2 开启无线网络"></a>2.2 开启无线网络</h2><figure class="highlight ebnf"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">ifconfig</span><br></code></pre></td></tr></table></figure>
-
 <p>此时一般会显示</p>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">eth0:</span> <br>   ...<br><span class="hljs-symbol">lo:</span><br>   ...<br></code></pre></td></tr></table></figure>
-
 <p>如果没有看到<code>wlan0</code>，此时需要开启无线网络</p>
 <p>可以使用以下指令进行无线网络的开启</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo ifconfig wlan0 up<br><span class="hljs-regexp">//</span>开启无线网络<br>sudo ifconfig wlan0 down<br><span class="hljs-regexp">//</span>关闭无线网络<br></code></pre></td></tr></table></figure>
-
 <p>此时在使用</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">ifconfig</span><br></code></pre></td></tr></table></figure>
-
 <p>就可以看到</p>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">eth0:</span> <br>   ...<br><span class="hljs-symbol">lo:</span><br>   ...<br><span class="hljs-symbol">wlan0:</span><br>   ...<br></code></pre></td></tr></table></figure>
-
-
-
-
-
 <h2 id="2-3-连接无线网络"><a href="#2-3-连接无线网络" class="headerlink" title="2.3 连接无线网络"></a>2.3 连接无线网络</h2><p>使用树莓派官方lite镜像，连接网络是比较方便的</p>
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">sudo raspi-config <br></code></pre></td></tr></table></figure>
-
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220831204523541.png" srcset="/img/loading.gif" lazyload alt="image-20220831204523541"></p>
 <p>选择第一个<code>System Option</code></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220831204609396.png" srcset="/img/loading.gif" lazyload alt="image-20220831204609396"></p>
@@ -290,34 +277,26 @@
 <p>按道理，此时<code>reboot</code>即可</p>
 <h2 id="2-4-连接隐藏的网络"><a href="#2-4-连接隐藏的网络" class="headerlink" title="2.4 连接隐藏的网络"></a>2.4 连接隐藏的网络</h2><p>设置同2.3，然后</p>
 <figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">sudo nano /etc/wp<span class="hljs-built_in">a_supplicant</span>/wp<span class="hljs-built_in">a_supplicant</span>.conf<br></code></pre></td></tr></table></figure>
-
 <p>此时内容为</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ctrl_interface<span class="hljs-operator">=</span>DIR<span class="hljs-operator">=/</span>var/run/wpa_supplicant GROUP<span class="hljs-operator">=</span>netdev<br>update_config<span class="hljs-operator">=</span><span class="hljs-number">1</span><br><span class="hljs-attribute">country</span><span class="hljs-operator">=</span>CN<br><br><span class="hljs-attribute">network</span><span class="hljs-operator">=</span>&#123;<br>	ssid<span class="hljs-operator">=</span><span class="hljs-string">&quot;Xiaomi_7F3C&quot;</span><br>	psk<span class="hljs-operator">=</span><span class="hljs-string">&quot;617dewifi..&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>添加上</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ctrl_interface<span class="hljs-operator">=</span>DIR<span class="hljs-operator">=/</span>var/run/wpa_supplicant GROUP<span class="hljs-operator">=</span>netdev<br>update_config<span class="hljs-operator">=</span><span class="hljs-number">1</span><br><span class="hljs-attribute">country</span><span class="hljs-operator">=</span>CN<br><br><span class="hljs-attribute">network</span><span class="hljs-operator">=</span>&#123;<br>	ssid<span class="hljs-operator">=</span><span class="hljs-string">&quot;Xiaomi_7F3C&quot;</span><br>	scan_ssid<span class="hljs-operator">=</span><span class="hljs-number">1</span>              //添加，为<span class="hljs-number">1</span>表示该网络为隐藏网络<br>	psk<span class="hljs-operator">=</span><span class="hljs-string">&quot;617dewifi..&quot;</span>  <br>	key_mgmt<span class="hljs-operator">=</span>WPA-PSK         //添加，根据自己网络的加密方式进行修改<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>然后<code>reboot</code>即可使用</p>
 <h2 id="2-5-如何绑定"><a href="#2-5-如何绑定" class="headerlink" title="2.5 如何绑定"></a>2.5 如何绑定</h2><p>首先使用</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">ifconfig</span><br></code></pre></td></tr></table></figure>
-
 <p>查看当前的IP</p>
 <p>比如<code>inet: 192.168.31.140</code></p>
 <p>使用</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">router</span><br></code></pre></td></tr></table></figure>
-
 <p>查看当前路由</p>
 <p>比如<code>192.168.31.1</code></p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo nano <span class="hljs-regexp">/etc/</span>dhcpcd.conf<br></code></pre></td></tr></table></figure>
-
 <p>在末尾添上</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">interface wlan0<br>static <span class="hljs-attribute">ip_address</span>=192.168.31.140/24<br>static <span class="hljs-attribute">routers</span>=192.168.31.1<br></code></pre></td></tr></table></figure>
-
 <p><code>ip_address</code>代表设置的静态IP地址</p>
-<p><code>routers</code>代表路由器&#x2F;网关IP地址</p>
+<p><code>routers</code>代表路由器/网关IP地址</p>
 <p>然后<code>reboot</code>即可</p>
 <h2 id="2-6-开启ssh"><a href="#2-6-开启ssh" class="headerlink" title="2.6 开启ssh"></a>2.6 开启ssh</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">sudo raspi-config<br></code></pre></td></tr></table></figure>
-
 <p>选择<code>Interfacing Options</code></p>
 <p>然后选择<code>SSH</code></p>
 <p>选择<code>enabled</code></p>

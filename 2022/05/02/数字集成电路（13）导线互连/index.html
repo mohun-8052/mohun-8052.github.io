@@ -215,7 +215,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23 分钟
+      22 分钟
     </span>
   
 
@@ -251,9 +251,6 @@
 <p>本文主要讲述数字集成电路中的互连问题，包括串绕、寄生、电迁移、电压降等问题。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第四章-导线"><a href="#第四章-导线" class="headerlink" title="第四章 导线"></a>第四章 导线</h1><h2 id="1-互连参数"><a href="#1-互连参数" class="headerlink" title="1. 互连参数"></a>1. 互连参数</h2><h3 id="1-导线材料"><a href="#1-导线材料" class="headerlink" title="1. 导线材料"></a>1. 导线材料</h3><ul>
 <li>金属层</li>
 <li>多晶硅层</li>
@@ -263,18 +260,21 @@
 <li>平板电容模型</li>
 <li>边缘电容模型</li>
 </ul>
-<h3 id="3-互连参数——电阻"><a href="#3-互连参数——电阻" class="headerlink" title="3. 互连参数——电阻"></a>3. 互连参数——电阻</h3><p>方块电阻：<br>$$<br>R_\Box&#x3D;\frac{\rho}{H}<br>$$<br>其中，$H$​为工艺常数</p>
-<p>知道了方块电阻$R_\Box$，可求得电阻$R$，有<br>$$<br>R&#x3D;R_\Box\frac{L}{W}<br>$$</p>
-<p><strong>扩展：</strong></p>
-<p>​	芯片中的互连，一般高层的金属层一般$W$​较大，于是电阻更小。</p>
-<p>​	即$W↑\ →\ R↓\ →\ 功耗P↓,\ RC↓ $</p>
-<p>​	因此高层金属层，如$M_4、M_5$​，常用于时钟、电源等关键信号的布线</p>
-<p>​	中间层金属用作于信号线。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-互连参数——电阻"><a href="#3-互连参数——电阻" class="headerlink" title="3. 互连参数——电阻"></a>3. 互连参数——电阻</h3><p>方块电阻：</p>
+<script type="math/tex; mode=display">
+R_\Box=\frac{\rho}{H}</script><p>其中，$H$​为工艺常数</p>
+<p>知道了方块电阻$R_\Box$，可求得电阻$R$，有</p>
+<script type="math/tex; mode=display">
+R=R_\Box\frac{L}{W}</script><p><strong>扩展：</strong></p>
+<p>​    芯片中的互连，一般高层的金属层一般$W$​较大，于是电阻更小。</p>
+<p>​    即$W↑\ →\ R↓\ →\ 功耗P↓,\ RC↓ $</p>
+<p>​    因此高层金属层，如$M_4、M_5$​，常用于时钟、电源等关键信号的布线</p>
+<p>​    中间层金属用作于信号线。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126205131401.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="4-互连参数——电感"><a href="#4-互连参数——电感" class="headerlink" title="4. 互连参数——电感"></a>4. 互连参数——电感</h3><p>当频率上$GHz$的时候，才会去考虑电感的作用。</p>
 <h2 id="2-导线模型"><a href="#2-导线模型" class="headerlink" title="2. 导线模型"></a>2. 导线模型</h2><h3 id="1-模型"><a href="#1-模型" class="headerlink" title="1. 模型"></a>1. 模型</h3><ul>
 <li><p>理想导线</p>
-<p>​	一般用于较大尺寸的工艺中</p>
+<p>​    一般用于较大尺寸的工艺中</p>
 </li>
 <li><p>集总模型</p>
 <ul>
@@ -294,7 +294,7 @@
 <li>适用情况：互连线长；导线电阻、电容不可忽略</li>
 <li>根据推导可知，<strong>一条导线的延时同他的长度呈现二次方关系</strong></li>
 <li>和集总$RC$模型对比<ul>
-<li>分布$RC$模型得到的**延时是集总$RC$模型的$1&#x2F;2$**​</li>
+<li>分布$RC$模型得到的<strong>延时是集总$RC$模型的$1/2$</strong>​</li>
 <li>适用于<strong>长互连线</strong></li>
 </ul>
 </li>
@@ -338,37 +338,46 @@
 <li>串扰将使得导线的延时难以预见，故产生了下文<strong>“可预见的导线延时设计”</strong></li>
 </ul>
 <h3 id="3-可预见的导线设计"><a href="#3-可预见的导线设计" class="headerlink" title="3. 可预见的导线设计"></a>3. 可预见的导线设计</h3><ul>
-<li><p><font color=red><b>估计改进</b></font></p>
+<li><font color=red><b>估计改进</b></font>
+
 <ul>
 <li>方法：不断参数提取，不断仿真，不断优化</li>
 <li>缺点：设计过程需要多次重复，时间长</li>
 <li>备注：最常用</li>
 </ul>
 </li>
-<li><p><font color=red><b>能动性的版图生成</b></font></p>
+<li><font color=red><b>能动性的版图生成</b></font>
+
 <ul>
 <li>布线<strong>程序</strong>考虑相邻导线的作用</li>
 <li>缺点：主要由EDA工具完成，在如今EDA工具的要求高</li>
 <li>备注：有吸引力；已经有一些EDA工具具备该功能</li>
 </ul>
 </li>
-<li><p><font color=red><b>可预测的结构</b></font></p>
+<li><font color=red><b>可预测的结构</b></font>
+
 <ul>
 <li><p>方法：<strong>密集型布线结构</strong>——同层信号线使用电源线隔离，相邻层采用垂直布线。</p>
 </li>
 <li><p>缺点：面积和电容增加了+5%，功耗和延时增加</p>
 </li>
 <li><p>优点：减小了电容串扰，延时差别也下降到不超过2%</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126214746698.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126214746698.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
 </ul>
 </li>
-<li><p><font color=red><b>采用低介电常数的绝缘材料</b></font></p>
+</ul>
 <ul>
-<li>方法：利用$C&#x3D;\frac{\varepsilon ·S}{d}$可知，电容正比于介电常数$\varepsilon$​​。故采用低介电常数绝缘材料可以有效减小寄生的互连电容​​</li>
+<li><font color=red><b>采用低介电常数的绝缘材料</b></font>
+
+<ul>
+<li>方法：利用$C=\frac{\varepsilon ·S}{d}$可知，电容正比于介电常数$\varepsilon$​​。故采用低介电常数绝缘材料可以有效减小寄生的互连电容​​</li>
 </ul>
 </li>
-<li><p><font color=red><b>避免最坏情况的发生</b></font></p>
+</ul>
+<ul>
+<li><font color=red><b>避免最坏情况的发生</b></font>
+
 <ul>
 <li>方法：利用总线接口和总线传输数据避免引起最坏延时情况的导线翻转。</li>
 <li>缺点：搭建总线接口有额外的硬件开销</li>
@@ -393,14 +402,14 @@
 <li><p>噪声容限降低</p>
 </li>
 <li><p>延时增加</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126220745937.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126220745937.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
 </ul>
 <p>上图中，$\Delta V’$称为电压降，而$\Delta V$称为低电压反弹。</p>
-<p>实际供给门电路的电压只有  $V&#x3D;V_{DD}-\Delta V’-\Delta V$​</p>
+<p>实际供给门电路的电压只有  $V=V_{DD}-\Delta V’-\Delta V$​</p>
 <h4 id="2-【重点】减小电压降的方法"><a href="#2-【重点】减小电压降的方法" class="headerlink" title="2. 【重点】减小电压降的方法"></a>2. 【重点】减小电压降的方法</h4><p>战略：缩短电源引线和电路电源接地线的距离</p>
 <ul>
-<li>增加电源&#x2F;地Pad的数量</li>
+<li>增加电源/地Pad的数量</li>
 <li>增加电源环的宽度</li>
 <li>合理调整水平、垂直电源条间距和宽度</li>
 </ul>
@@ -412,39 +421,47 @@
 </ul>
 <h4 id="2-【重点】降低电迁移的方法"><a href="#2-【重点】降低电迁移的方法" class="headerlink" title="2. 【重点】降低电迁移的方法"></a>2. 【重点】降低电迁移的方法</h4><ul>
 <li><p>改变金属线属性。</p>
-<p>​	如合金或者$Cu$代替$Al$导线，但是成本增加。</p>
+<p>​    如合金或者$Cu$代替$Al$导线，但是成本增加。</p>
 </li>
 <li><p>降低温度。</p>
-<p>​	降低温度可以减小电迁移发射概率。</p>
-<p>​	芯片封装上面需要考虑散热问题。</p>
+<p>​    降低温度可以减小电迁移发射概率。</p>
+<p>​    芯片封装上面需要考虑散热问题。</p>
 </li>
 <li><p>增加线宽。</p>
-<p>​	增加线宽可以降低平均电流密度。</p>
-<p>​	缺点；增加布线资源，成本增加</p>
-<p>​	优点：增加线宽不仅可以降低平均电流密度，还可以降低金属温度，间接又抑制了电迁移。</p>
+<p>​    增加线宽可以降低平均电流密度。</p>
+<p>​    缺点；增加布线资源，成本增加</p>
+<p>​    优点：增加线宽不仅可以降低平均电流密度，还可以降低金属温度，间接又抑制了电迁移。</p>
 </li>
 </ul>
 <h3 id="3-性能——长导线延时"><a href="#3-性能——长导线延时" class="headerlink" title="3. 性能——长导线延时"></a>3. 性能——长导线延时</h3><h4 id="1-总论-2"><a href="#1-总论-2" class="headerlink" title="1. 总论"></a>1. 总论</h4><p>原因：根据导线模型——分布$RC$模型，可知$t_p\varpropto L^2$​。为了降低电路延时，提高电路的响应速度，需要降低导线寄生电阻。​</p>
 <h4 id="2-【重点】降低长导线延时的方法"><a href="#2-【重点】降低长导线延时的方法" class="headerlink" title="2. 【重点】降低长导线延时的方法"></a>2. 【重点】降低长导线延时的方法</h4><ul>
 <li><p>采用更好的互连材料。</p>
-<p>​	导线：铜$Cu$、合金等；绝缘材料：低介电常数的材料</p>
-<p>​	<strong>※但是，这种方法不是解决长导线延时的根本方法。</strong></p>
+<p>​    导线：铜$Cu$、合金等；绝缘材料：低介电常数的材料</p>
+<p>​    <strong>※但是，这种方法不是解决长导线延时的根本方法。</strong></p>
 </li>
+</ul>
+<ul>
 <li><p>增加互连金属层的数目</p>
-<p>​	管子数目增多驱动这金属层数目增多。</p>
-<p>​	局部线（底层金属层做信号传输）采用高密度，全局线（高层金属层走全局信号，如时钟线、电源线）</p>
+<p>​    管子数目增多驱动这金属层数目增多。</p>
+<p>​    局部线（底层金属层做信号传输）采用高密度，全局线（高层金属层走全局信号，如时钟线、电源线）</p>
 </li>
+</ul>
+<ul>
 <li><p>采用更好的互连策略——对角线法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126230250702.png" srcset="/img/loading.gif" lazyload></p>
-<p>​	采用<strong>对角线式布线</strong>（如上图），现场可较小29%，但是对于EDA工具、掩膜制作的要求高，难度大。</p>
-<p>​	目前一般采用<strong>曼哈顿式布线</strong>，即横平竖直式的布线。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211126230250702.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>​    采用<strong>对角线式布线</strong>（如上图），现场可较小29%，但是对于EDA工具、掩膜制作的要求高，难度大。</p>
+<p>​    目前一般采用<strong>曼哈顿式布线</strong>，即横平竖直式的布线。</p>
 </li>
+</ul>
+<ul>
 <li><p>中间插入中继器——中继器</p>
-<p>​	长的互连线中插入中继器（如<code>inv buffer</code>），强行减小导线长度。但是中继器也存在延时。</p>
+<p>​    长的互连线中插入中继器（如<code>inv buffer</code>），强行减小导线长度。但是中继器也存在延时。</p>
 </li>
+</ul>
+<ul>
 <li><p>优化互连结构——寄存器或锁存器</p>
-<p>​	方法：导线流水线——长互连线中插入寄存器或者锁存器，将导线分成$k$段。</p>
-<p>​	优点：可以提高数据处理能力。每段导线中可以加入中继器进行进一步优化。</p>
+<p>​    方法：导线流水线——长互连线中插入寄存器或者锁存器，将导线分成$k$段。</p>
+<p>​    优点：可以提高数据处理能力。每段导线中可以加入中继器进行进一步优化。</p>
 </li>
 </ul>
 

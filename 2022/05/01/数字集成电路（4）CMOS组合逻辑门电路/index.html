@@ -213,7 +213,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6k 字
+      5.4k 字
     </span>
   
 
@@ -222,7 +222,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      51 分钟
+      46 分钟
     </span>
   
 
@@ -258,12 +258,9 @@
 <p>本文主要讲述静态互补CMOS电路基本概念和延时计算。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第六章-CMOS组合逻辑门电路"><a href="#第六章-CMOS组合逻辑门电路" class="headerlink" title="第六章 CMOS组合逻辑门电路"></a>第六章 CMOS组合逻辑门电路</h1><h2 id="1-CMOS电路的分类"><a href="#1-CMOS电路的分类" class="headerlink" title="1. CMOS电路的分类"></a>1. CMOS电路的分类</h2><ol>
 <li><p><strong>静态互补CMOS电路</strong></p>
-<p>即常见的CMOS电路——<strong>开关模型&#x3D;理想开关+有限电阻</strong></p>
+<p>即常见的CMOS电路——<strong>开关模型=理想开关+有限电阻</strong></p>
 <p>门输出通过一个低阻连接到$V_{DD}$和$GND$​，输出为该电路实现的布尔值（0或者1）</p>
 <p>特点如下：</p>
 <ul>
@@ -272,6 +269,8 @@
 <li>静态功耗可忽略（见（3）功耗）</li>
 </ul>
 </li>
+</ol>
+<ol>
 <li><p><strong>动态CMOS集成电路</strong></p>
 <p>信号暂时存储在高阻抗电路节点上面的<strong>电容</strong>上——$RC$大</p>
 <p>特点如下：</p>
@@ -292,10 +291,10 @@
 <li><p>上拉：输出为1，$OUT$和$V_{DD}$之间存在通路</p>
 <p>下拉：输出为0，$OUT$和$V_{SS}(GND)$之间存在通路</p>
 </li>
-<li><p>上拉：使用PMOS管，输出为<strong>强1</strong>，即$V_{out}&#x3D;V_{DD}$​​​；故<strong>一般使用PMOS管</strong>。</p>
-<p>​			使用NMOS管，输出为<strong>弱1</strong>，即$V_{out}&#x3D;V_{DD}-V_{THN}$</p>
-<p>下拉：使用NMOS管，输出为<strong>强0</strong>，即$V_{out}&#x3D;GND$​；故<strong>一般使用NMOS管</strong></p>
-<p>​			使用PMOS管，输出为<strong>弱0</strong>，即$V_{out}&#x3D;|V_{THP}|$</p>
+<li><p>上拉：使用PMOS管，输出为<strong>强1</strong>，即$V_{out}=V_{DD}$​​​；故<strong>一般使用PMOS管</strong>。</p>
+<p>​            使用NMOS管，输出为<strong>弱1</strong>，即$V_{out}=V_{DD}-V_{THN}$</p>
+<p>下拉：使用NMOS管，输出为<strong>强0</strong>，即$V_{out}=GND$​；故<strong>一般使用NMOS管</strong></p>
+<p>​            使用PMOS管，输出为<strong>弱0</strong>，即$V_{out}=|V_{THP}|$</p>
 <p>其原因在于：MOS管导通需要满足$V_{GS}&gt;V_{TH}$​</p>
 </li>
 <li><p><strong>具有N输出的逻辑门所需的晶体管数为2N</strong></p>
@@ -316,7 +315,7 @@
 </ul>
 <h4 id="2-步骤"><a href="#2-步骤" class="headerlink" title="2. 步骤"></a>2. 步骤</h4><ol>
 <li><p><strong>根据原理图画下拉网络</strong>——NMOS管构成</p>
-<p>根据<font color="red"> <b>串与并或</b></font>的原则，画出下拉网络的逻辑图。</p>
+<p>根据<font color="red"> <b>串与并或</b></font>的原则，画出下拉网络的逻辑图。</p>
 </li>
 <li><p><strong>根据下拉网络，画出上拉网络（PMOS管）</strong></p>
 <ul>
@@ -337,109 +336,124 @@
 <ul>
 <li><p><strong>输出</strong>：低$\rightarrow$高</p>
 <ol>
-<li><p>**两个输入均→低 **： 即通过两个上拉电阻对电容充电，上拉网络中两个管子导通。此时两个$R_P$​并联<br>$$<br>t_p&#x3D;0.69· \frac{R_P}{2}·C_L<br>$$<br>其中，$\frac{R_P}{2}$为两$R_P$电阻并联之后的电阻阻值。​</p>
+<li><p><strong>两个输入均→低 </strong>： 即通过两个上拉电阻对电容充电，上拉网络中两个管子导通。此时两个$R_P$​并联</p>
+<script type="math/tex; mode=display">
+t_p=0.69· \frac{R_P}{2}·C_L</script><p>其中，$\frac{R_P}{2}$为两$R_P$电阻并联之后的电阻阻值。​</p>
 </li>
-<li><p><strong>一个输入为高，一个输入→低</strong>：即只通过一个电阻对电容进行充电，上拉网络仅有一个管子导通，此时只有一个电阻$R_P$<br>$$<br>t_p&#x3D;0.69·R_P·C_L<br>$$</p>
-</li>
+<li><p><strong>一个输入为高，一个输入→低</strong>：即只通过一个电阻对电容进行充电，上拉网络仅有一个管子导通，此时只有一个电阻$R_P$</p>
+<script type="math/tex; mode=display">
+t_p=0.69·R_P·C_L</script></li>
 </ol>
 </li>
 <li><p><strong>输出</strong>：高 $\rightarrow$ 低</p>
 <ol>
-<li><strong>两个输入均为高电平（或低→高）</strong>：即通过两个下拉电阻对电容放电，下拉网络中的两个管子均导通。此时两个$R_N$串联<br>$$<br>t_p&#x3D;0.69·2R_N·CL<br>$$<br>其中，$2R_N$为两个$R_N$电阻串联之后的电阻阻值</li>
+<li><strong>两个输入均为高电平（或低→高）</strong>：即通过两个下拉电阻对电容放电，下拉网络中的两个管子均导通。此时两个$R_N$串联<script type="math/tex; mode=display">
+t_p=0.69·2R_N·CL</script>其中，$2R_N$为两个$R_N$电阻串联之后的电阻阻值</li>
 </ol>
 </li>
-<li><p>此处给出一组表格。采用$NMOS&#x3D;0.5\mu&#x2F;0.25\mu;PMOS&#x3D;0.75\mu&#x2F;0.25\mu;C_L&#x3D;100fF$</p>
+<li><p>此处给出一组表格。采用$NMOS=0.5\mu/0.25\mu;PMOS=0.75\mu/0.25\mu;C_L=100fF$</p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">输入方式</th>
-<th align="center">延迟（$ps$）</th>
+<th style="text-align:center">输入方式</th>
+<th style="text-align:center">延迟（$ps$）</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$A、B&#x3D;0\rightarrow 1$​</td>
-<td align="center">62</td>
+<tbody>
+<tr>
+<td style="text-align:center">$A、B=0\rightarrow 1$​</td>
+<td style="text-align:center">62</td>
 </tr>
 <tr>
-<td align="center">$A&#x3D;1；B&#x3D;0 \rightarrow 1$</td>
-<td align="center">50</td>
+<td style="text-align:center">$A=1；B=0 \rightarrow 1$</td>
+<td style="text-align:center">50</td>
 </tr>
 <tr>
-<td align="center">$A&#x3D;0 \rightarrow 1；B&#x3D;1$</td>
-<td align="center">69</td>
+<td style="text-align:center">$A=0 \rightarrow 1；B=1$</td>
+<td style="text-align:center">69</td>
 </tr>
 <tr>
-<td align="center">$A&#x3D;B&#x3D;1 \rightarrow 0$</td>
-<td align="center">35</td>
+<td style="text-align:center">$A=B=1 \rightarrow 0$</td>
+<td style="text-align:center">35</td>
 </tr>
 <tr>
-<td align="center">$A&#x3D;1；B&#x3D;1 \rightarrow 0$</td>
-<td align="center">57</td>
+<td style="text-align:center">$A=1；B=1 \rightarrow 0$</td>
+<td style="text-align:center">57</td>
 </tr>
 <tr>
-<td align="center">$A&#x3D;1 \rightarrow 0；B&#x3D;1$</td>
-<td align="center">76</td>
+<td style="text-align:center">$A=1 \rightarrow 0；B=1$</td>
+<td style="text-align:center">76</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>很明显，<strong>传播延时取决于输入模式</strong></p>
 <h3 id="2-【重点】如何确定晶体管尺寸"><a href="#2-【重点】如何确定晶体管尺寸" class="headerlink" title="2. 【重点】如何确定晶体管尺寸"></a>2. 【重点】如何确定晶体管尺寸</h3><p>目的：使得做出来的逻辑门电路<strong>性能</strong>最好（$t_p$最小）</p>
-<p>指标：该逻辑门<strong>最坏情况</strong>下，与反相器提供相同的输出电流，即$R_{PUN-max}&#x3D;R_{PDN-max}$​​​。</p>
-<p>​			即$t_{pHL}&#x3D;t_{pLH}$。</p>
-<p>​			相当于构建一个<strong>对称反相器</strong></p>
+<p>指标：该逻辑门<strong>最坏情况</strong>下，与反相器提供相同的输出电流，即$R_{PUN-max}=R_{PDN-max}$​​​。</p>
+<p>​            即$t_{pHL}=t_{pLH}$。</p>
+<p>​            相当于构建一个<strong>对称反相器</strong></p>
 <p>例子：</p>
 <ul>
 <li><p><strong>电阻大小和管子的$W$​​​成反比</strong></p>
 </li>
-<li><p>由于迁移率$\mu$​​的不同，此处我们认为，$W_P&#x3D;2,W_N&#x3D;1$​时，<strong>管子有着相同的电阻</strong>。</p>
-<p>这个系数$\frac{W_P}{W_N}&#x3D;2$​并不一定，根据工艺进行调整。</p>
+<li><p>由于迁移率$\mu$​​的不同，此处我们认为，$W_P=2,W_N=1$​时，<strong>管子有着相同的电阻</strong>。</p>
+<p>这个系数$\frac{W_P}{W_N}=2$​并不一定，根据工艺进行调整。</p>
 <p>下面是版图上面的体现：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925110036727.png" srcset="/img/loading.gif" lazyload alt="image-20210925110036727"></p>
-<p>按照<strong>系数为2</strong>进行计算，即有<br>$$<br>W_P&#x3D;2 \rightarrow R_P&#x3D;1\<br>W_N&#x3D;1 \rightarrow R_N&#x3D;1\<br>$$<br>原因：PMOS管和NMOS管的$\mu$不同</p>
+<p>按照<strong>系数为2</strong>进行计算，即有</p>
+<script type="math/tex; mode=display">
+W_P=2 \rightarrow R_P=1\\
+W_N=1 \rightarrow R_N=1\\</script><p>原因：PMOS管和NMOS管的$\mu$不同</p>
 <p>注意：不同工艺的系数不同，此处的系数相当于是构建了一个对称反相器</p>
-<p>以两输入与非门和两输入或非门为例：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925135413503.png" srcset="/img/loading.gif" lazyload alt="image-20210925135413503"></p>
 </li>
 </ul>
+<p>  以两输入与非门和两输入或非门为例：</p>
+<p>  <img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925135413503.png" srcset="/img/loading.gif" lazyload alt="image-20210925135413503"></p>
 <ol>
 <li><p>双输入与非门：</p>
-<p><strong>PUN</strong>：当只有一个管子导通的时候，取到最大电阻，$R_{PUN-max}&#x3D;R_P$</p>
-<p><strong>PDN</strong>：当两个管子同时导通的时候，取到最大电阻，$R_{PDN-max}&#x3D;2R_N$</p>
-<p>即$R_P&#x3D;2R_N$​</p>
-<p>假设$R_P&#x3D;1$​​，则$W_P&#x3D;2$；此时$R_N&#x3D;1&#x2F;2$，则$W_N&#x3D;2·1&#x3D;2$</p>
+<p><strong>PUN</strong>：当只有一个管子导通的时候，取到最大电阻，$R_{PUN-max}=R_P$</p>
+<p><strong>PDN</strong>：当两个管子同时导通的时候，取到最大电阻，$R_{PDN-max}=2R_N$</p>
+<p>即$R_P=2R_N$​</p>
+<p>假设$R_P=1$​​，则$W_P=2$；此时$R_N=1/2$，则$W_N=2·1=2$</p>
 <p>结果如上图。</p>
 </li>
 <li><p>双输入或非门：</p>
-<p><strong>PUN</strong>：当两个管子同时导通的时候，取到最大电阻，$R_{PUN-max}&#x3D;2R_P$​</p>
-<p><strong>PDN</strong>：当只有一个管子导通的时候，取到最大电阻，$R_{PDN-max}&#x3D;R_N$​</p>
-<p>即$2R_P&#x3D;R_N$​​</p>
-<p>假设$R_N&#x3D;1$​​​​​​，则$W_N&#x3D;1$​​​​；此时$R_P&#x3D;1&#x2F;2$​​​​，则$W_P&#x3D;2·2&#x3D;4$​​​​</p>
+<p><strong>PUN</strong>：当两个管子同时导通的时候，取到最大电阻，$R_{PUN-max}=2R_P$​</p>
+<p><strong>PDN</strong>：当只有一个管子导通的时候，取到最大电阻，$R_{PDN-max}=R_N$​</p>
+<p>即$2R_P=R_N$​​</p>
+<p>假设$R_N=1$​​​​​​，则$W_N=1$​​​​；此时$R_P=1/2$​​​​，则$W_P=2·2=4$​​​​</p>
 <p>结果如上图。</p>
-</li>
-<li><p>【<strong>重点</strong>】复合门的例子</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925142702981.png" srcset="/img/loading.gif" lazyload alt="image-20210925142702981"></p>
-<p><strong>PUN</strong>：$B、C、D$​​​管子 或 $A、D$​管子导通时，取到最大电阻，$R_{PUN-max}&#x3D;3R_{P-bcd}$​或者$R_{PUN-max}&#x3D;2R_{P-ad}$​​​</p>
-<p><strong>PDN</strong>：$A、C$​ 或 $A、B$​导通 或 只有$D$​管子导通时，取到最大电阻，$R_{PDN-max}&#x3D;2R_{N-ac、ab}$​或者$R_{PDN-max}&#x3D;R_{N-d}$​</p>
-<p>即$2R_{P-bc}+R_{P-d}&#x3D;R_{P-a}+R_{P-d}&#x3D;R_{N-d}&#x3D;R_{N-a}+R_{N-bc}$​​</p>
-<p>假设$R_{N-d}&#x3D;1$​​，则$W_{N-d}&#x3D;1$​​；</p>
-<p>若令$R_{N-a}&#x3D;R_{N-bc}&#x3D;R_{N-abc}$，即$2R_{N-abc}&#x3D;R_{N-d}$，因此$R_{N-abc}&#x3D;1&#x2F;2$，$W_{N-abc}&#x3D;2·1&#x3D;2$</p>
-<p>若令$R_{P-bc}&#x3D;R_{P-d}&#x3D;R_{P-bcd}$，即$3R_{P-bcd}&#x3D;R_{N-d}$，因此$R_{P-bcd}&#x3D;1&#x2F;3$，$W_{P-bcd}&#x3D;3·2&#x3D;6$</p>
-<p>又因为$2R_{P-bc}&#x3D;R_{P-a}$，即$\frac{3}{2}R_{P-a}&#x3D;R_{N-d}$，因此$R_{P-a}&#x3D;2&#x2F;3$，$W_{P-a}&#x3D;\frac{3}{2}·2&#x3D;3$</p>
-<p>结果如上图。</p>
-<p>或采用<strong>另外一种方法——更加方便快捷</strong></p>
-<p><strong>PUN</strong>：$B、C、D$​​​管子 或 $A、D$​管子导通时，取到最大电阻。​</p>
-<p>​			取<strong>串联最多</strong>的，即$3R_{P-bcd}$为计算基准</p>
-<p><strong>PDN</strong>：$A、C$​ 或 $A、B$​导通 或 只有$D$​管子导通时，取到最大电阻</p>
-<p>​			取<strong>串联最多</strong>的，即$2R_{N-ac、ab}$​为计算基准</p>
-<p>对于<strong>PUN</strong>，因为最多是<b><font color="red">3个电阻串联——3</font><strong>（BCD），且</strong><font color="red">为PMOS管——2</font></b>，故$W_{P-bcd}&#x3D;3·2&#x3D;6$​​</p>
-<p>​					根据$A$​和<b><font color="red">2个电阻并联——2</font></b>（BC），故$W_{P-a}&#x3D;\frac{6}{2}&#x3D;3$​</p>
-<p>对于<strong>PDN</strong>，因为最多是<b><font color="red">2个电阻串联——2</font></b>（AB或AC），且<b><font color="red">为NMOS管——1</font></b>，故$W_{N-abc}&#x3D;2·1&#x3D;2$</p>
-<p>​					根据$D$​​​​和<b><font color="red">2个电阻并联——2</font></b>（AB或AC），故$W_{N-d}&#x3D;\frac{2}{2}&#x3D;1$​​​​</p>
 </li>
 </ol>
+<ol>
+<li><p>【<strong>重点</strong>】复合门的例子</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925142702981.png" srcset="/img/loading.gif" lazyload alt="image-20210925142702981"></p>
+<p><strong>PUN</strong>：$B、C、D$​​​管子 或 $A、D$​管子导通时，取到最大电阻，$R_{PUN-max}=3R_{P-bcd}$​或者$R_{PUN-max}=2R_{P-ad}$​​​</p>
+<p><strong>PDN</strong>：$A、C$​ 或 $A、B$​导通 或 只有$D$​管子导通时，取到最大电阻，$R_{PDN-max}=2R_{N-ac、ab}$​或者$R_{PDN-max}=R_{N-d}$​</p>
+<p>即$2R_{P-bc}+R_{P-d}=R_{P-a}+R_{P-d}=R_{N-d}=R_{N-a}+R_{N-bc}$​​</p>
+</li>
+</ol>
+<p>   假设$R_{N-d}=1$​​，则$W_{N-d}=1$​​；</p>
+<p>   若令$R_{N-a}=R_{N-bc}=R_{N-abc}$，即$2R_{N-abc}=R_{N-d}$，因此$R_{N-abc}=1/2$，$W_{N-abc}=2·1=2$</p>
+<p>   若令$R_{P-bc}=R_{P-d}=R_{P-bcd}$，即$3R_{P-bcd}=R_{N-d}$，因此$R_{P-bcd}=1/3$，$W_{P-bcd}=3·2=6$</p>
+<p>   又因为$2R_{P-bc}=R_{P-a}$，即$\frac{3}{2}R_{P-a}=R_{N-d}$，因此$R_{P-a}=2/3$，$W_{P-a}=\frac{3}{2}·2=3$</p>
+<p>   结果如上图。</p>
+<p>   或采用<strong>另外一种方法——更加方便快捷</strong></p>
+<p>   <strong>PUN</strong>：$B、C、D$​​​管子 或 $A、D$​管子导通时，取到最大电阻。​</p>
+<p>   ​            取<strong>串联最多</strong>的，即$3R_{P-bcd}$为计算基准</p>
+<p>   <strong>PDN</strong>：$A、C$​ 或 $A、B$​导通 或 只有$D$​管子导通时，取到最大电阻</p>
+<p>   ​            取<strong>串联最多</strong>的，即$2R_{N-ac、ab}$​为计算基准</p>
+<p>   对于<strong>PUN</strong>，因为最多是<b><font color="red">3个电阻串联——3</font><strong>（BCD），且</strong><font color="red">为PMOS管——2</font></b>，故$W_{P-bcd}=3·2=6$​​</p>
+<p>   ​                    根据$A$​和<b><font color="red">2个电阻并联——2</font></b>（BC），故$W_{P-a}=\frac{6}{2}=3$​</p>
+<p>   对于<strong>PDN</strong>，因为最多是<b><font color="red">2个电阻串联——2</font></b>（AB或AC），且<b><font color="red">为NMOS管——1</font></b>，故$W_{N-abc}=2·1=2$</p>
+<p>   ​                    根据$D$​​​​和<b><font color="red">2个电阻并联——2</font></b>（AB或AC），故$W_{N-d}=\frac{2}{2}=1$​​​​</p>
 <h3 id="3-Elmore延时模型"><a href="#3-Elmore延时模型" class="headerlink" title="3. Elmore延时模型"></a>3. <code>Elmore</code>延时模型</h3><p> 【用途】：用于大概估算具有<strong>众多电容、电阻电路</strong>的延时，适用于<strong>【RC树】</strong></p>
-<p>最基本的公式：<br>$$<br>t_p&#x3D;0.69RC&#x3D;0.69\tau<br>$$<br>何为【RC树】？</p>
+<p>最基本的公式：</p>
+<script type="math/tex; mode=display">
+t_p=0.69RC=0.69\tau</script><p>何为【RC树】？</p>
 <ul>
 <li><p>电路仅有<strong>一个输入节点</strong></p>
 </li>
@@ -456,7 +470,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925161257847.png" srcset="/img/loading.gif" lazyload alt="image-20210925161257847"></p>
 </li>
 </ul>
-<p>**$i$​​节点的路径电阻$R_{ii}$**​​：$R_1、R_3、R_i$​​；</p>
+<p><strong>$i$​​节点的路径电阻$R_{ii}$</strong>​​：$R_1、R_3、R_i$​​；</p>
 <p>1节点的路径电阻$R_{11}$：$R_1$</p>
 <p>…</p>
 <p>节点$i$​、1的共享路径电阻$R_{i1}$：$R_1$​</p>
@@ -466,22 +480,29 @@
 <p><strong>节点$i、i$​的共享路径电阻$R_{ii}$​</strong>：$R_1、R_3、R_i$​；</p>
 <p>…</p>
 <p>可以看到，<strong>路径电阻可以认为是一种特殊的共享电阻</strong>。</p>
-<p>于是有计算公式如下：<br>$$<br>\tau_{D i}&#x3D;\sum_{k&#x3D;1}^{i} C_{k} R_{i k}<br>$$<br>注意：计算延时的时候，电容$C_k$为RC树中的所有电容。也就是<strong>该RC树的延时和所有电容有关</strong></p>
-<p>以上文图中的RC树为例子<br>$$<br>\tau&#x3D;R_1C_1+R_1C_2+(R_1+R_3)C_3+(R_1+R_3)C_4+(R_1+R_3+R_i)C_i<br>$$<br>于是<br>$$<br>t_p&#x3D;0.69·[R_1(C_1+C_2)+(R_1+R_3)(C_3+C_4)+(R_1+R_3+R_i)C_i]<br>$$</p>
-<h3 id="4-【Elmore延时】计算复合门延时——【多扇入】"><a href="#4-【Elmore延时】计算复合门延时——【多扇入】" class="headerlink" title="4. 【Elmore延时】计算复合门延时——【多扇入】"></a>4. 【<code>Elmore</code>延时】计算复合门延时——【多扇入】</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925170854676.png" srcset="/img/loading.gif" lazyload alt="image-20210925170854676"></p>
+<p>于是有计算公式如下：</p>
+<script type="math/tex; mode=display">
+\tau_{D i}=\sum_{k=1}^{i} C_{k} R_{i k}</script><p>注意：计算延时的时候，电容$C_k$为RC树中的所有电容。也就是<strong>该RC树的延时和所有电容有关</strong></p>
+<p>以上文图中的RC树为例子</p>
+<script type="math/tex; mode=display">
+\tau=R_1C_1+R_1C_2+(R_1+R_3)C_3+(R_1+R_3)C_4+(R_1+R_3+R_i)C_i</script><p>于是</p>
+<script type="math/tex; mode=display">
+t_p=0.69·[R_1(C_1+C_2)+(R_1+R_3)(C_3+C_4)+(R_1+R_3+R_i)C_i]</script><h3 id="4-【Elmore延时】计算复合门延时——【多扇入】"><a href="#4-【Elmore延时】计算复合门延时——【多扇入】" class="headerlink" title="4. 【Elmore延时】计算复合门延时——【多扇入】"></a>4. 【<code>Elmore</code>延时】计算复合门延时——【多扇入】</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925170854676.png" srcset="/img/loading.gif" lazyload alt="image-20210925170854676"></p>
 <center>四输入与非门</center>
 
 <p>考虑延时的时候，常常考虑<strong>最坏的情况</strong>——所有的电容都充电或者所有电容都放电。</p>
-<p>如果原本$ABCD&#x3D;1110$，则此时所有电容均充电到$V_{DD}$</p>
-<p>在零时刻，$ABCD&#x3D;1111$​​，此时所有的电容进行放电。</p>
-<p>此时$S&#x3D;⑥，i&#x3D;②、③、④、⑤$</p>
+<p>如果原本$ABCD=1110$，则此时所有电容均充电到$V_{DD}$</p>
+<p>在零时刻，$ABCD=1111$​​，此时所有的电容进行放电。</p>
+<p>此时$S=⑥，i=②、③、④、⑤$</p>
 <p>即：</p>
 <p>$⑤$​​​​​​​​​​​节点$C_1$​​​​​​​​​​​通过$R_{ND}$​​​​​​​​​​​​放电（$1R$​），</p>
 <p>$④$​​​​​​​​​​​节点$C_2$​​​​​​​​​​​通过$R_{ND}+R_{NC}$​​​​​​​​​​​放电（$2R$），</p>
 <p>$③$​​​​​​​​​​​​节点$C_3$​​​​​​​​​​​​通过$R_{ND}+R_{NC}+R_{NB}$​​​​​​​​​​​​放电（$3R$），</p>
 <p>$②$​​​​​​​​​​​​​节点$C_L$​​​​​​​​​​​​​通过$R_{ND}+R_{NC}+R_{NB}+R_{NA}$​​​​​​​​​​​​​​放电（$4R$）</p>
 <p>若NMOS管的电阻均相等，为$R_{eqn}$</p>
-<p>于是，<br>$$<br>{t}_{pHL}&#x3D;0.69 {R}_{eqn}\ ({C}_{1}+2 C_{2}+3 C_{3}+4 C_{\mathrm{L}})<br>$$<br><strong>分析【多扇入】：</strong></p>
+<p>于是，</p>
+<script type="math/tex; mode=display">
+{t}\_{pHL}=0.69 {R}\_{eqn}\ ({C}\_{1}+2 C\_{2}+3 C\_{3}+4 C\_{\mathrm{L}})</script><p><strong>分析【多扇入】：</strong></p>
 <ul>
 <li>晶体管串联导致电阻增大，传播延时随着<strong>扇入数的</strong>增大而增大</li>
 <li>一个门的无负载本征延时最坏情况下，延时约为扇入数的<strong>二次函数</strong></li>
@@ -489,37 +510,48 @@
 </ul>
 <h3 id="5-降低【多扇入】的电路的延时"><a href="#5-降低【多扇入】的电路的延时" class="headerlink" title="5. 降低【多扇入】的电路的延时"></a>5. 降低【多扇入】的电路的延时</h3><ol>
 <li><p>调整管子尺寸</p>
-<p>​	——逐级加大晶体管尺寸，即在Elmore分析中出现<strong>最多次的管子的电阻</strong>应该减小（$W$增大）</p>
+<p>​    ——逐级加大晶体管尺寸，即在Elmore分析中出现<strong>最多次的管子的电阻</strong>应该减小（$W$增大）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210925191633262.png" srcset="/img/loading.gif" lazyload alt="image-20210925191633262"></p>
 <p>尺寸：$M_1&gt;M_2&gt;M_3&gt;…&gt;M_N$​</p>
 <p><strong>缺点：</strong>画版图困难</p>
 </li>
+</ol>
+<ol>
 <li><p>重新安排输入</p>
-<p>​	——关键路径上的晶体管应该<strong>靠近输出端</strong>。</p>
+<p>​    ——关键路径上的晶体管应该<strong>靠近输出端</strong>。</p>
 <p><strong>关键信号</strong>：一个门的输出信号中，在所有输入中最后到达稳定的信号。</p>
 <p><strong>关键路径</strong>：决定一个结构最终速度的逻辑路径称为关键路径。</p>
 <p>原理：越靠近输出端，信号需要经过的管子少，$RC$​​延时短。</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128003928853.png" srcset="/img/loading.gif" lazyload alt="image-20211128003928853" style="zoom: 67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128003928853.png" srcset="/img/loading.gif" lazyload alt="image-20211128003928853" style="zoom: 67%;" /></p>
 <p>最坏情况，<strong>全部的电容放电</strong>——即下拉网络对地有通路。关键信号应为$0→1$，其他信号为$1$</p>
-<p>如左图，关键输入信号远离输出端，则$In_1&#x3D;0→1$时，$C_1、C_2、C_L$放电，延时最大。</p>
-<p>如右图，关键输入信号靠近输出端，当$In_1$还等于$0$时，其他电容已经放电完毕。当$In_1&#x3D;0→1$时，只有$C_L$放电，延时小。</p>
+<p>如左图，关键输入信号远离输出端，则$In_1=0→1$时，$C_1、C_2、C_L$放电，延时最大。</p>
+<p>如右图，关键输入信号靠近输出端，当$In_1$还等于$0$时，其他电容已经放电完毕。当$In_1=0→1$时，只有$C_L$放电，延时小。</p>
 </li>
+</ol>
+<ol>
 <li><p>重构逻辑结构</p>
-<p>​	——多扇入逻辑电路拆解成若干个较低扇入的逻辑电路。</p>
+<p>​    ——多扇入逻辑电路拆解成若干个较低扇入的逻辑电路。</p>
 <p>前面<code>Elmore</code>延时模型已经知道，延时和扇入数接近平方关系增长。</p>
 <p>于是降低扇入数，可以降低电路的整体延时。</p>
 </li>
+</ol>
+<ol>
 <li><p>加入<code>buffer</code>隔开大扇入和大扇出</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002162122634.png" srcset="/img/loading.gif" lazyload alt="image-20211002162122634"></p>
 <ul>
 <li><code>buffer</code>的$C_G$​比较小，一定程度上削弱了大扇入的延时；</li>
-<li>根据$C_L$的大小，按照$f&#x3D;\sqrt[N]{F}$​​比例​设置反相器的尺寸，可以降低大扇出带来的大延时。</li>
+<li>根据$C_L$的大小，按照$f=\sqrt[N]{F}$​​比例​设置反相器的尺寸，可以降低大扇出带来的大延时。</li>
 </ul>
 </li>
 </ol>
-<h3 id="6-延时和【扇出】"><a href="#6-延时和【扇出】" class="headerlink" title="6. 延时和【扇出】"></a>6. 延时和【扇出】</h3><p>公式：<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{C_{ext}}{C_{int}})&#x3D;t_{p0}·(1+ \frac{f}{\gamma})<br>$$<br>一般，进行归一化后取$\gamma&#x3D;1$，即有<br>$$<br>t_p&#x3D;t_{p0}·(1+ f)<br>$$<br>呈现<strong>线性关系</strong>。</p>
-<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>关于逻辑门的延时，给出如下的公式进行描述<br>$$<br>t_p&#x3D;a_1F_I+a_2F_I^2+a_3F_O<br>$$<br>$F_I$​表示总的等效扇入，$F_O$表示总的等效扇出。</p>
+<h3 id="6-延时和【扇出】"><a href="#6-延时和【扇出】" class="headerlink" title="6. 延时和【扇出】"></a>6. 延时和【扇出】</h3><p>公式：</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(1+ \frac{C_{ext}}{C_{int}})=t_{p0}·(1+ \frac{f}{\gamma})</script><p>一般，进行归一化后取$\gamma=1$，即有</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(1+ f)</script><p>呈现<strong>线性关系</strong>。</p>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>关于逻辑门的延时，给出如下的公式进行描述</p>
+<script type="math/tex; mode=display">
+t_p=a_1F_I+a_2F_I^2+a_3F_O</script><p>$F_I$​表示总的等效扇入，$F_O$表示总的等效扇出。</p>
 <p>可见，<strong>延时与扇入成平方关系，同扇出成线性关系。</strong></p>
 
             </div>

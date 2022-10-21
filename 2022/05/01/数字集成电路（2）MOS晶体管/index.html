@@ -208,7 +208,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3k 字
+      2.8k 字
     </span>
   
 
@@ -217,7 +217,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26 分钟
+      24 分钟
     </span>
   
 
@@ -253,9 +253,6 @@
 <p>本文主要讲述MOS晶体管动态特性（寄生电容）和手工计算延时的方法。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第三章-MOS晶体管"><a href="#第三章-MOS晶体管" class="headerlink" title="第三章 MOS晶体管"></a>第三章 MOS晶体管</h1><h2 id="1-数字电路的晶体管——最直观"><a href="#1-数字电路的晶体管——最直观" class="headerlink" title="1. 数字电路的晶体管——最直观"></a>1. 数字电路的晶体管——最直观</h2><ol>
 <li><p>执行开关功能</p>
 </li>
@@ -279,19 +276,20 @@
 <li>沟长调制效应会使得漏电流$I_D$增大</li>
 </ol>
 <h3 id="4-速度饱和："><a href="#4-速度饱和：" class="headerlink" title="4. 速度饱和："></a>4. 速度饱和：</h3><p><strong>短沟道</strong>的饱和区范围更大，故常常工作在饱和区。</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210906222828994.png" srcset="/img/loading.gif" lazyload alt="image-20210906222828994" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210906222828994.png" srcset="/img/loading.gif" lazyload alt="image-20210906222828994" style="zoom:67%;" /></p>
 <p>此时，不再用$V_{OV}&gt;V_{GS}-V_{T}$来表征是否进入饱和区，而是<strong>使用$V_{DSAT}$表征是否进入饱和区</strong>。</p>
 <h3 id="5-漏电流-I-D-和-V-GS"><a href="#5-漏电流-I-D-和-V-GS" class="headerlink" title="5. 漏电流$I_D$和$V_{GS}$"></a>5. 漏电流$I_D$和$V_{GS}$</h3><p>长沟道，呈现平方关系</p>
 <p>短沟道，不那么显著</p>
-<h2 id="3-数字电路手工分析模型——开关-R-eq"><a href="#3-数字电路手工分析模型——开关-R-eq" class="headerlink" title="3. 数字电路手工分析模型——开关+$R_{eq}$"></a>3. 数字电路手工分析模型——开关+$R_{eq}$</h2><p>常用<strong>开关模型</strong>——<strong>晶体管&#x3D;开关+无穷大断开电阻</strong>$R_{on}$   <strong>or 有限导通电阻</strong>$R_{on}$</p>
+<h2 id="3-数字电路手工分析模型——开关-R-eq"><a href="#3-数字电路手工分析模型——开关-R-eq" class="headerlink" title="3. 数字电路手工分析模型——开关+$R_{eq}$"></a>3. 数字电路手工分析模型——开关+$R_{eq}$</h2><p>常用<strong>开关模型</strong>——<strong>晶体管=开关+无穷大断开电阻</strong>$R_{on}$   <strong>or 有限导通电阻</strong>$R_{on}$</p>
 <p>【<strong>计算等效导通电阻</strong>$R_{eq}$】：2种方法</p>
 <p>在实际情况中，导通电阻$R_{on}$是随工作点而时变的。而我们想要用一个<strong>等效的、恒定阻值的电阻</strong>$R_{eq}$来表征$R_{on}$。</p>
 <ol>
-<li><p>计算所关心的区域上面的平均电阻值：<br>$$<br>R_{eq}&#x3D;\frac{1}{t_2-t_1}\int_{t_1}^{t_2}R_{on}(t)dt<br>$$</p>
-</li>
-<li><p>【常用】使用瞬态过程中，<strong>起点和重点两个电阻的平均值</strong><br>$$<br>R_{eq}&#x3D;\frac{1}{2}(R_{on}(t_1)+R_{on}(t_2))<br>$$</p>
-</li>
+<li><p>计算所关心的区域上面的平均电阻值：</p>
+<script type="math/tex; mode=display">
+R_{eq}=\frac{1}{t_2-t_1}\int_{t_1}^{t_2}R_{on}(t)dt</script></li>
+<li><p>【常用】使用瞬态过程中，<strong>起点和重点两个电阻的平均值</strong></p>
+<script type="math/tex; mode=display">
+R_{eq}=\frac{1}{2}(R_{on}(t_1)+R_{on}(t_2))</script></li>
 </ol>
 <h2 id="4-【重点】MOS管的动态特性——性能（-t-p-）"><a href="#4-【重点】MOS管的动态特性——性能（-t-p-）" class="headerlink" title="4. 【重点】MOS管的动态特性——性能（$t_p$）"></a>4. 【重点】MOS管的动态特性——性能（$t_p$）</h2><h3 id="1-电容的分类"><a href="#1-电容的分类" class="headerlink" title="1. 电容的分类"></a>1. 电容的分类</h3><p>MOS管的<strong>动态响应取决</strong>于：</p>
 <ul>
@@ -307,55 +305,60 @@
 </li>
 </ul>
 <h3 id="2-略解本征电容"><a href="#2-略解本征电容" class="headerlink" title="2. 略解本征电容"></a>2. 略解本征电容</h3><p>简单归类：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907215650361.png" srcset="/img/loading.gif" lazyload alt="image-20210907215650361" style="zoom: 67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907215650361.png" srcset="/img/loading.gif" lazyload alt="image-20210907215650361" style="zoom: 67%;" /></p>
 <p><strong>小贴士：$\color{red}{红色框框}$：结构电容；$\color{gray}{灰色框框}$：沟道电容；$\color{blue}{蓝色框框}$：结电容</strong></p>
-<h4 id="1-两个覆盖（结构）电容："><a href="#1-两个覆盖（结构）电容：" class="headerlink" title="1. 两个覆盖（结构）电容："></a>1. <strong>两个</strong>覆盖（结构）电容：</h4><p>$$<br>C_{O}&#x3D;C_{GCO}+C_{GDO}&#x3D;2C_oW<br>$$</p>
-<p>$$<br>C_{GCO}&#x3D;C_{GDO}&#x3D;C_{ox}x_dW&#x3D;C_oW<br>$$</p>
-<p>覆盖电容是由于源漏横向扩散到栅氧下形成的寄生电容，故而有两个——<strong>栅源之间（$C_{GSO}$）和栅漏之间（$C_{GDO}$）</strong></p>
+<h4 id="1-两个覆盖（结构）电容："><a href="#1-两个覆盖（结构）电容：" class="headerlink" title="1. 两个覆盖（结构）电容："></a>1. <strong>两个</strong>覆盖（结构）电容：</h4><script type="math/tex; mode=display">
+C_{O}=C_{GCO}+C_{GDO}=2C_oW</script><script type="math/tex; mode=display">
+C_{GCO}=C_{GDO}=C_{ox}x_dW=C_oW</script><p>覆盖电容是由于源漏横向扩散到栅氧下形成的寄生电容，故而有两个——<strong>栅源之间（$C_{GSO}$）和栅漏之间（$C_{GDO}$）</strong></p>
 <p>由于这个电容是由于<strong>扩散形成的</strong>，只要器件做成之后就电容大小就确定，于是<strong>结构电容是三类电容中唯一可以确定确切大小的</strong></p>
-<p>小贴士：由$C_{ox}&#x3D;{\varepsilon}_{ox}&#x2F;t_{ox}$，于是我们希望$C_{ox}$尽可能的大，因为根据$I_D-V_{DS}$的公式，$I_D\varpropto C_{ox}$</p>
-<h4 id="2-三个沟道电容："><a href="#2-三个沟道电容：" class="headerlink" title="2. 三个沟道电容："></a>2. <strong>三个</strong>沟道电容：</h4><p>沟道电容，即<strong>栅到沟道之间的电容</strong>，称为$C_{GC}$，即  <strong>(Gate Channel）</strong>。其中，<br>$$<br>C_{GC}&#x3D;C_{GCB}+C_{GCS}+C_{GCD}<br>$$<br>即，栅至体、栅至源、栅至漏电容。</p>
+<p>小贴士：由$C_{ox}={\varepsilon}_{ox}/t_{ox}$，于是我们希望$C_{ox}$尽可能的大，因为根据$I_D-V_{DS}$的公式，$I_D\varpropto C_{ox}$</p>
+<h4 id="2-三个沟道电容："><a href="#2-三个沟道电容：" class="headerlink" title="2. 三个沟道电容："></a>2. <strong>三个</strong>沟道电容：</h4><p>沟道电容，即<strong>栅到沟道之间的电容</strong>，称为$C_{GC}$，即  <strong>(Gate Channel）</strong>。其中，</p>
+<script type="math/tex; mode=display">
+C_{GC}=C_{GCB}+C_{GCS}+C_{GCD}</script><p>即，栅至体、栅至源、栅至漏电容。</p>
 <p>由于和<strong>沟道</strong>有关，又因为沟道形成和工作点有关，于是三个工作点下，$C_{GC}$不同。</p>
 <center>不同工作区，沟道电容的<b>平均分布情况</b></center>
 
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">工作区域</th>
-<th align="center">$C_{GCB}$</th>
-<th align="center">$C_{GCS}$​</th>
-<th align="center">$C_{GCD}$</th>
-<th align="center">总沟道电容：$C_{GC}$</th>
+<th style="text-align:center">工作区域</th>
+<th style="text-align:center">$C_{GCB}$</th>
+<th style="text-align:center">$C_{GCS}$​</th>
+<th style="text-align:center">$C_{GCD}$</th>
+<th style="text-align:center">总沟道电容：$C_{GC}$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">截止区</td>
-<td align="center">$C_{ox}WL$</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td align="center">$C_{ox}WL$</td>
+<tbody>
+<tr>
+<td style="text-align:center">截止区</td>
+<td style="text-align:center">$C_{ox}WL$</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$C_{ox}WL$</td>
 </tr>
 <tr>
-<td align="center">线性区</td>
-<td align="center">0</td>
-<td align="center">$C_{ox}WL&#x2F;2$</td>
-<td align="center">$C_{ox}WL&#x2F;2$</td>
-<td align="center">$C_{ox}WL$</td>
+<td style="text-align:center">线性区</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$C_{ox}WL/2$</td>
+<td style="text-align:center">$C_{ox}WL/2$</td>
+<td style="text-align:center">$C_{ox}WL$</td>
 </tr>
 <tr>
-<td align="center">饱和区</td>
-<td align="center">0</td>
-<td align="center">$(2&#x2F;3)C_{ox}WL$</td>
-<td align="center">0</td>
-<td align="center">$(2&#x2F;3)C_{ox}WL$</td>
+<td style="text-align:center">饱和区</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$(2/3)C_{ox}WL$</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$(2/3)C_{ox}WL$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>以下进行粗略解释：</p>
 <ol>
 <li><p>截止区，<strong>沟道未形成</strong>，沟道电容只存在于栅体之间。</p>
 </li>
-<li><p>线性区，<strong>反型层形成</strong>，且栅源和栅漏反型层<strong>对称</strong>，故$C_{GCB}$&#x3D;$C_{GCD}$；</p>
+<li><p>线性区，<strong>反型层形成</strong>，且栅源和栅漏反型层<strong>对称</strong>，故$C_{GCB}$=$C_{GCD}$；</p>
 <p>反型层的形成，屏蔽了栅体，故电容为0。</p>
 </li>
 <li><p>饱和区，<strong>沟道被夹断</strong>，电容只存在于栅源，另外两部分为0。</p>
@@ -365,63 +368,74 @@
 <h4 id="3-两个（PN）结（耗尽层）电容："><a href="#3-两个（PN）结（耗尽层）电容：" class="headerlink" title="3. 两个（PN）结（耗尽层）电容："></a>3. <strong>两个</strong>（PN）结（耗尽层）电容：</h4><p>PN结电容是由于<strong>源-体和漏-体</strong>之间<strong>反向偏置</strong>造成的。</p>
 <p>由于工艺上面，我们是在体上“挖一个坑“放漏和源，故而他们之间存在着”立体“的关系。</p>
 <p>故而需要关注”四周立体接触“，如图所示，</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907210303730.png" srcset="/img/loading.gif" lazyload alt="image-20210907210303730"><br>$$<br>C_{diff}&#x3D;C_{bottom}+C_{sw}&#x3D;C_jL_SW+C_{jsw}(2L_S+W)<br>$$<br>下面对公式稍作解释：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907210303730.png" srcset="/img/loading.gif" lazyload alt="image-20210907210303730"></p>
+<script type="math/tex; mode=display">
+C_{diff}=C_{bottom}+C_{sw}=C_jL_SW+C_{jsw}(2L_S+W)</script><p>下面对公式稍作解释：</p>
 <ol>
-<li><p><strong>结电容&#x3D;底板PN结电容+侧壁PN结电容</strong>，分为两部分是因为底板体电极是$P$掺杂，而侧壁体电极是$P^+$掺杂；而源&#x2F;漏都是$N^+$掺杂。</p>
+<li><p><strong>结电容=底板PN结电容+侧壁PN结电容</strong>，分为两部分是因为底板体电极是$P$掺杂，而侧壁体电极是$P^+$掺杂；而源/漏都是$N^+$掺杂。</p>
 </li>
 <li><p>结电容是非线性的，反向偏置增强，结电容减小（<strong>反比</strong>）</p>
 </li>
-<li><p>这里不考虑”1“边（源&#x2F;漏-沟道）侧的侧边电容，故而只有1个$W$，而不是2个$W$。</p>
+<li><p>这里不考虑”1“边（源/漏-沟道）侧的侧边电容，故而只有1个$W$，而不是2个$W$。</p>
 </li>
-<li><p>$C_j$是单位面积底板结电容；$C_{jsw}$是单位周长侧壁结电容，$C_{jsw}&#x3D;C^{’}_{jsw}x_j$。</p>
+<li><p>$C_j$是单位面积底板结电容；$C_{jsw}$是单位周长侧壁结电容，$C_{jsw}=C^{’}_{jsw}x_j$。</p>
 </li>
 <li><p><strong>由于侧壁的体电极掺杂浓度更大</strong>，故而$C^{’}_{jsw}&gt;C_j$</p>
 </li>
 </ol>
-<h3 id="3-我们关注的【本征电容】有哪些"><a href="#3-我们关注的【本征电容】有哪些" class="headerlink" title="3. 我们关注的【本征电容】有哪些"></a>3. 我们关注的【本征电容】有哪些</h3><p>我们研究电容是为了利用$\tau&#x3D;RC$计算$t_P$的值，故而我们在意的是<strong>输入和输出通路上的电容</strong>。</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907215642779.png" srcset="/img/loading.gif" lazyload alt="image-20210907215642779" style="zoom: 67%;" />
-
-<h4 id="1-输入电容——栅极电容"><a href="#1-输入电容——栅极电容" class="headerlink" title="1. 输入电容——栅极电容"></a>1. 输入电容——栅极电容</h4><p>对于输入，一般采用<strong>栅极输入</strong>，即$C_{in}&#x3D;C_G$</p>
-<p>经过上面的推导，可以知道<br>$$<br>C_G&#x3D;C_{O}+C_{GC}<br>$$<br>即<br>$$<br>C_G&#x3D;C_{GSO}+C_{GDO}+C_{GCB}+C_{GCS}+C_{GCD}<br>$$<br>即：栅电容&#x3D;2个覆盖电容+3个沟道电容</p>
+<h3 id="3-我们关注的【本征电容】有哪些"><a href="#3-我们关注的【本征电容】有哪些" class="headerlink" title="3. 我们关注的【本征电容】有哪些"></a>3. 我们关注的【本征电容】有哪些</h3><p>我们研究电容是为了利用$\tau=RC$计算$t_P$的值，故而我们在意的是<strong>输入和输出通路上的电容</strong>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907215642779.png" srcset="/img/loading.gif" lazyload alt="image-20210907215642779" style="zoom: 67%;" /></p>
+<h4 id="1-输入电容——栅极电容"><a href="#1-输入电容——栅极电容" class="headerlink" title="1. 输入电容——栅极电容"></a>1. 输入电容——栅极电容</h4><p>对于输入，一般采用<strong>栅极输入</strong>，即$C_{in}=C_G$</p>
+<p>经过上面的推导，可以知道</p>
+<script type="math/tex; mode=display">
+C_G=C_{O}+C_{GC}</script><p>即</p>
+<script type="math/tex; mode=display">
+C_G=C_{GSO}+C_{GDO}+C_{GCB}+C_{GCS}+C_{GCD}</script><p>即：栅电容=2个覆盖电容+3个沟道电容</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">工作区</th>
-<th align="center">$C_{O}$：覆盖电容（固定的值）</th>
-<th align="center">$C_{GC}$：沟道电容</th>
-<th align="center">$C_G$</th>
+<th style="text-align:center">工作区</th>
+<th style="text-align:center">$C_{O}$：覆盖电容（固定的值）</th>
+<th style="text-align:center">$C_{GC}$：沟道电容</th>
+<th style="text-align:center">$C_G$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">截止区</td>
-<td align="center">$2C_oW$</td>
-<td align="center">$C_{ox}WL$</td>
-<td align="center">$2C_oW+C_{ox}WL$</td>
+<tbody>
+<tr>
+<td style="text-align:center">截止区</td>
+<td style="text-align:center">$2C_oW$</td>
+<td style="text-align:center">$C_{ox}WL$</td>
+<td style="text-align:center">$2C_oW+C_{ox}WL$</td>
 </tr>
 <tr>
-<td align="center">线性区</td>
-<td align="center">$2C_oW$</td>
-<td align="center">$C_{ox}WL$</td>
-<td align="center">$2C_oW+C_{ox}WL$</td>
+<td style="text-align:center">线性区</td>
+<td style="text-align:center">$2C_oW$</td>
+<td style="text-align:center">$C_{ox}WL$</td>
+<td style="text-align:center">$2C_oW+C_{ox}WL$</td>
 </tr>
 <tr>
-<td align="center">饱和区</td>
-<td align="center">$2C_oW$</td>
-<td align="center">$(2&#x2F;3)C_{ox}WL$</td>
-<td align="center">$2C_oW+(2&#x2F;3)C_{ox}WL$</td>
+<td style="text-align:center">饱和区</td>
+<td style="text-align:center">$2C_oW$</td>
+<td style="text-align:center">$(2/3)C_{ox}WL$</td>
+<td style="text-align:center">$2C_oW+(2/3)C_{ox}WL$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <center>不同工作状态下的栅极电容</center>
 
 
 
-<h4 id="2-输出电容——漏极电容"><a href="#2-输出电容——漏极电容" class="headerlink" title="2.输出电容——漏极电容"></a>2.输出电容——漏极电容</h4><p>对于输出，一般采用<strong>漏极输出</strong>，即$C_{out}&#x3D;C_D$</p>
-<p>经过上面的推导，可以知道<br>$$<br>C_D&#x3D;C_{GDO}+C_{Ddiff}+C_{GCD}<br>$$<br>又因在数集中，一般管子只工作在<strong>饱和区和截止区</strong>，而这两个区域的$C_{GCD}&#x3D;0$</p>
-<p>即有<br>$$<br>C_D&#x3D;C_{GDO}+C_{Ddiff}&#x3D;C_{GDO}+C_{bottom}+C_{dw}<br>$$</p>
-<p>即：漏电容&#x3D;1个覆盖电容+1个PN结电容</p>
+<h4 id="2-输出电容——漏极电容"><a href="#2-输出电容——漏极电容" class="headerlink" title="2.输出电容——漏极电容"></a>2.输出电容——漏极电容</h4><p>对于输出，一般采用<strong>漏极输出</strong>，即$C_{out}=C_D$</p>
+<p>经过上面的推导，可以知道</p>
+<script type="math/tex; mode=display">
+C_D=C_{GDO}+C_{Ddiff}+C_{GCD}</script><p>又因在数集中，一般管子只工作在<strong>饱和区和截止区</strong>，而这两个区域的$C_{GCD}=0$</p>
+<p>即有</p>
+<script type="math/tex; mode=display">
+C_D=C_{GDO}+C_{Ddiff}=C_{GDO}+C_{bottom}+C_{dw}</script><p>即：漏电容=1个覆盖电容+1个PN结电容</p>
 <h3 id="4-寄生电阻"><a href="#4-寄生电阻" class="headerlink" title="4. 寄生电阻"></a>4. 寄生电阻</h3><p>源漏区的串联电阻。</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907220832414.png" srcset="/img/loading.gif" lazyload alt="image-20210907220832414" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210907220832414.png" srcset="/img/loading.gif" lazyload alt="image-20210907220832414" style="zoom:67%;" /></p>
 <p>危害：</p>
 <ol>
 <li>当晶体管尺寸进一步缩小，会使结变浅、接触孔变小。使得这个影响更加显著。</li>

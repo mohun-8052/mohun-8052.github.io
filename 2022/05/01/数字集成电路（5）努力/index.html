@@ -208,7 +208,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.8k 字
+      4.1k 字
     </span>
   
 
@@ -217,7 +217,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      41 分钟
+      35 分钟
     </span>
   
 
@@ -253,9 +253,6 @@
 <p>本文主要讲述静态互补CMOS电路“努力”计算，并且通过“努力”计算设计最佳逻辑链电路。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第六章-CMOS组合逻辑门电路"><a href="#第六章-CMOS组合逻辑门电路" class="headerlink" title="第六章 CMOS组合逻辑门电路"></a>第六章 CMOS组合逻辑门电路</h1><h2 id="4-【静态CMOS】组合逻辑的优化"><a href="#4-【静态CMOS】组合逻辑的优化" class="headerlink" title="4. 【静态CMOS】组合逻辑的优化"></a>4. 【静态CMOS】组合逻辑的优化</h2><h3 id="1-总论"><a href="#1-总论" class="headerlink" title="1. 总论"></a>1. 总论</h3><ol>
 <li><p>不同材料工艺</p>
 <p>CMOS、双极性、BiCMOS、GaAs、超导等材料</p>
@@ -277,59 +274,70 @@
 <li><p>布局布线</p>
 </li>
 </ol>
-<h3 id="2-【重点】努力"><a href="#2-【重点】努力" class="headerlink" title="2. 【重点】努力"></a>2. 【重点】努力</h3><p>根据INV延时的通式，<br>$$<br>t_p&#x3D;t_{p0}·(1+ \frac{f}{\gamma})<br>$$<br>推广到所有的逻辑电路中，即有<br>$$<br>t_p&#x3D;t_{p0}·(p+ \frac{g·f}{\gamma})&#x3D;t_{p0}·(p+ \frac{h}{\gamma})<br>$$<br>其中，</p>
+<h3 id="2-【重点】努力"><a href="#2-【重点】努力" class="headerlink" title="2. 【重点】努力"></a>2. 【重点】努力</h3><p>根据INV延时的通式，</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(1+ \frac{f}{\gamma})</script><p>推广到所有的逻辑电路中，即有</p>
+<script type="math/tex; mode=display">
+t_p=t_{p0}·(p+ \frac{g·f}{\gamma})=t_{p0}·(p+ \frac{h}{\gamma})</script><p>其中，</p>
 <p>$t_{p0}$：简单INV的本征延时。</p>
-<p>$p$​​：复合门和简单INV的<strong>本征延时之比</strong>（显然，INV的$p&#x3D;1$）。</p>
+<p>$p$​​：复合门和简单INV的<strong>本征延时之比</strong>（显然，INV的$p=1$）。</p>
 <p>$g$：<strong>逻辑努力</strong></p>
-<p>$f$：<strong>电气努力</strong>，即讨论INV链时说的<strong>等效扇出</strong>，定义为$C_{ext}&#x3D;f C_g$，第$j+1$级管子相对于第$j$级管子的尺寸。</p>
-<p>$h$：<strong>门努力</strong>，即$h&#x3D;g·f$​</p>
+<p>$f$：<strong>电气努力</strong>，即讨论INV链时说的<strong>等效扇出</strong>，定义为$C_{ext}=f C_g$，第$j+1$级管子相对于第$j$级管子的尺寸。</p>
+<p>$h$：<strong>门努力</strong>，即$h=g·f$​</p>
 <p>为了方便讨论，将反相器的延时作为单位，进行<strong>归一化</strong>，将所有逻辑电路的延时用反相器延时作为单位进行表示。</p>
-<p>设定，<strong>一个标准的反相器（对称反相器）</strong>，$W_P&#x3D;2,W_N&#x3D;1$​​​​，即$W_{INV}&#x3D;3$​​​，即一个单位的$W&#x3D;3$​​</p>
+<p>设定，<strong>一个标准的反相器（对称反相器）</strong>，$W_P=2,W_N=1$​​​​，即$W_{INV}=3$​​​，即一个单位的$W=3$​​</p>
 <p>设定，</p>
 <ul>
-<li><p>$g_{INV}&#x3D;1$​​（一个标准的INV，其$W&#x3D;3$​​​）</p>
+<li><p>$g_{INV}=1$​​（一个标准的INV，其$W=3$​​​）</p>
 </li>
-<li><p>$p_{INV}&#x3D;1$​（一个标准的INV，其本征延时为$t_{p0}$​）</p>
+<li><p>$p_{INV}=1$​（一个标准的INV，其本征延时为$t_{p0}$​）</p>
 </li>
-<li><p>$\gamma&#x3D;1$​（一个标准的INV，其本征漏电容等于输入栅电容）</p>
+<li><p>$\gamma=1$​（一个标准的INV，其本征漏电容等于输入栅电容）</p>
 </li>
 </ul>
 <p>下面对上面的参数进行讨论</p>
-<h4 id="1-p-（本征延时比）"><a href="#1-p-（本征延时比）" class="headerlink" title="1. $p$（本征延时比）"></a>1. $p$（本征延时比）</h4><p>如果忽略内部节点电容，$p$​​​的计算：<br>$$<br>p&#x3D;\frac{复合门的输出端本征电容}{INV输出端的本征电容}<br>$$<br>因，$C_{int}&#x3D;a·W$​​​，于是电容值​可以用$W$​来代替。</p>
+<h4 id="1-p-（本征延时比）"><a href="#1-p-（本征延时比）" class="headerlink" title="1. $p$（本征延时比）"></a>1. $p$（本征延时比）</h4><p>如果忽略内部节点电容，$p$​​​的计算：</p>
+<script type="math/tex; mode=display">
+p=\frac{复合门的输出端本征电容}{INV输出端的本征电容}</script><p>因，$C_{int}=a·W$​​​，于是电容值​可以用$W$​来代替。</p>
 <p><strong>注意，是和输出端相连的管子才参与计算</strong></p>
 <p>例子：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">门类型</th>
-<th align="center">$p$</th>
+<th style="text-align:center">门类型</th>
+<th style="text-align:center">$p$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">反相器INV</td>
-<td align="center">$1$</td>
+<tbody>
+<tr>
+<td style="text-align:center">反相器INV</td>
+<td style="text-align:center">$1$</td>
 </tr>
 <tr>
-<td align="center">$n$输入的NAND 或 $n$输入的NOR</td>
-<td align="center">$n$</td>
+<td style="text-align:center">$n$输入的NAND 或 $n$输入的NOR</td>
+<td style="text-align:center">$n$</td>
 </tr>
 <tr>
-<td align="center">$n$路多路开关</td>
-<td align="center">$2n$</td>
+<td style="text-align:center">$n$路多路开关</td>
+<td style="text-align:center">$2n$</td>
 </tr>
 <tr>
-<td align="center">XOR，NXOR</td>
-<td align="center">$n2^{n-1}$</td>
+<td style="text-align:center">XOR，NXOR</td>
+<td style="text-align:center">$n2^{n-1}$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002172842916.png" srcset="/img/loading.gif" lazyload alt="image-20211002172842916"></p>
 <p>如上图，</p>
-<p>对于<code>2-input NADN</code>，$C_L&#x3D;C_{PB}+C_{PA}+C_{NA}&#x3D;2+2+2&#x3D;2·3$​​​​</p>
-<p>对于<code>2-input NOR</code>，$C_L&#x3D;C_{PA}+C_{NA}+C_{NB}&#x3D;4+1+1&#x3D;2·3$</p>
+<p>对于<code>2-input NADN</code>，$C_L=C_{PB}+C_{PA}+C_{NA}=2+2+2=2·3$​​​​</p>
+<p>对于<code>2-input NOR</code>，$C_L=C_{PA}+C_{NA}+C_{NB}=4+1+1=2·3$</p>
 <p>忽略内部节点电容，也就是<code>2-input NAND</code>的两个NMOS管之间的电容、<code>2-input NOR</code>的两个PMOS管之间的电容忽略不计。</p>
-<p>因为逻辑门的宽长比是按照<strong>标准INV（对称INV）</strong>的设定的，于是有$R_{PUN}&#x3D;R_{PDN}&#x3D;R_{INV}$​​</p>
-<p>通过计算可知，<br>$$<br>t_{复合门p0}&#x3D;0.69RC_L&#x3D;p·t_{p0}<br>$$</p>
-<h4 id="2-g-​​（逻辑努力）和-G-​（路径逻辑努力）"><a href="#2-g-​​（逻辑努力）和-G-​（路径逻辑努力）" class="headerlink" title="2. $g$​​（逻辑努力）和$G$​（路径逻辑努力）"></a>2. $g$​​（逻辑努力）和$G$​（路径逻辑努力）</h4><p><strong>定义</strong>：一个门在最坏情况下，与反相器提供<strong>相同的输出电流（即电阻相等或驱动能力相等）</strong>时，所表现的输入电容比反相器大多少倍。</p>
+<p>因为逻辑门的宽长比是按照<strong>标准INV（对称INV）</strong>的设定的，于是有$R_{PUN}=R_{PDN}=R_{INV}$​​</p>
+<p>通过计算可知，</p>
+<script type="math/tex; mode=display">
+t_{复合门p0}=0.69RC_L=p·t_{p0}</script><h4 id="2-g-​​（逻辑努力）和-G-​（路径逻辑努力）"><a href="#2-g-​​（逻辑努力）和-G-​（路径逻辑努力）" class="headerlink" title="2. $g$​​（逻辑努力）和$G$​（路径逻辑努力）"></a>2. $g$​​（逻辑努力）和$G$​（路径逻辑努力）</h4><p><strong>定义</strong>：一个门在最坏情况下，与反相器提供<strong>相同的输出电流（即电阻相等或驱动能力相等）</strong>时，所表现的输入电容比反相器大多少倍。</p>
 <p><strong>小贴士</strong>：</p>
 <ul>
 <li>反相器有最小的逻辑努力</li>
@@ -337,159 +345,188 @@
 <li><strong>只和门的拓扑有关，与尺寸无关</strong></li>
 </ul>
 <p>逻辑努力$g$的计算：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">门类型</th>
-<th align="center">1 input</th>
-<th align="center">2 input</th>
-<th align="center">3 input</th>
-<th align="center">n input</th>
+<th style="text-align:center">门类型</th>
+<th style="text-align:center">1 input</th>
+<th style="text-align:center">2 input</th>
+<th style="text-align:center">3 input</th>
+<th style="text-align:center">n input</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">反相器</td>
-<td align="center">1</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<tbody>
+<tr>
+<td style="text-align:center">反相器</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="center"><strong>NAND</strong></td>
-<td align="center"></td>
-<td align="center">4&#x2F;3</td>
-<td align="center">5&#x2F;3</td>
-<td align="center">（n+2）&#x2F;3</td>
+<td style="text-align:center"><strong>NAND</strong></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">4/3</td>
+<td style="text-align:center">5/3</td>
+<td style="text-align:center">（n+2）/3</td>
 </tr>
 <tr>
-<td align="center"><strong>NOR</strong></td>
-<td align="center"></td>
-<td align="center">5&#x2F;3</td>
-<td align="center">7&#x2F;3</td>
-<td align="center">（2n+1）&#x2F;3</td>
+<td style="text-align:center"><strong>NOR</strong></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">5/3</td>
+<td style="text-align:center">7/3</td>
+<td style="text-align:center">（2n+1）/3</td>
 </tr>
 <tr>
-<td align="center">MUL</td>
-<td align="center"></td>
-<td align="center">2</td>
-<td align="center">2</td>
-<td align="center">2</td>
+<td style="text-align:center">MUL</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
 </tr>
 <tr>
-<td align="center">XOR</td>
-<td align="center"></td>
-<td align="center">4</td>
-<td align="center">12</td>
-<td align="center"></td>
+<td style="text-align:center">XOR</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">12</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>例子：</p>
-<p>对于<code>2-input NADN</code>，对于端口$A$​，可知$C&#x3D;C_{PA}+C_{NA}&#x3D;2+2&#x3D;4$​，故$g&#x3D;4&#x2F;3$​​；端口$B$​同理。</p>
-<p>对于<code>2-input NOR</code>，对于端口$A$​​​，可知$C&#x3D;C_{PA}+C_{NA}&#x3D;4+1&#x3D;5$​​​，故$g&#x3D;5&#x2F;3$​​​；端口$B$​​​同理。</p>
-<p>对于路径逻辑努力$G$<br>$$<br>G&#x3D;\prod_{1}^ng_i<br>$$<br>对于一条路径，该路径的逻辑努力等于路径上所有门的逻辑努力连乘。</p>
+<p>对于<code>2-input NADN</code>，对于端口$A$​，可知$C=C_{PA}+C_{NA}=2+2=4$​，故$g=4/3$​​；端口$B$​同理。</p>
+<p>对于<code>2-input NOR</code>，对于端口$A$​​​，可知$C=C_{PA}+C_{NA}=4+1=5$​​​，故$g=5/3$​​​；端口$B$​​​同理。</p>
+<p>对于路径逻辑努力$G$</p>
+<script type="math/tex; mode=display">
+G=\prod_{1}^ng_i</script><p>对于一条路径，该路径的逻辑努力等于路径上所有门的逻辑努力连乘。</p>
 <h4 id="3-b-​​（分支努力）和-B-（路径分支努力）"><a href="#3-b-​​（分支努力）和-B-（路径分支努力）" class="headerlink" title="3. $b$​​（分支努力）和$B$（路径分支努力）"></a>3. $b$​​（分支努力）和$B$（路径分支努力）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002211405433.png" srcset="/img/loading.gif" lazyload alt="image-20211002211405433"></p>
-<p>公式：<br>$$<br>b&#x3D;\frac{C_{on-path}+C_{off-path}}{C_{on-path}}<br>$$<br>注意：</p>
+<p>公式：</p>
+<script type="math/tex; mode=display">
+b=\frac{C_{on-path}+C_{off-path}}{C_{on-path}}</script><p>注意：</p>
 <ul>
 <li>分支努力$b$​是针对与<strong>一个路径节点</strong>而言的</li>
-<li>如果只有一条路径，没有分叉，<strong>则$b&#x3D;1$​</strong>；如果该节点两个分支的栅电容大小相等，则$b&#x3D;2$</li>
+<li>如果只有一条路径，没有分叉，<strong>则$b=1$​</strong>；如果该节点两个分支的栅电容大小相等，则$b=2$</li>
 </ul>
 <p>其中，</p>
 <ul>
 <li>$C_{on-path}$：沿着分析路径上的负载电筒</li>
 <li>$C_{off-path}$：离开该路径连线上的电容</li>
 </ul>
-<p>$eg：$​假设，①反相器尺寸为2，②反相器尺寸为1，则$b&#x3D;\frac{2+1}{2}&#x3D;\frac{3}{2}$​</p>
-<p>对于<strong>路径分支努力$B$​</strong>​<br>$$<br>B&#x3D;\prod_{1}^nb_i<br>$$<br>对于一条路径，该路径的分支努力等于路径上所有节点的分支努力连乘。</p>
+<p>$eg：$​假设，①反相器尺寸为2，②反相器尺寸为1，则$b=\frac{2+1}{2}=\frac{3}{2}$​</p>
+<p>对于<strong>路径分支努力$B$​</strong>​</p>
+<script type="math/tex; mode=display">
+B=\prod_{1}^nb_i</script><p>对于一条路径，该路径的分支努力等于路径上所有节点的分支努力连乘。</p>
 <h4 id="4-f-（电气努力）和-F-​（路径电气努力）"><a href="#4-f-（电气努力）和-F-​（路径电气努力）" class="headerlink" title="4. $f$（电气努力）和$F$​（路径电气努力）"></a>4. $f$（电气努力）和$F$​（路径电气努力）</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210915190315032.png" srcset="/img/loading.gif" lazyload alt="image-20210915190315032"></p>
 <p>$f$又称为<strong>等效扇出</strong>，表示<strong>第$j+1$级管子（$j+1$级输入电容）相对于第$j$级管子（$j$​级输入电容）的尺寸（电容值）。</strong></p>
-<p>$$<br>f&#x3D;\frac{C_{ext}}{C_g}<br>$$<br><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002223922383.png" srcset="/img/loading.gif" lazyload alt="image-20211002223922383"></p>
-<p>注意：对于第1级反相器和第2级两个<code>3-input NAND</code>，$f&#x3D;\frac{2·C_{g-3-input-NAND}}{C_{g-inv}}$​（<code>3-input NAND</code>尺寸相等，才能直接$·2$）​​​</p>
+<script type="math/tex; mode=display">
+f=\frac{C_{ext}}{C_g}</script><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002223922383.png" srcset="/img/loading.gif" lazyload alt="image-20211002223922383"></p>
+<p>注意：对于第1级反相器和第2级两个<code>3-input NAND</code>，$f=\frac{2·C_{g-3-input-NAND}}{C_{g-inv}}$​（<code>3-input NAND</code>尺寸相等，才能直接$·2$）​​​</p>
 <p>但是如果我们计算某一条路径，如上图所示分叉中某一路径，<strong>只针对路径上面的门电路计算电气努力</strong></p>
-<p>可知，<br>$$<br>f’&#x3D;\frac{f}{b}<br>$$<br>也就是算路径电气努力的时候（见下文），为何是$\prod\frac{f}{b}$​</p>
-<p>$F$​​​​​​为<strong>路径电气努力</strong>，又称为<strong>总等效的扇出</strong>，即最后一级的负载电容与第一级输入栅电容的关系。<br>$$<br>F&#x3D;C_{ext,N}&#x2F;C_{g,1}&#x3D;C_{g,N+1}&#x2F;C_{g,1}&#x3D;C_L&#x2F;C_{g,1}<br>$$<br>经过推导（略），可知$F$又可表示为<br>$$<br>F&#x3D;\prod_{1}^n\frac{f_i}{b_i}&#x3D;\frac{\prod_{1}^nf_i}{B}<br>$$<br>对于一条路径，该路径的电气努力等于路径上所有门的电气努力连乘然后除以路径分支努力。</p>
-<h4 id="5-h-​（门努力）和-H-（路径门努力）"><a href="#5-h-​（门努力）和-H-（路径门努力）" class="headerlink" title="5. $h$​（门努力）和$H$（路径门努力）"></a>5. $h$​（门努力）和$H$（路径门努力）</h4><p>$$<br>h&#x3D;g·f<br>$$</p>
-<p>其中，</p>
+<p>可知，</p>
+<script type="math/tex; mode=display">
+f'=\frac{f}{b}</script><p>也就是算路径电气努力的时候（见下文），为何是$\prod\frac{f}{b}$​</p>
+<p>$F$​​​​​​为<strong>路径电气努力</strong>，又称为<strong>总等效的扇出</strong>，即最后一级的负载电容与第一级输入栅电容的关系。</p>
+<script type="math/tex; mode=display">
+F=C_{ext,N}/C_{g,1}=C_{g,N+1}/C_{g,1}=C_L/C_{g,1}</script><p>经过推导（略），可知$F$又可表示为</p>
+<script type="math/tex; mode=display">
+F=\prod_{1}^n\frac{f_i}{b_i}=\frac{\prod_{1}^nf_i}{B}</script><p>对于一条路径，该路径的电气努力等于路径上所有门的电气努力连乘然后除以路径分支努力。</p>
+<h4 id="5-h-​（门努力）和-H-（路径门努力）"><a href="#5-h-​（门努力）和-H-（路径门努力）" class="headerlink" title="5. $h$​（门努力）和$H$（路径门努力）"></a>5. $h$​（门努力）和$H$（路径门努力）</h4><script type="math/tex; mode=display">
+h=g·f</script><p>其中，</p>
 <ul>
 <li><p>逻辑努力$g$​​，与拓扑（逻辑门类型，比如NAND、NOR等）有关，与具体尺寸无关。</p>
 </li>
-<li><p>电气努力$f$​，即等效扇出。$f&#x3D;C_{ext}&#x2F;C_g$​</p>
+<li><p>电气努力$f$​，即等效扇出。$f=C_{ext}/C_g$​</p>
 <p>注意，<strong>除以栅输入电容，而不是本征电容</strong></p>
 </li>
 </ul>
-<p><strong>$H$​​路径门努力公式如下：</strong><br>$$<br>H&#x3D;\prod_{1}^nh_i&#x3D;\prod_{1}^ng_i·f_i&#x3D;GFB<br>$$<br>$PS$​：$H&#x3D;\prod_{1}^nh_i&#x3D;\prod_{1}^ng_i·f_i&#x3D;\prod_{1}^ng_i·\prod_{1}^nf_i&#x3D;G·\frac{\prod_{1}^nf_i}{B}	·B&#x3D;GFB$​</p>
+<p><strong>$H$​​路径门努力公式如下：</strong></p>
+<script type="math/tex; mode=display">
+H=\prod_{1}^nh_i=\prod_{1}^ng_i·f_i=GFB</script><p>$PS$​：$H=\prod_{1}^nh_i=\prod_{1}^ng_i·f_i=\prod_{1}^ng_i·\prod_{1}^nf_i=G·\frac{\prod_{1}^nf_i}{B}    ·B=GFB$​</p>
 <h3 id="3-【重点】【优化】-确定电路尺寸"><a href="#3-【重点】【优化】-确定电路尺寸" class="headerlink" title="3.【重点】【优化】 确定电路尺寸"></a>3.【重点】【优化】 确定电路尺寸</h3><p>为了追求更好的性能，即最低的延时，我们希望可以调整尺寸，让组合逻辑的延时最小。</p>
 <ul>
-<li><p>计算路径的总努力：$H&#x3D;GFB$</p>
+<li><p>计算路径的总努力：$H=GFB$</p>
 </li>
 <li><p>确定路径上的门数：$N$</p>
 </li>
-<li><p>计算门努力：$h&#x3D;\sqrt[N]{H}$​</p>
+<li><p>计算门努力：$h=\sqrt[N]{H}$​</p>
 <p><strong>注意</strong>：<font color=red><b>经过推导，当$h$​​​​满足上式时，路径延时最短</b></font></p>
 </li>
-<li><p>根据$h_i&#x3D;g_i·f_i$求出不同级门的尺寸$S_i$【尺寸系数$S$详见（3）4.3】<br>$$<br>S_{j+1}&#x3D;\frac{h_j·S_j}{b_j·g_{j+1}}<br>$$<br>推导如下：</p>
+<li><p>根据$h_i=g_i·f_i$求出不同级门的尺寸$S_i$【尺寸系数$S$详见（3）4.3】</p>
+<script type="math/tex; mode=display">
+S_{j+1}=\frac{h_j·S_j}{b_j·g_{j+1}}</script><p>推导如下：</p>
 <p>※<strong>本征延时和路径中逻辑门的类型有关，和尺寸无关</strong>。具体推导看（3）4.3</p>
-<p>一个单位尺寸的门具有和最小尺寸反相器相同的<strong>驱动能力</strong>，即可知该门的输入电容$C_{j-in}&#x3D;g_jC_{ref}$​​</p>
-<p>若该门的尺寸系数为$S_j$​​​​，则该门的输入电容$C_{j-in}&#x3D;S_jg_jC_{ref}$​​​​</p>
-<p>根据上文4.2.3 可知，<strong>路径上面</strong>，<br>$$<br>\frac{f_j}{b_j}&#x3D;\frac{C_{j+1-in}}{C_{j-in}}&#x3D;\frac{S_{j+1}g_{j+1}C_{ref}}{S_jg_jC_{ref}}<br>$$<br>于是，<br>$$<br>S_{j+1}&#x3D;\frac{f_j·g_j·S_j}{b_j·g_{j+1}}&#x3D;\frac{h_j·S_j}{b_j·g_{j+1}}<br>$$</p>
 </li>
 </ul>
-<p>$eg：$​求出路径上各级门的尺寸系数$S$</p>
+<p>  一个单位尺寸的门具有和最小尺寸反相器相同的<strong>驱动能力</strong>，即可知该门的输入电容$C_{j-in}=g_jC_{ref}$​​</p>
+<p>  若该门的尺寸系数为$S_j$​​​​，则该门的输入电容$C_{j-in}=S_jg_jC_{ref}$​​​​</p>
+<p>  根据上文4.2.3 可知，<strong>路径上面</strong>，</p>
+<script type="math/tex; mode=display">
+  \frac{f_j}{b_j}=\frac{C_{j+1-in}}{C_{j-in}}=\frac{S_{j+1}g_{j+1}C_{ref}}{S_jg_jC_{ref}}</script><p>  于是，</p>
+<script type="math/tex; mode=display">
+  S_{j+1}=\frac{f_j·g_j·S_j}{b_j·g_{j+1}}=\frac{h_j·S_j}{b_j·g_{j+1}}</script><p>$eg：$​求出路径上各级门的尺寸系数$S$</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002223922383.png" srcset="/img/loading.gif" lazyload alt="image-20211002223922383"></p>
 <p>如上图电路图，可以将电路分成以下<strong>4级</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211002223849712.png" srcset="/img/loading.gif" lazyload alt="image-20211002223849712"></p>
 <p><strong>步骤一：确定</strong>$G、B、F$</p>
-<p>由图可知，$C_L&#x3D;5,C_{g1}&#x3D;1$，故$F&#x3D;C_L&#x2F;C_{g1}&#x3D;5$</p>
+<p>由图可知，$C_L=5,C_{g1}=1$，故$F=C_L/C_{g1}=5$</p>
 <p>接下来求解$G、B$</p>
 <p>第1级：</p>
-<p>第1级为一个反相器，即：$g_1&#x3D;1$​；</p>
-<p>在输出节点，有两个分支，且两个分支尺寸相等，即：$b_1&#x3D;\frac{1+1}{1}&#x3D;2$</p>
+<p>第1级为一个反相器，即：$g_1=1$​；</p>
+<p>在输出节点，有两个分支，且两个分支尺寸相等，即：$b_1=\frac{1+1}{1}=2$</p>
 <p>第2级：</p>
-<p>第2级为两个尺寸相等的<code>3-input NAND</code>，即：$g_2&#x3D;5&#x2F;3$​；</p>
-<p>在输出节点，有两个分支，且两个分支尺寸相等，即：$b_2&#x3D;\frac{1+1}{1}&#x3D;2$​</p>
+<p>第2级为两个尺寸相等的<code>3-input NAND</code>，即：$g_2=5/3$​；</p>
+<p>在输出节点，有两个分支，且两个分支尺寸相等，即：$b_2=\frac{1+1}{1}=2$​</p>
 <p>第3级：</p>
-<p>第3级为两个尺寸相等的<code>2-input NOR</code>，即：$g_3&#x3D;5&#x2F;3$​​；</p>
-<p>在输出节点，只有一条路径，即：$b_3&#x3D;1$​​</p>
+<p>第3级为两个尺寸相等的<code>2-input NOR</code>，即：$g_3=5/3$​​；</p>
+<p>在输出节点，只有一条路径，即：$b_3=1$​​</p>
 <p>第4级：</p>
-<p>第4级为一个反相器，即：$g_4&#x3D;1$​；</p>
-<p>在输出节点，只有一条路径，即：$b_4&#x3D;1$</p>
-<p>于是，有$G&#x3D;1·\frac{5}{3}·\frac{5}{3}·1&#x3D;\frac{25}{9}$；$B&#x3D;2·2·1·1&#x3D;4$</p>
-<p>故$H&#x3D;G·B·F&#x3D;\frac{25}{9}·4·5&#x3D;55.69$</p>
+<p>第4级为一个反相器，即：$g_4=1$​；</p>
+<p>在输出节点，只有一条路径，即：$b_4=1$</p>
+<p>于是，有$G=1·\frac{5}{3}·\frac{5}{3}·1=\frac{25}{9}$；$B=2·2·1·1=4$</p>
+<p>故$H=G·B·F=\frac{25}{9}·4·5=55.69$</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center"></th>
-<th align="center">第一级</th>
-<th align="center">第二级</th>
-<th align="center">第三级</th>
-<th align="center">第四级</th>
-<th align="center">总</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">第一级</th>
+<th style="text-align:center">第二级</th>
+<th style="text-align:center">第三级</th>
+<th style="text-align:center">第四级</th>
+<th style="text-align:center">总</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$g$</td>
-<td align="center">1</td>
-<td align="center">5&#x2F;3</td>
-<td align="center">5&#x2F;3</td>
-<td align="center">1</td>
-<td align="center">$G&#x3D;25&#x2F;9$</td>
+<tbody>
+<tr>
+<td style="text-align:center">$g$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">5/3</td>
+<td style="text-align:center">5/3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$G=25/9$</td>
 </tr>
 <tr>
-<td align="center">$b$</td>
-<td align="center">2</td>
-<td align="center">2</td>
-<td align="center">1</td>
-<td align="center">1</td>
-<td align="center">$B&#x3D;4$</td>
+<td style="text-align:center">$b$</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$B=4$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><strong>步骤二：确定级数</strong>$N$</p>
-<p>由图可知，$N&#x3D;4$</p>
-<p><strong>步骤三：计算门努力</strong>$h$<br>$$<br>h&#x3D;\sqrt[N]{H}&#x3D;\sqrt[4]{55.56}&#x3D;2.73<br>$$<br><strong>步骤四：计算尺寸系数</strong>$S_i$</p>
-<p>已知：$S_1&#x3D;1$</p>
+<p>由图可知，$N=4$</p>
+<p><strong>步骤三：计算门努力</strong>$h$</p>
+<script type="math/tex; mode=display">
+h=\sqrt[N]{H}=\sqrt[4]{55.56}=2.73</script><p><strong>步骤四：计算尺寸系数</strong>$S_i$</p>
+<p>已知：$S_1=1$</p>
 <p>于是：</p>
-<p>$S_2&#x3D;\frac{h_{1}S_{1}}{b_{1}g_{2}}&#x3D;\frac{2.73·1}{2·\frac{5}{3}}&#x3D;0.819$​</p>
-<p>$S_3&#x3D;\frac{h_{2}S_{2}}{b_{2}g_{3}}&#x3D;\frac{2.73·0.819}{2·\frac{5}{3}}&#x3D;0.671$​​​</p>
-<p>$S_4&#x3D;\frac{h_{3}S_{3}}{b_{3}g_{4}}&#x3D;\frac{2.73·0.671}{1·1}&#x3D;1.832$​​​</p>
+<p>$S_2=\frac{h_{1}S_{1}}{b_{1}g_{2}}=\frac{2.73·1}{2·\frac{5}{3}}=0.819$​</p>
+<p>$S_3=\frac{h_{2}S_{2}}{b_{2}g_{3}}=\frac{2.73·0.819}{2·\frac{5}{3}}=0.671$​​​</p>
+<p>$S_4=\frac{h_{3}S_{3}}{b_{3}g_{4}}=\frac{2.73·0.671}{1·1}=1.832$​​​</p>
 
             </div>
             <hr>

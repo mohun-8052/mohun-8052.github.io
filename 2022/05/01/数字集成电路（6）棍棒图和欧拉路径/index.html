@@ -255,9 +255,6 @@
 <p>本文主要讲述如何画“棍棒图”和“欧拉路径”来优化复合逻辑门电路的版图设计。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第六章-CMOS组合逻辑门电路"><a href="#第六章-CMOS组合逻辑门电路" class="headerlink" title="第六章 CMOS组合逻辑门电路"></a>第六章 CMOS组合逻辑门电路</h1><h2 id="5-复合逻辑门的版图技术"><a href="#5-复合逻辑门的版图技术" class="headerlink" title="5. 复合逻辑门的版图技术"></a>5. 复合逻辑门的版图技术</h2><p>在（5）4【静态CMOS】组合逻辑的优化重点讨论了<strong>复合逻辑门的尺寸优化</strong></p>
 <p>此处，重点讨论<strong>如何设计逻辑门的版图</strong></p>
 <p>指标如下：</p>
@@ -272,10 +269,11 @@
 </ul>
 <h4 id="2-串联-并联"><a href="#2-串联-并联" class="headerlink" title="2. 串联-并联"></a>2. 串联-并联</h4><ol>
 <li><p>串联：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210906215723057.png" srcset="/img/loading.gif" lazyload alt="image-20210906215723057" style="zoom: 80%;" />
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210906215723057.png" srcset="/img/loading.gif" lazyload alt="image-20210906215723057" style="zoom: 80%;" /></p>
 </li>
 <li><p>并联：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210906220913771.png" srcset="/img/loading.gif" lazyload alt="image-20210906220913771" style="zoom:80%;" /></li>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20210906220913771.png" srcset="/img/loading.gif" lazyload alt="image-20210906220913771" style="zoom:80%;" /></p>
+</li>
 </ol>
 <h4 id="3-好的棍棒图"><a href="#3-好的棍棒图" class="headerlink" title="3. 好的棍棒图"></a>3. 好的棍棒图</h4><ul>
 <li><p>一个阱中只有一条扩散区</p>
@@ -285,8 +283,9 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211003134629160.png" srcset="/img/loading.gif" lazyload alt="image-20211003134629160"></p>
 <p>可以得到一个简单的结论：<strong>合理的输入端顺序可以优化版图——欧拉路径（见下文）</strong></p>
 </li>
-<li><p>同一个输入控制的NMOS管和PMOS管对准。</p>
-</li>
+</ul>
+<ul>
+<li>同一个输入控制的NMOS管和PMOS管对准。</li>
 </ul>
 <h3 id="2-欧拉路径"><a href="#2-欧拉路径" class="headerlink" title="2. 欧拉路径"></a>2. 欧拉路径</h3><p>根据欧拉路径可以得到合理的输入端排列顺序，使得复合逻辑门可以用连续的扩散区来实现，达到占用面积最小、性能好。</p>
 <p>设计步骤步骤如下：</p>

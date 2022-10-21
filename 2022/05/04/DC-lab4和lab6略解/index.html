@@ -231,7 +231,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      13k 字
+      12k 字
     </span>
   
 
@@ -240,7 +240,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      106 分钟
+      103 分钟
     </span>
   
 
@@ -276,15 +276,10 @@
 <p>由于LAB4和LAB6涉及均是很基础的约束设计，且笔者主要跑流程，并未对相关的概念细节和设置进行深究，敬请谅解。</p>
 <hr>
 <span id="more"></span>
-
 <h1 id="1-面积约束"><a href="#1-面积约束" class="headerlink" title="1. 面积约束"></a>1. 面积约束</h1><p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs tcl">set_max_area <span class="hljs-number">0</span>		#逻辑综合出来的芯片面积为<span class="hljs-number">0</span><br><span class="hljs-comment">					#这是理想化的设置，实际上是让EDA尽可能缩小综合出来的面积大小</span><br>set_max_area <span class="hljs-number">540</span>	#芯片面积目标小于<span class="hljs-number">540</span>个单位面积<br></code></pre></td></tr></table></figure>
-
-
-
 <h1 id="2-时序约束"><a href="#2-时序约束" class="headerlink" title="2. 时序约束"></a>2. 时序约束</h1><h2 id="2-1-总论"><a href="#2-1-总论" class="headerlink" title="2.1 总论"></a>2.1 总论</h2><h3 id="1-设计对象"><a href="#1-设计对象" class="headerlink" title="1. 设计对象"></a>1. 设计对象</h3><p>设计对象分类（8种）：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323192414015.png" srcset="/img/loading.gif" lazyload alt="image-20220323192414015" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323192414015.png" srcset="/img/loading.gif" lazyload alt="image-20220323192414015" style="zoom:67%;" /></p>
 <ul>
 <li>设计（design）：顶层模块（TOP module）</li>
 <li>单元（cell）：各种例化的模块</li>
@@ -300,15 +295,11 @@
 <li>以上的区分并不准确，主要需要理解的是<strong>【port】、【pin】、【clock】</strong></li>
 <li>在设计中，时钟端口的声明和其他普通输入输出的端口并没有区别；时钟端口是在约束文件中进行具体声明，同其他普通端口进行区分的</li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323193938501.png" srcset="/img/loading.gif" lazyload alt="image-20220323193938501" style="zoom: 67%;" />
-
-
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323193938501.png" srcset="/img/loading.gif" lazyload alt="image-20220323193938501" style="zoom: 67%;" /></p>
 <h3 id="2-四种时钟路径"><a href="#2-四种时钟路径" class="headerlink" title="2. 四种时钟路径"></a>2. 四种时钟路径</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323194213987.png" srcset="/img/loading.gif" lazyload alt="image-20220323194213987"></p>
 <p><strong>每条路径从时序路径起点开始，经过一些组合逻辑，然后在终点被捕获：</strong></p>
 <ul>
-<li><p><strong>Path 1：</strong>从输入端口开始，到达时序元件的数据输入。即（<strong>input-to-register</strong>）</p>
-</li>
+<li><strong>Path 1：</strong>从输入端口开始，到达时序元件的数据输入。即（<strong>input-to-register</strong>）</li>
 <li><p><strong>Path 2：</strong>从时序元件的时钟引脚开始，到时序元件的数据输入。即（<strong>register-to-register</strong>）</p>
 </li>
 <li><p><strong>Path 3：</strong>从时序元件的时钟引脚开始，到输出端口结束。即（<strong>register-to-output</strong>）</p>
@@ -317,87 +308,92 @@
 </li>
 </ul>
 <p>本次实验中，将分别对四种时钟路径进行<strong>时序约束</strong></p>
-<h2 id="2-2-整体时序约束和r-to-r约束"><a href="#2-2-整体时序约束和r-to-r约束" class="headerlink" title="2.2 整体时序约束和r-to-r约束"></a>2.2 整体时序约束和r-to-r约束</h2><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323195232323.png" srcset="/img/loading.gif" lazyload alt="image-20220323195232323" style="zoom: 67%;" />
-
+<h2 id="2-2-整体时序约束和r-to-r约束"><a href="#2-2-整体时序约束和r-to-r约束" class="headerlink" title="2.2 整体时序约束和r-to-r约束"></a>2.2 整体时序约束和r-to-r约束</h2><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323195232323.png" srcset="/img/loading.gif" lazyload alt="image-20220323195232323" style="zoom: 67%;" /></p>
 <h3 id="1-时钟定义"><a href="#1-时钟定义" class="headerlink" title="1. 时钟定义"></a>1. 时钟定义</h3><ol>
 <li><p>【题目1.1】时钟频率为333.33$Mhz$：</p>
-<p>【解析】时钟的周期为<br>$$<br>T&#x3D;\frac{1}{333.33×10^6}≈3×10^{-9}s&#x3D;3ns<br>$$<br>【代码】</p>
+<p>【解析】时钟的周期为</p>
+<script type="math/tex; mode=display">
+T=\frac{1}{333.33×10^6}≈3×10^{-9}s=3ns</script><p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tcl">create_clock -period <span class="hljs-number">3.0</span> [get_ports clk]<br><br><span class="hljs-comment">#在端口clk产生时钟，即设置clk端口为时钟端口</span><br><span class="hljs-comment">#产生周期为3.0ns的时钟</span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【题目1.2】外部时钟产生器到时钟端口（port）的最大延迟为700$ps$</p>
 <p>【解析】源时钟延迟，即<code>source_latency=700ps=0.7ns</code>。</p>
-<p>​				<strong>源时钟延迟如下图所示。</strong></p>
+<p>​                <strong>源时钟延迟如下图所示。</strong></p>
 <p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_clock_latency -<span class="hljs-keyword">source</span>  -max <span class="hljs-number">0.7</span> [get_clocks clk] <br><br><span class="hljs-comment">#时钟端口的源时钟延时为0.7ns</span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【题目1.3】从时钟端口（port）到所有内部和外部寄存器时钟引脚（pin）的最大延迟为$300±30ps$<br>【解析】时钟网络延时，即<code>network latency=300ps=0.3ns</code>。</p>
-<p>​				<strong>时钟网络延时如下图所示。</strong></p>
-<p>​				存在时钟偏差（shew）</p>
-<p>​				<strong>时钟偏差属于时钟不稳定（uncertainty），后文说明。</strong></p>
+<p>​                <strong>时钟网络延时如下图所示。</strong></p>
+<p>​                存在时钟偏差（shew）</p>
+<p>​                <strong>时钟偏差属于时钟不稳定（uncertainty），后文说明。</strong></p>
 <p>【代码】</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_clock_latency</span> -max <span class="hljs-number">0</span>.<span class="hljs-number">3</span><span class="hljs-meta"> [get_clocks clk]</span><br><br><span class="hljs-comment">#时钟网络延迟为0.7ns</span><br><span class="hljs-comment">#对比源时钟延迟，少了 -source</span><br></code></pre></td></tr></table></figure>
-
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194853863.png" srcset="/img/loading.gif" lazyload alt="image-20211125194853863" style="zoom:80%;" />
-
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211125194853863.png" srcset="/img/loading.gif" lazyload alt="image-20211125194853863" style="zoom:80%;" /></p>
 </li>
+</ol>
+<ol>
 <li><p>【题目1.4】略。时钟抖动（jitter）属于时钟不稳定，后文说明。</p>
 </li>
 <li><p>【题目1.5】略。建立时间裕量（setup margin）属于时钟不稳定，后文说明。</p>
 </li>
+</ol>
+<ol>
 <li><p>【题目1.6】时钟引脚（pin）在最坏情况下，上升时间和下降时间是$120ps$</p>
 <p>【解析】无</p>
 <p>【代码】</p>
-<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_clock_transition <span class="hljs-number">0.12</span> [get_clocks clk]<br></code></pre></td></tr></table></figure></li>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_clock_transition <span class="hljs-number">0.12</span> [get_clocks clk]<br></code></pre></td></tr></table></figure>
+</li>
 </ol>
-<h3 id="2-pre-CTS-setup-时钟不确定性（uncertainty）"><a href="#2-pre-CTS-setup-时钟不确定性（uncertainty）" class="headerlink" title="2. pre-CTS setup 时钟不确定性（uncertainty）"></a>2. pre-CTS setup 时钟不确定性（uncertainty）</h3><p>公式：<br>$$<br>setup：clock\ uncertainty&#x3D;|skew|+|jitter|+|margin|<br>$$<br>【注】：</p>
+<h3 id="2-pre-CTS-setup-时钟不确定性（uncertainty）"><a href="#2-pre-CTS-setup-时钟不确定性（uncertainty）" class="headerlink" title="2. pre-CTS setup 时钟不确定性（uncertainty）"></a>2. pre-CTS setup 时钟不确定性（uncertainty）</h3><p>公式：</p>
+<script type="math/tex; mode=display">
+setup：clock\ uncertainty=|skew|+|jitter|+|margin|</script><p>【注】：</p>
 <ul>
 <li>此处的公式是<strong>前-时钟树</strong>综合：Clock Tree Synthesis （CTS）的<strong>建立时间不确定</strong>公式。适用于DC lab4。</li>
 </ul>
 <ol>
 <li><p><strong>时钟偏差（skew）</strong></p>
 <p>【题目1.3】从时钟端口（port）到所有内部和外部寄存器时钟引脚（pin）的最大延迟为$300±30ps$<br>【解析】存在时钟偏差（shew）</p>
-<p>​				如下图所示，寄存时钟引脚的$±30ps$内部时钟偏差变化会<strong>导致$-60ps$的最坏情况偏斜</strong></p>
-<p>​				即，晚启动（$+30ps$）和早捕获（$-30ps$）</p>
-<p>​				即，<code>|skew|=|-60ps|=0.06ns</code></p>
+<p>​                如下图所示，寄存时钟引脚的$±30ps$内部时钟偏差变化会<strong>导致$-60ps$的最坏情况偏斜</strong></p>
+<p>​                即，晚启动（$+30ps$）和早捕获（$-30ps$）</p>
+<p>​                即，<code>|skew|=|-60ps|=0.06ns</code></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323210947228.png" srcset="/img/loading.gif" lazyload alt="image-20220323210947228"></p>
 <p>【代码】</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_clock_uncertainty</span> -setup <span class="hljs-number">0</span>.<span class="hljs-number">06</span><span class="hljs-meta"> [get_clocks clk]</span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p><strong>时钟抖动（jitter）</strong>（具体还不好理解，目前知道考虑单倍即可）</p>
 <p>【题目1.4】由于时钟抖动，时钟周期存在±40ps的不确定性</p>
 <p>【解析】存在时钟抖动（jitter）</p>
-<p>​				一般情况下，jitter指的是cycle_to_cycle jitter &#x3D; T2 -T1、 T3-T2 …. 即两个相邻周期的差值。</p>
-<p>​				<strong>最坏情况下</strong>，$|jitter|&#x3D;|-40ps|&#x3D;0.04ns$</p>
+<p>​                一般情况下，jitter指的是cycle_to_cycle jitter = T2 -T1、 T3-T2 …. 即两个相邻周期的差值。</p>
+<p>​                <strong>最坏情况下</strong>，$|jitter|=|-40ps|=0.04ns$</p>
 <p>【代码】</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_clock_uncertainty</span> -setup <span class="hljs-number">0</span>.<span class="hljs-number">04</span><span class="hljs-meta"> [get_clocks clk]</span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p><strong>建立时间裕量（setup margin）</strong></p>
 <p>【题目1.5】每个时钟周期需要$50ps$的建立时间裕量</p>
 <p>【解析】无</p>
 <p>【代码】</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_clock_uncertainty</span> -setup <span class="hljs-number">0</span>.<span class="hljs-number">05</span><span class="hljs-meta"> [get_clocks clk]</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_clock_uncertainty</span> -setup <span class="hljs-number">0</span>.<span class="hljs-number">05</span><span class="hljs-meta"> [get_clocks clk]</span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
-<p>【总结】：<br>$$<br>setup：clock\ uncertainty&#x3D;|skew|+|jitter|+|margin|&#x3D;0.06+0.04+0.05&#x3D;0.15<br>$$<br>于是代码如下：</p>
+<p>【总结】：</p>
+<script type="math/tex; mode=display">
+setup：clock\ uncertainty=|skew|+|jitter|+|margin|=0.06+0.04+0.05=0.15</script><p>于是代码如下：</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_clock_uncertainty</span> -setup <span class="hljs-number">0</span>.<span class="hljs-number">15</span><span class="hljs-meta"> [get_clocks clk]</span><br></code></pre></td></tr></table></figure>
-
-
-
 <p>【注】：</p>
 <ul>
 <li><p>时钟不确定性均是考虑<strong>最坏情况</strong>，即当前所设置的时钟周期下，由于不确定性导致了实际的时钟周期短于所设置的时钟周期，但是logic依然需要在比所设置的时钟周期的实际时钟周期内完成其运算。因为如果完不成其逻辑运算，意味着需要增大我们所设置的时钟周期，这是<strong>我们所不希望看到的</strong>。</p>
 </li>
 <li><p>什么时候考虑uncertainty？</p>
 <p>答：当题目给出<strong>设计(design)内部的组合逻辑的最值</strong>时，我们需要考虑uncertainty。根据uncertainty得到实际的时钟周期$T’$，从而约束端口的时序。</p>
-<p>​		如：问题4.2，out2端口<strong>内部</strong>组合逻辑的最大传播延时为$810ps$；问题5.0，Cin1和Cin2端口到Cout端口的最大延时为$2.45ns$（port-to-port，是纯组合逻辑，即<strong>内部</strong>组合逻辑的最大传播延时为$2.45ns$）。</p>
+<p>​        如：问题4.2，out2端口<strong>内部</strong>组合逻辑的最大传播延时为$810ps$；问题5.0，Cin1和Cin2端口到Cout端口的最大延时为$2.45ns$（port-to-port，是纯组合逻辑，即<strong>内部</strong>组合逻辑的最大传播延时为$2.45ns$）。</p>
 </li>
 <li><p><strong>skew和jitter：</strong></p>
 <p>在时序约束的时候，我们均是以<strong>【周期period】</strong>为视角，讨论如何在固定的周期内，让逻辑（logic）运算可以满足（逻辑综合，主要就是优化这些组合逻辑）。</p>
@@ -407,98 +403,95 @@
 </ul>
 <h2 id="2-3-输入时序约束（i-to-r）"><a href="#2-3-输入时序约束（i-to-r）" class="headerlink" title="2.3 输入时序约束（i-to-r）"></a>2.3 输入时序约束（i-to-r）</h2><h3 id="1-计算方法"><a href="#1-计算方法" class="headerlink" title="1. 计算方法"></a>1. 计算方法</h3><p><strong>input-to-register</strong> 需要自己构造 外部的逻辑（external logic），我们需要计算出<strong>【input delay】</strong>来约束输入端口的时序。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323230740925.png" srcset="/img/loading.gif" lazyload alt="image-20220323230740925"></p>
-<p>令，input delay<br>$$<br>input\ delay &#x3D; T_{Clk-q}+T_M<br>$$<br>其中，</p>
+<p>令，input delay</p>
+<script type="math/tex; mode=display">
+input\ delay = T_{Clk-q}+T_M</script><p>其中，</p>
 <p>$T_{Clk-q}$：外部电路寄存器的传播延时</p>
 <p>$T_M$：外部组合逻辑电路的最坏传播时间</p>
 <p>如下图，</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220323233129352.png" srcset="/img/loading.gif" lazyload alt="image-20220323233129352"></p>
-<h3 id="2-LAB解读"><a href="#2-LAB解读" class="headerlink" title="2. LAB解读"></a>2. LAB解读</h3><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324144236182.png" srcset="/img/loading.gif" lazyload alt="image-20220324144236182" style="zoom:50%;" />
-
+<h3 id="2-LAB解读"><a href="#2-LAB解读" class="headerlink" title="2. LAB解读"></a>2. LAB解读</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324144236182.png" srcset="/img/loading.gif" lazyload alt="image-20220324144236182" style="zoom:50%;" /></p>
 <ol>
 <li><p>【题目3.1】从端口data1和data2通过内部逻辑S的到达寄存器R1、R2的延时为$2.2ns$</p>
-<p>【解析】由题可知，$T_N&#x3D;2.2ns$</p>
-<p>​				“走”的时间$T&#x3D;T_{Clk-q}+T_M+T_N&#x3D;input\ delay +T_N$</p>
-<p>​				“允许”的时间$T_允&#x3D;T-uncertainty-T_{setup}$</p>
-<p>​				需要满足$T_走≤T_允$，即$input\ delay &lt;T-uncertainty-T_{setup}-T_N$</p>
-<p>​				即，$input\ delay&#x3D;3-0.15-0.2-2.2&#x3D;0.45ns$</p>
+<p>【解析】由题可知，$T_N=2.2ns$</p>
+<p>​                “走”的时间$T=T_{Clk-q}+T_M+T_N=input\ delay +T_N$</p>
+<p>​                “允许”的时间$T_允=T-uncertainty-T_{setup}$</p>
+<p>​                需要满足$T_走≤T_允$，即$input\ delay &lt;T-uncertainty-T_{setup}-T_N$</p>
+<p>​                即，$input\ delay=3-0.15-0.2-2.2=0.45ns$</p>
 <p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_input_delay -max  <span class="hljs-number">0.45</span> -<span class="hljs-keyword">clock</span> clk [get_ports data*]  <br><br><span class="hljs-comment">#注意，此处是对输入的一些特定端口(special port)进行约束，故[get_ports data*]  </span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【题目3.2】F3的数据到达<code>sel</code>的绝对时刻是$1.4ns$时刻</p>
-<p>【解析】F3的数据到达<code>sel</code>的绝对时刻是$1.4ns$时刻，即在$ideal \ clock$对应的$t&#x3D;1.4ns$时，数据就要到达<code>sel</code>端口（port）</p>
-<p>​				但是F3的时钟同样存在latency，如下图。</p>
+<p>【解析】F3的数据到达<code>sel</code>的绝对时刻是$1.4ns$时刻，即在$ideal \ clock$对应的$t=1.4ns$时，数据就要到达<code>sel</code>端口（port）</p>
+<p>​                但是F3的时钟同样存在latency，如下图。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324145651592.png" srcset="/img/loading.gif" lazyload alt="image-20220324145651592"></p>
-<p>​				source_latency和network_latency加起来，总的latency为$1ns$，即当$t’&#x3D;0$时，$ideal \ clock$对应的$t&#x3D;1ns$</p>
-<p>​				因此$input\ delay&#x3D;absolute\ time-latency&#x3D;1.4-1&#x3D;0.4ns$</p>
+<p>​                source_latency和network_latency加起来，总的latency为$1ns$，即当$t’=0$时，$ideal \ clock$对应的$t=1ns$</p>
+<p>​                因此$input\ delay=absolute\ time-latency=1.4-1=0.4ns$</p>
 <p>【代码】</p>
-<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_input_delay -max  <span class="hljs-number">0.4</span> -<span class="hljs-keyword">clock</span> clk [get_ports sel]<br></code></pre></td></tr></table></figure></li>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_input_delay -max  <span class="hljs-number">0.4</span> -<span class="hljs-keyword">clock</span> clk [get_ports sel]<br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <h2 id="2-4-输出时序约束（r-to-o）"><a href="#2-4-输出时序约束（r-to-o）" class="headerlink" title="2.4 输出时序约束（r-to-o）"></a>2.4 输出时序约束（r-to-o）</h2><h3 id="1-计算方法-1"><a href="#1-计算方法-1" class="headerlink" title="1. 计算方法"></a>1. 计算方法</h3><p><strong>register-to-output</strong> 需要自己构造 外部的逻辑（external logic），我们需要计算出<strong>【output delay】</strong>来约束输出端口的时序。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324152131449.png" srcset="/img/loading.gif" lazyload alt="image-20220324152131449"></p>
-<p>令，output delay<br>$$<br>output\ delay &#x3D; T_T+T_{SETUP}<br>$$<br>其中，</p>
+<p>令，output delay</p>
+<script type="math/tex; mode=display">
+output\ delay = T_T+T_{SETUP}</script><p>其中，</p>
 <p>$T_T$：外部组合逻辑的最大传播延时</p>
 <p>$T_{SETUP}$：外部所构造的capture寄存器的建立时间</p>
 <p>如下图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324152521036.png" srcset="/img/loading.gif" lazyload alt="image-20220324152521036"></p>
-<h3 id="2-LAB解读-1"><a href="#2-LAB解读-1" class="headerlink" title="2.LAB解读"></a>2.LAB解读</h3><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324151925490.png" srcset="/img/loading.gif" lazyload alt="image-20220324151925490" style="zoom:55%;" />
-
+<h3 id="2-LAB解读-1"><a href="#2-LAB解读-1" class="headerlink" title="2.LAB解读"></a>2.LAB解读</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324151925490.png" srcset="/img/loading.gif" lazyload alt="image-20220324151925490" style="zoom:55%;" /></p>
 <ol>
 <li><p>【问题4.1】out1端口<strong>外部</strong>组合逻辑的最大传播延时为$420ps$，F6的建立时间为$80ps$</p>
-<p>【解析】外部组合逻辑的最大传播延时$T_&#x3D;420ps&#x3D;0.42ns$</p>
-<p>​				外部所构造的capture寄存器的建立时间$T_{SETUP}&#x3D;80ps&#x3D;0.08ns$</p>
-<p>​				于是，$output\ delay &#x3D; T_T+T_{SETUP}&#x3D;0.42+0.08&#x3D;0.5ns$</p>
+<p>【解析】外部组合逻辑的最大传播延时$T_=420ps=0.42ns$</p>
+<p>​                外部所构造的capture寄存器的建立时间$T_{SETUP}=80ps=0.08ns$</p>
+<p>​                于是，$output\ delay = T_T+T_{SETUP}=0.42+0.08=0.5ns$</p>
 <p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_output_delay -max  <span class="hljs-number">0.5</span> -<span class="hljs-keyword">clock</span> clk [get_ports out1]<br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【问题4.2】out2端口<strong>内部</strong>组合逻辑的最大传播延时为$810ps$</p>
 <p>【解析】注意，此处涉及到<strong>内部组合逻辑</strong>，计算output delay需要构造如下图所示的<strong>内外部电路</strong></p>
-<p>​				因为涉及到<strong>内部电路</strong>，故还需要考虑<strong>uncertainty</strong></p>
+<p>​                因为涉及到<strong>内部电路</strong>，故还需要考虑<strong>uncertainty</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324152131449.png" srcset="/img/loading.gif" lazyload alt="image-20220324152131449"></p>
-<p>​				由题可知，$T_S&#x3D;810ps&#x3D;0.81ns$</p>
-<p>​				根据定义，理想条件下，$T&#x3D;T_{Clk-q}+T_S+T_T+T_{SETUP}$（具体见数集（10））</p>
-<p>​				由于条件中，$T_{Clk-q}$未给出，可令为0；$output\ delay &#x3D; T_T+T_{SETUP}$</p>
-<p>​				于是，$T&#x3D;T_S+output\ delay$</p>
-<p>​				由于涉及到<strong>内部的寄存器</strong>，故需要考虑uncertainty，即</p>
-<p>​				$T’&#x3D;T-uncertainty&#x3D;3-0.15&#x3D;2.85ns$</p>
-<p>​				要让时序满足，则$T_S+output\ delay≤T’$，于是$output\ delay&#x3D;T’-T_S&#x3D;2.85-0.81&#x3D;2.04ns$</p>
+<p>​                由题可知，$T_S=810ps=0.81ns$</p>
+<p>​                根据定义，理想条件下，$T=T_{Clk-q}+T_S+T_T+T_{SETUP}$（具体见数集（10））</p>
+<p>​                由于条件中，$T_{Clk-q}$未给出，可令为0；$output\ delay = T_T+T_{SETUP}$</p>
+<p>​                于是，$T=T_S+output\ delay$</p>
+<p>​                由于涉及到<strong>内部的寄存器</strong>，故需要考虑uncertainty，即</p>
+<p>​                $T’=T-uncertainty=3-0.15=2.85ns$</p>
+<p>​                要让时序满足，则$T_S+output\ delay≤T’$，于是$output\ delay=T’-T_S=2.85-0.81=2.04ns$</p>
 <p>【代码】</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_output_delay</span> -max <span class="hljs-number">2</span>.<span class="hljs-number">04</span>  -clock clk<span class="hljs-meta"> [get_ports out2]</span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【问题4.3】out3端口外的capture寄存器需要$400ps$的建立时间</p>
-<p>【解析】根据电路图，out3端口外无组合逻辑电路，即$T_T&#x3D;0$</p>
-<p>​				于是，于是，$output\ delay &#x3D; T_T+T_{SETUP}&#x3D;0+400ps&#x3D;0.4ns$</p>
+<p>【解析】根据电路图，out3端口外无组合逻辑电路，即$T_T=0$</p>
+<p>​                于是，于是，$output\ delay = T_T+T_{SETUP}=0+400ps=0.4ns$</p>
 <p>【代码】</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_output_delay</span> -max  <span class="hljs-number">0</span>.<span class="hljs-number">4</span> -clock clk<span class="hljs-meta"> [get_ports out3] </span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_output_delay</span> -max  <span class="hljs-number">0</span>.<span class="hljs-number">4</span> -clock clk<span class="hljs-meta"> [get_ports out3] </span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <h2 id="2-5-input-to-output时序约束"><a href="#2-5-input-to-output时序约束" class="headerlink" title="2.5 input-to-output时序约束"></a>2.5 input-to-output时序约束</h2><h3 id="1-计算方法-2"><a href="#1-计算方法-2" class="headerlink" title="1. 计算方法"></a>1. 计算方法</h3><p><strong>input-to-output</strong> 时钟路径采用如下模型，我们需要构造R1、R2作为外部寄存器电路。</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324160753029.png" srcset="/img/loading.gif" lazyload alt="image-20220324160753029" style="zoom: 60%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324160753029.png" srcset="/img/loading.gif" lazyload alt="image-20220324160753029" style="zoom: 60%;" /></p>
 <p>对于<strong>input-to-output</strong> 时钟路径，进行时序约束的时候，我们需要考虑uncertainty，因为这是此处涉及到了<strong>设计（design）内部的组合逻辑</strong>，故需要考虑。</p>
-<p>根据数集公式，理想情况下，$T&#x3D;T_{Clk-q}+T_S+T_{logic}+T_T+T_{SETUP}&#x3D;input\ delay+T_{logic}+output \ delay$</p>
-<p>非理想情况下，$T’&#x3D;T-uncertainty&#x3D;input\ delay+T_{logic}+output \ delay$</p>
-<p>得，$input\ delay+output \ delay&#x3D;T-uncertainty-T_{logic}$</p>
+<p>根据数集公式，理想情况下，$T=T_{Clk-q}+T_S+T_{logic}+T_T+T_{SETUP}=input\ delay+T_{logic}+output \ delay$</p>
+<p>非理想情况下，$T’=T-uncertainty=input\ delay+T_{logic}+output \ delay$</p>
+<p>得，$input\ delay+output \ delay=T-uncertainty-T_{logic}$</p>
 <p>根据计算得到的$input\ delay+output \ delay$进行分配。</p>
-<h3 id="2-LAB解读-2"><a href="#2-LAB解读-2" class="headerlink" title="2. LAB解读"></a>2. LAB解读</h3><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324163229384.png" srcset="/img/loading.gif" lazyload alt="image-20220324163229384" style="zoom:50%;" />
-
+<h3 id="2-LAB解读-2"><a href="#2-LAB解读-2" class="headerlink" title="2. LAB解读"></a>2. LAB解读</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324163229384.png" srcset="/img/loading.gif" lazyload alt="image-20220324163229384" style="zoom:50%;" /></p>
 <p>【题目5.0】Cin1和Cin2端口到Cout端口的最大延时为$2.45ns$</p>
 <p>【解析】port-to-port，是纯组合逻辑，即<strong>内部</strong>组合逻辑的最大传播延时为$2.45ns$。</p>
-<p>​				即$T_{logic}&#x3D;2.45ns$</p>
-<p>​				$T’&#x3D;T-uncertainty&#x3D;3-0.15&#x3D;2.85ns$</p>
-<p>​				于是，$input\ delay+output \ delay&#x3D;T’-T_{logic}&#x3D;0.4$</p>
-<p>​				可以分配 0.2+0.2、0.3+0.1等，答案取0.3+0.1。</p>
+<p>​                即$T_{logic}=2.45ns$</p>
+<p>​                $T’=T-uncertainty=3-0.15=2.85ns$</p>
+<p>​                于是，$input\ delay+output \ delay=T’-T_{logic}=0.4$</p>
+<p>​                可以分配 0.2+0.2、0.3+0.1等，答案取0.3+0.1。</p>
 <p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_input_delay -max <span class="hljs-number">0.3</span> -<span class="hljs-keyword">clock</span> clk [get_ports Cin*]<br>set_output_delay -max <span class="hljs-number">0.1</span> -<span class="hljs-keyword">clock</span> clk [get_ports Cout]<br></code></pre></td></tr></table></figure>
-
-
-
-
-
 <h1 id="3-环境属性约束"><a href="#3-环境属性约束" class="headerlink" title="3. 环境属性约束"></a>3. 环境属性约束</h1><h2 id="3-1-总论"><a href="#3-1-总论" class="headerlink" title="3.1 总论"></a>3.1 总论</h2><p>环境属性中主要有四个参数</p>
 <ul>
 <li>输入驱动和输入跳变</li>
@@ -509,38 +502,34 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504201651495.png" srcset="/img/loading.gif" lazyload alt="环境属性"></p>
 <h2 id="3-2-输入驱动（input-drive）和输入跳变（transition）"><a href="#3-2-输入驱动（input-drive）和输入跳变（transition）" class="headerlink" title="3.2 输入驱动（input drive）和输入跳变（transition）"></a>3.2 输入驱动（input drive）和输入跳变（transition）</h2><p>如果没有设置输入驱动，则DC在计算输入时间的时候，会认为输入跳变为0，这是理想状态下。但为了更好约束时序，需要进行约束，使用指令如下：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_driving_cell<br><span class="hljs-comment"># 使用特定单元驱动设计，由于单元是库中现实的，因此存在输出跳变，于是得到设计的输入跳变</span><br>set_input_transition<br><span class="hljs-comment"># 直接设置设计的输入跳变</span><br></code></pre></td></tr></table></figure>
-
 <h3 id="1-LAB解读"><a href="#1-LAB解读" class="headerlink" title="1. LAB解读"></a>1. LAB解读</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504205233383.png" srcset="/img/loading.gif" lazyload alt="image-20220504205233383"></p>
 <ol>
 <li><p>【题目】：用以特定单元<code>bufbd1</code>，驱动除了<code>clk</code>和<code>Cin*</code>之外的所有输入端口</p>
 <p>【解析】：使用指令1</p>
 <p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_driving_cell -lib_cell bufbd1 -library cb13fs120_tsmc_max \<br> [remove_from_collection [all_inputs] [get_ports <span class="hljs-string">&quot;clk Cin*&quot;</span>]]<br><span class="hljs-comment"># 或</span><br>set_driving_cell -lib_cell bufbd1 -library cb13fs120_tsmc_max \<br> [get_ports <span class="hljs-string">&quot;data* sel*&quot;</span>]]<br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【题目】：<code>Cin*</code>是一个芯片级的输入端口，最大的输入跳变为120ps</p>
 <p>【解析】：使用指令2</p>
 <p>【代码】</p>
-<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_input_transition <span class="hljs-number">0.12</span> [get_ports Cin*]<br><span class="hljs-comment"># 如何知道时间单位？</span><br><span class="hljs-comment"># # 使用指令: report_lib &lt;lib_name&gt; 即可看到对应库的单位</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_input_transition <span class="hljs-number">0.12</span> [get_ports Cin*]<br><span class="hljs-comment"># 如何知道时间单位？</span><br><span class="hljs-comment"># # 使用指令: report_lib &lt;lib_name&gt; 即可看到对应库的单位</span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <h2 id="3-3-输出负载（load）"><a href="#3-3-输出负载（load）" class="headerlink" title="3.3 输出负载（load）"></a>3.3 输出负载（load）</h2><p>约束设计最多可以负载多大的电容值，使用指令如下</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">set_load</span><br></code></pre></td></tr></table></figure>
-
 <h3 id="1-常见情况"><a href="#1-常见情况" class="headerlink" title="1. 常见情况"></a>1. 常见情况</h3><ol>
 <li><p>负载特定值的电容</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_load</span> <span class="hljs-number">5</span><span class="hljs-meta"> [get_ports OUT1]</span><br></code></pre></td></tr></table></figure>
-
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504203221141.png" srcset="/img/loading.gif" lazyload alt="image-20220504203221141"></p>
 </li>
 <li><p>负载相当与某单元某个引脚的电容值</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_load [load_of(my_lib/and2a0/A)] [get_ports OUT1]<br><span class="hljs-comment"># 注意: load_of 的使用</span><br><span class="hljs-comment"># OUT1驱动相当与and2a0单元A引脚的电容值</span><br></code></pre></td></tr></table></figure>
-
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504203247943.png" srcset="/img/loading.gif" lazyload alt="image-20220504203247943"></p>
 </li>
 <li><p>负载相当与多个某单元某个引脚的电容值</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_load [<span class="hljs-keyword">expr</span> [load_of(my_lib/inv1a0/A) * <span class="hljs-number">3</span>]] [get_ports OUT1]<br><span class="hljs-comment"># 注意: expr 的使用</span><br><span class="hljs-comment"># OUT1驱动相当与inv1a0单元A引脚的3倍的电容值</span><br></code></pre></td></tr></table></figure>
-
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504203754758.png" srcset="/img/loading.gif" lazyload alt="image-20220504203754758"></p>
 </li>
 </ol>
@@ -548,60 +537,43 @@
 <ol>
 <li><p>【题目】：除了<code>Cout</code>，其他输出端口最大可以负载2倍<code>bufbd7</code>的<code>I</code>端口的电容</p>
 <p>【解析】：除了<code>Cout</code>端口，其他的输出端口为<code>out1</code>、<code>out2</code>、<code>out3</code>，即其他端口可以使用<code>out*</code>表示</p>
-<p>​				   该题目要求，同上文所述的情况3</p>
+<p>​                   该题目要求，同上文所述的情况3</p>
 <p>【代码】</p>
 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">set_load <span class="hljs-comment">[expr 2 * <span class="hljs-comment">[load_of cb13fs120_tsmc_max/bufbd7/I]</span>]</span> <span class="hljs-comment">[get_ports out*]</span><br></code></pre></td></tr></table></figure>
-
-
 </li>
+</ol>
+<ol>
 <li><p>【题目】：<code>Cout</code>端口，最大可以负载25fF的电容值</p>
 <p>【解析】：属于情况1</p>
 <p>【指令】</p>
-<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_load <span class="hljs-number">0.025</span> [get_ports Cout*]<br><span class="hljs-comment"># 如何看电容“单位”？同上问所述</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs tcl">set_load <span class="hljs-number">0.025</span> [get_ports Cout*]<br><span class="hljs-comment"># 如何看电容“单位”？同上问所述</span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <h2 id="3-4-线负载模型"><a href="#3-4-线负载模型" class="headerlink" title="3.4 线负载模型"></a>3.4 线负载模型</h2><h3 id="1-如何选定合适的线负载模型"><a href="#1-如何选定合适的线负载模型" class="headerlink" title="1. 如何选定合适的线负载模型"></a>1. 如何选定合适的线负载模型</h3><p>设定线负载模型，需要根据<strong>DC综合出来的面积进行设置</strong>。</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs tcl"><span class="hljs-comment"># set_max_area 0</span><br><span class="hljs-comment"># compile</span><br>report_area<br><span class="hljs-comment"># 报出DC综合之后面积</span><br><span class="hljs-comment"># 根据面积，在report_lib.rpt中寻找合适的线负载模型</span><br></code></pre></td></tr></table></figure>
-
 <p>部分<code>report_lib.rpt</code>内容如下：</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs TCL">Wire Loading Model Selection Group:<br><br>   Name           : predcaps<br>   <br>        Selection             Wire <span class="hljs-keyword">load</span> name<br>    min area   max area<br>   -------------------------------------------<br>        <span class="hljs-number">0.00</span>     <span class="hljs-number">200.00</span>          ForQA<br>      <span class="hljs-number">200.00</span>    <span class="hljs-number">8000.00</span>          <span class="hljs-number">8000</span><br>     <span class="hljs-number">8000.00</span>   <span class="hljs-number">16000.00</span>          <span class="hljs-number">16000</span><br>    <span class="hljs-number">16000.00</span>   <span class="hljs-number">35000.00</span>          <span class="hljs-number">35000</span><br>    <span class="hljs-number">35000.00</span>   <span class="hljs-number">70000.00</span>          <span class="hljs-number">70000</span><br>    <span class="hljs-number">70000.00</span>   <span class="hljs-number">140000.00</span>         <span class="hljs-number">140000</span><br>    <span class="hljs-number">140000.00</span>  <span class="hljs-number">280000.00</span>         <span class="hljs-number">280000</span><br>    <span class="hljs-number">280000.00</span>  <span class="hljs-number">540000.00</span>         <span class="hljs-number">540000</span><br>    <span class="hljs-number">540000.00</span>  <span class="hljs-number">1000000.00</span>        <span class="hljs-number">1000000</span><br>    <span class="hljs-number">1000000.00</span> <span class="hljs-number">2000000.00</span>        <span class="hljs-number">2000000</span><br>    <span class="hljs-number">2000000.00</span> <span class="hljs-number">4000000.00</span>        <span class="hljs-number">4000000</span><br>    <span class="hljs-number">4000000.00</span> <span class="hljs-number">8000000.00</span>        <span class="hljs-number">8000000</span><br></code></pre></td></tr></table></figure>
-
 <p>关于<strong>线负载模型的模式</strong>，笔者目前没有用到，不在赘述。</p>
 <h3 id="2-LAB解读-4"><a href="#2-LAB解读-4" class="headerlink" title="2. LAB解读"></a>2. LAB解读</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504211816320.png" srcset="/img/loading.gif" lazyload alt="image-20220504211816320"></p>
 <p>【题目】：根据面积选定合适的线负载模型</p>
 <p>【代码】</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs tcl"><span class="hljs-comment"># DC综合之后，面积大约在3000~4000左右，于是选择线负载模型“8000”</span><br><span class="hljs-keyword">set</span> auto_wire_load_selection false<br><span class="hljs-comment"># 需要先取消掉系统自动设置的线负载模型，才能人为重新设置</span><br>set_wire_load_model -name <span class="hljs-number">8000</span><br><span class="hljs-comment"># 设置线负载模型为8000</span><br></code></pre></td></tr></table></figure>
-
-
-
 <h2 id="3-5-操作条件（PVT条件）"><a href="#3-5-操作条件（PVT条件）" class="headerlink" title="3.5 操作条件（PVT条件）"></a>3.5 操作条件（PVT条件）</h2><p>所谓PVT，即<code>process</code>制程、<code>voltage</code>电压、<code>temperature</code>温度</p>
 <p>不同的PVT条件下，DC计算出来的延时是不一样的。通常，制程越慢（<code>ss</code>）、温度越高、电压越低，单元延时越高，如下图</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504210154363.png" srcset="/img/loading.gif" lazyload alt="image-20220504210154363"></p>
 <p>我们希望，芯片在各种各样的PVT情况<strong>均可以正常工作</strong>。</p>
 <h3 id="1-如何知道有哪些PVT条件"><a href="#1-如何知道有哪些PVT条件" class="headerlink" title="1. 如何知道有哪些PVT条件"></a>1. 如何知道有哪些PVT条件</h3><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs tcl">list_lib<br><span class="hljs-comment"># 列出所有的库，需要注意的library下面名字，即所对应.db库的库名&lt;lib_name&gt;</span><br>report_lib &lt;lib_name&gt; &gt; &lt;lib_name&gt;.rpt<br><span class="hljs-comment"># 查看&lt;lib_name&gt;.rpt文件，利用ctrl+F搜索Operation Condition即可找到.db提供的所有PVT条件</span><br><span class="hljs-comment"># 选择你需要的PVT条件进行设置即可</span><br>set_operating_condition &lt;PVT_name&gt;<br></code></pre></td></tr></table></figure>
-
 <p>部分<code>report_lib.rpt</code>内容如下：</p>
 <figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">Operating Conditions</span><span class="hljs-punctuation">:</span><br><span class="hljs-punctuation"></span><br>    <span class="hljs-attribute">Operating Condition Name</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">cb13fs120_tsmc_max</span><br>    <span class="hljs-attribute">Library</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">cb13fs120_tsmc_max</span><br>    <span class="hljs-attribute">Process</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">  1.20</span><br>    <span class="hljs-attribute">Temperature</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">125.00</span><br>    <span class="hljs-attribute">Voltage</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">  1.08</span><br>    <span class="hljs-attribute">Interconnect Model</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">worst_case_tree</span><br></code></pre></td></tr></table></figure>
-
 <p>可知，PVT条件名为<code>cb13fs120_tsmc_max</code></p>
 <h3 id="2-LAB解读-5"><a href="#2-LAB解读-5" class="headerlink" title="2. LAB解读"></a>2. LAB解读</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504211318262.png" srcset="/img/loading.gif" lazyload alt="image-20220504211318262"></p>
 <p>【题目】：该<code>.db</code>库只有一个PVT条件，设置此PVT条件为当前的PVT条件</p>
 <p>【代码】</p>
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">set_operating_condition -<span class="hljs-built_in">max</span> cb13fs120_tsmc_max<br></code></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="【附录】"><a href="#【附录】" class="headerlink" title="【附录】"></a>【附录】</h1><h2 id="1-电路图"><a href="#1-电路图" class="headerlink" title="1. 电路图"></a>1. 电路图</h2><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324164338943.png" srcset="/img/loading.gif" lazyload alt="image-20220324164338943" style="zoom: 67%;" />
-
+<h1 id="【附录】"><a href="#【附录】" class="headerlink" title="【附录】"></a>【附录】</h1><h2 id="1-电路图"><a href="#1-电路图" class="headerlink" title="1. 电路图"></a>1. 电路图</h2><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324164338943.png" srcset="/img/loading.gif" lazyload alt="image-20220324164338943" style="zoom: 67%;" /></p>
 <h2 id="2-题干要求"><a href="#2-题干要求" class="headerlink" title="2. 题干要求"></a>2. 题干要求</h2><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220324164437493.png" srcset="/img/loading.gif" lazyload alt="时序和面积约束"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220504212747617.png" srcset="/img/loading.gif" lazyload alt="环境属性约束条件"></p>
 <h2 id="3-完整指令代码"><a href="#3-完整指令代码" class="headerlink" title="3. 完整指令代码"></a>3. 完整指令代码</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><code class="hljs tcl"><span class="hljs-comment">#.con file</span><br><br><span class="hljs-comment">###################################</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">#   CLOCK DEFINITION              #</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">###################################</span><br><br><span class="hljs-comment"># A 333Mhz clock is a 3.0ns period:</span><br><span class="hljs-comment">#</span><br>create_clock -period <span class="hljs-number">3.0</span> [get_ports clk]<br><br><br><span class="hljs-comment"># External clock source latency is 700ps or 0.7ns</span><br><span class="hljs-comment">#</span><br>set_clock_latency -<span class="hljs-keyword">source</span>  -max <span class="hljs-number">0.7</span> [get_clocks clk] <br><br><br><span class="hljs-comment"># The maximum internal clock network insertion delay or latency is 300ps or 0.3 ns:</span><br><span class="hljs-comment">#</span><br>set_clock_latency -max <span class="hljs-number">0.3</span> [get_clocks clk]<br><br><br><span class="hljs-comment"># The +/-30ps internal clock delay variation to register clock pins results in a 60ps worst case skew or uncertainty, if you launch</span><br><span class="hljs-comment"># late (+30ps) and capture early (-30ps)r; Add 40ps due to jitter and 50ps for setup margin;</span><br><span class="hljs-comment"># This equals 150ps or 0.15 ns of total uncertainty.</span><br><span class="hljs-comment">#</span><br>set_clock_uncertainty -setup <span class="hljs-number">0.15</span> [get_clocks clk]<br><br><br><span class="hljs-comment"># The maximum clock transition is 120ps or 0.12ns</span><br><span class="hljs-comment">#</span><br>set_clock_transition <span class="hljs-number">0.12</span> [get_clocks clk]<br><br><br><span class="hljs-comment">###################################</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">#   INPUT TIMING                  #</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">###################################</span><br><br><span class="hljs-comment"># The maximum &quot;input delay&quot; (external) on ports data1 and data2 is: </span><br><span class="hljs-comment"># clock period - clock uncertainty - delay of S - register setup time = </span><br><span class="hljs-comment">#     3.0      -      0.15         -     2.2   -      0.2            = 0.45ns</span><br><span class="hljs-comment"># </span><br>set_input_delay -max  <span class="hljs-number">0.45</span> -<span class="hljs-keyword">clock</span> clk [get_ports data*]  <br><br><br><span class="hljs-comment"># The latest arrival time at port sel is 1.4ns (absolute time). The total clock insertion delay or latency to the external </span><br><span class="hljs-comment"># registers is 700ps + 300ps or 1.0ns. Therefore, the relative input delay on the port is 1.4 -1.0 = 0.4ns</span><br><span class="hljs-comment">#</span><br>set_input_delay -max  <span class="hljs-number">0.4</span> -<span class="hljs-keyword">clock</span> clk [get_ports sel]<br><br><br><span class="hljs-comment">###################################</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">#   OUTPUT TIMING                 #</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">###################################</span><br><br><span class="hljs-comment"># The output delay at port out1 is 420ps + 80ps = 500ps or 0.5ns</span><br><span class="hljs-comment">#</span><br>set_output_delay -max  <span class="hljs-number">0.5</span> -<span class="hljs-keyword">clock</span> clk [get_ports out1]<br><br><br><span class="hljs-comment"># The internal delay to out2 is 810ps. The external capturing clock edge happens 3ns after the launch edge, </span><br><span class="hljs-comment"># minus the uncertainty of 0.15ns, or 2.85ns after launch. To constrain the internal delay to 0.81ns the </span><br><span class="hljs-comment"># output delay must therefore be constrained to 2.85ns - 0.81ns = 2.04ns.</span><br><span class="hljs-comment">#</span><br>set_output_delay -max <span class="hljs-number">2.04</span>  -<span class="hljs-keyword">clock</span> clk [get_ports out2]<br><br><br><span class="hljs-comment"># The setup time requirement on port out3 is 400ps or 0.4ns with respect to the capturing register&#x27;s clock. </span><br><span class="hljs-comment"># This is, by definition, the &quot;set_output_delay&quot; value</span><br><span class="hljs-comment">#</span><br>set_output_delay -max  <span class="hljs-number">0.4</span> -<span class="hljs-keyword">clock</span> clk [get_ports out3] <br><br><br><span class="hljs-comment">###################################</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">#   COMBINATIONAL LOGIC TIMING    #</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">###################################</span><br><br><span class="hljs-comment"># The maximum delay through the combinational logic is 2.45ns. This can be constrained by pretending that there are </span><br><span class="hljs-comment"># launching registers on the input ports Cin1 and Cin2 and capturing registers on the output port Cout, and applying </span><br><span class="hljs-comment"># corresponding input and output delays. The sum of the external input and output delay values must be equal to the </span><br><span class="hljs-comment"># clock period minus the clock uncertainty minus the maximum combo delay = 3ns - 0.15ns - 2.45ns = 0.4ns. </span><br><span class="hljs-comment"># This means that the input and output delay values can be 0.4 and 0.0, or 0.2 and 0.2, or 0.1 and 0.3, etc., respectively.</span><br><span class="hljs-comment">#</span><br>set_input_delay -max <span class="hljs-number">0.3</span> -<span class="hljs-keyword">clock</span> clk [get_ports Cin*]<br>set_output_delay -max <span class="hljs-number">0.1</span> -<span class="hljs-keyword">clock</span> clk [get_ports Cout]<br><br> <br><span class="hljs-comment">###################################</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">#   DESIGN AREA                   #</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">###################################</span><br><br><span class="hljs-comment"># Area Constraint</span><br><span class="hljs-comment">#</span><br>set_max_area <span class="hljs-number">0</span><br><br><span class="hljs-comment">###################################</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">#   ENVIRONMENTAL ATTRIBUTES      #</span><br><span class="hljs-comment">#                                 #</span><br><span class="hljs-comment">###################################</span><br><br><br><span class="hljs-comment"># All input ports, except clk and Cin, are driven by bufbd1 buffers</span><br><span class="hljs-comment">#</span><br>set_driving_cell -lib_cell bufbd1 -library cb13fs120_tsmc_max \<br> [remove_from_collection [all_inputs] [get_ports <span class="hljs-string">&quot;clk Cin*&quot;</span>]]<br><br><br><span class="hljs-comment"># Port Cin is a chip level input and has an input transition of 120ps or 0.12 ns</span><br><span class="hljs-comment">#</span><br>set_input_transition <span class="hljs-number">0.12</span> [get_ports Cin*]<br><br><br><span class="hljs-comment"># All outputs, except Cout, drive 2x bufbd7 loads</span><br><span class="hljs-comment">#</span><br>set_load [<span class="hljs-keyword">expr</span> <span class="hljs-number">2</span> * [load_of cb13fs120_tsmc_max/bufbd7/I]] [get_ports out*]<br><br><br><span class="hljs-comment"># Cout drives 25fF, or .025 pF</span><br><span class="hljs-comment">#</span><br>set_load <span class="hljs-number">0.025</span> [get_ports Cout*]<br><br><br><span class="hljs-comment"># From the wireload model selection table, a design size between 200 and </span><br><span class="hljs-comment"># 8000 area units uses the model called &quot;8000&quot;; The default wireload </span><br><span class="hljs-comment"># mode in this library in &quot;enclosed&quot;</span><br><span class="hljs-comment">#</span><br><span class="hljs-keyword">set</span> auto_wire_load_selection false<br>set_wire_load_model -name <span class="hljs-number">8000</span><br><br><br><span class="hljs-comment"># operating condition use to scale cell and net delays.</span><br><span class="hljs-comment">#</span><br>set_operating_condition -max cb13fs120_tsmc_max<br><br><br>compile<br></code></pre></td></tr></table></figure>
-
-
-
-
-
 
             </div>
             <hr>

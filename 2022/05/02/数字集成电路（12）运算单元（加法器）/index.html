@@ -230,7 +230,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.6k 字
+      6.2k 字
     </span>
   
 
@@ -239,7 +239,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      56 分钟
+      52 分钟
     </span>
   
 
@@ -275,10 +275,7 @@
 <p>本文主要讲述数据通路上的基本元件——加法器，包括一位全加器和多位全加器。</p>
 <hr>
 <span id="more"></span>
-
-
-
-<h1 id="第十一章-设计运算功能块"><a href="#第十一章-设计运算功能块" class="headerlink" title="第十一章 设计运算功能块"></a>第十一章 设计运算功能块</h1><h1 id="1-总论"><a href="#1-总论" class="headerlink" title="1. 总论"></a>1. 总论</h1><p>在时序电路中，时序电路&#x3D;组合电路+存储电路</p>
+<h1 id="第十一章-设计运算功能块"><a href="#第十一章-设计运算功能块" class="headerlink" title="第十一章 设计运算功能块"></a>第十一章 设计运算功能块</h1><h1 id="1-总论"><a href="#1-总论" class="headerlink" title="1. 总论"></a>1. 总论</h1><p>在时序电路中，时序电路=组合电路+存储电路</p>
 <p>在（9）~（11）中，已经详细介绍了存储电路（寄存器）</p>
 <p>在本文中，将介绍<strong>组合电路</strong>中比较重要的<strong>数据通路</strong>上的电路，可以认为是在时序电路中提到的$logic$​​，即用于<strong>逻辑运算和算数运算</strong>。</p>
 <p>在数集中，常用的数据通路组合电路有</p>
@@ -307,36 +304,44 @@
 </li>
 </ul>
 <h2 id="1-一位全加器（-FA-）"><a href="#1-一位全加器（-FA-）" class="headerlink" title="1. 一位全加器（$FA$）"></a>1. 一位全加器（$FA$）</h2><h3 id="1-传统表达方式"><a href="#1-传统表达方式" class="headerlink" title="1. 传统表达方式"></a>1. 传统表达方式</h3><p>定义：根据输入的二值数据、进位信号，计算得到结果和进位。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027110224284.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027110224284.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>其中，</p>
 <p>$A、B$：输入的数据，或为0、或为1</p>
-<p>$Cin&#x2F;\ C_{i}$​​：输入的前级的进位信号，或0或1</p>
-<p>$Sum&#x2F;\ S$​：计算得到的结果​​</p>
-<p>$Cout&#x2F;\ C_o$​​：计算得到的进位信号</p>
-<p>其逻辑关系为<br>$$<br>S&#x3D;A\bigoplus B \bigoplus C_i&#x3D;A·\overline{B}·\overline{C_i}+\overline{A}·B·\overline{C_i}+\overline{A}·\overline{B}·C_i+ABC_i \<br>$$</p>
-<p>$$<br>C_o&#x3D;AB+BC_i+AC_i<br>$$</p>
-<p>【注】：</p>
+<p>$Cin/\ C_{i}$​​：输入的前级的进位信号，或0或1</p>
+<p>$Sum/\ S$​：计算得到的结果​​</p>
+<p>$Cout/\ C_o$​​：计算得到的进位信号</p>
+<p>其逻辑关系为</p>
+<script type="math/tex; mode=display">
+S=A\bigoplus B \bigoplus C_i=A·\overline{B}·\overline{C_i}+\overline{A}·B·\overline{C_i}+\overline{A}·\overline{B}·C_i+ABC_i \\</script><script type="math/tex; mode=display">
+C_o=AB+BC_i+AC_i</script><p>【注】：</p>
 <ol>
 <li><p>$\bigoplus$：异或，常见结构有：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215116844.png" srcset="/img/loading.gif" lazyload alt="image-20220622215116844" style="zoom: 67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215116844.png" srcset="/img/loading.gif" lazyload alt="image-20220622215116844" style="zoom: 67%;" /></p>
 <p>$\bigodot$：同或，结构如下（即“异或门结构2”的“非”）：</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215549134.png" srcset="/img/loading.gif" lazyload alt="image-20220622215549134" style="zoom: 45%;" /></li>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20220622215549134.png" srcset="/img/loading.gif" lazyload alt="image-20220622215549134" style="zoom: 45%;" /></p>
+</li>
 </ol>
 <h3 id="2-P、G、D-​函数表达"><a href="#2-P、G、D-​函数表达" class="headerlink" title="2. $P、G、D$​函数表达"></a>2. $P、G、D$​函数表达</h3><p>真值表如下：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027161741814.png" srcset="/img/loading.gif" lazyload alt="一位加法器真值表"></p>
-<p>$P、G、D$的表达式如下（根据真值表可得）：<br>$$<br>P&#x3D;A\bigoplus B\<br>G&#x3D;A·B\<br>D&#x3D;\overline{A}·\overline{B}<br>$$<br>现对$P、G、D$进行解释：</p>
+<p>$P、G、D$的表达式如下（根据真值表可得）：</p>
+<script type="math/tex; mode=display">
+P=A\bigoplus B\\
+G=A·B\\
+D=\overline{A}·\overline{B}</script><p>现对$P、G、D$进行解释：</p>
 <ul>
-<li><p>$P$：只要$P&#x3D;1$，则只要$C_i&#x3D;1$，即前级有进位，则本级进位输出$C_o$输出等于1​。故称，$P$为<font color=red><b>进位传播</b></font>。</p>
+<li><p>$P$：只要$P=1$，则只要$C_i=1$，即前级有进位，则本级进位输出$C_o$输出等于1​。故称，$P$为<font color=red><b>进位传播</b></font>。</p>
 </li>
-<li><p>$G$：只要$G&#x3D;1$，则本级进位输出$C_o&#x3D;1$，且与$C_i$无关，故称$G$为<font color=red><b>进位产生</b></font>。</p>
+<li><p>$G$：只要$G=1$，则本级进位输出$C_o=1$，且与$C_i$无关，故称$G$为<font color=red><b>进位产生</b></font>。</p>
 </li>
-<li><p>$D$​：只要$D&#x3D;1$​，则本级进位输出$C_o&#x3D;0$​，且与$C_i$​无关，故称$D$​为<font color=red><b>进位取消</b></font></p>
+<li><p>$D$​：只要$D=1$​，则本级进位输出$C_o=0$​，且与$C_i$​无关，故称$D$​为<font color=red><b>进位取消</b></font></p>
 </li>
 <li><p>注意：<strong>三者为互斥</strong></p>
 </li>
 </ul>
-<p>将$f(A,B,C_i)$​​改写为$f(P,G(或D))$​​，即有<br>$$<br>C_o&#x3D;G+PC_i\<br>S&#x3D;P\bigoplus C_i<br>$$<br><strong>小贴士</strong>：</p>
+<p>将$f(A,B,C_i)$​​改写为$f(P,G(或D))$​​，即有</p>
+<script type="math/tex; mode=display">
+C_o=G+PC_i\\
+S=P\bigoplus C_i</script><p><strong>小贴士</strong>：</p>
 <ul>
 <li>$G$和$D$在表征进位上功能类似，其值<strong>直接表征</strong>了$C_o$的输出值，与$C_i$​​的输入无关。故而常常把二者合一（如上式，仅用$P、G$作为自变量）。</li>
 <li>$P、G(或D)$​的值仅仅与$A、B$​值有关，而与$C_i$​无关</li>
@@ -349,65 +354,73 @@
 <li><p>根据电路图，可知，设计行波加法器，<strong>提高优化进位运算$t_{carry}$​比优化和运算$t_{sum}$重要得多</strong>。</p>
 <p>原因：由图可知，输入各级$FA$​的信号中，$A、B$​在理想状态下，在零时刻即输入到各级$FA$​的输入端；而$C_i$​需要等待上一级运算之后，才能到达本级$FA$​​的输入端。故，<strong>关键信号是$C_i$​</strong>（概念见（4）.5.3），只有提高$t_{carry}$​​，才能从根本上优化行波加法器的运算速度。</p>
 </li>
-<li><p>最坏情况，$t_d&#x3D;O(N)$​</p>
+<li><p>最坏情况，$t_d=O(N)$​</p>
 <p>最坏情况下，延时正比于全加器串联级数$N$</p>
 </li>
 </ul>
-<h2 id="2-【结构】设计全加器FA"><a href="#2-【结构】设计全加器FA" class="headerlink" title="2. 【结构】设计全加器FA"></a>2. 【结构】设计全加器FA</h2><h3 id="1-互补静态CMOS结构FA"><a href="#1-互补静态CMOS结构FA" class="headerlink" title="1. 互补静态CMOS结构FA"></a>1. 互补静态CMOS结构FA</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027173910194.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="2-【结构】设计全加器FA"><a href="#2-【结构】设计全加器FA" class="headerlink" title="2. 【结构】设计全加器FA"></a>2. 【结构】设计全加器FA</h2><h3 id="1-互补静态CMOS结构FA"><a href="#1-互补静态CMOS结构FA" class="headerlink" title="1. 互补静态CMOS结构FA"></a>1. 互补静态CMOS结构FA</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211027173910194.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>根据电路图可知，该电路对一些逻辑进行了变化</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">传统</th>
-<th align="center">该电路</th>
-<th align="center">备注</th>
+<th style="text-align:center">传统</th>
+<th style="text-align:center">该电路</th>
+<th style="text-align:center">备注</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">$C_o&#x3D;AB+BC_i+AC_i$</td>
-<td align="center">$C_o&#x3D;AB+BC_i+AC_i$</td>
-<td align="center">未改变</td>
+<tbody>
+<tr>
+<td style="text-align:center">$C_o=AB+BC_i+AC_i$</td>
+<td style="text-align:center">$C_o=AB+BC_i+AC_i$</td>
+<td style="text-align:center">未改变</td>
 </tr>
 <tr>
-<td align="center">$S&#x3D;A\bigoplus B \bigoplus C_i$</td>
-<td align="center">$S&#x3D;ABC_i+\overline{C_o}(A+B+C_i)$</td>
-<td align="center">改变</td>
+<td style="text-align:center">$S=A\bigoplus B \bigoplus C_i$</td>
+<td style="text-align:center">$S=ABC_i+\overline{C_o}(A+B+C_i)$</td>
+<td style="text-align:center">改变</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><strong>优点</strong>：</p>
 <ul>
 <li>可知，$S$​在计算的时候，复用了$C_o$​​的逻辑，使得管子数量有所减小，一共使用了<font color=red><b>28个管子</b></font></li>
 <li>【<strong>小技巧</strong>】在（4）.3.5中已经提到，关键信号应该靠近输出端。如图中<font color=red>红圈</font>，$C_i$</li>
 </ul>
 <p><strong>缺点</strong>：</p>
-<p>​	<strong>——（主要考虑对于$C_o$的影响）</strong>——<font color=red><b>工作速度较慢</b></font>：</p>
+<p>​    <strong>——（主要考虑对于$C_o$的影响）</strong>——<font color=red><b>工作速度较慢</b></font>：</p>
 <ul>
 <li>虽然管子数量有所减少，但是28个管子依旧消耗了较大的面积</li>
 <li>作为关键信号$C_o$​​，其产生电路中堆叠了太多的PMOS管（？为啥提到PMOS管）</li>
-<li>$C_o$​的本征负载电容很大，根据$t_p&#x3D;C_L·R_{eq}$​​可知，产生$C_o$​​​的延迟较大</li>
+<li>$C_o$​的本征负载电容很大，根据$t_p=C_L·R_{eq}$​​可知，产生$C_o$​​​的延迟较大</li>
 </ul>
 <h3 id="2-镜像加法器"><a href="#2-镜像加法器" class="headerlink" title="2. 镜像加法器"></a>2. 镜像加法器</h3><p>该加法器是根据互补静态CMOS结构FA改进得到的，<strong>镜像加法器的下拉网络和互补CMOS结构FA完全相同</strong>。</p>
 <p>电路图如图所示，</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112191714798.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112191714798.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">项目</th>
-<th align="center">公式</th>
+<th style="text-align:center">项目</th>
+<th style="text-align:center">公式</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">进位输出：$\overline{C_o}$</td>
-<td align="center">$\overline{C_o}&#x3D;\overline{AB+(A+B)C_i}$</td>
+<tbody>
+<tr>
+<td style="text-align:center">进位输出：$\overline{C_o}$</td>
+<td style="text-align:center">$\overline{C_o}=\overline{AB+(A+B)C_i}$</td>
 </tr>
 <tr>
-<td align="center">求和输出：$\overline{S}$​</td>
-<td align="center">$\overline{S}&#x3D;\overline{ABC_i+\overline{C_o}(A+B+C_i)}$</td>
+<td style="text-align:center">求和输出：$\overline{S}$​</td>
+<td style="text-align:center">$\overline{S}=\overline{ABC_i+\overline{C_o}(A+B+C_i)}$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><strong>注意点</strong>：</p>
 <ol>
-<li><p><font color=red><b>24个管子</b></font></p>
+<li><font color=red><b>24个管子</b></font>
 </li>
 <li><p>NMOS管（下拉网络）和PMOS管(上拉网络)完全对称，利用的是 <strong>求和 和 进位</strong> 的”自对偶性”</p>
 </li>
@@ -416,7 +429,8 @@
 <li><p><strong>进位输出电路需要考虑管子尺寸匹配问题，提高进位运算速度。</strong></p>
 <p>求和输出电路不需要考了管子尺寸，可以全部使用最小尺寸。</p>
 </li>
-<li><p><font color=red><b>⭐需要掌握镜像加法器的棍棒图</b></font></p>
+<li><font color=red><b>⭐需要掌握镜像加法器的棍棒图</b></font>
+
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112193418399.png" srcset="/img/loading.gif" lazyload alt="image-20211112193418399"></p>
 </li>
 </ol>
@@ -430,40 +444,22 @@
 <li><p><strong>进位产生和求和输出的延时几乎相同</strong></p>
 </li>
 <li><p>真值表</p>
-<table>
-<thead>
-<tr>
-<th align="center">结果\建立信号</th>
-<th align="center">$P&#x3D;0$</th>
-<th align="center">$P&#x3D;1$</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$S$</td>
-<td align="center">$C_i$</td>
-<td align="center">$\overline{C_i}$</td>
-</tr>
-<tr>
-<td align="center">$C_o$</td>
-<td align="center">$A$</td>
-<td align="center">$C_i$</td>
-</tr>
-</tbody></table>
+<p>| 结果\建立信号 | $P=0$ |      $P=1$       |<br>| :—————-: | :—-: | :———————: |<br>|      $S$      | $C_i$ | $\overline{C_i}$ |<br>|     $C_o$     |  $A$  |      $C_i$       |</p>
 </li>
 </ol>
-<h3 id="4-传输门型加法器——曼切斯特FA"><a href="#4-传输门型加法器——曼切斯特FA" class="headerlink" title="4. 传输门型加法器——曼切斯特FA"></a>4. 传输门型加法器——曼切斯特FA</h3><h4 id="1-静态电路"><a href="#1-静态电路" class="headerlink" title="1. 静态电路"></a>1. 静态电路</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112200847816.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4-传输门型加法器——曼切斯特FA"><a href="#4-传输门型加法器——曼切斯特FA" class="headerlink" title="4. 传输门型加法器——曼切斯特FA"></a>4. 传输门型加法器——曼切斯特FA</h3><h4 id="1-静态电路"><a href="#1-静态电路" class="headerlink" title="1. 静态电路"></a>1. 静态电路</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112200847816.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>分析：</p>
 <ul>
 <li><p>第一部分：传输门</p>
 <p>该传输门的表达式很容易写，为：$C_iP_i$​</p>
-<p>因为**$P、G、D$​​互斥**，当$P_i&#x3D;1$​​​时，$D_i&#x3D;0$​且$G_i&#x3D;0(\overline{G_i}&#x3D;1)$​，第二部分上下拉网络均截止，输出取决于$C_i$​​​</p>
+<p>因为<strong>$P、G、D$​​互斥</strong>，当$P_i=1$​​​时，$D_i=0$​且$G_i=0(\overline{G_i}=1)$​，第二部分上下拉网络均截止，输出取决于$C_i$​​​</p>
 </li>
 <li><p>第二部门：上下拉网络</p>
-<p>当$P_i&#x3D;0$时，根据<strong>互斥</strong>原理，存在以下两种情况：</p>
+<p>当$P_i=0$时，根据<strong>互斥</strong>原理，存在以下两种情况：</p>
 <ul>
-<li><p>当$D_i&#x3D;1$​​​​时，表示进位为0，故输出需要下拉到地，即下拉网络导通，故下拉网络栅极输入为$D_i$​</p>
+<li><p>当$D_i=1$​​​​时，表示进位为0，故输出需要下拉到地，即下拉网络导通，故下拉网络栅极输入为$D_i$​</p>
 </li>
-<li><p>当$G_i&#x3D;1$​时，表示进位为1，故输出需要上拉到$VCC$​​​，即上拉网络导通，又因为上拉网络需要栅极输入为0时才能实现上拉功能，故上拉网络的栅极输入为$\overline{G_i}$​</p>
+<li><p>当$G_i=1$​时，表示进位为1，故输出需要上拉到$VCC$​​​，即上拉网络导通，又因为上拉网络需要栅极输入为0时才能实现上拉功能，故上拉网络的栅极输入为$\overline{G_i}$​</p>
 </li>
 </ul>
 </li>
@@ -476,16 +472,19 @@
 </ul>
 <h4 id="3-曼切斯特进位链加法器"><a href="#3-曼切斯特进位链加法器" class="headerlink" title="3. 曼切斯特进位链加法器"></a>3. 曼切斯特进位链加法器</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112204347485.png" srcset="/img/loading.gif" lazyload alt="image-20211112203526675"></p>
 <p><strong>最坏情况：</strong></p>
-<p>$P_0P_1P_2P_3&#x3D;1111$​，则$G_0G_1G_2G_3&#x3D;0000$​，当$\overline{C_{i,0}}&#x3D;0$​时，电路通过$P_0$​、$P_1P_0$​、$P_2P_1P_0$​、$P_3P_2P_1P_0$​放电​，可知最坏情况下，$t_p&#x3D;O(N^2)$​（1+2+3+4…）​</p>
+<p>$P_0P_1P_2P_3=1111$​，则$G_0G_1G_2G_3=0000$​，当$\overline{C_{i,0}}=0$​时，电路通过$P_0$​、$P_1P_0$​、$P_2P_1P_0$​、$P_3P_2P_1P_0$​放电​，可知最坏情况下，$t_p=O(N^2)$​（1+2+3+4…）​</p>
 <h4 id="4-【会画会认】两位曼切斯特进位链棍棒图"><a href="#4-【会画会认】两位曼切斯特进位链棍棒图" class="headerlink" title="4. 【会画会认】两位曼切斯特进位链棍棒图"></a>4. 【会画会认】两位曼切斯特进位链棍棒图</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113091127097.png" srcset="/img/loading.gif" lazyload alt="image-20211113091127097"></p>
 <p>特点：</p>
 <ul>
 <li>动态逻辑上下管子数差很多，上少下多。</li>
 </ul>
 <h2 id="3-【逻辑】设计全加器FA"><a href="#3-【逻辑】设计全加器FA" class="headerlink" title="3. 【逻辑】设计全加器FA"></a>3. 【逻辑】设计全加器FA</h2><h3 id="1-旁路进位加法器"><a href="#1-旁路进位加法器" class="headerlink" title="1. 旁路进位加法器"></a>1. 旁路进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211112211243886.png" srcset="/img/loading.gif" lazyload alt="image-20211112211243886"></p>
-<p>当$BP&#x3D;P_0P_1P_2P_3&#x3D;1$时，即最坏情况下，可以直接得到$C_{o,3}&#x3D;C_{i,0}$​；</p>
-<p>只要有一个$P&#x3D;0$​​，则只能按照正常路径计算进位​​。</p>
-<p><font color=red><b>特点：逐位加法器进行最坏情况优化</b></font></p>
+<p>当$BP=P_0P_1P_2P_3=1$时，即最坏情况下，可以直接得到$C_{o,3}=C_{i,0}$​；</p>
+<p>只要有一个$P=0$​​，则只能按照正常路径计算进位​​。</p>
+<font color=red><b>特点：逐位加法器进行最坏情况优化</b></font>
+
+
+
 <p><strong>缺点</strong>：</p>
 <ol>
 <li>对速度提升不多，一般用得很少</li>
@@ -501,9 +500,12 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113094101759.png" srcset="/img/loading.gif" lazyload alt="image-20211113100147091"></p>
 <center>图中阴影为关键路径</center>
 
-<p>$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\frac{N}{M}-1)t_{bypass}+(M-1)t_{carry}+t_{sum}$</p>
+<p>$t_{adder}=t_{setup}+Mt_{carry}+(\frac{N}{M}-1)t_{bypass}+(M-1)t_{carry}+t_{sum}$</p>
 <h3 id="2-线性进位选择加法器"><a href="#2-线性进位选择加法器" class="headerlink" title="2. 线性进位选择加法器"></a>2. 线性进位选择加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113100801109.png" srcset="/img/loading.gif" lazyload alt="图中阴影为关键路径"></p>
-<p><font color=red><b>特点：逐位加法器进行需要等待前一级的</b>$C_o$<b>输出之后才能进位。线性加法器先计算出</b>$C_o&#x3D;1$<b>或</b>$0$<b>的结果，等待出现了进位，直接通过选择器选出。</b></font></p>
+<font color=red><b>特点：逐位加法器进行需要等待前一级的</b>$C_o$<b>输出之后才能进位。线性加法器先计算出</b>$C_o=1$<b>或</b>$0$<b>的结果，等待出现了进位，直接通过选择器选出。</b></font>
+
+
+
 <p><strong>缺点</strong>：</p>
 <ol>
 <li>以面积换取速度，使得整个放大器的面积大大增加。</li>
@@ -514,91 +516,105 @@
 </ol>
 <p><strong>延时</strong>：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113100147091.png" srcset="/img/loading.gif" lazyload alt="image-20211113094101759"></p>
-<p>$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\frac{N}{M})t_{mux}+t_{sum}$</p>
+<p>$t_{adder}=t_{setup}+Mt_{carry}+(\frac{N}{M})t_{mux}+t_{sum}$</p>
 <p>实际上，由于第一级只需要计算出$P、G$就可以直接根据$C_{i,0}$得到$C_{o,1}$​，故第一级不需要选择器。</p>
-<p>因此延时公式修正为：$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\frac{N}{M}-1)t_{mux}+t_{sum}$​</p>
+<p>因此延时公式修正为：$t_{adder}=t_{setup}+Mt_{carry}+(\frac{N}{M}-1)t_{mux}+t_{sum}$​</p>
 <h3 id="3-平方根进位加法器"><a href="#3-平方根进位加法器" class="headerlink" title="3. 平方根进位加法器"></a>3. 平方根进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113102608611.png" srcset="/img/loading.gif" lazyload alt="image-20211113102608611"></p>
-<p><font color=red><b>特点：相比线性进位加法器，每一个单元的计算位数都是M。导致了后面单元计算完了之后需要等待很久前面单元</b>$C_o$<b>传来，浪费了需要时间。平方根进位加法器每个单元的计算位数不同，为逐个单元递增。如上图所示，其计算位数为2、3、4、5……</b></font></p>
+<font color=red><b>特点：相比线性进位加法器，每一个单元的计算位数都是M。导致了后面单元计算完了之后需要等待很久前面单元</b>$C_o$<b>传来，浪费了需要时间。平方根进位加法器每个单元的计算位数不同，为逐个单元递增。如上图所示，其计算位数为2、3、4、5......</b></font>
+
 <p><strong>优点</strong>：运算速度最快</p>
 <p><strong>延时</strong>：</p>
-<p>$t_{adder}&#x3D;t_{setup}+Mt_{carry}+(\sqrt{2N})t_{mux}+t_{sum}$</p>
-<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><table>
+<p>$t_{adder}=t_{setup}+Mt_{carry}+(\sqrt{2N})t_{mux}+t_{sum}$</p>
+<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">加法器</th>
-<th align="center">传统FA：逐位加法器</th>
-<th align="center">旁路进位加法器</th>
-<th align="center">线性进位加法器</th>
-<th align="center">平方根进位加法器</th>
+<th style="text-align:center">加法器</th>
+<th style="text-align:center">传统FA：逐位加法器</th>
+<th style="text-align:center">旁路进位加法器</th>
+<th style="text-align:center">线性进位加法器</th>
+<th style="text-align:center">平方根进位加法器</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">速度</td>
-<td align="center">※</td>
-<td align="center">※※</td>
-<td align="center">※※※</td>
-<td align="center">※※※※</td>
+<tbody>
+<tr>
+<td style="text-align:center">速度</td>
+<td style="text-align:center">※</td>
+<td style="text-align:center">※※</td>
+<td style="text-align:center">※※※</td>
+<td style="text-align:center">※※※※</td>
 </tr>
 <tr>
-<td align="center">优点</td>
-<td align="center">规规矩矩</td>
-<td align="center">考虑了最坏情况</td>
-<td align="center">实现计算好两种$C_i$的情况，【等待真实$C_i$信号】到来然后进行选择</td>
-<td align="center">【一边】计算好两种$C_i$的情况，【一边】根据$C_i$进行选择</td>
+<td style="text-align:center">优点</td>
+<td style="text-align:center">规规矩矩</td>
+<td style="text-align:center">考虑了最坏情况</td>
+<td style="text-align:center">实现计算好两种$C_i$的情况，【等待真实$C_i$信号】到来然后进行选择</td>
+<td style="text-align:center">【一边】计算好两种$C_i$的情况，【一边】根据$C_i$进行选择</td>
 </tr>
 <tr>
-<td align="center">备注</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">每个单元都是M位的运算</td>
-<td align="center">单元的运算位数逐级递增</td>
+<td style="text-align:center">备注</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">每个单元都是M位的运算</td>
+<td style="text-align:center">单元的运算位数逐级递增</td>
 </tr>
-</tbody></table>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113145434666.png" srcset="/img/loading.gif" lazyload></p>
+</tbody>
+</table>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113145434666.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="5-超前进位加法器"><a href="#5-超前进位加法器" class="headerlink" title="5. 超前进位加法器"></a>5. 超前进位加法器</h3><p>见下文</p>
 <h2 id="4-【重要】超前进位加法器"><a href="#4-【重要】超前进位加法器" class="headerlink" title="4. 【重要】超前进位加法器"></a>4. 【重要】超前进位加法器</h2><h3 id="1-原理"><a href="#1-原理" class="headerlink" title="1. 原理"></a>1. 原理</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113163711000.png" srcset="/img/loading.gif" lazyload alt="image-20211113163711000"></p>
-<p>根据$C_{o,k}&#x3D;G_k+C_{o,k-1}P_k$可知只要将$C_{o,k-1}$利用递归拆开，就可以让$C_{o,k}$摆脱$C_{o,k-1}$的束缚，使得<br>$$<br>C_{o,k}&#x3D;f(G,P,C_{i,0})<br>$$<br>只要知道了各级的$G、P$和最初的$C_{i,0}$即可计算出$C_{o,k}$​。</p>
-<p>容易知道，只要经过简单的逻辑运算：$G&#x3D;AB$​​、$P&#x3D;A\bigoplus B$​即可得到数据，而$C_{i,0}$​​是输入信号之一。</p>
+<p>根据$C_{o,k}=G_k+C_{o,k-1}P_k$可知只要将$C_{o,k-1}$利用递归拆开，就可以让$C_{o,k}$摆脱$C_{o,k-1}$的束缚，使得</p>
+<script type="math/tex; mode=display">
+C_{o,k}=f(G,P,C_{i,0})</script><p>只要知道了各级的$G、P$和最初的$C_{i,0}$即可计算出$C_{o,k}$​。</p>
+<p>容易知道，只要经过简单的逻辑运算：$G=AB$​​、$P=A\bigoplus B$​即可得到数据，而$C_{i,0}$​​是输入信号之一。</p>
 <p><strong>缺点</strong>：随着计算位数的增多，<strong>整个加法器的扇入非常大</strong>。</p>
 <p>一些电路图：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113160739198.png" srcset="/img/loading.gif" lazyload alt="【镜像电路】4位超前进位加法器"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113161228146.png" srcset="/img/loading.gif" lazyload alt="【动态实现】4位超前进位加法器"></p>
-<h3 id="2-块运算"><a href="#2-块运算" class="headerlink" title="2. 块运算"></a>2. 块运算</h3><p>令：<br>$$<br>G_{a:b}&#x3D;G_a+P_aG_{a-1}+P_aP_{a-1}G_{a-2}+…+P_aP_{a-1}P_{a-2}…G_{b}<br>$$</p>
-<p>$$<br>P_{a:b}&#x3D;P_aP_{a-1}…P_{b+1}P_b<br>$$</p>
-<p>$G_{a:b}$​和$P_{a:b}$​分别表示从第$a$​位到第$b$​位的进位产生和进位传播信号，称为<font color=red><b>块进位产生和块进位传播</b></font></p>
+<h3 id="2-块运算"><a href="#2-块运算" class="headerlink" title="2. 块运算"></a>2. 块运算</h3><p>令：</p>
+<script type="math/tex; mode=display">
+G_{a:b}=G_a+P_aG_{a-1}+P_aP_{a-1}G_{a-2}+...+P_aP_{a-1}P_{a-2}...G_{b}</script><script type="math/tex; mode=display">
+P_{a:b}=P_aP_{a-1}...P_{b+1}P_b</script><p>$G_{a:b}$​和$P_{a:b}$​分别表示从第$a$​位到第$b$​位的进位产生和进位传播信号，称为<font color=red><b>块进位产生和块进位传播</b></font></p>
 <p>$eg：$</p>
-<p>$G_{2:0}&#x3D;G_2+P_2G_1+P_2P_1G_0$​</p>
-<p>$G_{3:1}&#x3D;G_3+P_3G_2+P_3P_2G_1$​</p>
-<p>$P_{3:0}&#x3D;P_3P_2P_1P_1$​</p>
-<p>$P_{3:1}&#x3D;P_3P_2P_1$</p>
-<p>经过推导，有<br>$$<br>C_{o,k}&#x3D;G_{k:0}+P_{k:0}C_{i,0}<br>$$<br>即：<font color=red><b>只要算出块进位产生和块进位传播，就可以轻松算出任何一位的进位输出</b></font></p>
+<p>$G_{2:0}=G_2+P_2G_1+P_2P_1G_0$​</p>
+<p>$G_{3:1}=G_3+P_3G_2+P_3P_2G_1$​</p>
+<p>$P_{3:0}=P_3P_2P_1P_1$​</p>
+<p>$P_{3:1}=P_3P_2P_1$</p>
+<p>经过推导，有</p>
+<script type="math/tex; mode=display">
+C_{o,k}=G_{k:0}+P_{k:0}C_{i,0}</script><p>即：<font color=red><b>只要算出块进位产生和块进位传播，就可以轻松算出任何一位的进位输出</b></font></p>
 <p>其中，</p>
 <p>$C_{o,k}$：第$k$级的进位输出</p>
 <p>$G_{k:0}$​：第$k$​级到第$0$​级的块进位产生</p>
 <p>$ P_{k:0}$​​​：第$k$​​​级到第$0$​​​​级的块进位传播</p>
 <p>$C_{i,0}$​：第0级的进位输入，即加法器系统的进位输入</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113170432313.png" srcset="/img/loading.gif" lazyload></p>
-<p>根据上图，可以很形象理解，并且得到以下式子<br>$$<br>C_{o,3}&#x3D;G_{3:0}+P_{3:0}C_{i,0}<br>$$</p>
-<p>$$<br>&#x3D;(G_3+P_3G_2+P_3P_2G_1+P_3P_2P_1G_0)+P_3P_2P_1P_1C_{i,0}<br>$$</p>
-<h3 id="3-点操作"><a href="#3-点操作" class="headerlink" title="3. 点操作"></a>3. 点操作</h3><p>步骤如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113170432313.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>根据上图，可以很形象理解，并且得到以下式子</p>
+<script type="math/tex; mode=display">
+C_{o,3}=G_{3:0}+P_{3:0}C_{i,0}</script><script type="math/tex; mode=display">
+=(G_3+P_3G_2+P_3P_2G_1+P_3P_2P_1G_0)+P_3P_2P_1P_1C_{i,0}</script><h3 id="3-点操作"><a href="#3-点操作" class="headerlink" title="3. 点操作"></a>3. 点操作</h3><p>步骤如下：</p>
 <ol>
 <li><p>判断计算位数，分别计算出各个$G_k,P_k$​</p>
-<p>其中：$G_k&#x3D;A_kB_k$​​、$P_k&#x3D;A_k\bigoplus B_k$​​</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113174550237.png" srcset="/img/loading.gif" lazyload></p>
+<p>其中：$G_k=A_kB_k$​​、$P_k=A_k\bigoplus B_k$​​</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113174550237.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>上图分别是使用静态逻辑实现的<strong>进位传播、进位产生</strong></p>
 </li>
+</ol>
+<ol>
 <li><p>根据你要求的$C_{o,k}$​列出表达式</p>
-<p>即：<br>$$<br>C_{o,k}&#x3D;G_{k:0}+P_{k:0}C_{i,0}<br>$$</p>
-</li>
+<p>即：</p>
+<script type="math/tex; mode=display">
+C_{o,k}=G_{k:0}+P_{k:0}C_{i,0}</script></li>
 <li><p>根据2得到的$G_{k:0}$​、$P_{k:0}$​​​列出<font color=red><b>点操作表达式</b></font>，下面以4位加法器为例子</p>
 <ol>
 <li><p>列式子</p>
-<p>$(G_{3:0},P_{3:0})&#x3D;(G_3,P_3)·(G_2,P_2)·(G_1,P_1)·(G_0,P_0)\$​​</p>
-<p>​					  $&#x3D;[(G_3,P_3)·(G_2,P_2)]·[(G_1,P_1)·(G_0,P_0)]$​</p>
-<p>​				  	$&#x3D;(G_{3:2},P_{3:2})·(G_{1:0},P_{1:0})$​</p>
+<p>$(G_{3:0},P_{3:0})=(G_3,P_3)·(G_2,P_2)·(G_1,P_1)·(G_0,P_0)\$​​</p>
+<p>​                      $=[(G_3,P_3)·(G_2,P_2)]·[(G_1,P_1)·(G_0,P_0)]$​</p>
+<p>​                      $=(G_{3:2},P_{3:2})·(G_{1:0},P_{1:0})$​</p>
 </li>
 </ol>
-<p>​					         $&#x3D;(G_{3:2}+P_{3:2}G_{1:0},P_{3:2}P_{1:0})$​</p>
+<p>​                             $=(G_{3:2}+P_{3:2}G_{1:0},P_{3:2}P_{1:0})$​</p>
 <p>此时已将多位加法器转换为2位加法器​​</p>
 <ol>
 <li><p>画出树结构图</p>
@@ -609,15 +625,17 @@
 </li>
 </ol>
 </li>
+</ol>
+<ol>
 <li><p><strong>计算各个节点</strong>：</p>
 <p>根据上文<strong>块运算</strong>已知，以其中一个节点$(G_{1:0},P_{1:0})$为例</p>
-<p>$G_{1:0}&#x3D;G_1+P_1G_0$</p>
-<p>$P_{1:0}&#x3D;P_1P_0$​</p>
+<p>$G_{1:0}=G_1+P_1G_0$</p>
+<p>$P_{1:0}=P_1P_0$​</p>
 <p>再如节点$(G_{3:0},P_{3:0})$为例</p>
-<p>$G_{3:0}&#x3D;G_{3:2}+P_{3:2}G_{1:0}$</p>
-<p>$P_{3:0}&#x3D;P_{3:2}P_{1:0}$</p>
+<p>$G_{3:0}=G_{3:2}+P_{3:2}G_{1:0}$</p>
+<p>$P_{3:0}=P_{3:2}P_{1:0}$</p>
 <p>即2位的块运算，只需要简单的一个<strong>或-与门</strong>和<strong>与门</strong>就可以完成运算。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113173725268.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113173725268.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
 </ol>
 <h3 id="4-Kogge-Stone-16位超前进位加法器"><a href="#4-Kogge-Stone-16位超前进位加法器" class="headerlink" title="4. Kogge-Stone 16位超前进位加法器"></a>4. Kogge-Stone 16位超前进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211113205502577.png" srcset="/img/loading.gif" lazyload alt="image-20211113203342125"></p>
@@ -634,20 +652,25 @@
 </ol>
 <p><strong>例子</strong>：计算$C_5$​​</p>
 <ol>
-<li>$C_5&#x3D;G_{5:0}+P_{5:0}C_{i,0}$</li>
-<li><font color=red><b>注意：需要严格按照图中的连线来</b></font></li>
+<li>$C_5=G_{5:0}+P_{5:0}C_{i,0}$</li>
+<li><font color=red><b>注意：需要严格按照图中的连线来</b></font>
+
+</li>
 </ol>
-<p>$$<br>(G_{5:0},P_{5:0})<br>$$</p>
-<p>$$<br>&#x3D;[(G_5,P_5)·(G_4,P_4)]·[(G_3,P_3)·(G_2,P_2)]·[(G_1,P_1)·(G_0,P_0)]\ —— \ 第一层节点<br>$$</p>
-<p>$$<br>&#x3D;[(G_{5:4},P_{5:4})·(G_{3:2},P_{3:2})]·(G_{1:0},P_{1:0})\ ——\ 第二层节点<br>$$</p>
-<p>$$<br>&#x3D;(G_{5:2},P_{5:2})·(G_{1:0},P_{1:0})\ —— \ 第三层节点<br>$$</p>
-<p><strong>小贴士</strong>：</p>
+<script type="math/tex; mode=display">
+(G_{5:0},P_{5:0})</script><script type="math/tex; mode=display">
+=[(G_5,P_5)·(G_4,P_4)]·[(G_3,P_3)·(G_2,P_2)]·[(G_1,P_1)·(G_0,P_0)]\ —— \ 第一层节点</script><script type="math/tex; mode=display">
+=[(G_{5:4},P_{5:4})·(G_{3:2},P_{3:2})]·(G_{1:0},P_{1:0})\ ——\ 第二层节点</script><script type="math/tex; mode=display">
+=(G_{5:2},P_{5:2})·(G_{1:0},P_{1:0})\ —— \ 第三层节点</script><p><strong>小贴士</strong>：</p>
 <ol>
 <li>需要严格按照图中连线，否则将判定为错误。</li>
-<li><font color=red><b>有几层节点，就需要写几行</b></font></li>
-</ol>
-<h3 id="5-Brent-Kung-16位超前进位加法器"><a href="#5-Brent-Kung-16位超前进位加法器" class="headerlink" title="5. Brent-Kung 16位超前进位加法器"></a>5. Brent-Kung 16位超前进位加法器</h3><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128005910220.png" srcset="/img/loading.gif" lazyload alt="image-20211113205502577" style="zoom:67%;" />
+<li><font color=red><b>有几层节点，就需要写几行</b></font>
 
+
+
+</li>
+</ol>
+<h3 id="5-Brent-Kung-16位超前进位加法器"><a href="#5-Brent-Kung-16位超前进位加法器" class="headerlink" title="5. Brent-Kung 16位超前进位加法器"></a>5. Brent-Kung 16位超前进位加法器</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211128005910220.png" srcset="/img/loading.gif" lazyload alt="image-20211113205502577" style="zoom:67%;" /></p>
 <ol>
 <li><p>分为正向树和反向树。如图，黑点为正向树，灰点为反向树。</p>
 <p><strong>正向树只计算$2^N-1$​​的点</strong>，如图中0、3、7、15位；反向树利用正向树计算出来的节点，补全其他位</p>

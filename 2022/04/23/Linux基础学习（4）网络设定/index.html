@@ -250,9 +250,6 @@
 <p>同时可以参考《树莓派nas电脑连接网络》一文。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <p>李博明老师安装Linux的流程</p>
 <ol>
 <li>安装Linux，使之可以开机，并且升级到最新版本保证没有系统的安全。</li>
@@ -290,30 +287,25 @@
 </ol>
 <h2 id="有线网络设定档"><a href="#有线网络设定档" class="headerlink" title="有线网络设定档"></a>有线网络设定档</h2><p>Debian的网络设定档为</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/etc/</span>network/interfaces<br></code></pre></td></tr></table></figure>
-
 <p>略（因为需要补充树莓派的笔记，而且没有实体机，单纯看虚拟机的设定档并没有用）</p>
 <h2 id="树莓派无线网络的设定"><a href="#树莓派无线网络的设定" class="headerlink" title="树莓派无线网络的设定"></a>树莓派无线网络的设定</h2><p>首先拿到树莓派，把烧录了系统的SD卡插到树莓派上面，然后采用<strong>HDMI线+显示器</strong>的方法，先进入实体终端。</p>
 <ol>
 <li><p>查看无线网络是否有设定</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">&lt;sudo&gt; iwconfig<br></code></pre></td></tr></table></figure>
-
 <p>这个指令类似与<code>ifconfig</code>，但是<code>iwconfig</code>针对无线网络。</p>
 <p>结果如下，</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">lo</span>        no wireless extensions.<br><br><span class="hljs-attribute">eth0</span>      no wireless extensions.<br><br><span class="hljs-attribute">wlan0</span>     IEEE <span class="hljs-number">802</span>.<span class="hljs-number">11</span>  ESSID:<span class="hljs-string">&quot;7\xE6\xA5\xBC\xE5\xAF\x9D\xE5\xAE\xA4\xE5\xBE\x88\xE9\xAB\x98&quot;</span>  <br>          <span class="hljs-attribute">Mode</span>:Managed  Frequency:<span class="hljs-number">2</span>.<span class="hljs-number">412</span> GHz  Access Point: <span class="hljs-number">54</span>:<span class="hljs-number">75</span>:<span class="hljs-number">95</span>:<span class="hljs-number">30</span>:<span class="hljs-number">0</span>E:<span class="hljs-number">0</span>D   <br>          <span class="hljs-attribute">Bit</span> Rate=<span class="hljs-number">15</span> Mb/s   Tx-Power=<span class="hljs-number">31</span> dBm   <br>          <span class="hljs-attribute">Retry</span> short limit:<span class="hljs-number">7</span>   RTS thr:<span class="hljs-literal">off</span>   Fragment thr:<span class="hljs-literal">off</span><br>          <span class="hljs-attribute">Encryption</span> key:<span class="hljs-literal">off</span><br>          <span class="hljs-attribute">Power</span> Management:<span class="hljs-literal">off</span><br>          <span class="hljs-attribute">Link</span> Quality=<span class="hljs-number">53</span>/<span class="hljs-number">70</span>  Signal level=-<span class="hljs-number">57</span> dBm  <br>          <span class="hljs-attribute">Rx</span> invalid nwid:<span class="hljs-number">0</span>  Rx invalid crypt:<span class="hljs-number">0</span>  Rx invalid frag:<span class="hljs-number">0</span><br>          <span class="hljs-attribute">Tx</span> excessive retries:<span class="hljs-number">192</span>  Invalid misc:<span class="hljs-number">0</span>   Missed beacon:<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
-
 <p>可知：<strong>无线网卡是wlan0</strong></p>
 </li>
 <li><p>（这一步设情况而定）激活网卡</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">&lt;sudo&gt; ifconfig wlan0 up<br></code></pre></td></tr></table></figure>
-
 <p>有些网卡需要激活，有些不用。</p>
 </li>
 <li><p><strong>扫描附近网络</strong>，这是我觉得最有用的</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fortran">iwlist wlan0 <span class="hljs-built_in">scan</span><br></code></pre></td></tr></table></figure>
-
 <p>这个指令很重要：</p>
 <ul>
-<li><p>你永远不知到你的附近网络名称中的短横是**”-“（减号）还是”_”（下划线）**，利用这个</p>
+<li><p>你永远不知到你的附近网络名称中的短横是<strong>“-“（减号）还是”_”（下划线）</strong>，利用这个</p>
 <p>如果只想知道网络的名称而不像知道其他的内容，则输入</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">iwlist wlan0 scan <span class="hljs-string">| grep ESSID</span><br></code></pre></td></tr></table></figure>
 </li>
@@ -322,17 +314,18 @@
 </li>
 </ul>
 </li>
+</ol>
+<ol>
 <li><p>设定无线网络（相当于我们写网络名称和密码）</p>
 <p>设定档地址（一般都有这个档案，没有的话，可能需要自己新建）：</p>
 <figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">/etc/wp<span class="hljs-built_in">a_supplicant</span>/wp<span class="hljs-built_in">a_supplicant</span>.conf<br></code></pre></td></tr></table></figure>
-
 <p>有的话结果如下：</p>
 <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs clean">## To use this file, you should run command <span class="hljs-string">&quot;systemctl disable network-manager&quot;</span> and reboot <span class="hljs-keyword">system</span>. (Do not uncomment this line!) ##<br><br>###country=CN<br>###ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev<br>###update_config=<span class="hljs-number">1</span><br><br><br>## WIFI <span class="hljs-number">1</span> (Do not uncomment this line!)<br><br>###network=&#123;<br>###    ssid=<span class="hljs-string">&quot;wifi_name1&quot;</span><br>###    psk=<span class="hljs-string">&quot;wifi_password1&quot;</span><br>#    priority=<span class="hljs-number">1</span><br>#    id_str=<span class="hljs-string">&quot;wifi-1&quot;</span><br>###&#125;<br><br>## WIFI <span class="hljs-number">2</span> (Do not uncomment this line!)<br><br>#network=&#123;<br>#    ssid=<span class="hljs-string">&quot;wifi_name2&quot;</span><br>#    psk=<span class="hljs-string">&quot;wifi_password2&quot;</span><br>#    priority=<span class="hljs-number">2</span><br>#    id_str=<span class="hljs-string">&quot;wifi-2&quot;</span><br>#&#125;<br><br></code></pre></td></tr></table></figure>
-
 <p>一般而言，只要将将上文中，有<code>###</code>的内容去掉注释，并且在<code>ssid</code>填入你<code>wifi</code>的名字（一般这个时候你是写不了中文的:(），在<code>psk</code>填入<code>wifi</code>密码（<code>wifi</code>密码终于一定不是中文了）。如果你有其他网络，就照着写另外一个。写完保存退出。</p>
 </li>
 <li><p>重启即可</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;sudo&gt;</span> <span class="hljs-attribute">reboot</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;sudo&gt;</span> <span class="hljs-attribute">reboot</span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 
             </div>

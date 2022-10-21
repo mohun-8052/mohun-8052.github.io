@@ -223,7 +223,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.8k 字
+      4.4k 字
     </span>
   
 
@@ -232,7 +232,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      57 分钟
+      37 分钟
     </span>
   
 
@@ -268,9 +268,6 @@
 <p>本文主要讲述时序逻辑电路中的时序分析，包括建立时间、保持时间、最大延迟、污染延时、时间偏差和时间抖动等概念。并简述了时钟网络（在EDA中）分布技术和PLL技术。</p>
 <hr>
 <span id="more"></span>
-
-
-
 <h1 id="第七章-时序逻辑电路设计"><a href="#第七章-时序逻辑电路设计" class="headerlink" title="第七章 时序逻辑电路设计"></a>第七章 时序逻辑电路设计</h1><h1 id="1-时序基础概念"><a href="#1-时序基础概念" class="headerlink" title="1. 时序基础概念"></a>1. 时序基础概念</h1><h2 id="1-时序分析的目的"><a href="#1-时序分析的目的" class="headerlink" title="1. 时序分析的目的"></a>1. 时序分析的目的</h2><p>对数字系统进行时序检查，判断电路是否可以正常工作（常面临建立时间和保持时间等问题），判断电路的性能等。</p>
 <p>常常分析<strong>电压、温度、工艺（工艺角）</strong>等参数进行分析。</p>
 <h2 id="2-时序分析的分类"><a href="#2-时序分析的分类" class="headerlink" title="2. 时序分析的分类"></a>2. 时序分析的分类</h2><h3 id="1-静态时序分析（STA）"><a href="#1-静态时序分析（STA）" class="headerlink" title="1. 静态时序分析（STA）"></a>1. 静态时序分析（STA）</h3><ul>
@@ -280,11 +277,13 @@
 </li>
 <li><p>时序分析模型：</p>
 <ul>
-<li>同步时钟&#x2F;异步时钟</li>
+<li>同步时钟/异步时钟</li>
 <li>D触发器分割组合逻辑</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019205442171.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019205442171.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
+</ul>
+<ul>
 <li><p>一般不需要进行太复杂的仿真，仅需要计算就可以进行分析，运行速度快。</p>
 </li>
 <li><p>不依赖于激励，根据<font color=red><b>穷尽信号路径上的器件</b></font>就可以进行计算</p>
@@ -308,7 +307,8 @@
 
 
 
-</code></pre></li>
+</code></pre>
+</li>
 </ul>
 <h3 id="2-动态时序分析（DTA）"><a href="#2-动态时序分析（DTA）" class="headerlink" title="2. 动态时序分析（DTA）"></a>2. 动态时序分析（DTA）</h3><ul>
 <li>指<font color=red><b>门级仿真</b></font></li>
@@ -339,7 +339,7 @@
 <li>可以理解为<font color=red><b>最短延时时间</b></font>——理想状态下</li>
 <li><strong>从输入“扰动”到输出“扰动”的时间</strong>，下文进行解释。</li>
 <li>根据器件不同，可以分为组合逻辑污染延时$t_{logic,cd}$和寄存器污染延时$t_{c-q,cd}$​​，详细见后文</li>
-<li>所谓<strong>理想状态</strong>，指的是数据没有跳变时间，即数据跳变是瞬间完成的，数据跳变的$90%$、$50%$、$10%$​​是在同一个时间。</li>
+<li>所谓<strong>理想状态</strong>，指的是数据没有跳变时间，即数据跳变是瞬间完成的，数据跳变的$90\%$、$50\%$、$10\%$​​是在同一个时间。</li>
 <li>根据以上理想状态的定义，可认为一有<font color=red><b>扰动</b></font>，数据就跳变完成。</li>
 </ul>
 <h3 id="5-计算污染时间和传播时间"><a href="#5-计算污染时间和传播时间" class="headerlink" title="5. 计算污染时间和传播时间"></a>5. 计算污染时间和传播时间</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019213546648.png" srcset="/img/loading.gif" lazyload alt="image-20211020103111439"></p>
@@ -349,40 +349,43 @@
 <ul>
 <li><p>组合逻辑污染延时$t_{logic,cd}$​：图中①②之间的时间差$t_{12}$。</p>
 <p>解释：</p>
-<p>​	在①时刻，组合逻辑的输入端发生扰动，对于污染延时的计算，①时刻数据跳变完成，即输入信号的50%在①时刻；</p>
-<p>​	在②时刻，组合逻辑的输出端发生扰动，对于污染延时的计算，②时刻数据跳变完成，即输入信号的50%在②时刻；</p>
-<p>​	故对于组合逻辑，计算污染延时，是<strong>从输入“扰动”对输出“扰动”的时间</strong>，即<br>$$<br>t_{logic,cd}&#x3D;t_{12}&#x3D;t_2-t_1<br>$$</p>
-</li>
+<p>​    在①时刻，组合逻辑的输入端发生扰动，对于污染延时的计算，①时刻数据跳变完成，即输入信号的50%在①时刻；</p>
+<p>​    在②时刻，组合逻辑的输出端发生扰动，对于污染延时的计算，②时刻数据跳变完成，即输入信号的50%在②时刻；</p>
+<p>​    故对于组合逻辑，计算污染延时，是<strong>从输入“扰动”对输出“扰动”的时间</strong>，即</p>
+<script type="math/tex; mode=display">
+t_{logic,cd}=t_{12}=t_2-t_1</script></li>
 <li><p>组合逻辑传播延时$t_{logic}$​：图中③④之间的时间差$t_{34}$</p>
 <p>解释：</p>
-<p>​	在①时刻，输入数据开始发生扰动，但是此时数据并没有稳定。当③时刻，数据输入正式跳变到50%</p>
-<p>​	在②时刻，输出数据开始发生扰动，但是此时数据并没有稳定。当④时刻，数据输出正式跳变到50%</p>
-<p>​	故对于组合逻辑，其传播延时为<br>$$<br>t_{logic}&#x3D;t_{34}&#x3D;t_4-t_3<br>$$</p>
-</li>
+<p>​    在①时刻，输入数据开始发生扰动，但是此时数据并没有稳定。当③时刻，数据输入正式跳变到50%</p>
+<p>​    在②时刻，输出数据开始发生扰动，但是此时数据并没有稳定。当④时刻，数据输出正式跳变到50%</p>
+<p>​    故对于组合逻辑，其传播延时为</p>
+<script type="math/tex; mode=display">
+t_{logic}=t_{34}=t_4-t_3</script></li>
 </ul>
 </li>
 <li><p>时序逻辑：</p>
 <ul>
 <li><p>寄存器的污染延时$t_{c-q,cd}$，图中⑤⑥之间的时间差$t_{56}$​</p>
 <p>解释：</p>
-<p>​	当时钟的捕获沿到来时，即⑤时刻，$D$​端数据被捕获到寄存器中（锁存在寄存器的第一级锁存器中），并进行传输。</p>
-<p>​	<strong>故时钟的捕获沿即为数据输入数据沿，捕获沿50%即为数据输入沿50%</strong></p>
-<p>​	当输出端$Q$​发生扰动，即⑥时刻。计算污染延时时，有扰动说明数据跳变完成，于是⑥时刻，为输出数据的50%</p>
-<p>​	故，寄存器的污染延时为<br>$$<br>t_{c-q,cd}&#x3D;t_{56}&#x3D;t_6-t_5<br>$$</p>
-</li>
+<p>​    当时钟的捕获沿到来时，即⑤时刻，$D$​端数据被捕获到寄存器中（锁存在寄存器的第一级锁存器中），并进行传输。</p>
+<p>​    <strong>故时钟的捕获沿即为数据输入数据沿，捕获沿50%即为数据输入沿50%</strong></p>
+<p>​    当输出端$Q$​发生扰动，即⑥时刻。计算污染延时时，有扰动说明数据跳变完成，于是⑥时刻，为输出数据的50%</p>
+<p>​    故，寄存器的污染延时为</p>
+<script type="math/tex; mode=display">
+t_{c-q,cd}=t_{56}=t_6-t_5</script></li>
 <li><p>寄存器的传播延时$t_{c-q,cd}$​，图中⑤⑦之间的时间差$t_{57}$​​</p>
 <p>解释：</p>
-<p>​	当时钟的捕获沿到来时，即⑤时刻，$D$​端数据被捕获到寄存器中（锁存在寄存器的第一级锁存器中），并进行传输。</p>
-<p>​	<strong>故时钟的捕获沿即为数据输入数据沿，捕获沿50%即为数据输入沿50%</strong></p>
-<p>​	当输出端$Q$​​发生扰动，即⑥时刻，但是数据没有稳定。在⑦时刻，输出数据正式跳变到50%</p>
-<p>​	故，寄存器的传播延时为<br>$$<br>t_{c-q}&#x3D;t_{57}&#x3D;t_7-t_5<br>$$</p>
-</li>
+<p>​    当时钟的捕获沿到来时，即⑤时刻，$D$​端数据被捕获到寄存器中（锁存在寄存器的第一级锁存器中），并进行传输。</p>
+<p>​    <strong>故时钟的捕获沿即为数据输入数据沿，捕获沿50%即为数据输入沿50%</strong></p>
+<p>​    当输出端$Q$​​发生扰动，即⑥时刻，但是数据没有稳定。在⑦时刻，输出数据正式跳变到50%</p>
+<p>​    故，寄存器的传播延时为</p>
+<script type="math/tex; mode=display">
+t_{c-q}=t_{57}=t_7-t_5</script></li>
 </ul>
 </li>
 </ul>
 <h2 id="5-各种信号路径、时序路径"><a href="#5-各种信号路径、时序路径" class="headerlink" title="5. 各种信号路径、时序路径"></a>5. 各种信号路径、时序路径</h2><p>信号的路径主要分为三个</p>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019210811041.png" srcset="/img/loading.gif" lazyload alt="image-20211019210811041" style="zoom:67%;" />
-
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211019210811041.png" srcset="/img/loading.gif" lazyload alt="image-20211019210811041" style="zoom:67%;" /></p>
 <ul>
 <li><p>时钟路径</p>
 <ul>
@@ -390,14 +393,12 @@
 <pre><code class=" mermaid">graph LR
     模块输入端口的源时钟 --&gt; 某个发送时序单元的时钟引脚
 </code></pre>
-
 <p>如图所示，$Clk_{u1}→u1时钟引脚$​​</p>
 </li>
 <li><p><strong>目的时钟路径</strong>：</p>
 <pre><code class=" mermaid">graph LR
     模块输入端口的目的时钟 --&gt; 某个捕获时序单元的时钟引脚
 </code></pre>
-
 <p>如图所示，$Clk_{u4}→u4时钟引脚$​</p>
 </li>
 </ul>
@@ -407,7 +408,6 @@
 <pre><code class=" mermaid">graph LR
     路径起点 --&gt; 路径终点
 </code></pre>
-
 <ul>
 <li><p><strong>数据起点</strong>：</p>
 <ol>
@@ -416,29 +416,30 @@
 </ol>
 </li>
 <li><p><strong>数据终点</strong>：</p>
-<p>​	对于组合逻辑电路、时序逻辑电路都一样，均为某单元的<strong>数据输出端口</strong></p>
+<p>​    对于组合逻辑电路、时序逻辑电路都一样，均为某单元的<strong>数据输出端口</strong></p>
 </li>
 </ul>
 </li>
-<li><p>异步路径（如异步复位）</p>
-</li>
+</ul>
+<ul>
+<li>异步路径（如异步复位）</li>
 </ul>
 <p>根据路径可将分析类型分为</p>
 <ul>
 <li>同步分析：时钟路径+数据路径</li>
 <li>异步分析：时钟路径+异步路径</li>
 </ul>
-<h2 id="6-时钟参数两大条件"><a href="#6-时钟参数两大条件" class="headerlink" title="6. 时钟参数两大条件"></a>6. 时钟参数两大条件</h2><h3 id="1-周期条件"><a href="#1-周期条件" class="headerlink" title="1. 周期条件"></a>1. 周期条件</h3><p>$$<br>T&gt;t_{c-q}+t_{logic}+t_{su}<br>$$</p>
-<p>其中，</p>
+<h2 id="6-时钟参数两大条件"><a href="#6-时钟参数两大条件" class="headerlink" title="6. 时钟参数两大条件"></a>6. 时钟参数两大条件</h2><h3 id="1-周期条件"><a href="#1-周期条件" class="headerlink" title="1. 周期条件"></a>1. 周期条件</h3><script type="math/tex; mode=display">
+T>t_{c-q}+t_{logic}+t_{su}</script><p>其中，</p>
 <p>$t_{c-q}$​：本级寄存器的（最坏）传播延时</p>
 <p>$t_{logic}$：两个寄存器之间组合逻辑的（最坏）传播延时</p>
 <p>$t_{su}$​：下一级寄存器需要的建立时间</p>
-<h3 id="2-保持时间条件"><a href="#2-保持时间条件" class="headerlink" title="2. 保持时间条件"></a>2. 保持时间条件</h3><p>$$<br>t_{hold}&lt;t_{c-q,cd}+t_{logic,cd}<br>$$</p>
-<p>其中，</p>
+<h3 id="2-保持时间条件"><a href="#2-保持时间条件" class="headerlink" title="2. 保持时间条件"></a>2. 保持时间条件</h3><script type="math/tex; mode=display">
+t_{hold}<t_{c-q,cd}+t_{logic,cd}</script><p>其中，</p>
 <p>$t_{c-q,cd}$​​：本级寄存器的污染延时</p>
 <p>$t_{logic,cd}$​：两个寄存器之间组合逻辑的延时</p>
 <p><strong>小贴士</strong>：如何理解这个不等式？</p>
-<p>​	前文提到，计算单元的污染时间，是<strong>”扰动“对”扰动“</strong>。于是，$t_{c-q,cd}+t_{logic,cd}$的意思就是从本级寄存器时钟有效沿到下一级寄存器的输入扰动的时间（下一级寄存器的输入扰动即为组合逻辑的输出扰动）。即当$t_{c-q,cd}+t_{logic,cd}$时间过后，下一级的数据输入端已经开始出现扰动，输入开始不稳定。而对于下一级寄存器，其保持时间要求的是下一级有效时钟沿到来之后，其数据输入端需要保持稳定的时间。于是，下一级寄存器的保持时间，只能小于其输入端扰动到来的时间，即有上式。</p>
+<p>​    前文提到，计算单元的污染时间，是<strong>”扰动“对”扰动“</strong>。于是，$t_{c-q,cd}+t_{logic,cd}$的意思就是从本级寄存器时钟有效沿到下一级寄存器的输入扰动的时间（下一级寄存器的输入扰动即为组合逻辑的输出扰动）。即当$t_{c-q,cd}+t_{logic,cd}$时间过后，下一级的数据输入端已经开始出现扰动，输入开始不稳定。而对于下一级寄存器，其保持时间要求的是下一级有效时钟沿到来之后，其数据输入端需要保持稳定的时间。于是，下一级寄存器的保持时间，只能小于其输入端扰动到来的时间，即有上式。</p>
 <h2 id="7-【实验测量】建立时间与保持时间"><a href="#7-【实验测量】建立时间与保持时间" class="headerlink" title="7. 【实验测量】建立时间与保持时间"></a>7. 【实验测量】建立时间与保持时间</h2><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211020105507695.png" srcset="/img/loading.gif" lazyload alt="image-20211020105507695"></p>
 <ol>
 <li><p>测量建立时间：</p>
@@ -465,43 +466,46 @@
 <li>各个端口的负载不同</li>
 <li>时钟网络中插入的缓存器不等</li>
 </ol>
-<h3 id="2-计算【全局偏差、局部偏差】："><a href="#2-计算【全局偏差、局部偏差】：" class="headerlink" title="2. 计算【全局偏差、局部偏差】："></a>2. 计算【全局偏差、局部偏差】：</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204529658.png" srcset="/img/loading.gif" lazyload alt="image-20211025204529658"><br>$$<br>\delta&#x3D;t_{r-max}-t_{r-min}<br>$$<br>其中，</p>
+<h3 id="2-计算【全局偏差、局部偏差】："><a href="#2-计算【全局偏差、局部偏差】：" class="headerlink" title="2. 计算【全局偏差、局部偏差】："></a>2. 计算【全局偏差、局部偏差】：</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204529658.png" srcset="/img/loading.gif" lazyload alt="image-20211025204529658"></p>
+<script type="math/tex; mode=display">
+\delta=t_{r-max}-t_{r-min}</script><p>其中，</p>
 <p>$\delta$：时钟偏差</p>
 <p>$t_{r-max}$​​：从该时钟域的时钟输入端口到该时钟域内寄存器的最长时间，如图中②</p>
 <p>$t_{r-max}$​​​​：从该时钟域的时钟输入端口到该时钟域内寄存器的最短时间，如图中①</p>
 <h4 id="1-全局时钟偏差"><a href="#1-全局时钟偏差" class="headerlink" title="1. 全局时钟偏差"></a>1. 全局时钟偏差</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204713311.png" srcset="/img/loading.gif" lazyload alt="image-20211025213413238"></p>
 <p>如图所示，蓝色阴影部分为全局电路。</p>
-<p>可知，$t_{r-max}&#x3D;0.38ns(T_3)$​​​；$t_{r-min}&#x3D;0.36ns(T_2)$​​​，故时钟偏差$\delta&#x3D;0.38-0.36&#x3D;0.02ns$​​​</p>
+<p>可知，$t_{r-max}=0.38ns(T_3)$​​​；$t_{r-min}=0.36ns(T_2)$​​​，故时钟偏差$\delta=0.38-0.36=0.02ns$​​​</p>
 <h4 id="2-局部时钟偏差"><a href="#2-局部时钟偏差" class="headerlink" title="2. 局部时钟偏差"></a>2. 局部时钟偏差</h4><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025204957015.png" srcset="/img/loading.gif" lazyload alt="image-20211025204957015"></p>
 <p>如图所示，蓝色阴影部分和上面部分电路之间，不存在逻辑关系，因此阴影部分可以当成该时钟域下的一个<strong>局部电路</strong>。</p>
-<p>可知，对于<strong>阴影部分</strong>而言，$t_{r-max}&#x3D;0.22ns(T_3)$​​​​；$t_{r-min}&#x3D;0.21ns(T_2)$​​​​，故时钟偏差$\delta&#x3D;0.22-0.21&#x3D;0.01ns$</p>
+<p>可知，对于<strong>阴影部分</strong>而言，$t_{r-max}=0.22ns(T_3)$​​​​；$t_{r-min}=0.21ns(T_2)$​​​​，故时钟偏差$\delta=0.22-0.21=0.01ns$</p>
 <p><strong>注意</strong>，非阴影部分电路不属于该局部电路，故而$t_{r-min}$取$T_2$，而不取$T_3$</p>
 <h3 id="2-时钟偏差分类（正负）"><a href="#2-时钟偏差分类（正负）" class="headerlink" title="2. 时钟偏差分类（正负）"></a>2. 时钟偏差分类（正负）</h3><h4 id="1-正偏差"><a href="#1-正偏差" class="headerlink" title="1. 正偏差"></a>1. 正偏差</h4><p>正偏差，即<font color=red><b>时钟延迟方向与数据流方向一致</b></font>，如图所示。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025210013014.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025210013014.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
 <li><p>建立时间：<strong>正偏差对于建立时间是有利的</strong>。</p>
-<p>​					因为信号从$R_1$传播到$R_2$​的时间多了$\delta$，即$T+\delta$，如图所示。</p>
-<p>​					意味着，逻辑运算完，数据输出稳定之后，还能多出$\delta$​​​的时间$R_2$​​才接收，即整体时间冗余多了$\delta$​，即建立时间（裕量）多了$\delta$​​。</p>
+<p>​                    因为信号从$R_1$传播到$R_2$​的时间多了$\delta$，即$T+\delta$，如图所示。</p>
+<p>​                    意味着，逻辑运算完，数据输出稳定之后，还能多出$\delta$​​​的时间$R_2$​​才接收，即整体时间冗余多了$\delta$​，即建立时间（裕量）多了$\delta$​​。</p>
 </li>
 <li><p>保持时间：<strong>正偏差对于保持时间是不利的</strong>。</p>
-<p>​					<font color=red><b>保持时间是针对同一个周期，上下两级寄存器而言的</b></font>。</p>
-<p>​					同一周期，$CLK2$​​落后$CLK1\ \delta$​​​​​时间​，意味着$t_{hold}+\delta&lt;t_{c-q,cd}+t_{logic,cd}$​​​，意味着电路对于竞争（保持时间）更加敏感。</p>
+<p>​                    <font color=red><b>保持时间是针对同一个周期，上下两级寄存器而言的</b></font>。</p>
+<p>​                    同一周期，$CLK2$​​落后$CLK1\ \delta$​​​​​时间​，意味着$t_{hold}+\delta&lt;t_{c-q,cd}+t_{logic,cd}$​​​，意味着电路对于竞争（保持时间）更加敏感。</p>
 </li>
 </ul>
 <h4 id="2-负偏差"><a href="#2-负偏差" class="headerlink" title="2. 负偏差"></a>2. 负偏差</h4><p>正偏差，即<font color=red><b>时钟延迟方向与数据流方向相反</b></font>，如图所示。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025213413238.png" srcset="/img/loading.gif" lazyload alt="image-20211025210013014"></p>
 <ul>
 <li><p>建立时间：<strong>负偏差对于建立时间是不利的</strong>。</p>
-<p>​					因为信号从$R_1$​传播到$R_2$​​的时间少了$\delta$​，即$T-\delta$​，如图所示。</p>
-<p>​					意味着，逻辑运算完，数据输出稳定之后，少了$\delta$​​​的时间$R_2$​​才接收，即整体时间冗余少了$\delta$​，即建立时间少了$\delta$​​​。</p>
-<p>​					如果要留有足够的建立时间裕量，只能减少逻辑运算时间，即<strong>实际逻辑运算时间较小</strong></p>
+<p>​                    因为信号从$R_1$​传播到$R_2$​​的时间少了$\delta$​，即$T-\delta$​，如图所示。</p>
+<p>​                    意味着，逻辑运算完，数据输出稳定之后，少了$\delta$​​​的时间$R_2$​​才接收，即整体时间冗余少了$\delta$​，即建立时间少了$\delta$​​​。</p>
+<p>​                    如果要留有足够的建立时间裕量，只能减少逻辑运算时间，即<strong>实际逻辑运算时间较小</strong></p>
 </li>
 <li><p>保持时间：<strong>负偏差对于保持时间是有利的</strong>。</p>
 </li>
 <li><p>时钟周期：因为留给逻辑运算的时间减小，如果逻辑运算时间不能减小，建立时间裕量不能减少，只能将周期增加$\delta$​才能满足时序要求。周期的增加，意味着电路性能的降低。</p>
 </li>
 </ul>
-<h3 id="3-【重点】利用时间偏差修补建立时间"><a href="#3-【重点】利用时间偏差修补建立时间" class="headerlink" title="3. 【重点】利用时间偏差修补建立时间"></a>3. 【重点】利用时间偏差修补建立时间</h3><p><font color=red><b>思想：增大或者缩小时钟路径上的buffer的尺寸来修正某些寄存器的建立时间</b></font></p>
+<h3 id="3-【重点】利用时间偏差修补建立时间"><a href="#3-【重点】利用时间偏差修补建立时间" class="headerlink" title="3. 【重点】利用时间偏差修补建立时间"></a>3. 【重点】利用时间偏差修补建立时间</h3><font color=red><b>思想：增大或者缩小时钟路径上的buffer的尺寸来修正某些寄存器的建立时间</b></font>
+
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025220852654.png" srcset="/img/loading.gif" lazyload alt="image-20211025220852654"></p>
 <p>由图可知，寄存器$R_3$​的建立时间裕量为$-0.15ns&lt;0ns$，不满足建立时间要求。</p>
 <p>但是，$R_2$​的建立时间裕量为$0.20ns&gt;0$​，电路输出裕量$0.10ns&gt;0$​。</p>
@@ -514,8 +518,9 @@
 </li>
 <li><p>该情况出现在：时钟负偏差</p>
 </li>
-<li><p><strong>负偏差下的最小时钟约束：</strong><br>$$<br>T&gt;t_{c-q}+t_{logic}+t_{su}+\delta<br>$$</p>
-</li>
+<li><p><strong>负偏差下的最小时钟约束：</strong></p>
+<script type="math/tex; mode=display">
+T>t_{c-q}+t_{logic}+t_{su}+\delta</script></li>
 <li><p>为了减小时钟偏差对于周期的影响，通用的方法就是<font color=red><b>使得时钟网络中的</b>$\delta$​<b>尽可能小</b></font>。</p>
 </li>
 <li><p>下文会总结</p>
@@ -524,40 +529,52 @@
 <h2 id="2-时钟抖动-Clock-Jitter"><a href="#2-时钟抖动-Clock-Jitter" class="headerlink" title="2. 时钟抖动(Clock Jitter)"></a>2. 时钟抖动(Clock Jitter)</h2><h3 id="1-定义与计算"><a href="#1-定义与计算" class="headerlink" title="1. 定义与计算"></a>1. 定义与计算</h3><p>定义：芯片某一给定点上，时钟周期宽度发生变化，或缩短或变宽</p>
 <p>计算：</p>
 <ol>
-<li><p>**绝对时钟抖动$t_{jitter}$**：某一给定位置的一个时钟边沿相对理想时钟边沿最坏情况下的变化（绝对值）</p>
+<li><p><strong>绝对时钟抖动$t_{jitter}$</strong>：某一给定位置的一个时钟边沿相对理想时钟边沿最坏情况下的变化（绝对值）</p>
 <p>如图，</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211025234107739.png" srcset="/img/loading.gif" lazyload alt="image-20211025234107739"></p>
-<center>时钟抖动
-
-
-<p>存在$-t_{jitter}$和$t_{jitter}$</p>
+<p><center>时钟抖动</p>
 </li>
+</ol>
+<p>   存在$-t_{jitter}$和$t_{jitter}$</p>
+<ol>
 <li><p>周期至周期抖动$T_{jitter}$：第$j+1$级时钟沿和第$j$级时钟沿到达节点$n$的时间差。</p>
-<p>计算公式如下：<br>$$<br>T_{jitter}&#x3D;t_{n,j+1}-t_{n,j}-T_{clk}<br>$$<br>其中，</p>
+<p>计算公式如下：</p>
+<script type="math/tex; mode=display">
+T_{jitter}=t_{n,j+1}-t_{n,j}-T_{clk}</script><p>其中，</p>
 <p>$t_{n,j+1}$：第$j+1$级时钟沿到达节点$n$的时刻</p>
 <p>$t_{n,j}$​：第$j$级时钟沿到达节点$n$​​的时刻</p>
 <p>$T_{clk}$：理想的时钟周期</p>
-<p>可知<strong>最坏情况下，周期至周期抖动</strong>为（即图中①-⑥或③-④），<br>$$<br>T_{jitter-max}&#x3D;±2t_{jitter}<br>$$</p>
-</li>
+<p>可知<strong>最坏情况下，周期至周期抖动</strong>为（即图中①-⑥或③-④），</p>
+<script type="math/tex; mode=display">
+T_{jitter-max}=±2t_{jitter}</script></li>
 </ol>
-<h3 id="2-【周期-T-​​​】时钟抖动对于周期的影响"><a href="#2-【周期-T-​​​】时钟抖动对于周期的影响" class="headerlink" title="2. 【周期$T$​​​】时钟抖动对于周期的影响"></a>2. 【周期$T$​​​】时钟抖动对于周期的影响</h3><p>因为时钟抖动是难以预料的，在确定时钟周期的时候，我们应该考虑最坏的情况，即<br>$$<br>T-2t_{jitter}&gt;t_{c-q}+t_{logic}+t_{su}<br>$$<br>即上图所示的③-④。因为这意味着周期$T$需要增加$2t_{jitter}$​，性能降低。​</p>
-<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><h3 id="1-【周期-T-】影响"><a href="#1-【周期-T-】影响" class="headerlink" title="1. 【周期$T$】影响"></a>1. 【周期$T$】影响</h3><table>
+<h3 id="2-【周期-T-​​​】时钟抖动对于周期的影响"><a href="#2-【周期-T-​​​】时钟抖动对于周期的影响" class="headerlink" title="2. 【周期$T$​​​】时钟抖动对于周期的影响"></a>2. 【周期$T$​​​】时钟抖动对于周期的影响</h3><p>因为时钟抖动是难以预料的，在确定时钟周期的时候，我们应该考虑最坏的情况，即</p>
+<script type="math/tex; mode=display">
+T-2t_{jitter}>t_{c-q}+t_{logic}+t_{su}</script><p>即上图所示的③-④。因为这意味着周期$T$需要增加$2t_{jitter}$​，性能降低。​</p>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><h3 id="1-【周期-T-】影响"><a href="#1-【周期-T-】影响" class="headerlink" title="1. 【周期$T$】影响"></a>1. 【周期$T$】影响</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">类型</th>
-<th align="center">时钟偏差</th>
-<th align="center">时钟抖动</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">时钟偏差</th>
+<th style="text-align:center">时钟抖动</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">对周期起影响</td>
-<td align="center">负偏差$-\delta$</td>
-<td align="center">最坏情况：$-2t_{jitter}$</td>
+<tbody>
+<tr>
+<td style="text-align:center">对周期起影响</td>
+<td style="text-align:center">负偏差$-\delta$</td>
+<td style="text-align:center">最坏情况：$-2t_{jitter}$</td>
 </tr>
-</tbody></table>
-<p>公式：<br>$$<br>T-\delta-2t_{jitter}&gt;t_{c-q}+t_{logic}+t_{su}<br>$$<br>即<br>$$<br>T&gt;t_{c-q}+t_{logic}+t_{su}+\delta+2t_{jitter}<br>$$</p>
-<p><strong>注意</strong>：$\delta$和$t_{jitter}$均为绝对值</p>
-<h3 id="2-来源（了解）"><a href="#2-来源（了解）" class="headerlink" title="2. 来源（了解）"></a>2. 来源（了解）</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026164908332.png" srcset="/img/loading.gif" lazyload></p>
+</tbody>
+</table>
+</div>
+<p>公式：</p>
+<script type="math/tex; mode=display">
+T-\delta-2t_{jitter}>t_{c-q}+t_{logic}+t_{su}</script><p>即</p>
+<script type="math/tex; mode=display">
+T>t_{c-q}+t_{logic}+t_{su}+\delta+2t_{jitter}</script><p><strong>注意</strong>：$\delta$和$t_{jitter}$均为绝对值</p>
+<h3 id="2-来源（了解）"><a href="#2-来源（了解）" class="headerlink" title="2. 来源（了解）"></a>2. 来源（了解）</h3><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026164908332.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ol>
 <li>时钟信号产生</li>
 <li>静态时钟偏差：期间工艺的差别，如缓冲器buffer</li>
@@ -610,41 +627,16 @@
 <li><p>相位检测器是一个<strong>三状态的状态机</strong>，状态转换图如下</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211026201949713.png" srcset="/img/loading.gif" lazyload alt="image-20211026201949713"></p>
 </li>
-<li><p>相位检测器拥有**<font color=red>鉴频、鉴相</font>**的功能。</p>
+<li><p>相位检测器拥有<strong><font color=red>鉴频、鉴相</font></strong>的功能。</p>
 <p><strong>鉴频</strong>：</p>
-<table>
-<thead>
-<tr>
-<th align="center">频率</th>
-<th align="center">$f_A&#x3D;f_B$</th>
-<th align="center">$f_A&gt;f_B$</th>
-<th align="center">$f_A&lt;f_B$</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"></td>
-<td align="center">平均脉冲数：UP&#x3D;DN</td>
-<td align="center">平均脉冲数：UP&gt;DN，且DN的脉冲宽度极小</td>
-<td align="center">平均脉冲数：UP&lt;DN，且UP的脉冲宽度极小</td>
-</tr>
-</tbody></table>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127232503203.png" srcset="/img/loading.gif" lazyload></p>
+<p>| 频率 |     $f_A=f_B$     |               $f_A&gt;f_B$               |               $f_A<f_B$               |
+| :--: | :---------------: | :-----------------------------------: | :-----------------------------------: |
+|      | 平均脉冲数：UP=DN | 平均脉冲数：UP>DN，且DN的脉冲宽度极小 | 平均脉冲数：UP&lt;DN，且UP的脉冲宽度极小 |</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127232503203.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p><strong>鉴相</strong>：</p>
-<table>
-<thead>
-<tr>
-<th align="center">相位</th>
-<th align="center">A超前B</th>
-<th align="center">B超前A</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"></td>
-<td align="center">脉冲宽度UP&gt;DN，UP的脉冲宽度&#x3D;AB的相位误差</td>
-<td align="center">脉冲宽度UP&lt;DN，且DN的脉冲宽度&#x3D;AB的相位误差</td>
-</tr>
-</tbody></table>
-<img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127232430246.png" srcset="/img/loading.gif" lazyload alt="image-20211127232430246" style="zoom:80%;" /></li>
+<p>| 相位 |                  A超前B                  |                   B超前A                   |<br>| :—: | :———————————————————: | :————————————————————: |<br>|      | 脉冲宽度UP&gt;DN，UP的脉冲宽度=AB的相位误差 | 脉冲宽度UP&lt;DN，且DN的脉冲宽度=AB的相位误差 |</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20211127232430246.png" srcset="/img/loading.gif" lazyload alt="image-20211127232430246" style="zoom:80%;" /></p>
+</li>
 </ul>
 
             </div>
