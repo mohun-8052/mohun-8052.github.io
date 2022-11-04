@@ -24,7 +24,7 @@
 <meta property="og:description" content="MOS工艺库参数提取">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-19T01:48:27.000Z">
-<meta property="article:modified_time" content="2022-10-19T09:27:43.963Z">
+<meta property="article:modified_time" content="2022-11-04T07:44:59.384Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
@@ -201,7 +201,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      2k 字
     </span>
   
 
@@ -210,7 +210,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14 分钟
+      17 分钟
     </span>
   
 
@@ -378,7 +378,7 @@ KP=\mu C_{ox}=\mu \frac{\varepsilon_{ox}}{t_{ox}}</script><p>（3）衬片调制
 </table>
 </div>
 <p>根据以上公式，即可<strong>计算或直接</strong>得到</p>
-<p>（1）阈值电压</p>
+<p>（1）阈值电压（一般有用）</p>
 <div class="table-container">
 <table>
 <thead>
@@ -397,13 +397,13 @@ KP=\mu C_{ox}=\mu \frac{\varepsilon_{ox}}{t_{ox}}</script><p>（3）衬片调制
 <tr>
 <td style="text-align:center">$V_{TH}$</td>
 <td style="text-align:center">$0.390+0.4014(\sqrt{0.8855+V_{SB}}-\sqrt{0.8855})$</td>
-<td style="text-align:center">$0.390+0.4014(\sqrt{0.9037+V_{SB}}-\sqrt{0.9037})$</td>
+<td style="text-align:center">$-0.402+0.4014(\sqrt{0.9037+V_{SB}}-\sqrt{0.9037})$</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>一般设计中，直接采用$V_{TH}=V_{TH0}$进行设计</p>
-<p>（2）参数因子</p>
+<p><strong>（2）参数因子（最有用）</strong></p>
 <div class="table-container">
 <table>
 <thead>
@@ -419,10 +419,15 @@ KP=\mu C_{ox}=\mu \frac{\varepsilon_{ox}}{t_{ox}}</script><p>（3）衬片调制
 <td style="text-align:center">3.0336e-4 $A·V^{-2}$</td>
 <td style="text-align:center">7.9964e-5 $A·V^{-2}$</td>
 </tr>
+<tr>
+<td style="text-align:center">更常用$KP$</td>
+<td style="text-align:center">303 $\mu A·V^{-2}$</td>
+<td style="text-align:center">8 $\mu A·V^{-2}$</td>
+</tr>
 </tbody>
 </table>
 </div>
-<p>（3）衬偏调制系数</p>
+<p>（3）衬偏调制系数（目前没用）</p>
 <div class="table-container">
 <table>
 <thead>
@@ -441,7 +446,7 @@ KP=\mu C_{ox}=\mu \frac{\varepsilon_{ox}}{t_{ox}}</script><p>（3）衬片调制
 </tbody>
 </table>
 </div>
-<p>（3）沟长调制系数</p>
+<p>（3）沟长调制系数（没半点用）</p>
 <div class="table-container">
 <table>
 <thead>
@@ -460,7 +465,12 @@ KP=\mu C_{ox}=\mu \frac{\varepsilon_{ox}}{t_{ox}}</script><p>（3）衬片调制
 </tbody>
 </table>
 </div>
-<p>一般设计中，直接令$L=1\mu$进行仿真，然后再进行调试。</p>
+<p>一般设计中，直接令$L=1\mu$或$500n$进行仿真，然后再进行调试。</p>
+<h1 id="4-笔者语"><a href="#4-笔者语" class="headerlink" title="4. 笔者语"></a>4. 笔者语</h1><ol>
+<li>实际上，由于$V_A$（或$\lambda$）提取的结果很差，提取手算电路和实际仿真相差太大，于是往往不使用$\frac{1}{\lambda}={L·V_A’}=V_A$来确定$L$，而是直接令$L=500nm$或$1\mu m$进行仿真。需要知道的只有，$L$越大，$r_o$越大。如果增益（$A=g_m·r_o$）不够的时候，增大管子的$L$以得到更大的增益。</li>
+<li>$V_{TH}$用的也相对比较少，更多的是采用$V_{OV}$进行设计。在一阶模型中，$V_{OV}=V_{GS}-V_{TH}$。</li>
+<li>使用最多的是$KP=\mu C_{ox}$参数，当电流$I$和过驱动电压$V_{OV}$确定之后，利用平方律公式（$I=\frac{1}{2}\mu C_{ox}(\frac{W}{L})V_{OV}^2$），即可以求出${\frac{W}{L}}$。然后带入1.的$L$，即可进行仿真。</li>
+</ol>
 
             </div>
             <hr>
