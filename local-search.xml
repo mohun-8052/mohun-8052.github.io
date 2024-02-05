@@ -4,69 +4,6 @@
   
   
   <entry>
-    <title>两级运放设计纪实【3】DC静态工作点分析</title>
-    <link href="/2022/11/04/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%903%E3%80%91%E4%BD%8E%E9%A2%91%E5%A2%9E%E7%9B%8A%E5%92%8C%E9%A2%91%E5%93%8D%E7%89%B9%E6%80%A7/"/>
-    <url>/2022/11/04/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%903%E3%80%91%E4%BD%8E%E9%A2%91%E5%A2%9E%E7%9B%8A%E5%92%8C%E9%A2%91%E5%93%8D%E7%89%B9%E6%80%A7/</url>
-    
-    <content type="html"><![CDATA[<p>对电路进行静态工作点分析是分析电路的第一步</p><hr><span id="more"></span>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>模拟IC</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>两级运放设计纪实【2】widlar电流镜</title>
-    <link href="/2022/10/20/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%902%E3%80%91widlar%E7%94%B5%E6%B5%81%E9%95%9C/"/>
-    <url>/2022/10/20/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%902%E3%80%91widlar%E7%94%B5%E6%B5%81%E9%95%9C/</url>
-    
-    <content type="html"><![CDATA[<p>该电流镜用于二级运放中，作为偏置电路。</p><p>widlar电流镜所提供的偏置电压和偏置电流和电源电压无关，仅仅有一个电阻和器件尺寸决定。</p><hr><span id="more"></span><h1 id="1-电路图"><a href="#1-电路图" class="headerlink" title="1. 电路图"></a>1. 电路图</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221020163504038.png" alt="图1 widlar电流镜偏置"></p><h2 id="1-1-特点"><a href="#1-1-特点" class="headerlink" title="1.1 特点"></a>1.1 特点</h2><p>电路提供的<strong>偏置电流</strong>$I_B$与直流电源和MOSFET的开启电压无关。</p><p>更进一步说，被偏置的晶体管的<strong>跨导</strong>$g_m$仅由一个电阻和器件的尺寸决定。</p><h2 id="1-2-组成"><a href="#1-2-组成" class="headerlink" title="1.2 组成"></a>1.2 组成</h2><p>偏置电路包括</p><ul><li>$Q_{12}$和$Q_{13}$：两个故意<strong>失配</strong>的晶体管。</li><li>$Q_{10}$和$Q_{11}$：最大程度地降低$Q_{12}$的沟道长度调制效应。用了cascode连接的晶体管$Q_{10}$和<strong>匹配</strong>的连接成二极管的晶体管$Q_{11}$来提供$Q_{10}$的偏置电压。</li><li>$Q_{8}$和$Q_{9}$：由<strong>匹配</strong>的P沟道器件$Q_{8}$和$Q_{9}$构成的镜像电流源将电流$I_B$复制到$Q_{13}$和$Q_{11}$。</li></ul><p>注：</p><ol><li><p>通常$Q_{12}$沟道宽度是$Q_{13}$的<strong>4倍</strong>，即$(\frac{W}{L})_{12}=4(\frac{W}{L})_{13}$。参见（Steininger,1990; Johns and Martin, 1997）</p></li><li><p>电阻$R_B$串联在$Q_{12}$的源极。其中$R_B$决定了偏置电流$I_B$和跨导$g_{m12}$，因此它的值必须是稳定且精确的。故在大多数应用中，$R_B$<strong>都是片外电阻</strong>。</p></li><li><p>失配，即表示$(\frac{W}{L})$不相等；匹配，即表示$(\frac{W}{L})$相等。即</p><script type="math/tex; mode=display">(\frac{W}{L})_{12}=4(\frac{W}{L})_{13}\tag{1}</script><script type="math/tex; mode=display">(\frac{W}{L})_{10}=4(\frac{W}{L})_{11}\tag{2}</script><script type="math/tex; mode=display">(\frac{W}{L})_{8}=4(\frac{W}{L})_{9}\tag{3}</script></li></ol><ol><li><p>可以认为：只要<strong>所有管子都工作在饱和区</strong>，</p><ul><li>$Q_{12}$、$Q_{13}$和$R_B$：负责产生特定大小的$I_B$</li><li>$Q_{10}$和$Q_{11}$：负责减小$Q_{12}$的沟长调制效应；负责产生一个偏置电压值（如本设计）</li><li>$Q_{8}$和$Q_{9}$：负责镜像电流，使得流过$Q_{12}$、$Q_{13}$相等（因为$V_{GS8}=V_{GS9}$、$(\frac{W}{L})_{8}=4(\frac{W}{L})_{9}$）；负责产生一个偏置电压值（如本设计）</li></ul></li></ol><h1 id="2-工作原理"><a href="#2-工作原理" class="headerlink" title="2. 工作原理"></a>2. 工作原理</h1><h2 id="2-1-电流-I-B-由-Q-12-、-Q-13-和-R-B-决定"><a href="#2-1-电流-I-B-由-Q-12-、-Q-13-和-R-B-决定" class="headerlink" title="2.1 电流$I_B$由$Q_{12}$、$Q_{13}$和$R_B$决定"></a>2.1 电流$I_B$由$Q_{12}$、$Q_{13}$和$R_B$决定</h2><p>由于$Q_{8}$和$Q_{9}$的作用($V_{GS8}=V_{GS9}$、$(\frac{W}{L})_{8}=4(\frac{W}{L})_{9}$)，使得$I_{D12}=I_{D13}=I_B$，于是有</p><script type="math/tex; mode=display">I_B=\frac{1}{2}·KP·(\frac{W}{L})_{12}(V_{GS12}-V_{TH})=\frac{1}{2}·KP·(\frac{W}{L})_{13}(V_{GS13}-V_{TH})\tag{4}</script><p>同时，根据直流分析可知</p><script type="math/tex; mode=display">V_{GS12}+I_BR_B=V_{GS13} \tag{5}</script><p>联立（4）（5），可得</p><script type="math/tex; mode=display">I_B=\frac{2}{KP·(W/L)_{12}R_B^2}(\sqrt{\frac{(W/L)_{12}}{(W/12)_{13}}}-1)^2\tag{6}</script><p>可知，$I_B$<strong>大小由</strong></p><ul><li>$Q_{12}$的尺寸</li><li>$R_B$的大小</li><li>$Q_{12}$和$Q_{13}$的尺寸比</li></ul><p>决定。</p><h2 id="2-1-跨导-g-m-由-Q-12-、-Q-13-和-R-B-决定"><a href="#2-1-跨导-g-m-由-Q-12-、-Q-13-和-R-B-决定" class="headerlink" title="2.1 跨导$g_m$由$Q_{12}$、$Q_{13}$和$R_B$决定"></a>2.1 跨导$g_m$由$Q_{12}$、$Q_{13}$和$R_B$决定</h2><p>将式子（6）重写可得到，</p><script type="math/tex; mode=display">R_B=\frac{2}{\sqrt{2·KP·(W/L)_{12}I_B}}(\sqrt{\frac{(W/L)_{12}}{(W/12)_{13}}}-1)\tag{7}</script><p>而其中，$g_{m12}=\sqrt{2·KP·(W/L)_{12}I_B}$，于是</p><script type="math/tex; mode=display">g_{m12}=\frac{2}{R_B}(\sqrt{\frac{(W/L)_{12}}{(W/12)_{13}}}-1)\tag{8}</script><p>又因为，$g_m$<strong>正比于</strong>$\sqrt{I_D(W/L)}$<strong>，而偏置电路中，电流处处相等。</strong></p><p>于是，对于第$i$个NMOS管，</p><script type="math/tex; mode=display">g_{mi}=g_{m12}\sqrt{\frac{I_{Di}(W/L)_i}{I_B(W/L)_{12}}} \tag{9}</script><p>对于第$i$个PMOS管，</p><script type="math/tex; mode=display">g_{mi}=g_{m12}\sqrt{\frac{\mu_pI_{Di}(W/L)_i}{\mu_nI_B(W/L)_{12}}}\tag{10}</script><p>可知，电路中<strong>所有管子的</strong>$g_m$，由</p><ul><li>$R_B$值</li><li>$Q_{12}$和$Q_{13}$的尺寸比</li><li>$Q_{i}$和$Q_{12}$的尺寸比</li><li>迁移率比</li></ul><p><strong>决定，与其他无关</strong>。</p><h1 id="3-偏置电压值"><a href="#3-偏置电压值" class="headerlink" title="3. 偏置电压值"></a>3. 偏置电压值</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20221021084216991.png" alt="图2 两个电压值"></p><p>如上图所示，该电路可以产生两个偏置电压。</p><p>当$Q_{12}$、$Q_{13}$以及$R_B$值确定之后，$I_B$也就确定了。</p><p>当管子均工作在<strong>饱和区</strong>，根据$I_B=I_B=\frac{1}{2}·KP·(\frac{W}{L})_i(V_{GSi}-V_{TH})$，<strong>改变另外四个管子（两组管子）的宽长比</strong>，即可得</p><script type="math/tex; mode=display">V_1=V_{DD}-|V_{GS8}|\tag{11}</script><script type="math/tex; mode=display">V_2=V_{GS13}+V_{GS11}\tag{12}</script>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>模拟IC</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>两级运放设计纪实【1】参数提取</title>
-    <link href="/2022/10/19/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%901%E3%80%91%E5%8F%82%E6%95%B0%E6%8F%90%E5%8F%96/"/>
-    <url>/2022/10/19/%E4%B8%A4%E7%BA%A7%E8%BF%90%E6%94%BE%E8%AE%BE%E8%AE%A1%E7%BA%AA%E5%AE%9E%E3%80%901%E3%80%91%E5%8F%82%E6%95%B0%E6%8F%90%E5%8F%96/</url>
-    
-    <content type="html"><![CDATA[<p>MOS工艺库参数提取</p><hr><span id="more"></span><h1 id="1-提取参数的必要性"><a href="#1-提取参数的必要性" class="headerlink" title="1. 提取参数的必要性"></a>1. 提取参数的必要性</h1><p>以MOS一阶模型，饱和区公式为例，</p><script type="math/tex; mode=display">i_D= \frac{1}{2} ·KP· \frac{W}{L}·(v_{GS}-V_{th})^2·(1+\lambda v_{DS} )</script><p>其中，$KP$、$V_{TH}$、$\lambda$均是和工艺相关的参数。因此在设计之前，需要先提取工艺参数才可以进行设计。</p><h1 id="2-相关公式"><a href="#2-相关公式" class="headerlink" title="2. 相关公式"></a>2. 相关公式</h1><p>相关公式如下：</p><p>（1）阈值电压</p><script type="math/tex; mode=display">V_{TH}=V_{TH0}+\gamma (\sqrt{|2\Phi_F+V_{SB}|}-\sqrt{|2\Phi_F|})</script><p>又有</p><script type="math/tex; mode=display">|2\Phi_F|=2·\frac{kT}{q}·ln(\frac{n_{ch}}{n_i})</script><p>（2）参数因子</p><script type="math/tex; mode=display">KP=\mu C_{ox}=\mu \frac{\varepsilon_{ox}}{t_{ox}}</script><p>（3）衬片调制系数</p><script type="math/tex; mode=display">\gamma =\frac{\sqrt{2q·\varepsilon_{Si}·n_{ch}}}{\varepsilon_{ox}/{t_{ox}}}</script><p>（4）沟长调制系数</p><script type="math/tex; mode=display">\frac{1}{\lambda}={L·V_A'}=V_A</script><p>目前不太清楚$\lambda$和$P_{CLM}$之间关系</p><p>可知需要提取的参数主要如下</p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">$V_{TH0}$</td><td style="text-align:center">当$v_{BS}=0$且$v_{DS}$很小时，长沟道器件的阈值电压</td></tr><tr><td style="text-align:center">$\mu_0$</td><td style="text-align:center">参数提取温度下的表面迁移率（$\mu \neq \mu_0$，因为温度可能不同）</td></tr><tr><td style="text-align:center">$t_{ox}$</td><td style="text-align:center">氧化层厚度</td></tr><tr><td style="text-align:center">$n_{ch}$</td><td style="text-align:center">沟道掺杂浓度</td></tr><tr><td style="text-align:center">$P_{CLM}$</td><td style="text-align:center">沟长调制系数</td></tr></tbody></table></div><p>以上参数均可以在<code>.lib</code>、<code>.mdl</code>、<code>.scs</code>（取决于具体工艺）文件中得到。</p><h1 id="3-参数提取"><a href="#3-参数提取" class="headerlink" title="3.参数提取"></a>3.参数提取</h1><p>以smic018 1P6M工艺为例子：</p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">NMOS（n18）</th><th style="text-align:center">PMOS（p18）</th></tr></thead><tbody><tr><td style="text-align:center">$V_{TH0}$</td><td style="text-align:center">0.390+ $V$</td><td style="text-align:center">-0.402+ $V$</td></tr><tr><td style="text-align:center">$\mu_0$</td><td style="text-align:center">3.4e-02+ $m^2·V^{-1}·s^{-1}$</td><td style="text-align:center">3.74e-09+ $m^2·V^{-1}·s^{-1}$</td></tr><tr><td style="text-align:center">$t_{ox}$</td><td style="text-align:center">3.87e-09+ $cm$</td><td style="text-align:center">3.74e-09+ $cm$</td></tr><tr><td style="text-align:center">$n_{ch}$</td><td style="text-align:center">3.869e+17 $cm^{-3}$</td><td style="text-align:center">5.500e+17 $cm^{-3}$</td></tr><tr><td style="text-align:center">$P_{CLM}$</td><td style="text-align:center">1.2</td><td style="text-align:center">0.7</td></tr></tbody></table></div><p>其他需要的常数</p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th><th style="text-align:center">值</th></tr></thead><tbody><tr><td style="text-align:center">$k$</td><td style="text-align:center">波尔兹曼常数</td><td style="text-align:center">1.381e-23 $J/K$</td></tr><tr><td style="text-align:center">$n_i$</td><td style="text-align:center">本征载流子浓度(@300K)</td><td style="text-align:center">1.45e10 $cm^{-3}$</td></tr><tr><td style="text-align:center">$\varepsilon_0$</td><td style="text-align:center">真空介电常数</td><td style="text-align:center">8.854e-14 $F/cm$</td></tr><tr><td style="text-align:center">$\varepsilon_{Si}=11.7 \varepsilon_0$</td><td style="text-align:center">硅介电常数</td><td style="text-align:center">1.036e-12 $F/cm$</td></tr><tr><td style="text-align:center">$\varepsilon_{ox}=3.9 \varepsilon_0$</td><td style="text-align:center">二氧化硅介电常数</td><td style="text-align:center">3.453e-13 $F/cm$</td></tr><tr><td style="text-align:center">$q$</td><td style="text-align:center">电子电荷</td><td style="text-align:center">1.6e-19 $C$</td></tr></tbody></table></div><p>根据以上公式，即可<strong>计算或直接</strong>得到</p><p>（1）阈值电压（一般有用）</p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">NMOS（n18）</th><th style="text-align:center">PMOS（p18）</th></tr></thead><tbody><tr><td style="text-align:center">$\vert 2\Phi_F \vert$</td><td style="text-align:center">0.8855</td><td style="text-align:center">0.9037</td></tr><tr><td style="text-align:center">$V_{TH}$</td><td style="text-align:center">$0.390+0.4014(\sqrt{0.8855+V_{SB}}-\sqrt{0.8855})$</td><td style="text-align:center">$-0.402+0.4014(\sqrt{0.9037+V_{SB}}-\sqrt{0.9037})$</td></tr></tbody></table></div><p>一般设计中，直接采用$V_{TH}=V_{TH0}$进行设计</p><p><strong>（2）参数因子（最有用）</strong></p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">NMOS（n18）</th><th style="text-align:center">PMOS（p18）</th></tr></thead><tbody><tr><td style="text-align:center">$KP$</td><td style="text-align:center">3.0336e-4 $A·V^{-2}$</td><td style="text-align:center">7.9964e-5 $A·V^{-2}$</td></tr><tr><td style="text-align:center">更常用$KP$</td><td style="text-align:center">303 $\mu A·V^{-2}$</td><td style="text-align:center">8 $\mu A·V^{-2}$</td></tr></tbody></table></div><p>（3）衬偏调制系数（目前没用）</p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">NMOS（n18）</th><th style="text-align:center">PMOS（p18）</th></tr></thead><tbody><tr><td style="text-align:center">$\gamma$</td><td style="text-align:center">0.4014 $V^{1/2}$</td><td style="text-align:center">0.4625 $V^{1/2}$</td></tr></tbody></table></div><p>（3）沟长调制系数（没半点用）</p><div class="table-container"><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">NMOS（n18）</th><th style="text-align:center">PMOS（p18）</th></tr></thead><tbody><tr><td style="text-align:center">$P_{CLM}$</td><td style="text-align:center">1.2</td><td style="text-align:center">0.7</td></tr></tbody></table></div><p>一般设计中，直接令$L=1\mu$或$500n$进行仿真，然后再进行调试。</p><h1 id="4-笔者语"><a href="#4-笔者语" class="headerlink" title="4. 笔者语"></a>4. 笔者语</h1><ol><li>实际上，由于$V_A$（或$\lambda$）提取的结果很差，提取手算电路和实际仿真相差太大，于是往往不使用$\frac{1}{\lambda}={L·V_A’}=V_A$来确定$L$，而是直接令$L=500nm$或$1\mu m$进行仿真。需要知道的只有，$L$越大，$r_o$越大。如果增益（$A=g_m·r_o$）不够的时候，增大管子的$L$以得到更大的增益。</li><li>$V_{TH}$用的也相对比较少，更多的是采用$V_{OV}$进行设计。在一阶模型中，$V_{OV}=V_{GS}-V_{TH}$。</li><li>使用最多的是$KP=\mu C_{ox}$参数，当电流$I$和过驱动电压$V_{OV}$确定之后，利用平方律公式（$I=\frac{1}{2}\mu C_{ox}(\frac{W}{L})V_{OV}^2$），即可以求出${\frac{W}{L}}$。然后带入1.的$L$，即可进行仿真。</li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>模拟IC</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>模拟IC</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>树莓派nas电脑连接网络</title>
     <link href="/2022/09/05/%E6%A0%91%E8%8E%93%E6%B4%BEnas%E7%94%B5%E8%84%91%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C/"/>
     <url>/2022/09/05/%E6%A0%91%E8%8E%93%E6%B4%BEnas%E7%94%B5%E8%84%91%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C/</url>
