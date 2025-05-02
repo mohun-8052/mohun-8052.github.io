@@ -2337,58 +2337,53 @@ function speakWord(word) {
     speechSynthesis.speak(utterance);
 }
 
+
 function startMatchingRound() {
     clearInterval(matchingTimer);
     matchingMessage.textContent = '';
     optionContainer.innerHTML = '';
 
-    // 1. 动态计算选项数量（可扩展）
+    // 1. 动态计算选项数量
     const optionCount = Math.min(matchingLevel + 1, 6); // 级别1:2, 级别4:5, 其他6
 
-    // 2. 高效选择目标词（避免全量洗牌）
+    // 2. 随机选择目标词（英文或中文）
     const isEnglishTarget = Math.random() > 0.5;
-    const [target, correctAnswer] = getRandomTargetWord(isEnglishTarget);
-
-    targetWordElement.textContent = target;
-
-    // 3. 生成选项（避免死循环）
-    const options = generateOptions(correctAnswer, isEnglishTarget, optionCount);
-    shuffleArray(options);
-
-    // 4. 渲染选项
-    options.forEach(option => {
-        const optionElement = createWordElement(option, () => checkMatchingAnswer(option, correctAnswer));
-        optionContainer.appendChild(optionElement);
-    });
-}
-
-// 辅助函数：高效获取随机目标词
-function getRandomTargetWord(isEnglishTarget) {
-    // 优先选长单词，若没有则随机选择
+    
+    // 2.1 优先选长单词，若没有则随机选择
     const complexWords = words.filter(([english]) => english.length > 5);
     const candidates = complexWords.length > 0 ? complexWords : words;
     const randomIndex = Math.floor(Math.random() * candidates.length);
     const [english, translation] = candidates[randomIndex];
-    return isEnglishTarget ? [english, translation] : [translation, english];
-}
+    const [target, correctAnswer] = isEnglishTarget 
+        ? [english, translation] 
+        : [translation, english];
 
-// 辅助函数：安全生成选项
-function generateOptions(correctAnswer, isEnglishTarget, optionCount) {
-    const options = new Set([correctAnswer]);
+    targetWordElement.textContent = target;
+
+    // 3. 生成选项（确保随机分布）
     const optionIndex = isEnglishTarget ? 1 : 0;
-    
-    // 预先收集所有可能的干扰项
     const allCandidates = words.map(word => word[optionIndex]).filter(x => x !== correctAnswer);
+    const options = new Set([correctAnswer]);
     
-    // 如果候选不足，补充正确答案（避免死循环）
-    while (options.size < optionCount) {
-        if (allCandidates.length === 0) break; // 防止无候选时死循环
+    // 添加干扰项（避免重复）
+    while (options.size < optionCount && allCandidates.length > 0) {
         const randomIndex = Math.floor(Math.random() * allCandidates.length);
         options.add(allCandidates[randomIndex]);
+        allCandidates.splice(randomIndex, 1); // 移除已选选项
     }
     
-    // 如果仍然不足，填充重复项（兜底逻辑）
-    return Array.from(options).slice(0, optionCount);
+    // Fisher-Yates洗牌算法
+    const optionsArray = Array.from(options);
+    for (let i = optionsArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [optionsArray[i], optionsArray[j]] = [optionsArray[j], optionsArray[i]];
+    }
+
+    // 4. 渲染选项
+    optionsArray.slice(0, optionCount).forEach(option => {
+        const optionElement = createWordElement(option, () => checkMatchingAnswer(option, correctAnswer));
+        optionContainer.appendChild(optionElement);
+    });
 }
 
 function checkMatchingAnswer(selected, correct) {
