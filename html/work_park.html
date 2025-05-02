@@ -649,6 +649,63 @@
             margin-left: 10px; 
             cursor: pointer;
         }
+        
+        /* 防沉迷弹窗容器样式 */
+        .reminder-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff3e0;
+            border-radius: 12px;
+            padding: 24px 40px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            max-width: 320px;
+        }
+
+        /* 文字内容样式 */
+        .reminder-content {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .reminder-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6d00;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .reminder-text {
+            font-size: 15px;
+            display: block;
+            margin: 8px 0;
+        }
+
+        /* 按钮样式 */
+        .confirm-btn {
+            background: #ff9100;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .confirm-btn:hover {
+            background: #ff6d00;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(255,109,0,0.3);
+        }
+        
+        
     </style>
 </head>
 
@@ -681,6 +738,18 @@
                 <span class="emoji">✨</span> 魔法大通关
             </button>
         </div>
+    </div>
+
+    <div class="reminder-modal" id="reminder">
+        <div class="reminder-content">
+            <span class="reminder-title">温馨提醒</span>
+            <span class="reminder-text">适度游戏益智</span>
+            <span class="reminder-text">沉迷虚拟误青春</span>
+            <span class="reminder-text" style="font-size:13px; color:#666;">
+                本工具内置未成年防沉迷系统
+            </span>
+        </div>
+        <button class="confirm-btn" onclick="closeReminder()">我知道了</button>
     </div>
 
     <div id="elimination-game" class="game-mode">
@@ -1503,6 +1572,14 @@ const wrongSound = document.getElementById('wrongSound');
 let magicLevel = 1;
 let currentMagicQuestions = [];
 
+//防沉迷变量
+let totalPlayTime = 0;
+let playTimer = null;
+const MAX_PLAY_TIME = 1200; // 60*20秒
+let isLocked = false;
+
+
+
 const magicQuestions = [ 
       { // 题目
         sentence: "I __ a red apple yesterday.",
@@ -2143,6 +2220,63 @@ const magicQuestions = [
 
 ];
 
+// 防沉迷锁定界面
+function createLockScreen() {
+    const lockScreen = document.createElement('div');
+    lockScreen.id = 'anti-addiction-lock';
+    lockScreen.style = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.95);
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-family: 'Comic Sans MS', cursive;
+        text-align: center;
+        cursor: not-allowed;
+    `;
+
+    lockScreen.innerHTML = `
+        <div style="font-size:3em;margin-bottom:30px;">⏰</div>
+        <h2 style="color:#FF6B6B;font-size:2em;">学习时间到！</h2>
+        <p style="font-size:1.2em;margin:20px 0;">为了保护你的视力健康<br>请关闭网页休息一下吧</p>
+        <div style="font-size:3em;">👀</div>
+    `;
+
+    // 阻止所有点击事件
+    lockScreen.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    });
+
+    document.body.appendChild(lockScreen);
+}
+
+// 统一计时器控制
+function startGlobalTimer() {
+    if (playTimer) return; // 防止重复启动
+    
+    playTimer = setInterval(() => {
+        if (isLocked) return;
+        
+        totalPlayTime++;
+        
+        if (totalPlayTime >= MAX_PLAY_TIME) {
+            clearInterval(playTimer);
+            isLocked = true;
+            createLockScreen();
+            // 禁用所有交互元素
+            document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+        }
+    }, 1000);
+}
+
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -2153,8 +2287,11 @@ function shuffleArray(array) {
 }
     
 function startEliminationGame() {
+    if (isLocked) return;  //防沉迷
+    startGlobalTimer();    //防沉迷
     document.querySelector('.game-selection').style.display = 'none';
     document.getElementById('elimination-game').style.display = 'block';
+
     
     // 重置按钮状态
     startButton.textContent = eliminationLevel === 1 ? '开始游戏' : '重新开始';
@@ -2174,24 +2311,32 @@ function startNewRound() {
 }
     
 function startMatchingGame() {
+    if (isLocked) return;  //防沉迷
+    startGlobalTimer();    //防沉迷
     document.querySelector('.game-selection').style.display = 'none';
     document.getElementById('matching-game').style.display = 'block';
     startMatchingRound();
 }
 
 function startSpellingGame() {
+    if (isLocked) return;  //防沉迷
+    startGlobalTimer();    //防沉迷
     document.querySelector('.game-selection').style.display = 'none';
     document.getElementById('spelling-game').style.display = 'block';
     startSpellingRound();
 }
 
 function startListeningGame() {
+    if (isLocked) return;  //防沉迷
+    startGlobalTimer();    //防沉迷
     document.querySelector('.game-selection').style.display = 'none';
     document.getElementById('listening-game').style.display = 'block';
     startListeningRound();
 }
 
 function startWordPuzzleGame() {
+    if (isLocked) return;  //防沉迷
+    startGlobalTimer();    //防沉迷
     document.querySelector('.game-selection').style.display = 'none';
     document.getElementById('word-puzzle-game').style.display = 'block';
     startWordPuzzleRound();
@@ -2199,7 +2344,8 @@ function startWordPuzzleGame() {
 
 
 function backToSelection() {
- 
+  if (isLocked) return; //防沉迷
+  
     // 新增重置消消乐状态
     isGameRunning = false;
     eliminationLevel = 1;
@@ -2343,7 +2489,7 @@ function startMatchingRound() {
     optionContainer.innerHTML = '';
 
     // 1. 动态计算选项数量（可扩展）
-    const optionCount = Math.min(matchingLevel + 1, 6); // 级别1:2, 级别4:5, 其他6
+    const optionCount = Math.min(matchingLevel + 1, 4); // 级别1:2, 级别4:5, 其他6
 
     // 2. 高效选择目标词（避免全量洗牌）
     const isEnglishTarget = Math.random() > 0.5;
@@ -2671,6 +2817,8 @@ function startTimer() {
 
 
 function startMagicGame() {
+    if (isLocked) return;  //防沉迷
+    startGlobalTimer();    //防沉迷
     document.querySelector('.game-selection').style.display = 'none';
     document.getElementById('magic-game').style.display = 'block';
     currentMagicQuestions = shuffleArray([...magicQuestions]);
@@ -2755,44 +2903,63 @@ function checkMagicAnswer(selected, answer) {
     }
 }
 
-// 修改后的shuffleArray函数
-function shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    // 修改后的shuffleArray函数
+    function shuffleArray(array) {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
     }
-    return newArray;
-}
 
-// 增强的干扰项生成器
-function getDummyOption(correct) {
-    const variants = {
-        // 保持原有variants结构，补充缺失项
-        "are": ["is", "am"],
-        // ...其他干扰项配置
-    };
-    
-    // 回退机制
-    return variants[correct]?.[Math.floor(Math.random() * variants[correct].length)] 
-        || (correct.endsWith('s') ? correct.slice(0, -1) : correct + 'ed') 
-        || "______";
-}
+    // 增强的干扰项生成器
+    function getDummyOption(correct) {
+        const variants = {
+            // 保持原有variants结构，补充缺失项
+            "are": ["is", "am"],
+            // ...其他干扰项配置
+        };
+        
+        // 回退机制
+        return variants[correct]?.[Math.floor(Math.random() * variants[correct].length)] 
+            || (correct.endsWith('s') ? correct.slice(0, -1) : correct + 'ed') 
+            || "______";
+    }
 
-// 修改后的返回按钮函数
-function backToSelection() {
-    // 确保隐藏所有可能的游戏界面
-    document.querySelectorAll('.game-mode').forEach(el => el.style.display = 'none');
-    
-    // 强制刷新选择界面显示
-    document.querySelector('.game-selection').style.display = 'block';
-    
-    // 重置所有状态
-    magicLevel = 1;
-    currentMagicQuestions = [];
-}	
-  
-    
+    // 修改后的返回按钮函数
+    function backToSelection() {
+        // 确保隐藏所有可能的游戏界面
+        document.querySelectorAll('.game-mode').forEach(el => el.style.display = 'none');
+        
+        // 强制刷新选择界面显示
+        document.querySelector('.game-selection').style.display = 'block';
+        
+        // 重置所有状态
+        magicLevel = 1;
+        currentMagicQuestions = [];
+    }	
+      
+      
+      
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // 禁用右键菜单
+        document.addEventListener('contextmenu', e => {
+            if (isLocked) e.preventDefault();
+        });
+        
+        // 禁用开发者工具
+        document.addEventListener('keydown', e => {
+            if (isLocked && (e.ctrlKey || e.metaKey) && e.keyCode === 85) { // 禁用Ctrl+U
+                e.preventDefault();
+            }
+        });
+    });
+
+    function closeReminder() {
+        document.getElementById('reminder').style.display = 'none';
+    }
+
       </script>
-
-
