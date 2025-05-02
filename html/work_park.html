@@ -1,0 +1,2749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words Park 🎠</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFD166;
+            --background: #F7FFF7;
+            --game-btn-height: 120px;
+            --mobile-breakpoint: 768px;
+            /* 调整为更柔和的颜色 */
+            --highlight-color: #98FB98; 
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: var(--background);
+            color: #2d3436;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            /* 调整背景渐变，使其更柔和 */
+            background-image: linear-gradient(45deg, #ffebeb 0%, #fde7e2 100%); 
+        }
+
+        h1 {
+            color: #ff6b6b;
+            text-shadow: 2px 2px 0 #fff;
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+       .game-selection {
+            display: block;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: bounceIn 1s;
+            text-align: center;
+        }
+
+       .game-selection h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 0 white;
+        }
+
+       .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+       .mode-btn {
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(145deg, var(--primary), #ff8e8e);
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-height: var(--game-btn-height);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+       .game-selection button {
+            padding: 20px 40px;
+            margin: 15px;
+            font-size: 24px;
+            border-radius: 30px;
+            border: 3px solid #fff;
+            background: linear-gradient(145deg, #81d4fa 0%, #ce93d8 100%);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+       .game-selection button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+       .mode-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+       .mode-btn span.emoji {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+       .mode-btn:active {
+            transform: scale(0.95);
+        }
+
+       .game-mode {
+            display: none;
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s;
+            position: relative;
+            text-align: center;
+        }
+
+       .word-card {
+            background: white;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+            display: inline-block;
+        }
+
+       .word-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+       .word-card.english {
+            background: #ffefd5;
+        }
+
+       .word-card.chinese {
+            background: #e0ffff;
+        }
+
+       .word-card.selected {
+            background: #ffeaa7;
+            border-color: var(--accent);
+        }
+
+       .word-card.matched {
+            transform: scale(0);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+       .word-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+       .word-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+       .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(145deg, var(--secondary), #6ED3D0);
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+       .action-btn:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounceIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+       .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+       .cloud {
+            position: fixed;
+            width: 150px;
+            height: 60px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
+       .game-over {
+            text-align: center;
+            font-size: 2em;
+            color: var(--primary);
+            margin: 20px 0;
+            display: none;
+        }
+
+       .word-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        /* 新增游戏说明样式 */
+       .instructions {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        /* 修改英语单词字体为罗马字体 */
+       .word {
+            padding: 15px 25px;
+            background: #fff;
+            border-radius: 15px;
+            border: 3px solid #81d4fa;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+       .word:hover {
+            transform: translateY(-3px);
+            background: #f0f9ff;
+        }
+
+       .selected {
+            background: #fff9c4 !important;
+            border-color: #ffee58;
+        }
+
+       .level-info {
+            font-size: 24px;
+            color: #4db6ac;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        #timer,
+        #matching-timer {
+            font-size: 24px;
+            color: #ef5350 !important;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 15px 0;
+        }
+
+       .letter-box {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
+            font-size: 24px;
+            background: #fff;
+            border: 3px solid #81d4fa;
+            border-radius: 15px;
+            margin: 8px;
+            transition: all 0.2s ease;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+       .answer-box {
+            background: #fff;
+            border-radius: 15px;
+            border: 3px dashed #81d4fa;
+            min-height: 60px;
+            margin: 25px auto;
+            padding: 15px;
+        }
+
+        button {
+            padding: 12px 30px !important;
+            font-size: 20px !important;
+            border-radius: 25px !important;
+            background: linear-gradient(145deg, #ffd54f 0%, #ffab40 100%) !important;
+            color: #fff !important;
+            border: none !important;
+            margin: 15px !important;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 18px;
+            border: 3px solid #81d4fa;
+            border-radius: 15px;
+            margin: 15px 0;
+            width: 250px;
+        }
+
+       .target-word {
+            font-size: 32px !important;
+            color: #4db6ac;
+            text-shadow: 2px 2px 0 #fff;
+            margin: 25px 0;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        #message,
+        #matching-message {
+            font-size: 24px;
+            padding: 15px 30px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        #puzzle-letters {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #spelling-target-word {
+            font-size: 28px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        #puzzle-chinese-hint {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+       .magic-progress {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            font-size: 1.2em;
+            color: var(--primary);
+        }
+
+       .magic-stars {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes magicGlow {
+            0% {
+                filter: drop-shadow(0 0 5px #FFD700);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px #FFD700);
+            }
+
+            100% {
+                filter: drop-shadow(0 0 5px #FFD700);
+            }
+        }
+
+       .magic-mode {
+            animation: magicGlow 2s infinite;
+        }
+
+        /* 单词解谜冷色调优化 */
+        #word-puzzle-game {
+            border-color: #8CCBEA;
+            box-shadow: 0 12px 24px rgba(110, 197, 233, 0.15);
+        }
+
+        #word-puzzle-game::before {
+            background: conic-gradient(
+                #A8E6FF,
+                #B4F2FF,
+                #CBFFE5,
+                #D5E8FF,
+                #E0C2FF,
+                #C2F0FF
+            );
+        }
+
+       .letter-box {
+            background: #E6F9FF;
+            border: 3px solid #6EC5E9;
+            color: #4A90E2;
+            box-shadow: 0 6px 12px rgba(110, 197, 233, 0.2);
+            font-family: 'Times New Roman', Times, serif;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+        }
+
+       .letter-box:hover {
+            background: #D5F0FF;
+            transform: translateY(-3px);
+        }
+
+       .answer-box {
+            background: #F0FAFF;
+            border-color: #8CCBEA;
+        }
+
+        /* 仅限解谜模块的输入框 */
+        #word-puzzle-game input[type="text"] {
+            border-color: #6EC5E9;
+            background: #F0FAFF;
+        }
+
+        /* 新增答题区字号样式 */
+        #answer-box {
+            font-size: calc(24px + 3pt + 3px);
+            line-height: 1.2;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        /* 适配移动端 */
+        @media (max-width: 600px) {
+            #answer-box {
+                font-size: calc(20px + 3pt + 3px);
+                font-family: 'Times New Roman', Times, serif;
+            }
+        }
+
+        /* 修改游戏选择容器样式 */
+       .game-selection {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: bounceIn 1s;
+        }
+
+        /* 调整模式网格布局 */
+       .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-content: center;
+        }
+
+        /* 优化按钮样式 */
+       .mode-btn {
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+           .mode-grid {
+                grid-template-columns: 1fr;
+            }
+
+           .mode-btn {
+                min-height: 100px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 1200px) {
+           .mode-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+        }
+
+        #magic-game {
+            border-color: #9B59B6;
+            background: linear-gradient(145deg, #F7DCFF, #E8DAFF);
+        }
+
+        #magic-question {
+            font-size: 1.4em;
+            margin: 25px 0;
+            color: #6C3483;
+            line-height: 1.6;
+        }
+
+       .magic-option {
+            padding: 15px 25px;
+            background: #F4ECF7;
+            border: 2px solid #9B59B6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* 添加完成动画 */
+        @keyframes celebrate {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+       .complete-message {
+            animation: celebrate 1s ease-in-out;
+            color: #FFD700 !important;
+        }
+
+        /* 控制按钮容器样式 */
+       .elimination-controls {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+            position: absolute;
+            bottom: 90px; /* 上移按钮位置 */
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+
+        }
+
+        /* 按钮样式调整 */
+       .elimination-controls button {
+            min-width: 140px;
+            padding: 12px 25px !important;
+            font-size: 18px !important;
+            transition: all 0.3s;
+        }
+
+        #elimination-game {
+            position: relative;
+            min-height: 350px; /* 增加最小高度 */
+            padding-bottom: 85px; /* 为按钮预留空间 */
+        }
+
+        #message {
+            margin-bottom: 80px !important; /* 为按钮预留空间 */
+            min-height: 60px;
+            display: block !important;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            #elimination-game {
+                min-height: 400px;
+                padding-bottom: 80px;
+            }
+           .elimination-controls {
+                bottom: 30px;
+                flex-direction: column;
+                gap: 12px;
+                width: 90%;
+            }
+
+           .elimination-controls button {
+                width: 100%;
+                min-width: auto;
+            }
+
+            #message {
+                margin-bottom: 100px !important;
+            }
+        }
+
+       /* 增大喇叭图标大小 */
+       .large-volume-icon {
+            font-size: 2em; 
+            margin-left: 10px; 
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+   
+    <div class="cloud" style="top:10%; left:5%;"></div>
+    <div class="cloud" style="top:30%; right:5%;"></div>
+    <div class="game-selection" id="game-selection">
+        <audio id="correctSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+        <audio id="wrongSound" src="https://www.soundjay.com/human/sigh-01.wav"></audio>
+
+        <h1>Words Park 🎡</h1>
+        <div class="mode-grid">
+            <button class="mode-btn" onclick="startEliminationGame()">
+                <span class="emoji">🎮</span> 单词消消乐
+            </button>
+            <button class="mode-btn" onclick="startMatchingGame()">
+                <span class="emoji">🎯</span> 找朋友
+            </button>
+            <button class="mode-btn" onclick="startSpellingGame()">
+                <span class="emoji">✏️</span> 拼写大师
+            </button>
+            <button class="mode-btn" onclick="startListeningGame()">
+                <span class="emoji">🎧</span> 听力挑战
+            </button>
+            <button class="mode-btn" onclick="startWordPuzzleGame()">
+                <span class="emoji">🧩</span> 单词解谜
+            </button>
+            <button class="mode-btn" onclick="startMagicGame()">
+                <span class="emoji">✨</span> 魔法大通关
+            </button>
+        </div>
+    </div>
+
+    <div id="elimination-game" class="game-mode">
+        <p class="level-info" id="elimination-level"> 第 1 关</p>
+        <p id="timer"></p>
+        <div id="word-group" class="word-container">
+            <div id="english-column" class="word-column"></div>
+            <div id="chinese-column" class="word-column"></div>
+        </div>
+        <p id="message"></p>
+        <div class="elimination-controls">
+            <button id="start-elimination-btn" onclick="startNewRound()">开始游戏</button>
+            <button onclick="backToSelection()">返回选择界面</button>
+        </div>
+    </div>
+    <div id="matching-game" class="game-mode">
+        <p class="level-info" id="matching-level"> 第 1 关</p>
+        <p id="matching-timer"></p>
+        <p class="target-word" id="target-word"></p>
+        <div id="option-container" class="word-container"></div>
+        <p id="matching-message"></p>
+        <button onclick="backToSelection()">返回选择界面</button>
+    </div>
+    <div id="spelling-game" class="game-mode">
+        <p class="level-info" id="spelling-level"> 第 1 关</p>
+        <p id="spelling-target-word"></p>
+        <input type="text" id="spelling-input" placeholder="请输入英文单词">
+        <button onclick="checkSpellingAnswer()">提交</button>
+        <p id="spelling-message"></p>
+        <button onclick="backToSelection()">返回选择界面</button>
+    </div>
+    <div id="listening-game" class="game-mode">
+        <p class="level-info" id="listening-level"> 第 1 关</p>
+		<div id="listening-target" class="target-container">
+    <span id="listening-chinese-hint"></span>
+    <button id="listen-again-btn" class="speaker-btn">🔊</button>
+</div>
+        <p id="listening-message"></p>
+        <div id="listening-option-container" class="word-container"></div>
+        <button onclick="backToSelection()">返回选择界面</button>
+       
+    </div>
+    <div id="word-puzzle-game" class="game-mode">
+        <p class="level-info" id="word-puzzle-level"> 第 1 关</p>
+        <p id="puzzle-letters"></p>
+        <p id="puzzle-chinese-hint"></p>
+        <div id="answer-box" class="answer-box"></div>
+        <button onclick="checkPuzzleAnswer()">提交</button>
+        <p id="puzzle-message"></p>
+        <button onclick="backToSelection()">返回选择界面</button>
+    </div>
+    <div id="magic-game" class="game-mode">
+        <p class="level-info" id="magic-level"> 第 1 题</p>
+        <div id="magic-question" class="target-word"></div>
+        <div id="magic-options" class="word-container"></div>
+        <p id="magic-message"></p>
+        <button onclick="backToSelection()">返回选择界面</button>
+
+    </div>
+
+
+
+  
+  <script>
+    const words = [
+      ["a(an)", "一个，一"],
+	["about", "关于"],
+	["a bit", "稍微，有点儿"],
+    ["ah", "啊"],
+    ["afraid", "恐怕"],
+    ["afternoon", "下午"],
+    ["again", "再一次"],
+    ["age", "年龄"],
+    ["all around", "到处，遍及"],
+    ["also", "也，还"],
+    ["and", "那么；和"],
+    ["angry", "生气的，愤怒的"],
+    ["answer", "回答，答案，接（电话）"],
+    ["aunt", "姨母，姑母，舅母，伯母，婶母"],
+    ["any", "一些，一点，若干"],
+    ["arm", "胳膊"],
+    ["around", "在四周，到处"],
+    ["as", "作为"],
+    ["at", "在……"],
+    ["baby", "婴儿"],
+    ["back", "回，向后"],
+    ["bad", "坏的"],
+    ["ball", "球"],
+    ["banana", "香蕉"],
+    ["basketball", "篮球"],
+    ["bathroom", "浴室，洗手间"],
+    ["be", "是（am、is、are等形式）"],
+    ["bear", "熊；忍受"],
+    ["beautiful", "美丽的"],
+    ["because", "因为"],
+    ["become", "变成（过去式became）"],
+    ["bed", "床"],
+    ["bedroom", "卧室"],
+    ["before", "在……之前"],
+    ["begin", "开始"],
+    ["behind", "在……后面"],
+    ["beside", "在……旁边，在……附近"],
+    ["between", "在……之间，在中间"],
+    ["big", "大的，年龄较大的"],
+    ["bike", "自行车"],
+    ["bird", "鸟"],
+    ["birthday", "生日"],
+    ["black", "黑色的"],
+    ["blackboard", "黑板"],
+    ["blind", "失明的，瞎的"],
+    ["blue", "蓝色的"],
+    ["boat", "船"],
+    ["body", "身体"],
+    ["book", "书"],
+    ["boring", "无聊的；令人厌烦的"],
+    ["born", "出生，诞生"],
+    ["bought", "买（buy的过去式和过去分词）"],
+    ["box", "盒子"],
+    ["boy", "男孩"],
+    ["bread", "面包"],
+    ["breakfast", "早餐，早饭"],
+    ["bring", "带来，拿来（过去式brought）"],
+	["bridge", "桥"],
+    ["brother", "兄弟"],
+    ["brown", "棕色的"],
+    ["building", "建筑物"],
+    ["bus", "公共汽车"],
+    ["busy", "忙碌的"],
+    ["but", "但是"],
+    ["buy", "买"],
+    ["by", "乘坐，以……方式，在……旁边"],
+    ["cake", "蛋糕"],
+    ["call", "电话，（给……）打电话，大声喊"],
+    ["camera", "照相机"],
+    ["can", "能够，可以"],
+	["capital", "首都"],
+    ["candy", "糖果"],
+    ["cap", "帽子"],
+    ["car", "小汽车"],
+    ["card", "卡片"],
+    ["catch", "抓住，接住"],
+    ["cat", "猫"],
+    ["chameleon", "变色龙"],
+    ["chess", "国际象棋"],
+    ["chicken", "鸡；鸡肉"],
+    ["child", "小孩（复数形式children）"],
+    ["children", "孩子们"],
+    ["China", "中国"],
+    ["Chinese", "中国的，中国人的，中国人，语文，汉语"],
+    ["Christmas", "圣诞节"],
+    ["cinema", "电影院"],
+    ["city", "城市"],
+    ["class", "班级，课"],
+    ["classmate", "同班同学"],
+    ["clean", "清洁，打扫，（使）清洁；清洁的"],
+    ["clock", "钟"],
+    ["cloud", "云"],
+    ["cloudy", "多云的"],
+    ["close", "关闭，接近的，结束"],
+    ["clothes", "衣服"],
+	["clever", "聪明的"],
+    ["climb", "爬，攀爬"],
+    ["coat", "外套"],
+    ["cola", "可乐"],
+    ["collect", "收集"],
+    ["come", "来（过去式came）"],
+    ["come in", "进来"],
+    ["come on", "加油，快点，赶快"],
+    ["cook", "厨师，做菜，烹饪"],
+    ["cool", "酷的，凉爽的"],
+    ["could", "能（can的过去式），可以"],
+    ["couldn't = could not", "不能"],
+    ["country", "国家，乡村"],
+    ["cousin", "表兄弟姊妹"],
+    ["cry", "哭"],
+    ["cup", "杯子"],
+    ["cut", "剪，切，割（cut的过去式和过去分词）"],
+	["cute", "可爱的"],
+    ["dad", "爸爸（非正式用语）"],
+    ["dangerous", "危险的"],
+    ["dark", "黑暗的"],
+    ["date", "日期"],
+    ["day", "一天，一日，白天"],
+    ["dear", "亲爱的，哎呀"],
+    ["December", "十二月"],
+    ["decide", "决定"],
+    ["dinner", "晚餐，正餐"],
+    ["do", "做（过去式did"],
+	["don't = do not", "不，不做"],
+    ["doctor", "医生"],
+    ["dog", "狗"],
+    ["doll", "玩具娃娃"],
+    ["door", "门"],
+    ["draw", "画（过去式drew）"],
+    ["dress", "连衣裙，女装，给……穿衣服"],
+    ["drink", "喝，饮用，喝（酒）（过去式drank）"],
+    ["driver", "司机"],
+    ["drop", "（无意中）使掉落（过去式dropped）"],
+    ["duck", "鸭子"],
+    ["dumpling", "水饺"],
+    ["ear", "耳朵"],
+    ["early", "早的，提早"],
+    ["eat", "吃（过去式ate）"],
+	["egg", "鸡蛋"],
+	["everything", "所有事情"],
+    ["eighty", "八十"],
+    ["either", "也（用于否定句），两者之一"],
+    ["eleven", "十一"],
+    ["email", "电子邮件"],
+    ["English", "英语，英国的，英国人的，英国人"],
+    ["enjoy", "享用，享受"],
+    ["eraser", "橡皮擦"],
+    ["excited", "激动的，兴奋的"],
+    ["excuse", "原谅，借口"],
+    ["excuse me", "对不起，打扰"],
+    ["exercise", "运动，锻炼"],
+    ["eye", "眼睛"],
+    ["face", "脸，面孔"],
+    ["factory", "制造厂，工厂"],
+    ["fall", "落下，跌倒，秋天（美式）（过去式fell）"],
+    ["family", "家，家庭，家人"],
+    ["far", "远"],
+    ["farm", "农场"],
+    ["farmer", "农民"],
+    ["fast", "快，快速的"],
+    ["fast food", "快餐"],
+    ["father", "父亲"],
+    ["favourite", "特别喜欢的"],
+    ["February", "二月"],
+    ["feel", "感觉，觉得（过去式felt）"],
+    ["fifteen", "十五"],
+    ["fifty", "五十"],
+    ["film", "电影"],
+    ["find", "发现（过去式found）"],
+    ["fine", "（身体）很好，好的"],
+    ["finger", "手指"],
+    ["finish", "吃完，结束，完成"],
+    ["first", "首先，第一，最先的，第一（次）的"],
+    ["fish", "鱼，钓鱼，捕鱼（过去式和过去分词fished）"],
+    ["five", "五"],
+    ["floor", "地面，地板，楼层"],
+    ["flower", "花"],
+    ["fly", "飞；放（风筝）（过去式flew）"],
+	["fly a kite", "放风筝"],
+	["food", "食物"],
+    ["football", "足球；（美式）橄榄球"],
+    ["for", "给，为；达，计；关于……的；表明……的"],
+    ["forty", "四十"],
+    ["four", "四"],
+    ["fourteen", "十四"],
+    ["Friday", "星期五"],
+    ["friend", "朋友"],
+    ["from", "从……来，来自，从；离"],
+    ["front", "前面，正面"],
+    ["fruit", "水果"],
+    ["get", "得到，收到（过去式got），到达，变得"],
+	["get on", "上（车）"],
+    ["get off", "下（车）"],
+    ["get up", "起床"],
+    ["give", "给（过去式gave）"],
+    ["give out", "分发"],
+    ["glass", "玻璃，玻璃杯"],
+    ["go", "去（过去式went）"],
+    ["go home", "回家"],
+    ["go to bed", "上床睡觉"],
+    ["go to school", "上学"],
+    ["go straight on", "直着走"],
+    ["go to work", "上班"],
+    ["good", "好的"],
+    ["goodbye", "再见（非正式说法bye - bye）"],
+    ["good luck", "祝你好运"],
+    ["grandma", "祖母，外祖母"],
+    ["grandpa", "祖父，外祖父"],
+    ["grandparent", "（外）祖父（母）"],
+	["great", "太好了，好极了"],
+    ["green", "绿色的"],
+    ["ground", "地面"],
+    ["group", "组，群"],
+    ["hair", "头发"],
+    ["half", "半，一半"],
+	["hall", "大厅"],
+    ["Halloween", "万圣节前夕"],
+    ["hamburger", "汉堡"],
+    ["hand", "手"],
+    ["happy", "快乐的"],
+    ["hard", "努力地，困难的，费力的，硬的"],
+    ["have", "有，吃，患（病）（过去式和过去分词had）"],
+    ["have a look", "看一看"],
+    ["have breakfast", "吃早饭"],
+    ["have dinner", "吃晚饭"],
+    ["have lunch", "吃午饭"],
+    ["he", "他；（宾格him）"],
+	["he's = he is", "他是"],
+    ["head", "头"],
+    ["headache", "头痛"],
+    ["hear", "听到（过去式和过去分词heard）"],
+    ["help", "救命（呼救），帮助，帮忙"],
+    ["her", "她的，她（宾格）"],
+	["herself", "她自己（反身代词）"],
+    ["here", "这里（here's = here is这是）"],
+    ["here's = here is", "这是"],
+    ["herself", "她自己"],
+    ["hide", "躲，躲藏（过去式hid，过去分词hidden）"],
+    ["hide - and - seek", "捉迷藏"],
+    ["high", "高，高度的"],
+    ["high jump", "跳高"],
+    ["hill", "小山"],
+	["him", "他，（主格he）"],
+    ["his", "他的"],
+    ["history", "历史"],
+    ["hobby", "业余爱好"],
+    ["home", "家，回家"],
+    ["homework", "家庭作业"],
+    ["hopefully", "有希望地"],
+    ["hope", "希望"],
+	["hooray", "好，好哇"],
+    ["horse", "马"],
+    ["hospital", "医院"],
+    ["hot", "热的"],
+    ["hot dog", "热狗"],
+    ["hour", "小时"],
+	["house", "房屋"],
+    ["housework", "家务"],
+    ["how", "怎样，如何，怎样"],
+    ["how about...", "……怎么样？"],
+    ["how many", "多少（用于可数名词复数）"],
+    ["how much", "多少（用于不可数名词），多少钱？"],
+    ["how old", "多大"],
+    ["hundred", "一百（100）"],
+	["hungry", "饥饿的"],
+    ["hurry", "赶紧，匆忙"],
+    ["hurry up", "赶紧，赶快"],
+    ["I", "我"],
+	["I'm = I am", "我是"],
+    ["ice", "冰，冰块"],
+    ["ice cream", "冰激凌"],
+    ["ill", "有病的，不健康的"],
+    ["in", "在……里面，在……方面，用（语言等）"],
+    ["interesting", "有趣的"],
+    ["into", "进入……里面"],
+    ["is", "是"],
+	 ["what's = what is", "是什么"],
+	 ["isn't = is not", "不是"],
+    ["it", "它"],
+  	 ["it's = it is", "它是"],
+    ["January", "一月"],
+    ["Japanese", "日本的，日本人的，日本人，日语"],
+    ["jeans", "牛仔裤"],
+    ["juice", "果汁"],
+    ["jump", "跳"],
+    ["July", "七月"],
+    ["June", "六月"],
+    ["just", "就，且请，刚刚，正好"],
+    ["kangaroo", "袋鼠（文档未提及，补充示例）"],
+    ["keep", "保持，留言，保存（过去式和过去分词kept）"],
+    ["kind", "友好的，善意的，体贴的，种类"],
+    ["kitchen", "厨房"],
+	 ["kid", "小孩"],
+    ["kite", "风筝"],
+    ["knife", "餐刀；刀子（复数knives）"],
+    ["know", "知道（knew是其过去式）"],
+	 ["know", "知道"],
+	 ["language", "语言"],
+    ["lady", "女士，夫人"],
+    ["lake", "湖"],
+    ["lantern", "灯笼"],
+    ["last", "上一次；最后；过去的（用于过去式的时间状语）"],
+    ["late", "迟到的；近日暮的；近深夜的；时间不早的"],
+    ["laugh", "笑"],
+    ["left", "左边；向左；左边的"],
+	 ["lesson", "课"],
+	 ["let's", "让我们"],
+    ["leg", "腿"],
+    ["letter", "信，书信；字母"],
+    ["library", "图书馆"],
+    ["library card", "图书卡，借书证"],
+    ["light", "灯；轻的；明亮的；点燃（过去式和过去分词lit或lighted）"],
+    ["like", "喜欢；像……一样"],
+    ["line", "(等候的)长队，队列；线；线条"],
+    ["lion", "狮子"],
+    ["listen", "听"],
+	 ["listen to", "听"],
+    ["little", "小的，年幼的；极少量的"],
+    ["live", "居住；活着（过去式lived）"],
+    ["living room", "起居室，客厅"],
+	 ["long", "长的"],
+    ["look", "看；看起来"],
+	 ["look at", "看着"],
+	 ["look like", "看来好像"],
+    ["lost", "迷路的；丢失（lose的过去式和过去分词）"],
+    ["lot", "许多"],
+ 	 ["lots of", "许多"],
+    ["loudly", "大声地"],
+    ["love", "爱；喜欢（过去式和过去分词loved）"],
+	 ["luck", "运气"],
+    ["lucky", "幸运的"],
+    ["lunch", "午餐，午饭"],
+    ["make", "制作；使（过去式和过去分词made）"],
+    ["make mistakes", "犯错误"],
+    ["man", "男人（复数men）"],
+    ["many", "许多，很多"],
+    ["map", "地图"],
+    ["March", "三月"],
+    ["maths", "数学"],
+    ["matter", "问题，麻烦"],
+	 ["What’s the matter?", "怎么啦？）"],
+    ["May", "五月"],
+    ["me", "我（宾格）"],
+    ["meal", "餐"],
+    ["meat", "肉"],
+    ["meet", "遇见（过去式met）"],
+    ["message", "留言；信息"],
+    ["meter", "米（长度单位，英式metre）"],
+    ["mid - autumn", "中秋"],
+	 ["the Mid - Autumn Festival", "中秋节"],
+	 ["Merry Christmas!", "圣诞快乐"],
+	 ["merry", "愉快的"],
+    ["middle", "中间的，中等的，中期，中间"],
+	 ["middle school", "中学"],
+    ["milk", "牛奶"],
+    ["million", "百万"],
+    ["miss", "小姐(于名或姓之前，对未婚女子的称呼)，错过；想念（过去式missed）"],
+    ["mistake", "错误"],
+	 ["make mistakes", "犯错误）"],
+    ["Monday", "星期一"],
+    ["monkey", "猴子"],
+    ["month", "月"],
+    ["more", "更多的（量），较多的（量）；更强烈的；也，还（用于句末）"],
+    ["more than", "超过"],
+    ["mother", "母亲"],
+    ["mouth", "嘴"],
+	 ["morning", "早晨"],
+    ["move", "移动；搬家（过去式和过去分词moved）"],
+    ["Mr", "先生"],
+    ["Mrs", "夫人（mistress的缩写）"],
+    ["Ms", "女士"],
+    ["much", "许多（用于不可数名词）；非常（修饰动词或形容词比较级）"],
+    ["museum", "博物馆"],
+    ["music", "音乐"],
+    ["my", "我的"],
+	["naughty", "淘气的"],
+    ["name", "名字"],
+    ["national", "国家的，民族的"],
+    ["near", "接近，临近；在……附近"],
+    ["need", "需要；必须"],
+    ["never", "从不"],
+    ["new", "新的"],
+    ["New Year", "新年"],
+    ["next", "下一个；紧接着的；隔壁的"],
+	["next to", "临近的，在……旁边）"],
+    ["nice", "好的，友善的"],
+    ["nineteen", "十九"],
+    ["ninety", "九十"],
+	["No", "数字；编号（number的缩写）"],
+    ["no", "不；没有（用于回答一般疑问句）"],
+    ["not", "不"],
+	["isn't = is not", "不是"],
+	["don't = do no", "不）"],
+    ["nose", "鼻子"],
+    ["notebook", "笔记本"],
+    ["November", "十一月"],
+    ["now", "现在；好，哦"],
+    ["number", "数字；编号（缩写是No.）"],
+    ["nurse", "护士"],
+    ["o'clock", "点钟"],
+    ["of", "……的；属于（表示所属关系）"],
+    ["of course", "当然"],
+    ["often", "经常"],
+    ["oh", "噢，哦"],
+    ["old", "老的；古老的；……岁的"],
+    ["on", "在……上面；关于；在（某一天）"],
+    ["one", "一；一个人；一件事物"],
+	["one day", "有一天"],
+    ["only", "仅仅，只"],
+    ["open", "打开；开放的；营业的（过去式和过去分词opened）"],
+    ["or", "或者；否则"],
+    ["orange", "橘子；橘黄色的"],
+    ["other", "其他的；另外的；别的（人或事物）"],
+    ["each other", "互相，彼此）"],
+    ["our", "我们的"],
+    ["out", "出，不在家（的），在外"],
+    ["over", "在……上方；超过；结束"],
+	["over there", "在那边"],
+	["paint", "用颜料画"],
+    ["panda", "熊猫"],
+    ["parent", "母亲；父亲；家长"],
+    ["pass", "传递；通过；经过（过去式和过去分词passed）"],
+    ["pear", "梨"],
+    ["peanut", "花生"],
+    ["pen", "钢笔"],
+    ["pen friend", "笔友"],
+    ["pencil", "铅笔"],
+    ["people", "人，人们"],
+    ["pet", "宠物"],
+    ["photo", "照片（photograph的缩写，复数photos）"],
+    ["pick", "采摘；挑选（过去式和过去分词picked）"],
+    ["picnic", "野餐"],
+    ["picture", "图画；照片"],
+    ["pig", "猪"],
+    ["plane", "飞机"],
+    ["plant", "植物；种植（过去式和过去分词planted）"],
+    ["play", "打（球）；演奏，弹奏（音乐）；玩；游戏（过去式和过去分词played）"],
+    ["play chess", "下国际象棋"],
+    ["playground", "操场"],
+    ["please", "请"],
+	["potato", "马铃薯，土豆"],
+    ["policeman", "警察（复数policemen）"],
+    ["postcard", "明信片"],
+    ["present", "礼物；现在；目前；出席的；呈现（过去式和过去分词presented）"],
+    ["primary", "小学的，初等的"],
+	["primary school", "小学"],
+    ["problem", "麻烦，困难，问题"],
+	["pupil", "学生"],
+	["push", "推"],
+	["No problem", "没问题"],
+    ["programme", "(电视或广播)节目"],
+    ["purple", "紫色的"],
+    ["put", "放，安放（过去式和过去分词put）"],
+    ["quarter", "一刻钟；四分之一"],
+    ["queen", "女王"],
+    ["quiet", "安静的"],
+    ["race", "比赛，竞赛"],
+    ["radio", "收音机"],
+    ["rain", "雨；下雨（过去式和过去分词rained）"],
+    ["raincoat", "雨衣"],
+    ["read", "阅读（过去式和过去分词read，发音不同）"],
+    ["really", "真的；很，非常"],
+    ["red", "红色的"],
+    ["remember", "记得（过去式和过去分词remembered）"],
+    ["right", "右边；向右；右边的；正确的"],
+    ["river", "河，江"],
+	["row", "划（船）"],
+    ["robot", "机器人"],
+    ["rode", "骑（ride的过去式）"],
+    ["room", "房间；空间"],
+    ["ruler", "直尺"],
+    ["run", "跑（过去式ran，过去分词run）"],
+    ["running", "跑步"],
+	["sausage", "香肠"],
+    ["sad", "伤心的，难过的"],
+    ["safe", "安全的，平安的"],
+    ["say", "说（过去式said）"],
+    ["school", "学校；上课时间，上学时间"],
+    ["schoolbag", "书包"],
+    ["science", "科学"],
+    ["sea", "大海"],
+    ["see", "看到（过去式saw）"],
+    ["seed", "种子"],
+    ["September", "九月"],
+    ["sent", "发送，寄（send的过去式）"],
+    ["seven", "七"],
+    ["seventeen", "十七"],
+    ["seventy", "七十"],
+	["sheep", "羊，绵羊"],
+    ["she", "她"],
+	["she's = she is", "她是"],
+    ["ship", "轮船；船"],
+    ["shirt", "衬衫"],
+    ["shoe", "鞋（常复shoes）"],
+    ["shop", "商店；购物（过去式和过去分词shopped）"],
+    ["short", "矮的；短的；（常复）短裤"],
+    ["should", "应该"],
+    ["shoulder", "肩膀"],
+    ["shout", "呼喊，大叫"],
+	["shy", "害羞的"],
+    ["sock", "短袜"],
+    ["soy milk", "豆浆"],
+    ["show", "把……给（某人）看；（电视或广播）节目；演出，表演（过去式showed，过去分词showed或shown）"],
+    ["sick", "有病的，不健康的（同ill，更常用于美式英语）"],
+    ["side", "边；面；侧面"],
+    ["sing", "唱歌（过去式sang，过去分词sung）"],
+    ["sister", "姐妹"],
+    ["sit", "坐（过去式和过去分词sat）"],
+    ["six", "六"],
+    ["sixteen", "十六"],
+    ["sixty", "六十"],
+    ["skate", "滑冰"],
+    ["ski", "滑雪"],
+    ["sky", "天，天空"],
+    ["sleep", "睡觉（过去式和过去分词slept）"],
+    ["slow", "慢的；缓慢地"],
+    ["small", "小的"],
+    ["smart", "聪明的；时髦的；巧妙的"],
+    ["snake", "蛇"],
+    ["snow", "雪；下雪（过去式和过去分词snowed）"],
+    ["so", "如此地，多么地；所以；也（用于肯定句中表示后者与前者情况相同）"],
+    ["sofa", "沙发"],
+    ["some", "一些；某个（用于肯定句，在否定句和疑问句中常用any）"],
+    ["sometimes", "有时"],
+    ["son", "儿子"],
+    ["song", "歌曲"],
+    ["soon", "不久，很快"],
+    ["soup", "汤"],
+    ["south", "南，南部，南方；向南方"],
+    ["space", "太空；空间；空地"],
+    ["spaceship", "宇宙飞船"],
+    ["speak", "说，讲（过去式spoke，过去分词spoken）"],
+    ["special", "特殊的，特别的"],
+    ["spell", "拼写，拼出（过去式和过去分词spelled或spelt）"],
+    ["sport", "运动；体育运动的，体育运动用的（常复sports表示多种运动项目）"],
+    ["spring", "春天；泉水；弹簧"],
+	["Spring Festival", "春节"],
+    ["square", "正方形；广场；平方"],
+    ["stamp", "邮票；跺脚；盖章（过去式和过去分词stamped）"],
+    ["stand", "站；忍受（过去式和过去分词stood）"],
+    ["stand in line", "排队"],
+    ["star", "明星；星星"],
+    ["start", "开始，发生；出发；启动（过去式和过去分词started）"],
+    ["station", "车站；站；所；局"],
+    ["stay", "停留；保持，维持（过去式和过去分词stayed）"],
+    ["still", "还，仍然；静止的，不动的"],
+    ["stop", "(使)停止；车站；阻止（过去式和过去分词stopped）"],
+    ["story", "故事；经历；楼层（英式storey）"],
+    ["straight", "直地，直线地；笔直的；正直的"],
+    ["street", "大街，街道"],
+    ["strong", "健壮的；坚固的；强烈的"],
+    ["student", "学生"],
+    ["study", "学习；研究；书房（过去式和过去分词studied）"],
+    ["subject", "学科，科目；主题；主语"],
+    ["summer", "夏天"],
+    ["sun", "太阳；阳光"],
+    ["sunny", "晴朗的，阳光充足的"],
+    ["supermarket", "超市"],
+    ["swan", "游泳（swim的过去式）"],
+    ["swim", "游泳（过去式swam，过去分词swum，现在分词swimming）"],
+    ["swimsuit", "游泳衣"],
+    ["sweater", "毛线衫"],
+    ["sweet", "糖果（常复sweets）；甜的；可爱的"],
+    ["table tennis", "乒乓球"],
+    ["take", "拍摄；带走，拿走；选择要，选择购买；拿（走），取（走）；搭乘，乘坐（交通工具）；需要花费（一定的时间）（过去式took，过去分词taken）"],
+    ["take pictures", "照相"],
+    ["talk", "说话，交谈；谈话；演讲"],
+	["talk to", "和……交谈"],
+    ["tall", "高的"],
+    ["taxi", "出租车，计程车"],
+    ["tea", "茶；茶叶"],
+    ["teach", "教，讲授（过去式和过去分词taught）"],
+    ["teacher", "教师"],
+    ["telephone", "电话"],
+    ["television", "电视机（也可缩写为TV）"],
+    ["tell", "告诉；讲述（过去式和过去分词told）"],
+    ["ten", "十"],
+    ["than", "比（用于比较级中）"],
+    ["that", "那个"],
+	["that's = that is", "那是"],
+    ["the", "这（那）个，这（那）些（定冠词，用于特指或某些固定搭配）"],
+    ["their", "他们的；她们的；它们的（they的形容词性物主代词）"],
+    ["them", "他们；她们；它们（they的宾格形式）"],
+    ["then", "在那时，然后；那么；既然是这样"],
+    ["there", "表示某物或人的存在（常用作be的主语）；在那里；here的对应词）"],
+	["there is", "有，存在"],
+	["there are", "有，存在"],
+    ["these", "这些（this的复数形式）"],
+    ["they", "它（他，她）们（主格形式，宾格them，形容词性物主代词their）"],
+    ["thick", "厚的；浓的；茂密的"],
+    ["thin", "瘦的；薄的；稀的"],
+    ["thing", "物品，东西；事情；情况（常复things表示各种事物）"],
+    ["third", "第三（个）（基数词three）"],
+    ["thirteen", "十三"],
+    ["thirty", "三十"],
+    ["this", "这个（复数these）"],
+	["this's= this is", "这是"],
+    ["those", "那些（that的复数形式）"],
+    ["thousand", "一千"],
+    ["thirsty", "口渴的"],
+    ["Thursday", "星期四"],
+    ["ticket", "票；入场券；罚单"],
+    ["tied", "扎上，系上（tie的过去式和过去分词）"],
+    ["tiger", "老虎"],
+    ["time", "时间；时刻，时候；次，回（常复times表示倍数或次数）"],
+    ["to", "向……；到；对于；属于（表示方向、对象、时间等）"],
+    ["today", "今天；现今"],
+    ["tomato", "番茄，西红柿（复数tomatoes）"],
+    ["tomorrow", "明天；未来"],
+    ["too", "也；太，过于（用于肯定句末，前常有逗号；修饰形容词或副词表示程度）"],
+    ["took", "拿；搭乘，乘坐（交通工具）；需要花费（一定的时间）；拿（走），取（走）（take的过去式）"],
+    ["tooth", "牙齿（复数teeth）"],
+    ["toothbrush", "牙刷"],
+    ["toothpaste", "牙膏"],
+    ["tower", "塔；高楼"],
+    ["town", "城镇；市区"],
+    ["toy", "玩具"],
+    ["train", "火车；训练（过去式和过去分词trained）"],
+    ["travel", "旅行；游历（过去式和过去分词traveled或travelled）"],
+    ["tree", "树"],
+    ["trick or treat", "不请吃就捣蛋（万圣节习俗）"],
+    ["trip", "旅行，旅程；绊倒（过去式和过去分词tripped）"],
+    ["trousers", "裤子（常复）"],
+	["a pair of trousers", "一条裤子"],
+    ["try", "试，尝试；努力（过去式和过去分词tried）"],
+    ["Tuesday", "星期二"],
+    ["turn", "转动，旋转；转弯；轮流（过去式和过去分词turned）"],
+    ["turn left", "向左转"],
+    ["turn on", "打开（电器、设备等）"],
+    ["turn right", "向右转"],
+    ["TV", "电视机（television的缩写）"],
+    ["twelve", "十二"],
+    ["twenty", "二十"],
+    ["two", "二"],
+    ["umbrella", "雨伞"],
+    ["under", "在……下面；低于；在……情况下"],
+    ["unit", "单元；装置；单位"],
+    ["use", "使用；用途（过去式和过去分词used）"],
+	["uncle", "伯父，姑父，舅父，叔父，姨父"],
+	["village", "乡村，村庄"],
+    ["vegetable", "蔬菜"],
+    ["very", "非常；很（修饰形容词或副词，表示程度）"],
+    ["very much", "很，非常（用于强调喜欢、感谢等情感）"],
+    ["visit", "参观，拜访；访问；看望（过去式和过去分词visited）"],
+    ["wait", "等待，等候（过去式和过去分词waited）"],
+    ["walk", "步行；散步；走（过去式和过去分词walked）"],
+    ["wall", "墙，城墙"],
+    ["want", "需要，想要（过去式和过去分词wanted）"],
+	["was", "是（is, am的过去式）"],
+	["wasn't", "不是（is, am的过去式否定）"],
+    ["warm", "暖和的；温暖；使变暖（过去式和过去分词warmed）"],
+    ["wash", "洗；洗涤；冲洗（过去式和过去分词washed）"],
+    ["watch", "看；观看；手表（过去式和过去分词watched）"],
+    ["watch TV", "看电视"],
+    ["water", "水；浇水（过去式和过去分词watered）"],
+    ["watermelon", "西瓜"],
+    ["way", "方法，方式；路；方向（常复ways表示多种方法或道路）"],
+    ["we", "我们（主格形式，宾格us，形容词性物主代词our）"],
+    ["wear", "穿；戴；磨损（过去式wore，过去分词worn）"],
+    ["weather", "天气"],
+    ["Wednesday", "星期三"],
+    ["week", "周；星期"],
+    ["weekend", "周末"],
+    ["well", "(语气词)唔，噢；好，熟练地；怎么样；健康的；井（过去式welled，作副词时比较级better，最高级best）"],
+    ["went", "进行（go的过去式）"],
+    ["were", "是（be的过去时复数和第二人称单数形式，are的过去式）"],
+	["weren't", "不是（are的过去式否定）"],
+    ["west", "西，西部，西方；向西方"],
+    ["wet", "湿的；潮湿的；弄湿（过去式和过去分词wetted）"],
+    ["what", "什么"],
+	["what's = what is", "是什么"],
+    ["when", "在什么时候；当……时候（引导时间状语从句）"],
+    ["where", "哪里"],
+	["where's = where is", "在哪里（引导特殊疑问句询问地点）"],
+    ["which", "哪一个；哪些（用于选择或提问特定范围中的事物）"],
+    ["while", "当……时候；然而；虽然（引导时间状语从句或表示对比）"],
+    ["white", "白色的；白色"],
+    ["who", "谁（主格形式，宾格whom，所有格whose）"],
+    ["whose", "谁的（who的所有格形式，用于询问所属关系）"],
+    ["why", "为什么（用于提问原因）"],
+    ["will", "将；会；愿意（过去式would；作助动词构成一般将来时）"],
+	["winner", "获胜者"],
+    ["win", "胜利，取胜"],
+    ["wind", "风；蜿蜒；缠绕（过去式和过去分词wound或winded，作“蜿蜒”解时过去式和过去分词wound ）"],
+    ["windy", "有风的；多风的"],
+    ["window", "窗户"],
+    ["winter", "冬天；冬季"],
+    ["wish", "愿望，希望，祝，祝愿（过去式和过去分词wished）"],
+    ["with", "和……一起；具有；用；随着（表示伴随、方式、拥有等）"],
+    ["without", "没有；无；不（with的反义词，后接名词、代词或动名词）"],
+    ["woman", "女人（复数women）"],
+    ["wonderful", "了不起的，出色的；精彩的；奇妙的"],
+    ["wood", "木头；木材；树林（常复woods表示树林）"],
+    ["word", "词，字；话语；消息（常复words表示言语、话语）"],
+    ["work", "工作；劳动；干活儿；作品（过去式和过去分词worked；作“作品”解时常复数works ）"],
+    ["worker", "工人"],
+    ["world", "世界；世间"],
+    ["worm", "蠕虫；虫子"],
+    ["wrong", "错误的，不正确的"],
+    ["yard", "院子；庭院"],
+    ["year", "年；年份"],
+    ["yellow", "黄色的；黄色"],
+    ["yes", "是的，对"],
+    ["yesterday", "昨天"],
+    ["you", "你，你们（主格和宾格）"],
+    ["your", "你的；你们的（形容词性物主代词）"],
+    ["yours", "你的，你们的（名词性物主代词）"],
+    ["yourself", "你自己，你们自己（反身代词）"],
+	["young", "年轻的"],
+	["zoo", "动物园"],
+	
+];
+
+let currentWords = [];
+let selectedWords = [];
+const englishColumn = document.getElementById('english-column');
+const chineseColumn = document.getElementById('chinese-column');
+const message = document.getElementById('message');
+const targetWordElement = document.getElementById('target-word');
+const optionContainer = document.getElementById('option-container');
+const matchingMessage = document.getElementById('matching-message');
+let eliminationLevel = 1;
+let matchingLevel = 1;
+let spellingLevel = 1;
+let listeningLevel = 1;
+let wordPuzzleLevel = 1;
+const eliminationLevelElement = document.getElementById('elimination-level');
+const matchingLevelElement = document.getElementById('matching-level');
+const spellingLevelElement = document.getElementById('spelling-level');
+const listeningLevelElement = document.getElementById('listening-level');
+const wordPuzzleLevelElement = document.getElementById('word-puzzle-level');
+let isGameRunning = false; // 新增游戏状态标识
+const startButton = document.getElementById('start-elimination-btn');
+
+let timer;
+let timeLeft;
+const timerElement = document.getElementById('timer');
+let matchingTimer;
+let matchingTimeLeft;
+const matchingTimerElement = document.getElementById('matching-timer');
+let spellingTargetWord;
+const spellingTargetWordElement = document.getElementById('spelling-target-word');
+const spellingInput = document.getElementById('spelling-input');
+const spellingMessage = document.getElementById('spelling-message');
+let listeningTargetWord;
+const listeningMessage = document.getElementById('listening-message');
+const listeningOptionContainer = document.getElementById('listening-option-container');
+let puzzleLetters;
+const puzzleLettersElement = document.getElementById('puzzle-letters');
+const puzzleMessage = document.getElementById('puzzle-message');
+const answerBox = document.getElementById('answer-box');
+const puzzleChineseHint = document.getElementById('puzzle-chinese-hint');
+const correctSound = document.getElementById('correctSound');
+const wrongSound = document.getElementById('wrongSound');
+// 新增魔法大通关相关代码
+let magicLevel = 1;
+let currentMagicQuestions = [];
+
+const magicQuestions = [ 
+      { // 题目
+        sentence: "I __ a red apple yesterday.",
+        options: ["eat", "eated", "ate"],
+        answer: "ate",
+        analysis: "昨天发生的动作要用过去式"
+    },
+    {
+        sentence: "She __ to school every day.",
+        options: ["go", "goes", "is go"],
+        answer: "goes",
+        analysis: "第三人称单数要加es"
+    },
+    {
+        sentence: "The dog ___ an orange yesterday.",
+        options: ["has", "have", "had"],
+        answer: "had",
+        analysis: "昨天发生的动作要用过去式"
+    },
+    {
+        sentence: "The rabbit ___ to school every day.",
+        options: ["go", "goes", "going"],
+        answer: "goes",
+        analysis: "第三人称单数要加es"
+    },
+    {
+        sentence: "Look! The children ___ in the park.",
+        options: ["play", "plays", "are playing"],
+        answer: "are playing",
+        analysis: "现在进行时要用be动词+ing"
+    },
+    {
+        sentence: "There ___ many flowers in the garden.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "复数主语要搭配are"
+    },
+    {
+        sentence: "My father ___ a new car last week.",
+        options: ["buy", "buys", "bought"],
+        answer: "bought",
+        analysis: "last week表示过去时间"
+    },
+    {
+        sentence: "We ___ English class now.",
+        options: ["have", "has", "are having"],
+        answer: "are having",
+        analysis: "now表示现在进行时"
+    },
+    {
+        sentence: "The cat ___ under the table.",
+        options: ["sleep", "sleeps", "is sleeping"],
+        answer: "is sleeping",
+        analysis: "描述正在发生的动作"
+    },
+    {
+        sentence: "___ you help me with my homework?",
+        options: ["Can", "Do", "Are"],
+        answer: "Can",
+        analysis: "请求帮助用can表示能力"
+    },
+    {
+        sentence: "They ___ basketball every Saturday.",
+        options: ["play", "plays", "playing"],
+        answer: "play",
+        analysis: "习惯性动作用一般现在时"
+    },
+    {
+        sentence: "What ___ your mother do?",
+        options: ["do", "does", "is"],
+        answer: "does",
+        analysis: "第三人称单数疑问句"
+    },
+    {
+        sentence: "I want ___ ice cream.",
+        options: ["a", "an", "some"],
+        answer: "some",
+        analysis: "不可数名词用some修饰"
+    },
+    {
+        sentence: "Let's go ___ the supermarket.",
+        options: ["at", "to", "on"],
+        answer: "to",
+        analysis: "go后面接介词to"
+    },
+    {
+        sentence: "These ___ my new shoes.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "these是复数形式"
+    },
+    {
+        sentence: "He ___ his face every morning.",
+        options: ["wash", "washs", "washes"],
+        answer: "washes",
+        analysis: "第三人称单数加es"
+    },
+    {
+        sentence: "___ is your birthday?",
+        options: ["What", "When", "Where"],
+        answer: "When",
+        analysis: "询问时间用when"
+    },
+    {
+        sentence: "There ___ a clock on the wall.",
+        options: ["is", "are", "am"],
+        answer: "is",
+        analysis: "单数主语用is"
+    },
+    {
+        sentence: "We ___ to the zoo tomorrow.",
+        options: ["go", "goes", "will go"],
+        answer: "will go",
+        analysis: "tomorrow表示将来时"
+    },
+    {
+        sentence: "The ducks ___ in the river.",
+        options: ["swim", "swims", "swimming"],
+        answer: "swim",
+        analysis: "复数主语用动词原形"
+    },
+    {
+        sentence: "___ you like some juice?",
+        options: ["Would", "Do", "Are"],
+        answer: "Would",
+        analysis: "礼貌请求用would"
+    },
+    {
+        sentence: "My sister ___ reading books.",
+        options: ["like", "likes", "liking"],
+        answer: "likes",
+        analysis: "第三人称单数加s"
+    },
+    {
+        sentence: "How many ___ are there?",
+        options: ["child", "childs", "children"],
+        answer: "children",
+        analysis: "复数形式要正确"
+    },
+    {
+        sentence: "I ___ my keys yesterday.",
+        options: ["lose", "losed", "lost"],
+        answer: "lost",
+        analysis: "过去式形式要正确"
+    },
+    {
+        sentence: "They ___ to music now.",
+        options: ["listen", "listens", "are listening"],
+        answer: "are listening",
+        analysis: "now表示现在进行时"
+    },
+    {
+        sentence: "This is ___ interesting movie.",
+        options: ["a", "an", "the"],
+        answer: "an",
+        analysis: "元音开头的单词用an"
+    },
+    {
+        sentence: "The train ___ at 8 o'clock.",
+        options: ["leave", "leaves", "leaving"],
+        answer: "leaves",
+        analysis: "时刻表用一般现在时"
+    },
+    {
+        sentence: "___ are you from?",
+        options: ["What", "Where", "Who"],
+        answer: "Where",
+        analysis: "询问地点用where"
+    },
+    {
+        sentence: "We ___ dinner at 6 pm.",
+        options: ["have", "has", "having"],
+        answer: "have",
+        analysis: "复数主语用原形"
+    },
+    {
+        sentence: "She can ___ very fast.",
+        options: ["run", "runs", "running"],
+        answer: "run",
+        analysis: "情态动词后用原形"
+    },
+    {
+        sentence: "There isn't ___ milk left.",
+        options: ["some", "any", "a"],
+        answer: "any",
+        analysis: "否定句用any"
+    },
+    {
+        sentence: "___ you go to the park?",
+        options: ["Did", "Do", "Does"],
+        answer: "Did",
+        analysis: "过去时疑问句"
+    },
+    {
+        sentence: "The sun ___ in the east.",
+        options: ["rise", "rises", "is rising"],
+        answer: "rises",
+        analysis: "自然现象用一般现在时"
+    },
+    {
+        sentence: "I ___ my homework every day.",
+        options: ["do", "does", "doing"],
+        answer: "do",
+        analysis: "第一人称用原形"
+    },
+    {
+        sentence: "They ___ to Beijing last year.",
+        options: ["go", "goes", "went"],
+        answer: "went",
+        analysis: "last year用过去式"
+    },
+    {
+        sentence: "What color ___ your shoes?",
+        options: ["is", "are", "am"],
+        answer: "are",
+        analysis: "复数主语用are"
+    },
+    {
+        sentence: "My parents ___ watching TV.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "复数主语用are"
+    },
+    {
+        sentence: "___ there any water in the cup?",
+        options: ["Is", "Are", "Am"],
+        answer: "Is",
+        analysis: "不可数名词用is"
+    },
+    {
+        sentence: "The boy ___ a kite in the park.",
+        options: ["fly", "flys", "is flying"],
+        answer: "is flying",
+        analysis: "正在进行的动作"
+    },
+    {
+        sentence: "We ___ Christmas cards yesterday.",
+        options: ["send", "sends", "sent"],
+        answer: "sent",
+        analysis: "过去式形式正确"
+    },
+    {
+        sentence: "How ___ is this book?",
+        options: ["many", "much", "old"],
+        answer: "much",
+        analysis: "询问价格用how much"
+    },
+    {
+        sentence: "The cats ___ on the sofa.",
+        options: ["sleep", "sleeps", "are sleeping"],
+        answer: "are sleeping",
+        analysis: "现在进行时描述"
+    },
+    {
+        sentence: "I ___ to the library tomorrow.",
+        options: ["go", "goes", "will go"],
+        answer: "will go",
+        analysis: "将来时态使用"
+    },
+    {
+        sentence: "___ you see my glasses?",
+        options: ["Do", "Did", "Are"],
+        answer: "Did",
+        analysis: "过去时疑问句"
+    },
+    {
+        sentence: "There ___ some milk in the fridge.",
+        options: ["is", "are", "am"],
+        answer: "is",
+        analysis: "不可数名词用is"
+    },
+    {
+        sentence: "The students ___ in the classroom.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "复数主语用are"
+    },
+    {
+        sentence: "She ___ her teeth every morning.",
+        options: ["brush", "brushs", "brushes"],
+        answer: "brushes",
+        analysis: "第三人称单数加es"
+    },
+    {
+        sentence: "We ___ a picnic next Sunday.",
+        options: ["have", "has", "will have"],
+        answer: "will have",
+        analysis: "将来时态使用"
+    },
+    {
+        sentence: "___ there any apples in the basket?",
+        options: ["Is", "Are", "Am"],
+        answer: "Are",
+        analysis: "复数名词用are"
+    },
+    {
+        sentence: "The baby ___ right now.",
+        options: ["cry", "crys", "is crying"],
+        answer: "is crying",
+        analysis: "现在进行时描述"
+    },
+    {
+        sentence: "They ___ football after school.",
+        options: ["play", "plays", "playing"],
+        answer: "play",
+        analysis: "习惯性动作"
+    },
+    {
+        sentence: "This book ___ to me.",
+        options: ["belong", "belongs", "belonging"],
+        answer: "belongs",
+        analysis: "第三人称单数加s"
+    },
+    {
+        sentence: "I ___ a letter to my friend yesterday.",
+        options: ["write", "writes", "wrote"],
+        answer: "wrote",
+        analysis: "过去式形式正确"
+    },
+    {
+        sentence: "___ you happy yesterday?",
+        options: ["Was", "Were", "Are"],
+        answer: "Were",
+        analysis: "复数主语用were"
+    },
+    {
+        sentence: "The dog ___ in the garden now.",
+        options: ["run", "runs", "is running"],
+        answer: "is running",
+        analysis: "现在进行时"
+    },
+    {
+        sentence: "How many ___ are there in your class?",
+        options: ["student", "students", "studentes"],
+        answer: "students",
+        analysis: "复数形式正确"
+    },
+{
+        sentence: "She ___ a nurse two years ago.",
+        options: ["become", "becomes", "became"],
+        answer: "became",
+        analysis: "过去时间状语用过去式，become→became"
+    },
+    {
+        sentence: "___ you ride a bike when you were five?",
+        options: ["Can", "Could", "Do"],
+        answer: "Could",
+        analysis: "询问过去能力用could"
+    },
+    {
+        sentence: "There isn't ___ bread on the table.",
+        options: ["some", "any", "a"],
+        answer: "any",
+        analysis: "否定句用any修饰不可数名词"
+    },
+    {
+        sentence: "Look! The monkey ___ the tree.",
+        options: ["climb", "climbs", "is climbing"],
+        answer: "is climbing",
+        analysis: "现在进行时描述正在发生的动作"
+    },
+    {
+        sentence: "My birthday is ___ July.",
+        options: ["on", "at", "in"],
+        answer: "in",
+        analysis: "月份前用介词in"
+    },
+    {
+        sentence: "___ bag is this? It's under the chair.",
+        options: ["Who", "Whose", "Where"],
+        answer: "Whose",
+        analysis: "询问物品归属用whose"
+    },
+    {
+        sentence: "We usually ___ TV after dinner.",
+        options: ["watch", "watches", "watching"],
+        answer: "watch",
+        analysis: "习惯性动作用一般现在时"
+    },
+    {
+        sentence: "I ___ my grandma last Sunday.",
+        options: ["visit", "visits", "visited"],
+        answer: "visited",
+        analysis: "last Sunday需要过去式"
+    },
+    {
+        sentence: "There ___ three bottles of milk in the fridge.",
+        options: ["is", "are", "am"],
+        answer: "are",
+        analysis: "复数主语用are"
+    },
+    {
+        sentence: "The sheep ___ eating grass quietly.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "sheep复数形式不变，动词用复数"
+    },
+    {
+        sentence: "___ I have some water, please?",
+        options: ["Do", "Would", "May"],
+        answer: "May",
+        analysis: "礼貌请求用may"
+    },
+    {
+        sentence: "My sister ___ her homework every evening.",
+        options: ["do", "does", "doing"],
+        answer: "does",
+        analysis: "第三人称单数加es"
+    },
+    {
+        sentence: "They ___ to the zoo next weekend.",
+        options: ["go", "will go", "went"],
+        answer: "will go",
+        analysis: "next weekend表将来"
+    },
+    {
+        sentence: "How many ___ are there in the picture?",
+        options: ["child", "childs", "children"],
+        answer: "children",
+        analysis: "child复数形式特殊变化"
+    },
+    {
+        sentence: "The light is red. You ___ cross the road.",
+        options: ["mustn't", "can", "don't"],
+        answer: "mustn't",
+        analysis: "禁止行为用mustn't"
+    },
+    {
+        sentence: "I need ___ orange from the basket.",
+        options: ["a", "an", "some"],
+        answer: "an",
+        analysis: "orange以元音开头用an"
+    },
+    {
+        sentence: "___ Monday morning, we have PE class.",
+        options: ["On", "In", "At"],
+        answer: "On",
+        analysis: "具体某天上午用on"
+    },
+    {
+        sentence: "The boy ___ his knee and cried.",
+        options: ["cut", "cutted", "cuts"],
+        answer: "cut",
+        analysis: "cut过去式不变"
+    },
+    {
+        sentence: "These ___ my father's glasses.",
+        options: ["is", "are", "am"],
+        answer: "are",
+        analysis: "these接复数系动词"
+    },
+    {
+        sentence: "___ about playing chess together?",
+        options: ["What", "How", "Where"],
+        answer: "How",
+        analysis: "提建议用How about..."
+    },
+    {
+        sentence: "The train ___ Shanghai at 8:00 pm.",
+        options: ["leave", "leaves", "leaving"],
+        answer: "leaves",
+        analysis: "时刻表用一般现在时"
+    },
+    {
+        sentence: "My teeth ___ twice a day.",
+        options: ["is brushed", "are brushed", "brush"],
+        answer: "are brushed",
+        analysis: "被动语态表日常习惯"
+    },
+    {
+        sentence: "There ___ some juice in the glass.",
+        options: ["is", "are", "have"],
+        answer: "is",
+        analysis: "不可数名词用is"
+    },
+    {
+        sentence: "The children ___ excited about the trip.",
+        options: ["look", "looks", "looking"],
+        answer: "look",
+        analysis: "复数主语用动词原形"
+    },
+    {
+        sentence: "I ___ my keys. Can you help me find them?",
+        options: ["lose", "lost", "am losing"],
+        answer: "lost",
+        analysis: "过去发生的动作影响现在"
+    },
+    {
+        sentence: "___ your parents at home yesterday?",
+        options: ["Was", "Were", "Are"],
+        answer: "Were",
+        analysis: "复数主语用were"
+    },
+    {
+        sentence: "She ___ to music while doing homework.",
+        options: ["listen", "listens", "listening"],
+        answer: "listens",
+        analysis: "第三人称单数加s"
+    },
+    {
+        sentence: "We ___ our grandparents every Spring Festival.",
+        options: ["visit", "visits", "visited"],
+        answer: "visit",
+        analysis: "习惯性动作用一般现在时"
+    },
+    {
+        sentence: "The library closes ___ 9 o'clock.",
+        options: ["at", "on", "in"],
+        answer: "at",
+        analysis: "具体时间点用at"
+    },
+    {
+        sentence: "How ___ milk do we need for the cake?",
+        options: ["many", "much", "some"],
+        answer: "much",
+        analysis: "不可数名词用how much"
+    },
+    {
+        sentence: "The ducks ___ in the pond now.",
+        options: ["swim", "swims", "are swimming"],
+        answer: "are swimming",
+        analysis: "现在进行时描述正在发生"
+    },
+    {
+        sentence: "My brother ___ his bike to school every day.",
+        options: ["ride", "rides", "riding"],
+        answer: "rides",
+        analysis: "第三人称单数加s"
+    },
+    {
+        sentence: "There are ___ apples in the basket.",
+        options: ["a", "an", "some"],
+        answer: "some",
+        analysis: "肯定句用some修饰可数名词"
+    },
+    {
+        sentence: "___ you make a snowman last winter?",
+        options: ["Do", "Did", "Does"],
+        answer: "Did",
+        analysis: "过去时疑问句助动词用did"
+    },
+    {
+        sentence: "The sun ___ in the west.",
+        options: ["sets", "set", "setting"],
+        answer: "sets",
+        analysis: "自然现象用一般现在时"
+    },
+    {
+        sentence: "These shoes ___ comfortable.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "复数主语用are"
+    },
+    {
+        sentence: "I ___ a letter to my pen pal every month.",
+        options: ["write", "writes", "wrote"],
+        answer: "write",
+        analysis: "习惯性动作用一般现在时"
+    },
+    {
+        sentence: "The baby ___ three months old.",
+        options: ["is", "are", "am"],
+        answer: "is",
+        analysis: "单数主语用is"
+    },
+    {
+        sentence: "___ there any water in the bottle?",
+        options: ["Is", "Are", "Have"],
+        answer: "Is",
+        analysis: "不可数名词用is"
+    },
+    {
+        sentence: "We ___ to the museum tomorrow.",
+        options: ["go", "are going", "goes"],
+        answer: "are going",
+        analysis: "现在进行时表将来计划"
+    },
+    {
+        sentence: "My sister ___ her hair every morning.",
+        options: ["wash", "washs", "washes"],
+        answer: "washes",
+        analysis: "第三人称单数加es"
+    },
+    {
+        sentence: "There ___ a pencil and two books on the desk.",
+        options: ["is", "are", "have"],
+        answer: "is",
+        analysis: "就近原则，接a pencil用is"
+    },
+    {
+        sentence: "___ your father a teacher?",
+        options: ["Is", "Are", "Do"],
+        answer: "Is",
+        analysis: "单数主语用is"
+    },
+    {
+        sentence: "I ___ my uncle in Beijing last summer.",
+        options: ["visit", "visits", "visited"],
+        answer: "visited",
+        analysis: "last summer需要过去式"
+    },
+    {
+        sentence: "The girls ___ playing hide-and-seek.",
+        options: ["is", "am", "are"],
+        answer: "are",
+        analysis: "复数主语用are"
+    },
+    {
+        sentence: "How ___ is the Great Wall?",
+        options: ["old", "long", "many"],
+        answer: "long",
+        analysis: "询问长度用how long"
+    },
+    {
+        sentence: "You ___ play with fire. It's dangerous.",
+        options: ["must", "mustn't", "can"],
+        answer: "mustn't",
+        analysis: "禁止行为用mustn't"
+    },
+    {
+        sentence: "My favorite subject ___ maths.",
+        options: ["is", "are", "am"],
+        answer: "is",
+        analysis: "单数主语用is"
+    },
+    {
+        sentence: "The cat ___ under the chair now.",
+        options: ["sleep", "sleeps", "is sleeping"],
+        answer: "is sleeping",
+        analysis: "现在进行时描述正在发生"
+    },
+    {
+        sentence: "___ you like to come to my birthday party?",
+        options: ["Would", "Do", "Are"],
+        answer: "Would",
+        analysis: "礼貌邀请用would like"
+    }
+
+];
+
+    
+    
+    
+function startEliminationGame() {
+    document.querySelector('.game-selection').style.display = 'none';
+    document.getElementById('elimination-game').style.display = 'block';
+    
+    // 重置按钮状态
+    startButton.textContent = eliminationLevel === 1 ? '开始游戏' : '重新开始';
+    startButton.style.display = 'block';
+    message.textContent = '';
+    
+    // 隐藏游戏元素直到点击开始
+    englishColumn.innerHTML = '';
+    chineseColumn.innerHTML = '';
+    timerElement.textContent = '';
+    isGameRunning = false;
+}
+
+function startNewRound() {
+    startButton.style.display = 'none';
+    startRound(); // 正确调用一次
+}
+    
+function startMatchingGame() {
+    document.querySelector('.game-selection').style.display = 'none';
+    document.getElementById('matching-game').style.display = 'block';
+    startMatchingRound();
+}
+
+function startSpellingGame() {
+    document.querySelector('.game-selection').style.display = 'none';
+    document.getElementById('spelling-game').style.display = 'block';
+    startSpellingRound();
+}
+
+function startListeningGame() {
+    document.querySelector('.game-selection').style.display = 'none';
+    document.getElementById('listening-game').style.display = 'block';
+    startListeningRound();
+}
+
+function startWordPuzzleGame() {
+    document.querySelector('.game-selection').style.display = 'none';
+    document.getElementById('word-puzzle-game').style.display = 'block';
+    startWordPuzzleRound();
+}
+
+
+function backToSelection() {
+ 
+    // 新增重置消消乐状态
+    isGameRunning = false;
+    eliminationLevel = 1;
+    document.querySelector('.game-selection').style.display = 'block';
+    document.getElementById('elimination-game').style.display = 'none';
+    document.getElementById('matching-game').style.display = 'none';
+    document.getElementById('spelling-game').style.display = 'none';
+    document.getElementById('listening-game').style.display = 'none';
+    document.getElementById('word-puzzle-game').style.display = 'none';
+    clearInterval(timer);
+    clearInterval(matchingTimer);
+}
+
+function startRound() {
+    isGameRunning = true;
+    clearInterval(timer);
+    currentWords = [];
+    selectedWords = [];
+    message.textContent = '';
+    startButton.style.display = 'none';
+
+    let wordCount;
+    let timeLimit;
+    switch (eliminationLevel) {
+        case 1:
+            wordCount = 3;
+            timeLimit = 10;
+            break;
+        case 2:
+            wordCount = 4;
+            timeLimit = 15;
+            break;
+        case 3:
+            wordCount = 5;
+            timeLimit = 15;
+            break;
+        case 4:
+            wordCount = 6;
+            timeLimit = 20;
+            break;
+        case 5:
+            wordCount = 7;
+            timeLimit = 20;
+            break;
+        default:
+            wordCount = 8;
+            timeLimit = 30;
+    }
+
+    const shuffledWords = shuffleArray(words);
+    currentWords = shuffledWords.slice(0, wordCount);
+
+    const fragmentEnglish = document.createDocumentFragment();
+    const fragmentChinese = document.createDocumentFragment();
+
+    const englishWords = currentWords.map(([english]) => english);
+    const chineseWords = currentWords.map(([, chinese]) => chinese);
+
+    shuffleArray(englishWords);
+    shuffleArray(chineseWords);
+
+    englishWords.forEach(english => {
+        const englishElement = createWordElement(english, () => {
+            selectWord(englishElement);
+            speakWord(english);
+        });
+        fragmentEnglish.appendChild(englishElement);
+    });
+
+    chineseWords.forEach(chinese => {
+        const chineseElement = createWordElement(chinese, () => selectWord(chineseElement));
+        fragmentChinese.appendChild(chineseElement);
+    });
+
+    englishColumn.innerHTML = '';
+    chineseColumn.innerHTML = '';
+    englishColumn.appendChild(fragmentEnglish);
+    chineseColumn.appendChild(fragmentChinese);
+
+    timeLeft = timeLimit;
+    startTimer();
+    isGameRunning = true;
+    startButton.style.display = 'none';
+   
+}
+
+function selectWord(element) {
+    if (!isGameRunning) return; // 游戏未开始不能操作
+    if (selectedWords.length < 2) {
+        element.classList.add('selected');
+        selectedWords.push(element);
+
+        if (selectedWords.length === 2) {
+            const word1 = selectedWords[0].textContent;
+            const word2 = selectedWords[1].textContent;
+
+            const isMatch = currentWords.some(([english, chinese]) =>
+                (english === word1 && chinese === word2) || (english === word2 && chinese === word1)
+            );
+
+            if (isMatch) {
+                selectedWords.forEach(word => word.remove());
+                currentWords = currentWords.filter(([english, chinese]) =>
+                    english!== word1 && english!== word2 && chinese!== word1 && chinese!== word2
+                );
+
+                if (currentWords.length === 0) {
+                    clearInterval(timer);
+                    eliminationLevel++;
+                    eliminationLevelElement.textContent = `第 ${eliminationLevel} 关`;
+                    message.textContent = `恭喜，这一轮消完啦！进入第 ${eliminationLevel} 关。`;
+                    setTimeout(startRound, 2000);
+                }
+            } else {
+                selectedWords.forEach(word => word.classList.remove('selected'));
+                message.textContent = '匹配失败，请重新选择。';
+                timeLeft = Math.max(0, timeLeft - 3);
+                timerElement.textContent = `剩余时间: ${timeLeft} 秒`;
+                if (timeLeft === 0) {
+                     clearInterval(timer);
+            message.textContent = '时间到！挑战失败，重新开始本关。';
+            startButton.textContent = '重新开始';
+            startButton.style.display = 'block';
+            isGameRunning = false;
+                }
+            }
+
+            selectedWords = [];
+        }
+    }
+}
+
+function speakWord(word) {
+    if (speechSynthesis.speaking) {
+        speechSynthesis.cancel(); // 停止当前正在播放的语音
+    }
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.9; // 适当调整语速
+    speechSynthesis.speak(utterance);
+}
+
+function startMatchingRound() {
+    clearInterval(matchingTimer);
+    matchingMessage.textContent = '';
+    optionContainer.innerHTML = '';
+
+    // 1. 动态计算选项数量（可扩展）
+    const optionCount = Math.min(matchingLevel + 1, 6); // 级别1:2, 级别4:5, 其他6
+
+    // 2. 高效选择目标词（避免全量洗牌）
+    const isEnglishTarget = Math.random() > 0.5;
+    const [target, correctAnswer] = getRandomTargetWord(isEnglishTarget);
+
+    targetWordElement.textContent = target;
+
+    // 3. 生成选项（避免死循环）
+    const options = generateOptions(correctAnswer, isEnglishTarget, optionCount);
+    shuffleArray(options);
+
+    // 4. 渲染选项
+    options.forEach(option => {
+        const optionElement = createWordElement(option, () => checkMatchingAnswer(option, correctAnswer));
+        optionContainer.appendChild(optionElement);
+    });
+}
+
+// 辅助函数：高效获取随机目标词
+function getRandomTargetWord(isEnglishTarget) {
+    // 优先选长单词，若没有则随机选择
+    const complexWords = words.filter(([english]) => english.length > 5);
+    const candidates = complexWords.length > 0 ? complexWords : words;
+    const randomIndex = Math.floor(Math.random() * candidates.length);
+    const [english, translation] = candidates[randomIndex];
+    return isEnglishTarget ? [english, translation] : [translation, english];
+}
+
+// 辅助函数：安全生成选项
+function generateOptions(correctAnswer, isEnglishTarget, optionCount) {
+    const options = new Set([correctAnswer]);
+    const optionIndex = isEnglishTarget ? 1 : 0;
+    
+    // 预先收集所有可能的干扰项
+    const allCandidates = words.map(word => word[optionIndex]).filter(x => x !== correctAnswer);
+    
+    // 如果候选不足，补充正确答案（避免死循环）
+    while (options.size < optionCount) {
+        if (allCandidates.length === 0) break; // 防止无候选时死循环
+        const randomIndex = Math.floor(Math.random() * allCandidates.length);
+        options.add(allCandidates[randomIndex]);
+    }
+    
+    // 如果仍然不足，填充重复项（兜底逻辑）
+    return Array.from(options).slice(0, optionCount);
+}
+
+function checkMatchingAnswer(selected, correct) {
+    if (selected === correct) {
+        matchingLevel++;
+        matchingLevelElement.textContent = ` 第 ${matchingLevel} 关`;
+        matchingMessage.textContent = `回答正确！进入第 ${matchingLevel} 关。`;
+        correctSound.play();
+        setTimeout(startMatchingRound, 2000);
+    } else {
+        matchingMessage.textContent = '回答错误，请重新尝试。';
+        wrongSound.play();
+        setTimeout(() => {
+            startMatchingRound();
+        }, 2000);
+    }
+}
+
+function startSpellingRound() {
+    spellingMessage.textContent = '';
+    spellingInput.value = '';
+    const shuffledWords = shuffleArray(words);
+    const word = shuffledWords[0];
+    spellingTargetWord = word[0];
+    spellingTargetWordElement.textContent = word[1];
+}
+
+function checkSpellingAnswer() {
+    const userAnswer = spellingInput.value.trim();
+    if (userAnswer === spellingTargetWord) {
+        spellingLevel++;
+        spellingLevelElement.textContent = `第 ${spellingLevel} 关`;
+        spellingMessage.textContent = `回答正确！进入第 ${spellingLevel} 关。`;
+        correctSound.play();
+        setTimeout(startSpellingRound, 4000);
+    } else {
+        spellingMessage.textContent = `回答错误，正确答案是 ${spellingTargetWord}，请继续努力。`;
+        wrongSound.play();
+        setTimeout(startSpellingRound, 4000);
+    }
+}
+
+function startListeningRound() {
+    listeningMessage.textContent = '';
+    listeningOptionContainer.innerHTML = '';
+    const shuffledWords = shuffleArray(words);
+    const word = shuffledWords[0];
+    listeningTargetWord = word[0];
+    
+    // 仅保留喇叭按钮功能
+    const listenAgainBtn = document.getElementById('listen-again-btn');
+    listenAgainBtn.onclick = () => {
+        if (speechSynthesis.speaking) speechSynthesis.cancel();
+        speakWord(listeningTargetWord);
+    };
+
+    // 生成选项
+    const options = [word[1]];
+    while (options.length < 4) {
+        const randomWord = shuffleArray(words)[0][1];
+        if (!options.includes(randomWord)) options.push(randomWord);
+    }
+    shuffleArray(options);
+    
+    options.forEach(option => {
+        const optionElement = createWordElement(option, () => checkListeningAnswer(optionElement, option, word[1]));
+        listeningOptionContainer.appendChild(optionElement);
+    });
+
+    // 初始播放单词
+    speakWord(listeningTargetWord);
+}
+
+function createWordElement(text, clickHandler) {
+    const element = document.createElement('div');
+    element.textContent = text;
+    element.classList.add('word');
+    element.addEventListener('click', clickHandler);
+    return element;
+}
+
+let listeningAttempts = 0;
+function checkListeningAnswer(element, selected, correct) {
+    if (selected === correct) {
+        element.style.backgroundColor = 'lightgreen';
+        listeningMessage.textContent = `太棒了！这个单词是 ${listeningTargetWord}`;
+        correctSound.play();
+        listeningLevel++;
+        listeningLevelElement.textContent = ` 第 ${listeningLevel} 关`;
+        setTimeout(startListeningRound, 2000);
+        listeningAttempts = 0;
+    } else {
+        if (listeningAttempts === 0) {
+            listeningMessage.textContent = '回答错误，再听一次哦。';
+            wrongSound.play();
+            speakWord(listeningTargetWord);
+            listeningAttempts++;
+        } else {
+            const correctElement = Array.from(listeningOptionContainer.children).find(el => el.textContent === correct);
+            correctElement.style.backgroundColor = 'lightgreen';
+            listeningMessage.textContent = `继续努力！正确答案是 ${listeningTargetWord}`;
+            wrongSound.play();
+            setTimeout(startListeningRound, 2000);
+            listeningAttempts = 0;
+        }
+    }
+}
+
+// 统一创建字母元素的方法
+function createLetterBox(letter) {
+    const letterBox = document.createElement('div');
+    letterBox.textContent = letter;
+    letterBox.classList.add('letter-box');
+
+    // 点击字母区元素时移动到答题区
+    letterBox.addEventListener('click', function moveToAnswer() {
+        if (this.parentElement === puzzleLettersElement) {
+            // 克隆元素保留样式
+            const clonedBox = this.cloneNode(true);
+            clonedBox.addEventListener('click', moveBackToLetters);
+            answerBox.appendChild(clonedBox);
+            this.remove();
+        }
+    });
+
+    puzzleLettersElement.appendChild(letterBox);
+    return letterBox;
+}
+
+// 定义撤回功能
+function moveBackToLetters() {
+    if (this.parentElement === answerBox) {
+        const originalBox = createLetterBox(this.textContent);
+        puzzleLettersElement.appendChild(originalBox);
+        this.remove();
+    }
+}
+
+function startWordPuzzleRound() {
+    puzzleMessage.textContent = '';
+    answerBox.innerHTML = '';
+    puzzleLettersElement.innerHTML = '';
+
+    const shuffledWords = shuffleArray(words);
+    const word = shuffledWords[0];
+    puzzleLetters = shuffleArray(word[0].split(''));
+
+    puzzleLetters.forEach(letter => {
+        createLetterBox(letter);
+    });
+
+    puzzleChineseHint.textContent = word[1];
+}
+
+function checkPuzzleAnswer() {
+    const userAnswer = Array.from(answerBox.children).map(span => span.textContent).join('');
+    const originalWord = words.find(([english]) => {
+        const sortedAnswer = userAnswer.split('').sort().join('');
+        const sortedOriginal = english.split('').sort().join('');
+        return sortedAnswer === sortedOriginal;
+    });
+    if (originalWord && userAnswer === originalWord[0]) {
+        wordPuzzleLevel++;
+        wordPuzzleLevelElement.textContent = ` 第 ${wordPuzzleLevel} 关`;
+        puzzleMessage.textContent = `回答正确！进入第 ${wordPuzzleLevel} 关。`;
+        correctSound.play();
+        setTimeout(startWordPuzzleRound, 2000);
+    } else {
+        const correctAnswer = words.find(([_, chinese]) => chinese === puzzleChineseHint.textContent)[0];
+        puzzleMessage.textContent = `组合错误，正确答案是 ${correctAnswer}，请重新尝试。`;
+        wrongSound.play();
+
+        // 使用统一方法重建字母
+        answerBox.innerHTML = '';
+        puzzleLettersElement.innerHTML = '';
+        shuffleArray(correctAnswer.split('')).forEach(letter => {
+            createLetterBox(letter);
+        });
+    }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function handleDragStart(e) {
+    e.dataTransfer.setData('text/plain', this.textContent);
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    const rect = this.getBoundingClientRect();
+    const midPoint = rect.left + rect.width / 2;
+    const index = (e.clientX < midPoint) ? 0 : 1;
+    const letter = e.dataTransfer.getData('text/plain');
+    const newLetterBox = createLetterBox(letter);
+    if (index === 0) {
+        answerBox.insertBefore(newLetterBox, this);
+    } else {
+        if (this.nextSibling) {
+            answerBox.insertBefore(newLetterBox, this.nextSibling);
+        } else {
+            answerBox.appendChild(newLetterBox);
+        }
+    }
+}
+
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `剩余时间: ${timeLeft} 秒`;
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            message.textContent = '时间到！挑战失败，重新开始本关。';
+            startButton.textContent = '重新开始';
+            startButton.style.display = 'block';
+            isGameRunning = false;
+            // 新增清除卡片逻辑
+            englishColumn.innerHTML = '';
+            chineseColumn.innerHTML = '';
+        }
+    }, 1000);
+
+}
+    
+    
+
+
+function startMagicGame() {
+    document.querySelector('.game-selection').style.display = 'none';
+    document.getElementById('magic-game').style.display = 'block';
+    currentMagicQuestions = shuffleArray([...magicQuestions]);
+    magicLevel = 1;
+    loadMagicQuestion();
+
+}
+
+function loadMagicQuestion() {
+    const messageElement = document.getElementById('magic-message');
+    messageElement.textContent = '';
+    messageElement.style.removeProperty('color');
+
+    if(magicLevel > currentMagicQuestions.length) {
+        magicLevel = 1;
+        currentMagicQuestions = shuffleArray([...magicQuestions]);
+    }
+
+    const question = currentMagicQuestions[magicLevel-1];
+    const questionElement = document.getElementById('magic-question');
+    const optionsContainer = document.getElementById('magic-options');
+    
+    questionElement.innerHTML = question.sentence.replace("__", `<span style="border-bottom:2px dashed #9B59B6; padding:0 10px">___</span>`);
+    
+    optionsContainer.innerHTML = '';
+    const validOptions = question.options.filter(opt => opt !== undefined);
+    
+    // 生成有效选项
+    validOptions.forEach((option, index) => {
+        const btn = document.createElement('div');
+        btn.className = 'magic-option';
+        btn.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+        btn.onclick = () => checkMagicAnswer(option, question.answer);
+        optionsContainer.appendChild(btn);
+    });
+
+    // 动态补充选项
+    if(magicLevel > 10) {
+        while(optionsContainer.children.length < 3) {
+            let dummy;
+            do {
+                dummy = getDummyOption(question.answer);
+            } while(validOptions.includes(dummy))
+            
+            const btn = document.createElement('div');
+            btn.className = 'magic-option';
+            btn.textContent = `${String.fromCharCode(65 + optionsContainer.children.length)}. ${dummy}`;
+            btn.onclick = () => checkMagicAnswer(dummy, question.answer);
+            optionsContainer.appendChild(btn);
+        }
+    }
+}
+
+function checkMagicAnswer(selected, answer) {
+    const messageElement = document.getElementById('magic-message');
+    messageElement.classList.remove('complete-message');
+
+    if(selected === answer) {
+        messageElement.style.color = "#27AE60";
+        messageElement.innerHTML = `✓ 正确！${currentMagicQuestions[magicLevel-1].analysis}`;
+        
+        if(magicLevel < currentMagicQuestions.length) {
+            setTimeout(() => {
+                magicLevel++;
+                document.getElementById('magic-level').textContent = `第 ${magicLevel} 关`;
+                loadMagicQuestion();
+            }, 1500);
+        } else {
+            messageElement.classList.add('complete-message');
+            messageElement.innerHTML += "<br>🎉 恭喜完成所有关卡！";
+            setTimeout(() => {
+                magicLevel = 1;
+                currentMagicQuestions = shuffleArray([...magicQuestions]);
+                backToSelection();
+            }, 3000);
+        }
+    } else {
+        messageElement.style.color = "#C0392B";
+        messageElement.textContent = "✗ 再仔细想想哦！";
+        setTimeout(() => loadMagicQuestion(), 2000);
+    
+    }
+}
+
+// 修改后的shuffleArray函数
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+// 增强的干扰项生成器
+function getDummyOption(correct) {
+    const variants = {
+        // 保持原有variants结构，补充缺失项
+        "are": ["is", "am"],
+        // ...其他干扰项配置
+    };
+    
+    // 回退机制
+    return variants[correct]?.[Math.floor(Math.random() * variants[correct].length)] 
+        || (correct.endsWith('s') ? correct.slice(0, -1) : correct + 'ed') 
+        || "______";
+}
+
+// 修改后的返回按钮函数
+function backToSelection() {
+    // 确保隐藏所有可能的游戏界面
+    document.querySelectorAll('.game-mode').forEach(el => el.style.display = 'none');
+    
+    // 强制刷新选择界面显示
+    document.querySelector('.game-selection').style.display = 'block';
+    
+    // 重置所有状态
+    magicLevel = 1;
+    currentMagicQuestions = [];
+}	
+  
+    
+      </script>
+
+
