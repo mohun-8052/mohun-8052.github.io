@@ -542,13 +542,13 @@
 
         #magic-game {
             border-color: #9B59B6;
-            background: linear-gradient(145deg, #F7DCFF, #E8DAFF);
+            background: #FFFFFF;
         }
 
         #magic-question {
             font-size: 1.4em;
             margin: 25px 0;
-            color: #6C3483;
+            color: #000000;
             line-height: 1.6;
         }
 
@@ -1479,7 +1479,6 @@ const listeningLevelElement = document.getElementById('listening-level');
 const wordPuzzleLevelElement = document.getElementById('word-puzzle-level');
 let isGameRunning = false; // 新增游戏状态标识
 const startButton = document.getElementById('start-elimination-btn');
-
 let timer;
 let timeLeft;
 const timerElement = document.getElementById('timer');
@@ -2144,8 +2143,14 @@ const magicQuestions = [
 
 ];
 
-    
-    
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
     
 function startEliminationGame() {
     document.querySelector('.game-selection').style.display = 'none';
@@ -2208,6 +2213,7 @@ function backToSelection() {
     clearInterval(matchingTimer);
 }
 
+
 function startRound() {
     isGameRunning = true;
     clearInterval(timer);
@@ -2216,70 +2222,64 @@ function startRound() {
     message.textContent = '';
     startButton.style.display = 'none';
 
-    let wordCount;
-    let timeLimit;
+    // 设置关卡难度
+    let wordCount, timeLimit;
     switch (eliminationLevel) {
-        case 1:
-            wordCount = 3;
-            timeLimit = 10;
-            break;
-        case 2:
-            wordCount = 4;
-            timeLimit = 15;
-            break;
-        case 3:
-            wordCount = 5;
-            timeLimit = 15;
-            break;
-        case 4:
-            wordCount = 6;
-            timeLimit = 20;
-            break;
-        case 5:
-            wordCount = 7;
-            timeLimit = 20;
-            break;
-        default:
-            wordCount = 8;
-            timeLimit = 30;
+        case 1: wordCount = 3; timeLimit = 10; break;
+        case 2: wordCount = 4; timeLimit = 15; break;
+        case 3: wordCount = 5; timeLimit = 15; break;
+        case 4: wordCount = 6; timeLimit = 20; break;
+        case 5: wordCount = 7; timeLimit = 20; break;
+        default: wordCount = 8; timeLimit = 30;
     }
 
-    const shuffledWords = shuffleArray(words);
+    // 1. 随机选择单词（不使用 shuffleArray，改用 Fisher-Yates 算法）
+    const shuffledWords = [...words]; // 复制原数组
+    for (let i = shuffledWords.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledWords[i], shuffledWords[j]] = [shuffledWords[j], shuffledWords[i]]; // 交换
+    }
     currentWords = shuffledWords.slice(0, wordCount);
 
-    const fragmentEnglish = document.createDocumentFragment();
-    const fragmentChinese = document.createDocumentFragment();
-
+    // 2. 分离英文和中文
     const englishWords = currentWords.map(([english]) => english);
     const chineseWords = currentWords.map(([, chinese]) => chinese);
 
-    shuffleArray(englishWords);
-    shuffleArray(chineseWords);
+    // 3. 再次洗牌（确保选项随机）
+    const shuffle = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
+    const shuffledEnglish = shuffle([...englishWords]);
+    const shuffledChinese = shuffle([...chineseWords]);
 
-    englishWords.forEach(english => {
+    // 4. 构建 DOM 元素
+    englishColumn.innerHTML = '';
+    chineseColumn.innerHTML = '';
+
+    shuffledEnglish.forEach(english => {
         const englishElement = createWordElement(english, () => {
             selectWord(englishElement);
             speakWord(english);
         });
-        fragmentEnglish.appendChild(englishElement);
+        englishColumn.appendChild(englishElement);
     });
 
-    chineseWords.forEach(chinese => {
+    shuffledChinese.forEach(chinese => {
         const chineseElement = createWordElement(chinese, () => selectWord(chineseElement));
-        fragmentChinese.appendChild(chineseElement);
+        chineseColumn.appendChild(chineseElement);
     });
 
-    englishColumn.innerHTML = '';
-    chineseColumn.innerHTML = '';
-    englishColumn.appendChild(fragmentEnglish);
-    chineseColumn.appendChild(fragmentChinese);
-
+    // 5. 启动计时器
     timeLeft = timeLimit;
     startTimer();
     isGameRunning = true;
     startButton.style.display = 'none';
-   
 }
+
 
 function selectWord(element) {
     if (!isGameRunning) return; // 游戏未开始不能操作
@@ -2337,54 +2337,74 @@ function speakWord(word) {
     speechSynthesis.speak(utterance);
 }
 
-
 function startMatchingRound() {
     clearInterval(matchingTimer);
     matchingMessage.textContent = '';
     optionContainer.innerHTML = '';
 
-    // 1. 动态计算选项数量
+    // 1. 动态计算选项数量（可扩展）
     const optionCount = Math.min(matchingLevel + 1, 6); // 级别1:2, 级别4:5, 其他6
 
-    // 2. 随机选择目标词（英文或中文）
+    // 2. 高效选择目标词（避免全量洗牌）
     const isEnglishTarget = Math.random() > 0.5;
-    
-    // 2.1 优先选长单词，若没有则随机选择
-    const complexWords = words.filter(([english]) => english.length > 5);
-    const candidates = complexWords.length > 0 ? complexWords : words;
-    const randomIndex = Math.floor(Math.random() * candidates.length);
-    const [english, translation] = candidates[randomIndex];
-    const [target, correctAnswer] = isEnglishTarget 
-        ? [english, translation] 
-        : [translation, english];
+    const [target, correctAnswer] = getRandomTargetWord(isEnglishTarget);
 
     targetWordElement.textContent = target;
 
-    // 3. 生成选项（确保随机分布）
-    const optionIndex = isEnglishTarget ? 1 : 0;
-    const allCandidates = words.map(word => word[optionIndex]).filter(x => x !== correctAnswer);
-    const options = new Set([correctAnswer]);
-    
-    // 添加干扰项（避免重复）
-    while (options.size < optionCount && allCandidates.length > 0) {
-        const randomIndex = Math.floor(Math.random() * allCandidates.length);
-        options.add(allCandidates[randomIndex]);
-        allCandidates.splice(randomIndex, 1); // 移除已选选项
-    }
-    
-    // Fisher-Yates洗牌算法
-    const optionsArray = Array.from(options);
-    for (let i = optionsArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [optionsArray[i], optionsArray[j]] = [optionsArray[j], optionsArray[i]];
-    }
+    // 3. 生成选项（避免死循环）
+    const options = generateOptions(correctAnswer, isEnglishTarget, optionCount);
+    shuffleArray(options);
 
     // 4. 渲染选项
-    optionsArray.slice(0, optionCount).forEach(option => {
+    options.forEach(option => {
         const optionElement = createWordElement(option, () => checkMatchingAnswer(option, correctAnswer));
         optionContainer.appendChild(optionElement);
     });
 }
+
+// 辅助函数：高效获取随机目标词
+function getRandomTargetWord(isEnglishTarget) {
+    // 优先选长单词，若没有则随机选择
+    const complexWords = words.filter(([english]) => english.length > 5);
+    const candidates = complexWords.length > 0 ? complexWords : words;
+    const randomIndex = Math.floor(Math.random() * candidates.length);
+    const [english, translation] = candidates[randomIndex];
+    return isEnglishTarget ? [english, translation] : [translation, english];
+}
+
+// 辅助函数：安全生成选项
+    
+function generateOptions(correctAnswer, isEnglishTarget, optionCount) {
+    const options = new Set([correctAnswer]);
+    const optionIndex = isEnglishTarget ? 1 : 0;
+    
+    // 预先收集所有可能的干扰项
+    const allCandidates = words.map(word => word[optionIndex]).filter(x => x !== correctAnswer);
+  const defaultDummies = isEnglishTarget 
+        ? ['水果', '动物', '颜色', '数字', '形状'] 
+        : ['apple', 'banana', 'cat', 'dog', 'red'];
+    if (allCandidates.length === 0) {
+        allCandidates = defaultDummies.filter(x => x !== correctAnswer);
+    }
+
+    // 安全生成干扰项
+    while (options.size < optionCount) {
+        if (allCandidates.length === 0) {
+            // 当候选词和默认干扰项都不足时，补充随机字符串
+            const randomDummy = Math.random().toString(36).substring(2, 5);
+            options.add(randomDummy);
+            continue;
+        }
+        const randomIndex = Math.floor(Math.random() * allCandidates.length);
+        options.add(allCandidates[randomIndex]);
+    }
+    
+    // 转换为数组并洗牌
+    const shuffled = shuffleArray(Array.from(options));
+    return shuffled.slice(0, optionCount);
+}
+    
+    
 
 function checkMatchingAnswer(selected, correct) {
     if (selected === correct) {
@@ -2394,14 +2414,38 @@ function checkMatchingAnswer(selected, correct) {
         correctSound.play();
         setTimeout(startMatchingRound, 2000);
     } else {
-        matchingMessage.textContent = '回答错误，请重新尝试。';
+        // 新增错误处理逻辑
         wrongSound.play();
+        
+        // 找到所有选项元素
+        const options = optionContainer.children;
+        
+        // 遍历选项找到正确答案
+        Array.from(options).forEach(option => {
+            if(option.textContent === correct) {
+                // 添加高亮样式
+                option.style.backgroundColor = '#FFFF64'; // 正确选项背景色
+                option.style.color = 'black'; // 文字颜色
+                option.style.transform = 'scale(1.1)'; // 轻微放大
+                option.style.transition = 'all 0.3s'; // 过渡动画
+            }
+        });
+        
+        matchingMessage.textContent = '回答错误';
+        
+        // 延时后重新开始
         setTimeout(() => {
+            // 移除所有选项的高亮样式
+            Array.from(options).forEach(option => {
+                option.style.removeProperty('background-color');
+                option.style.removeProperty('color');
+                option.style.removeProperty('transform');
+            });
             startMatchingRound();
         }, 2000);
     }
 }
-
+    
 function startSpellingRound() {
     spellingMessage.textContent = '';
     spellingInput.value = '';
@@ -2429,25 +2473,41 @@ function checkSpellingAnswer() {
 function startListeningRound() {
     listeningMessage.textContent = '';
     listeningOptionContainer.innerHTML = '';
-    const shuffledWords = shuffleArray(words);
-    const word = shuffledWords[0];
+    
+    // 1. 随机选择目标单词
+    const word = words[Math.floor(Math.random() * words.length)];
     listeningTargetWord = word[0];
     
-    // 仅保留喇叭按钮功能
+    // 喇叭按钮功能
     const listenAgainBtn = document.getElementById('listen-again-btn');
     listenAgainBtn.onclick = () => {
         if (speechSynthesis.speaking) speechSynthesis.cancel();
         speakWord(listeningTargetWord);
     };
 
-    // 生成选项
-    const options = [word[1]];
-    while (options.length < 4) {
-        const randomWord = shuffleArray(words)[0][1];
-        if (!options.includes(randomWord)) options.push(randomWord);
-    }
-    shuffleArray(options);
+    // 2. 生成选项（1个正确答案 + 3个不同错误答案）
+    const options = [word[1]]; // 先放入正确答案
     
+    // 收集错误选项
+    const usedWrongOptions = new Set();
+    while (options.length < 4) {
+        const randomIndex = Math.floor(Math.random() * words.length);
+        const wrongOption = words[randomIndex][1];
+        
+        // 确保不是正确答案且不重复
+        if (wrongOption !== word[1] && !usedWrongOptions.has(wrongOption)) {
+            usedWrongOptions.add(wrongOption);
+            options.push(wrongOption);
+        }
+    }
+    
+    // 3. 使用可靠的洗牌算法打乱选项顺序
+    for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]]; // 交换元素
+    }
+    
+    // 4. 创建选项元素
     options.forEach(option => {
         const optionElement = createWordElement(option, () => checkListeningAnswer(optionElement, option, word[1]));
         listeningOptionContainer.appendChild(optionElement);
@@ -2565,13 +2625,7 @@ function checkPuzzleAnswer() {
     }
 }
 
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
+
 
 function handleDragStart(e) {
     e.dataTransfer.setData('text/plain', this.textContent);
