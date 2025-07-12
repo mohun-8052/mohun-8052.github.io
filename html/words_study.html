@@ -1,0 +1,2779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语单词学习系统 - 动态进度更新</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .logo i {
+            font-size: 2.8rem;
+            color: #ffde59;
+            animation: pulse 2s infinite;
+        }
+        
+        .logo h1 {
+            font-size: 2.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            max-width: 600px;
+            margin: 10px auto 0;
+        }
+        
+        .page {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            padding: 30px;
+            min-height: 600px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes progressGrow {
+            from { width: 0; }
+        }
+        
+        /* 首页样式 */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .module-card {
+            background: linear-gradient(135deg, rgba(67, 206, 162, 0.9) 0%, rgba(24, 90, 157, 0.9) 100%);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 100%);
+        }
+        
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        }
+        
+        .module-card i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module-card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module-card p {
+            font-size: 1.1rem;
+            max-width: 80%;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 目录页样式 */
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(78, 84, 200, 0.3);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(78, 84, 200, 0.4);
+        }
+        
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .category-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-7px);
+            border-color: #4e54c8;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        
+        .category-card h3 {
+            font-size: 1.4rem;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #43cea2, #185a9d);
+            border-radius: 5px;
+            width: 0%;
+            animation: progressGrow 1s ease-out forwards;
+        }
+        
+        .progress-text {
+            font-size: 1rem;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        
+        /* 单词列表页样式 */
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .word-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .word-card.learned {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-color: #81c784;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(129, 199, 132, 0.3);
+            animation: learnedPulse 0.5s ease;
+        }
+        
+        @keyframes learnedPulse {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(-5px); }
+        }
+        
+        .word-card.learned:after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: #4caf50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .word {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .phonetic {
+            font-size: 1.1rem;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .audio-btn {
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 4px 8px rgba(78, 84, 200, 0.3);
+        }
+        
+        .audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(78, 84, 200, 0.4);
+        }
+        
+        .meaning {
+            font-size: 1.2rem;
+            color: #495057;
+            margin: 20px 0;
+            padding: 18px;
+            background: white;
+            border-radius: 12px;
+            border-left: 5px solid #4e54c8;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            line-height: 1.6;
+        }
+        
+        .learn-btn {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            width: 100%;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(67, 206, 162, 0.3);
+        }
+        
+        .learn-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(67, 206, 162, 0.4);
+        }
+        
+        .learn-btn.learned {
+            background: linear-gradient(135deg, #81c784, #4caf50);
+            box-shadow: 0 4px 10px rgba(129, 199, 132, 0.3);
+        }
+        
+        .learn-btn.learned:hover {
+            box-shadow: 0 7px 15px rgba(129, 199, 132, 0.4);
+        }
+        
+        .practice-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #90caf9;
+        }
+        
+        .practice-section h2 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .practice-btn {
+            background: linear-gradient(135deg, #2196f3, #0d47a1);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .practice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .home-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo h1 {
+                font-size: 2.2rem;
+            }
+            
+            .module-card {
+                padding: 30px 20px;
+            }
+            
+            .module-card i {
+                font-size: 3rem;
+            }
+            
+            .catalog-grid, .words-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .notification {
+                left: 20px;
+                right: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> 学习进度已更新！
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <h1>英语单词学习系统</h1>
+            </div>
+            <p class="subtitle">动态学习进度追踪 - 实时更新系统</p>
+        </header>
+        
+        <!-- 首页 -->
+        <div id="home-page" class="page active">
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-words">0</div>
+                    <div class="stat-label">总单词数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="learned-words">0</div>
+                    <div class="stat-label">已学单词</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="progress-percent">0%</div>
+                    <div class="stat-label">总体进度</div>
+                </div>
+            </div>
+            
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 10px;">欢迎使用英语单词学习系统</h2>
+            <p style="text-align: center; color: #495057; max-width: 800px; margin: 0 auto 30px;">
+                本系统包含小学英语教材所有单词，按照教材版本和单元分类，支持发音功能，并实时记录您的学习进度。
+            </p>
+            
+            <div class="home-grid">
+                <div class="module-card" onclick="showPage('catalog-page')">
+                    <i class="fas fa-book"></i>
+                    <h2>单词书</h2>
+                    <p>按照教材版本分类的完整单词库，包含发音、释义和进度跟踪功能</p>
+                </div>
+                
+                <div class="module-card" onclick="showPage('practice-page')">
+                    <i class="fas fa-pencil-alt"></i>
+                    <h2>综合练习</h2>
+                    <p>多种练习模式帮助巩固单词记忆，包含拼写、听力和选择题等练习</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 教材目录页 -->
+        <div id="catalog-page" class="page">
+            <div class="catalog-header">
+                <button class="back-btn" onclick="showPage('home-page')">
+                    <i class="fas fa-arrow-left"></i> 返回首页
+                </button>
+                <h2>选择教材版本</h2>
+                <div class="progress-text" id="overall-progress">总体进度: 0%</div>
+            </div>
+            
+            <div class="catalog-grid">
+                <div class="category-card" onclick="selectBook('旧版三年级上册')">
+                    <h3>旧版三年级上册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-1"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-1">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('旧版三年级下册')">
+                    <h3>旧版三年级下册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-2"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-2">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('新版三年级上册')">
+                    <h3>新版三年级上册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-3"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-3">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('新版三年级下册')">
+                    <h3>新版三年级下册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-4"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-4">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('四年级上册')">
+                    <h3>四年级上册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-5"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-5">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('四年级下册')">
+                    <h3>四年级下册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-6"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-6">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('五年级上册')">
+                    <h3>五年级上册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-7"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-7">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('五年级下册')">
+                    <h3>五年级下册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-8"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-8">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('六年级上册')">
+                    <h3>六年级上册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-9"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-9">0% 已学习</div>
+                </div>
+                
+                <div class="category-card" onclick="selectBook('六年级下册')">
+                    <h3>六年级下册</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-10"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text-10">0% 已学习</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 单元目录页 -->
+        <div id="module-page" class="page">
+            <div class="catalog-header">
+                <button class="back-btn" onclick="goBackToCatalog()">
+                    <i class="fas fa-arrow-left"></i> 返回教材目录
+                </button>
+                <h2 id="book-title">教材版本单元目录</h2>
+                <div class="progress-text" id="book-progress">学习进度: 0%</div>
+            </div>
+            
+            <div class="catalog-grid" id="module-grid">
+                <!-- 这里会动态生成单元目录 -->
+            </div>
+        </div>
+        
+        <!-- 单词列表页 -->
+        <div id="wordlist-page" class="page">
+            <div class="catalog-header">
+                <button class="back-btn" onclick="goBackToModules()">
+                    <i class="fas fa-arrow-left"></i> 返回单元目录
+                </button>
+                <h2 id="module-title">单元单词列表</h2>
+                <div class="progress-text" id="module-progress">学习进度: 0%</div>
+            </div>
+            
+            <div class="words-grid" id="words-grid">
+                <!-- 这里会动态生成单词卡片 -->
+            </div>
+            
+            <div class="practice-section">
+                <h2>完成本单元学习？开始练习巩固记忆！</h2>
+                <button class="practice-btn" onclick="showPage('practice-page')">
+                    <i class="fas fa-play-circle"></i> 开始综合练习
+                </button>
+            </div>
+        </div>
+        
+        <!-- 综合练习页 -->
+        <div id="practice-page" class="page">
+            <div class="catalog-header">
+                <button class="back-btn" onclick="showPage('home-page')">
+                    <i class="fas fa-arrow-left"></i> 返回首页
+                </button>
+                <h2>综合练习</h2>
+            </div>
+            
+            <div style="text-align: center; margin-top: 60px;">
+                <i class="fas fa-pencil-alt" style="font-size: 5rem; color: #4e54c8; margin-bottom: 30px;"></i>
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">综合练习功能</h2>
+                <p style="color: #495057; max-width: 600px; margin: 0 auto 40px; font-size: 1.1rem;">
+                    该模块提供多种练习方式，包括拼写练习、听力选择、单词匹配等，帮助您巩固所学的单词知识。
+                </p>
+                
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <a href="https://mohun-8052.github.io/html/words_park.html" target="_blank" class="practice-btn">
+                        <i class="fas fa-globe"></i> 开始练习！
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 当前选中的教材和单元
+        let currentBook = '';
+        let currentModule = '';
+        
+        // 教材数据结构示例（带学习状态）
+        const books = {
+            '旧版三年级上册': {
+                modules: {
+                    'Module 1': {
+                        words: [
+                            {word: "I", phonetic: "/aɪ/", meaning: "我", learned: false},
+                            {word: "am", phonetic: "/æm/", meaning: "是；我是 (I'm = I am)", learned: false},
+                            {word: "hello", phonetic: "/həˈləʊ/", meaning: "你好 (hi)", learned: false},
+                            {word: "goodbye", phonetic: "/ˌɡʊdˈbaɪ/", meaning: "再见 (bye-bye)", learned: false},
+                            {word: "how", phonetic: "/haʊ/", meaning: "怎样", learned: false},
+                            {word: "are", phonetic: "/ɑː(r)/", meaning: "是", learned: false},
+                            {word: "you", phonetic: "/juː/", meaning: "你", learned: false},
+                            {word: "good", phonetic: "/ɡʊd/", meaning: "好的", learned: false},
+                            {word: "morning", phonetic: "/ˈmɔːnɪŋ/", meaning: "早晨，上午", learned: false},
+                            {word: "fine", phonetic: "/faɪn/", meaning: "(身体)很好", learned: false},
+                            {word: "thank", phonetic: "/θæŋk/", meaning: "谢谢", learned: false}
+                        ]
+                    },
+                    'Module 2': {
+                        words: [
+                            {word: "Ms", phonetic: "/mɪz/", meaning: "女士", learned: false},
+                            {word: "too", phonetic: "/tuː/", meaning: "也", learned: false},
+                            {word: "and", phonetic: "/ænd/", meaning: "那么；和", learned: false},
+                            {word: "boy", phonetic: "/bɔɪ/", meaning: "男孩", learned: false},
+                            {word: "girl", phonetic: "/ɡɜːl/", meaning: "女孩", learned: false},
+                            {word: "what", phonetic: "/wɒt/", meaning: "什么", learned: false},
+                            {word: "is", phonetic: "/ɪz/", meaning: "是", learned: false},
+                            {word: "what’s", phonetic: "/wɒts/", meaning: "是什么 (what is)", learned: false},
+                            {word: "your", phonetic: "/jɔː(r)/", meaning: "你的", learned: false},
+                            {word: "name", phonetic: "/neɪm/", meaning: "名字", learned: false},
+                            {word: "afternoon", phonetic: "/ˌɑːftəˈnuːn/", meaning: "下午", learned: false},
+                            {word: "Mr", phonetic: "/ˈmɪstə(r)/", meaning: "先生", learned: false}
+                        ]
+                    },
+                    'Module 3': {
+                        words: [
+                            {word: "the", phonetic: "/ðə; ði:/", meaning: "这(那)个，这(那)些", learned: false},
+                            {word: "door", phonetic: "/dɔː(r)/", meaning: "门", learned: false},
+                            {word: "please", phonetic: "/pliːz/", meaning: "请", learned: false},
+                            {word: "window", phonetic: "/ˈwɪndəʊ/", meaning: "窗户", learned: false},
+                            {word: "blackboard", phonetic: "/ˈblækbɔːd/", meaning: "黑板", learned: false},
+                            {word: "bird", phonetic: "/bɜːd/", meaning: "鸟", learned: false},
+                            {word: "desk", phonetic: "/desk/", meaning: "书桌", learned: false},
+                            {word: "chair", phonetic: "/tʃeə(r)/", meaning: "椅子", learned: false}
+                        ]
+                    },
+                    'Module 4': {
+                        words: [
+                            {word: "my", phonetic: "/maɪ/", meaning: "我的", learned: false},
+                            {word: "it", phonetic: "/ɪt/", meaning: "它", learned: false},
+                            {word: "it’s", phonetic: "/ɪts/", meaning: "它是 (it is)", learned: false},
+                            {word: "red", phonetic: "/red/", meaning: "红色的", learned: false},
+                            {word: "a", phonetic: "/ə; eɪ/", meaning: "一个，一 (an用于元音前)", learned: false},
+                            {word: "panda", phonetic: "/ˈpændə/", meaning: "熊猫", learned: false},
+                            {word: "blue", phonetic: "/bluː/", meaning: "蓝色的", learned: false},
+                            {word: "yellow", phonetic: "/ˈjeləʊ/", meaning: "黄色的", learned: false},
+                            {word: "green", phonetic: "/ɡriːn/", meaning: "绿色的", learned: false},
+                            {word: "black", phonetic: "/blæk/", meaning: "黑色的", learned: false},
+                            {word: "dog", phonetic: "/dɒɡ/", meaning: "狗", learned: false},
+                            {word: "cat", phonetic: "/kæt/", meaning: "猫", learned: false},
+                            {word: "cap", phonetic: "/kæp/", meaning: "帽子", learned: false}
+                        ]
+                    },
+                    'Module 5': {
+                        words: [
+                            {word: "many", phonetic: "/ˈmeni/", meaning: "许多", learned: false},
+                            {word: "how many", phonetic: "/haʊ ˈmeni/", meaning: "多少", learned: false},
+                            {word: "one", phonetic: "/wʌn/", meaning: "一", learned: false},
+                            {word: "two", phonetic: "/tuː/", meaning: "二", learned: false},
+                            {word: "three", phonetic: "/θriː/", meaning: "三", learned: false},
+                            {word: "four", phonetic: "/fɔː(r)/", meaning: "四", learned: false},
+                            {word: "five", phonetic: "/faɪv/", meaning: "五", learned: false},
+                            {word: "six", phonetic: "/sɪks/", meaning: "六", learned: false},
+                            {word: "seven", phonetic: "/ˈsevn/", meaning: "七", learned: false},
+                            {word: "eight", phonetic: "/eɪt/", meaning: "八", learned: false},
+                            {word: "nine", phonetic: "/naɪn/", meaning: "九", learned: false},
+                            {word: "ten", phonetic: "/ten/", meaning: "十", learned: false},
+                            {word: "eleven", phonetic: "/ɪˈlevn/", meaning: "十一", learned: false},
+                            {word: "twelve", phonetic: "/twelv/", meaning: "十二", learned: false},
+                            {word: "hat", phonetic: "/hæt/", meaning: "帽子", learned: false}
+                        ]
+                    },
+                    'Module 6': {
+                        words: [
+                            {word: "this", phonetic: "/ðɪs/", meaning: "这个", learned: false},
+                            {word: "school", phonetic: "/skuːl/", meaning: "学校", learned: false},
+                            {word: "pupil", phonetic: "/ˈpjuːpl/", meaning: "小学生", learned: false},
+                            {word: "classroom", phonetic: "/ˈklɑːsruːm/", meaning: "教室", learned: false},
+                            {word: "English", phonetic: "/ˈɪŋɡlɪʃ/", meaning: "英语", learned: false},
+                            {word: "teacher", phonetic: "/ˈtiːtʃə(r)/", meaning: "教师", learned: false},
+                            {word: "that", phonetic: "/ðæt/", meaning: "那个", learned: false},
+                            {word: "bag", phonetic: "/bæɡ/", meaning: "书包", learned: false},
+                            {word: "pencil", phonetic: "/ˈpensl/", meaning: "铅笔", learned: false},
+                            {word: "pen", phonetic: "/pen/", meaning: "钢笔", learned: false},
+                            {word: "book", phonetic: "/bʊk/", meaning: "书", learned: false}
+                        ]
+                    },
+                    'Module 7': {
+                        words: [
+                            {word: "happy", phonetic: "/ˈhæpi/", meaning: "快乐的", learned: false},
+                            {word: "birthday", phonetic: "/ˈbɜːθdeɪ/", meaning: "生日", learned: false},
+                            {word: "here", phonetic: "/hɪə(r)/", meaning: "这里", learned: false},
+                            {word: "here’s", phonetic: "/hɪəz/", meaning: "这是 (here is)", learned: false},
+                            {word: "cake", phonetic: "/keɪk/", meaning: "蛋糕", learned: false},
+                            {word: "old", phonetic: "/əʊld/", meaning: "年岁的", learned: false},
+                            {word: "how old", phonetic: "/haʊ əʊld/", meaning: "多大", learned: false},
+                            {word: "look", phonetic: "/lʊk/", meaning: "看", learned: false}
+                        ]
+                    },
+                    'Module 8': {
+                        words: [
+                            {word: "no", phonetic: "/nəʊ/", meaning: "不", learned: false},
+                            {word: "not", phonetic: "/nɒt/", meaning: "不", learned: false},
+                            {word: "isn’t", phonetic: "/ˈɪznt/", meaning: "不是 (is not)", learned: false},
+                            {word: "yes", phonetic: "/jes/", meaning: "是的", learned: false},
+                            {word: "help", phonetic: "/help/", meaning: "救命（呼救）", learned: false},
+                            {word: "kite", phonetic: "/kaɪt/", meaning: "风筝", learned: false},
+                            {word: "where", phonetic: "/weə(r)/", meaning: "哪里", learned: false},
+                            {word: "where’s", phonetic: "/weəz/", meaning: "在哪里 (where is)", learned: false},
+                            {word: "in", phonetic: "/ɪn/", meaning: "在……里面", learned: false},
+                            {word: "bag", phonetic: "/bæɡ/", meaning: "袋子", learned: false}
+                        ]
+                    },
+                    'Module 9': {
+                        words: [
+                            {word: "family", phonetic: "/ˈfæməli/", meaning: "家庭", learned: false},
+                            {word: "mother", phonetic: "/ˈmʌðə(r)/", meaning: "母亲", learned: false},
+                            {word: "she", phonetic: "/ʃi:/", meaning: "她", learned: false},
+                            {word: "she’s", phonetic: "/ʃi:z/", meaning: "她是 (she is)", learned: false},
+                            {word: "father", phonetic: "/ˈfɑːðə(r)/", meaning: "父亲", learned: false},
+                            {word: "he", phonetic: "/hi:/", meaning: "他", learned: false},
+                            {word: "he’s", phonetic: "/hi:z/", meaning: "他是 (he is)", learned: false},
+                            {word: "doctor", phonetic: "/ˈdɒktə(r)/", meaning: "医生", learned: false},
+                            {word: "grandpa", phonetic: "/ˈɡrænpɑː/", meaning: "祖父，外祖父", learned: false},
+                            {word: "grandma", phonetic: "/ˈɡrænmɑː/", meaning: "祖母，外祖母", learned: false},
+                            {word: "sister", phonetic: "/ˈsɪstə(r)/", meaning: "姐妹", learned: false},
+                            {word: "me", phonetic: "/mi:/", meaning: "我（宾格）", learned: false},
+                            {word: "brother", phonetic: "/ˈbrʌðə(r)/", meaning: "兄弟", learned: false},
+                            {word: "driver", phonetic: "/ˈdraɪvə(r)/", meaning: "司机", learned: false},
+                            {word: "policeman", phonetic: "/pəˈliːsmən/", meaning: "警察", learned: false},
+                            {word: "nurse", phonetic: "/nɜːs/", meaning: "护士", learned: false},
+                            {word: "farmer", phonetic: "/ˈfɑːmə(r)/", meaning: "农民", learned: false}
+                        ]
+                    },
+                    'Module 10': {
+                        words: [
+                            {word: "body", phonetic: "/ˈbɒdi/", meaning: "身体", learned: false},
+                            {word: "his", phonetic: "/hɪz/", meaning: "他的", learned: false},
+                            {word: "head", phonetic: "/hed/", meaning: "头", learned: false},
+                            {word: "arm", phonetic: "/ɑːm/", meaning: "胳膊", learned: false},
+                            {word: "leg", phonetic: "/leɡ/", meaning: "腿", learned: false},
+                            {word: "foot", phonetic: "/fʊt/", meaning: "脚（单数）", learned: false},
+                            {word: "her", phonetic: "/hɜː(r)/", meaning: "她的", learned: false},
+                            {word: "nose", phonetic: "/nəʊz/", meaning: "鼻子", learned: false},
+                            {word: "eye", phonetic: "/aɪ/", meaning: "眼睛", learned: false},
+                            {word: "mouth", phonetic: "/maʊθ/", meaning: "嘴", learned: false},
+                            {word: "ear", phonetic: "/ɪə(r)/", meaning: "耳朵", learned: false}
+                        ]
+                    }
+                }
+            },
+
+            '新版三年级上册': {
+                modules: {
+                    'Welcome': {
+                        words: [
+                            {word: "hi", phonetic: "/haɪ/", meaning: "嘿，喂，你好", learned: false},
+                            {word: "I", phonetic: "/aɪ/", meaning: "我", learned: false},
+                            {word: "be (am, is, are)", phonetic: "/bi:/", meaning: "是", learned: false},
+                            {word: "what", phonetic: "/wɒt/", meaning: "什么", learned: false},
+                            {word: "your", phonetic: "/jɔː(r)/", meaning: "你的；你们的", learned: false},
+                            {word: "name", phonetic: "/neɪm/", meaning: "名字", learned: false},
+                            {word: "hello", phonetic: "/həˈləʊ/", meaning: "喂，哈啰，你好", learned: false},
+                            {word: "my", phonetic: "/maɪ/", meaning: "我的", learned: false},
+                            {word: "goodbye", phonetic: "/ˌɡʊdˈbaɪ/", meaning: "再见", learned: false},
+                            {word: "have", phonetic: "/hæv/", meaning: "有，拥有", learned: false},
+                            {word: "a(an)", phonetic: "/ə; eɪ/", meaning: "一（个）", learned: false},
+                            {word: "nice", phonetic: "/naɪs/", meaning: "令人愉快的", learned: false},
+                            {word: "day", phonetic: "/deɪ/", meaning: "一天", learned: false},
+                            {word: "good", phonetic: "/ɡʊd/", meaning: "好的", learned: false},
+                            {word: "morning", phonetic: "/ˈmɔːnɪŋ/", meaning: "早晨，上午", learned: false},
+                            {word: "Ms", phonetic: "/mɪz/", meaning: "女士", learned: false},
+                            {word: "stand", phonetic: "/stænd/", meaning: "站立", learned: false},
+                            {word: "sit", phonetic: "/sɪt/", meaning: "坐", learned: false},
+                            {word: "open", phonetic: "/ˈəʊpən/", meaning: "打开", learned: false},
+                            {word: "book", phonetic: "/bʊk/", meaning: "书", learned: false},
+                            {word: "close", phonetic: "/kləʊz/", meaning: "合上", learned: false},
+                            {word: "point", phonetic: "/pɔɪnt/", meaning: "指", learned: false},
+                            {word: "say", phonetic: "/seɪ/", meaning: "说", learned: false},
+                            {word: "read", phonetic: "/ri:d/", meaning: "阅读", learned: false},
+                            {word: "listen", phonetic: "/ˈlɪsn/", meaning: "听", learned: false},
+                            {word: "write", phonetic: "/raɪt/", meaning: "写", learned: false}
+                        ]
+                    },
+                    'Unit 1': {
+                        words: [
+                            {word: "let’s = let us", phonetic: "/lets/", meaning: "让我们", learned: false},
+                            {word: "friend", phonetic: "/frend/", meaning: "朋友", learned: false},
+                            {word: "to", phonetic: "/tu:/", meaning: "（用于动词、名词或形容词后，使意思完整）；向，到，往", learned: false},
+                            {word: "meet", phonetic: "/mi:t/", meaning: "认识，结识", learned: false},
+                            {word: "you", phonetic: "/ju:/", meaning: "你；你们", learned: false},
+                            {word: "play", phonetic: "/pleɪ/", meaning: "玩，玩耍", learned: false},
+                            {word: "happy", phonetic: "/ˈhæpi/", meaning: "高兴的，快乐的", learned: false},
+                            {word: "new", phonetic: "/nju:/", meaning: "新的", learned: false},
+                            {word: "do", phonetic: "/du:/", meaning: "（构成疑问句或否定句）；做", learned: false},
+                            {word: "they", phonetic: "/ðeɪ/", meaning: "我们", learned: false},
+                            {word: "welcome", phonetic: "/ˈwelkəm/", meaning: "欢迎", learned: false},
+                            {word: "everyone", phonetic: "/ˈevriwʌn/", meaning: "每个人，人人", learned: false},
+                            {word: "nine", phonetic: "/naɪn/", meaning: "九", learned: false},
+                            {word: "she", phonetic: "/ʃi:/", meaning: "她", learned: false},
+                            {word: "too", phonetic: "/tu:/", meaning: "也", learned: false},
+                            {word: "we", phonetic: "/wi:/", meaning: "我们的", learned: false},
+                            {word: "from", phonetic: "/frəm/", meaning: "从", learned: false},
+                            {word: "the", phonetic: "/ðə; ði:/", meaning: "（用于表示正在谈论一个已经提到过、已经知道，或是唯一存在的人或物）", learned: false},
+                            {word: "twin", phonetic: "/twɪn/", meaning: "双胞胎中的一个", learned: false},
+                            {word: "he", phonetic: "/hi:/", meaning: "他", learned: false},
+                            {word: "come", phonetic: "/kʌm/", meaning: "来；来到", learned: false},
+                            {word: "and", phonetic: "/ænd/", meaning: "然后，接着；和", learned: false},
+                            {word: "oh", phonetic: "/əʊ/", meaning: "哦", learned: false},
+                            {word: "no", phonetic: "/nəʊ/", meaning: "不，不行", learned: false},
+                            {word: "help", phonetic: "/help/", meaning: "帮助，帮忙", learned: false},
+                            {word: "here", phonetic: "/hɪə(r)/", meaning: "在这里", learned: false},
+                            {word: "thank", phonetic: "/θæŋk/", meaning: "感谢，向……表示谢意", learned: false},
+                            {word: "together", phonetic: "/təˈɡeðə(r)/", meaning: "一起，一块儿", learned: false},
+                            {word: "OK", phonetic: "/əʊˈkeɪ/", meaning: "行，可以", learned: false},
+                            {word: "great", phonetic: "/ɡreɪt/", meaning: "极棒的，极好的", learned: false},
+                            {word: "song", phonetic: "/sɒŋ/", meaning: "歌曲", learned: false},
+                            {word: "dear", phonetic: "/dɪə(r)/", meaning: "亲爱的", learned: false},
+                            {word: "sing", phonetic: "/sɪŋ/", meaning: "唱，歌唱", learned: false},
+                            {word: "now", phonetic: "/naʊ/", meaning: "现在", learned: false},
+                            {word: "know", phonetic: "/nəʊ/", meaning: "认识", learned: false},
+                            {word: "our", phonetic: "/aʊə(r)/", meaning: "我们的", learned: false},
+                            {word: "everybody", phonetic: "/ˈevribɒdi/", meaning: "每个人，人人", learned: false},
+                            {word: "with", phonetic: "/wɪð/", meaning: "和……一起", learned: false},
+                            {word: "me", phonetic: "/mi:/", meaning: "我", learned: false}
+                        ]
+                    },
+                    'Unit 2': {
+                        words: [
+                            {word: "school", phonetic: "/skuːl/", meaning: "学校", learned: false},
+                            {word: "thing", phonetic: "/θɪŋ/", meaning: "东西", learned: false},
+                            {word: "pack", phonetic: "/pæk/", meaning: "收拾好", learned: false},
+                            {word: "pen", phonetic: "/pen/", meaning: "钢笔", learned: false},
+                            {word: "pencil", phonetic: "/ˈpensl/", meaning: "铅笔", learned: false},
+                            {word: "pencil case", phonetic: "/ˈpensl keɪs/", meaning: "笔袋；铅笔盒", learned: false},
+                            {word: "bag", phonetic: "/bæɡ/", meaning: "袋；包", learned: false},
+                            {word: "for", phonetic: "/fɔː(r)/", meaning: "为了", learned: false},
+                            {word: "ruler", phonetic: "/ˈruːlə(r)/", meaning: "尺子，直尺", learned: false},
+                            {word: "eraser", phonetic: "/ɪˈreɪzə(r)/", meaning: "橡皮", learned: false},
+                            {word: "this", phonetic: "/ðɪs/", meaning: "这，这个", learned: false},
+                            {word: "in", phonetic: "/ɪn/", meaning: "在……里", learned: false},
+                            {word: "schoolbag", phonetic: "/ˈskuːlbæɡ/", meaning: "书包", learned: false},
+                            {word: "it", phonetic: "/ɪt/", meaning: "它", learned: false},
+                            {word: "not", phonetic: "/nɒt/", meaning: "不，不是", learned: false},
+                            {word: "that", phonetic: "/ðæt/", meaning: "那，那个", learned: false},
+                            {word: "yes", phonetic: "/jes/", meaning: "是，对", learned: false},
+                            {word: "guess", phonetic: "/ɡes/", meaning: "猜，猜测", learned: false},
+                            {word: "find", phonetic: "/faɪnd/", meaning: "发现，找到", learned: false},
+                            {word: "lost and found", phonetic: "/lɒst ənd faʊnd/", meaning: "失物招领", learned: false},
+                            {word: "bye", phonetic: "/baɪ/", meaning: "再见，拜拜", learned: false},
+                            {word: "kid", phonetic: "/kɪd/", meaning: "小孩，儿童", learned: false},
+                            {word: "take care of sb / sth", phonetic: "/teɪk keə(r) ɒv sb / sth/", meaning: "照看（照料）某人/某物", learned: false},
+                            {word: "there", phonetic: "/ðeə(r)/", meaning: "在那里", learned: false},
+                            {word: "please", phonetic: "/pliːz/", meaning: "请", learned: false},
+                            {word: "back", phonetic: "/bæk/", meaning: "回到原处", learned: false},
+                            {word: "come back", phonetic: "/kʌm bæk/", meaning: "回来", learned: false},
+                            {word: "look", phonetic: "/lʊk/", meaning: "看，瞧，望", learned: false},
+                            {word: "look at sb / sth", phonetic: "/lʊk æt sb / sth/", meaning: "看某人/某物", learned: false}
+                        ]
+                    },
+                    'Unit 3': {
+                        words: [
+                            {word: "colourful", phonetic: "/ˈkʌləfl/", meaning: "颜色鲜艳的；色彩丰富的", learned: false},
+                            {word: "world", phonetic: "/wɜːld/", meaning: "世界", learned: false},
+                            {word: "hooray", phonetic: "/hʊˈreɪ/", meaning: "好哇", learned: false},
+                            {word: "umbrella", phonetic: "/ʌmˈbrelə/", meaning: "伞；雨伞", learned: false},
+                            {word: "clothes", phonetic: "/kləʊðz/", meaning: "衣服", learned: false},
+                            {word: "red", phonetic: "/red/", meaning: "红色（的）", learned: false},
+                            {word: "pink", phonetic: "/pɪŋk/", meaning: "粉红色（的）", learned: false},
+                            {word: "green", phonetic: "/ɡriːn/", meaning: "绿色（的）", learned: false},
+                            {word: "yellow", phonetic: "/ˈjeləʊ/", meaning: "黄色（的）", learned: false},
+                            {word: "orange", phonetic: "/ˈɒrɪndʒ/", meaning: "橙色（的）", learned: false},
+                            {word: "blue", phonetic: "/bluː/", meaning: "蓝色（的）", learned: false},
+                            {word: "purple", phonetic: "/ˈpɜːpl/", meaning: "紫色（的）", learned: false},
+                            {word: "rainbow", phonetic: "/ˈreɪnbəʊ/", meaning: "彩虹", learned: false},
+                            {word: "want", phonetic: "/wɒnt/", meaning: "想要", learned: false},
+                            {word: "balloon", phonetic: "/bəˈluːn/", meaning: "气球", learned: false},
+                            {word: "colour", phonetic: "/ˈkʌlə(r)/", meaning: "颜色", learned: false},
+                            {word: "can", phonetic: "/kæn/", meaning: "能，会", learned: false},
+                            {word: "see", phonetic: "/si:/", meaning: "看见，看到", learned: false},
+                            {word: "right", phonetic: "/raɪt/", meaning: "正确的，对的", learned: false},
+                            {word: "first", phonetic: "/fɜːst/", meaning: "第一的；首先；最初", learned: false},
+                            {word: "magical", phonetic: "/ˈmædʒɪkl/", meaning: "美妙的；有魔力的", learned: false},
+                            {word: "fun", phonetic: "/fʌn/", meaning: "有趣的，逗乐的", learned: false},
+                            {word: "black", phonetic: "/blæk/", meaning: "黑色（的）", learned: false},
+                            {word: "so", phonetic: "/səʊ/", meaning: "这么，如此", learned: false},
+                            {word: "many", phonetic: "/ˈmeni/", meaning: "许多；大量", learned: false},
+                            {word: "picture", phonetic: "/ˈpɪktʃə(r)/", meaning: "画，图画", learned: false},
+                            {word: "today", phonetic: "/təˈdeɪ/", meaning: "今天", learned: false},
+                            {word: "paint", phonetic: "/peɪnt/", meaning: "今天作画", learned: false}
+                        ]
+                    },
+                    'Unit 4': {
+                        words: [
+                            {word: "number", phonetic: "/ˈnʌmbə(r)/", meaning: "数，数字", learned: false},
+                            {word: "count", phonetic: "/kaʊnt/", meaning: "数数", learned: false},
+                            {word: "how", phonetic: "/haʊ/", meaning: "多少；怎样，如何", learned: false},
+                            {word: "bird", phonetic: "/bɜːd/", meaning: "鸟", learned: false},
+                            {word: "one", phonetic: "/wʌn/", meaning: "一", learned: false},
+                            {word: "two", phonetic: "/tu:/", meaning: "二", learned: false},
+                            {word: "three", phonetic: "/θri:/", meaning: "三", learned: false},
+                            {word: "four", phonetic: "/fɔː(r)/", meaning: "四", learned: false},
+                            {word: "five", phonetic: "/faɪv/", meaning: "五", learned: false},
+                            {word: "six", phonetic: "/sɪks/", meaning: "六", learned: false},
+                            {word: "seven", phonetic: "/ˈsevn/", meaning: "七", learned: false},
+                            {word: "eight", phonetic: "/eɪt/", meaning: "八", learned: false},
+                            {word: "ten", phonetic: "/ten/", meaning: "十", learned: false},
+                            {word: "eleven", phonetic: "/ɪˈlevn/", meaning: "十一", learned: false},
+                            {word: "twelve", phonetic: "/twelv/", meaning: "十二", learned: false},
+                            {word: "rope", phonetic: "/rəʊp/", meaning: "绳", learned: false},
+                            {word: "who", phonetic: "/hu:/", meaning: "谁，什么人", learned: false},
+                            {word: "make", phonetic: "/meɪk/", meaning: "制作", learned: false},
+                            {word: "Chinese knot", phonetic: "/ˌtʃaɪˈniːz nɒt/", meaning: "中国结", learned: false},
+                            {word: "beautiful", phonetic: "/ˈbjuːtɪfl/", meaning: "美丽的", learned: false},
+                            {word: "only", phonetic: "/ˈəʊnli/", meaning: "仅仅", learned: false},
+                            {word: "amazing", phonetic: "/əˈmeɪzɪŋ/", meaning: "令人惊讶的", learned: false},
+                            {word: "show", phonetic: "/ʃəʊ/", meaning: "给……看", learned: false},
+                            {word: "baby", phonetic: "/ˈbeɪbi/", meaning: "幼崽；雏鸟", learned: false},
+                            {word: "cheep", phonetic: "/tʃiːp/", meaning: "吱吱（或唧唧）的叫声", learned: false},
+                            {word: "egg", phonetic: "/eɡ/", meaning: "蛋", learned: false},
+                            {word: "hungry", phonetic: "/ˈhʌŋɡri/", meaning: "饥饿的", learned: false},
+                            {word: "around", phonetic: "/əˈraʊnd/", meaning: "环绕，在（……）周围", learned: false},
+                            {word: "all", phonetic: "/ɔːl/", meaning: "全部，所有", learned: false},
+                            {word: "all around", phonetic: "/ɔːl əˈraʊnd/", meaning: "处处，到处", learned: false},
+                            {word: "big", phonetic: "/bɪɡ/", meaning: "大的", learned: false},
+                            {word: "little", phonetic: "/ˈlɪtl/", meaning: "小的", learned: false},
+                            {word: "everywhere", phonetic: "/ˈevriweə(r)/", meaning: "在各个地方；处处", learned: false}
+                        ]
+                    },
+                    'Unit 5': {
+                        words: [
+                            {word: "family", phonetic: "/ˈfæməli/", meaning: "家庭；家人", learned: false},
+                            {word: "dad (father)", phonetic: "/dæd/", meaning: "爸爸", learned: false},
+                            {word: "mum (mother)", phonetic: "/mʌm/", meaning: "妈妈", learned: false},
+                            {word: "brother", phonetic: "/ˈbrʌðə(r)/", meaning: "哥哥；弟弟", learned: false},
+                            {word: "sister", phonetic: "/ˈsɪstə(r)/", meaning: "姐姐；妹妹", learned: false},
+                            {word: "grandpa (grandfather)", phonetic: "/ˈɡrænpɑː/", meaning: "祖父；外祖父", learned: false},
+                            {word: "grandma (grandmother)", phonetic: "/ˈɡrænmɑː/", meaning: "祖母；外祖母", learned: false},
+                            {word: "but", phonetic: "/bʌt/", meaning: "但是，然而", learned: false},
+                            {word: "people", phonetic: "/ˈpiːpl/", meaning: "人；人们", learned: false},
+                            {word: "story", phonetic: "/ˈstɔːri/", meaning: "故事", learned: false},
+                            {word: "cap", phonetic: "/kæp/", meaning: "帽子", learned: false},
+                            {word: "worry", phonetic: "/ˈwʌri/", meaning: "担心", learned: false},
+                            {word: "on", phonetic: "/ɒn/", meaning: "在……上面", learned: false},
+                            {word: "come on", phonetic: "/kʌm ɒn/", meaning: "快点；加油", learned: false},
+                            {word: "photo", phonetic: "/ˈfəʊtəʊ/", meaning: "照片，相片", learned: false},
+                            {word: "love", phonetic: "/lʌv/", meaning: "爱，关爱", learned: false},
+                            {word: "daddy", phonetic: "/ˈdædi/", meaning: "爸爸", learned: false},
+                            {word: "mummy", phonetic: "/ˈmʌmi/", meaning: "妈妈", learned: false},
+                            {word: "where", phonetic: "/weə(r)/", meaning: "在哪里", learned: false},
+                            {word: "dog", phonetic: "/dɒɡ/", meaning: "狗", learned: false},
+                            {word: "box", phonetic: "/bɒks/", meaning: "盒；箱", learned: false}
+                        ]
+                    },
+                    'Unit 6': {
+                        words: [
+                            {word: "sweet", phonetic: "/swiːt/", meaning: "甜蜜的", learned: false},
+                            {word: "home", phonetic: "/həʊm/", meaning: "家", learned: false},
+                            {word: "game", phonetic: "/ɡeɪm/", meaning: "游戏", learned: false},
+                            {word: "room", phonetic: "/ruːm/", meaning: "房间", learned: false},
+                            {word: "living room", phonetic: "/ˈlɪvɪŋ ruːm/", meaning: "客厅", learned: false},
+                            {word: "bedroom", phonetic: "/ˈbedruːm/", meaning: "卧室", learned: false},
+                            {word: "bathroom", phonetic: "/ˈbɑːθruːm/", meaning: "浴室，卫生间", learned: false},
+                            {word: "kitchen", phonetic: "/ˈkɪtʃɪn/", meaning: "厨房", learned: false},
+                            {word: "dining room", phonetic: "/ˈdaɪnɪŋ ruːm/", meaning: "餐厅", learned: false},
+                            {word: "door", phonetic: "/dɔː(r)/", meaning: "门", learned: false},
+                            {word: "chair", phonetic: "/tʃeə(r)/", meaning: "椅子", learned: false},
+                            {word: "think", phonetic: "/θɪŋk/", meaning: "想，认为", learned: false},
+                            {word: "under", phonetic: "/ˈʌndə(r)/", meaning: "在……下面；在……底下", learned: false},
+                            {word: "bed", phonetic: "/bed/", meaning: "床", learned: false},
+                            {word: "toy", phonetic: "/tɔɪ/", meaning: "玩具", learned: false},
+                            {word: "miaow", phonetic: "/miˈaʊ/", meaning: "咪，喵（猫叫声）", learned: false},
+                            {word: "table", phonetic: "/ˈteɪbl/", meaning: "桌子", learned: false},
+                            {word: "cat", phonetic: "/kæt/", meaning: "猫", learned: false},
+                            {word: "ball", phonetic: "/bɔːl/", meaning: "球", learned: false},
+                            {word: "their", phonetic: "/ðeə(r)/", meaning: "他们的", learned: false},
+                            {word: "apple", phonetic: "/ˈæpl/", meaning: "苹果", learned: false},
+                            {word: "share", phonetic: "/ʃeə(r)/", meaning: "共用；分享", learned: false},
+                            {word: "put", phonetic: "/pʊt/", meaning: "放", learned: false},
+                            {word: "cooking", phonetic: "/ˈkʊkɪŋ/", meaning: "做饭", learned: false},
+                            {word: "sun", phonetic: "/sʌn/", meaning: "太阳", learned: false},
+                            {word: "like", phonetic: "/laɪk/", meaning: "喜欢", learned: false},
+                            {word: "run", phonetic: "/rʌn/", meaning: "跑", learned: false},
+                            {word: "lucky", phonetic: "/ˈlʌki/", meaning: "幸运的", learned: false}
+                        ]
+                    }
+                }
+            },
+
+            '旧版三年级下册': {
+                modules: {
+                    'Module 1': {
+                        words: [
+                            {word: "song", phonetic: "/sɒŋ/", meaning: "歌曲", learned: false},
+                            {word: "favourite", phonetic: "/ˈfeɪvərɪt/", meaning: "特别喜欢的", learned: false},
+                            {word: "toy", phonetic: "/tɔɪ/", meaning: "玩具", learned: false},
+                            {word: "car", phonetic: "/kɑː(r)/", meaning: "小汽车", learned: false},
+                            {word: "ship", phonetic: "/ʃɪp/", meaning: "轮船", learned: false},
+                            {word: "doll", phonetic: "/dɒl/", meaning: "洋娃娃", learned: false}
+                        ]
+                    },
+                    'Module 2': {
+                        words: [
+                            {word: "they", phonetic: "/ðeɪ/", meaning: "它（他，她）们", learned: false},
+                            {word: "monkey", phonetic: "/ˈmʌŋki/", meaning: "猴子", learned: false},
+                            {word: "tiger", phonetic: "/ˈtaɪɡə(r)/", meaning: "老虎", learned: false},
+                            {word: "big", phonetic: "/bɪɡ/", meaning: "大的", learned: false},
+                            {word: "lion", phonetic: "/ˈlaɪən/", meaning: "狮子", learned: false},
+                            {word: "elephant", phonetic: "/ˈelɪfənt/", meaning: "大象", learned: false},
+                            {word: "small", phonetic: "/smɔːl/", meaning: "小的", learned: false},
+                            {word: "fat", phonetic: "/fæt/", meaning: "胖的", learned: false},
+                            {word: "look at", phonetic: "/lʊk æt/", meaning: "看着", learned: false},
+                            {word: "tree", phonetic: "/triː/", meaning: "树", learned: false},
+                            {word: "tall", phonetic: "/tɔːl/", meaning: "高的", learned: false},
+                            {word: "short", phonetic: "/ʃɔːt/", meaning: "矮的", learned: false},
+                            {word: "thin", phonetic: "/θɪn/", meaning: "瘦的", learned: false}
+                        ]
+                    },
+                    'Module 3': {
+                        words: [
+                            {word: "like", phonetic: "/laɪk/", meaning: "喜欢", learned: false},
+                            {word: "football", phonetic: "/ˈfʊtbɔːl/", meaning: "足球", learned: false},
+                            {word: "basketball", phonetic: "/ˈbɑːskɪtbɔːl/", meaning: "篮球", learned: false},
+                            {word: "table tennis", phonetic: "/ˈteɪbl ˈtenɪs/", meaning: "乒乓球", learned: false},
+                            {word: "riding bikes", phonetic: "/ˈraɪdɪŋ baɪks/", meaning: "骑自行车", learned: false},
+                            {word: "swimming", phonetic: "/ˈswɪmɪŋ/", meaning: "游泳", learned: false},
+                            {word: "skipping", phonetic: "/ˈskɪpɪŋ/", meaning: "跳绳", learned: false}
+                        ]
+                    },
+                    'Module 4': {
+                        words: [
+                            {word: "meat", phonetic: "/miːt/", meaning: "肉", learned: false},
+                            {word: "pass", phonetic: "/pɑːs/", meaning: "传递", learned: false},
+                            {word: "rice", phonetic: "/raɪs/", meaning: "米饭", learned: false},
+                            {word: "mum", phonetic: "/mʌm/", meaning: "妈妈", learned: false},
+                            {word: "noodles", phonetic: "/ˈnuːdlz/", meaning: "面条（常复）", learned: false},
+                            {word: "fish", phonetic: "/fɪʃ/", meaning: "鱼", learned: false},
+                            {word: "milk", phonetic: "/mɪlk/", meaning: "牛奶", learned: false},
+                            {word: "banana", phonetic: "/bəˈnɑːnə/", meaning: "香蕉", learned: false},
+                            {word: "pear", phonetic: "/peə(r)/", meaning: "梨", learned: false},
+                            {word: "orange", phonetic: "/ˈɒrɪndʒ/", meaning: "橘子", learned: false},
+                            {word: "apple", phonetic: "/ˈæpl/", meaning: "苹果", learned: false}
+                        ]
+                    },
+                    'Module 5': {
+                        words: [
+                            {word: "get up", phonetic: "/ɡet ʌp/", meaning: "起床", learned: false},
+                            {word: "at", phonetic: "/æt/", meaning: "在……", learned: false},
+                            {word: "o’clock", phonetic: "/əˈklɒk/", meaning: "点钟", learned: false},
+                            {word: "go to school", phonetic: "/ɡəʊ tu skuːl/", meaning: "上学", learned: false},
+                            {word: "have lunch", phonetic: "/hæv lʌntʃ/", meaning: "吃午饭", learned: false},
+                            {word: "go home", phonetic: "/ɡəʊ həʊm/", meaning: "回家", learned: false},
+                            {word: "watch TV", phonetic: "/wɒtʃ ˌtiː ˈviː/", meaning: "看电视", learned: false},
+                            {word: "go to bed", phonetic: "/ɡəʊ tu bed/", meaning: "上床睡觉", learned: false},
+                            {word: "time", phonetic: "/taɪm/", meaning: "时间", learned: false},
+                            {word: "half", phonetic: "/hɑːf/", meaning: "半，一半", learned: false},
+                            {word: "past", phonetic: "/pɑːst/", meaning: "超过", learned: false},
+                            {word: "have breakfast", phonetic: "/hæv ˈbrekfəst/", meaning: "吃早饭", learned: false},
+                            {word: "have dinner", phonetic: "/hæv ˈdɪnə(r)/", meaning: "吃晚饭", learned: false}
+                        ]
+                    },
+                    'Module 6': {
+                        words: [
+                            {word: "do", phonetic: "/duː/", meaning: "做", learned: false},
+                            {word: "weekend", phonetic: "/ˌwiːkˈend/", meaning: "周末", learned: false},
+                            {word: "Chinese", phonetic: "/ˌtʃaɪˈniːz/", meaning: "语文，汉语", learned: false},
+                            {word: "Maths", phonetic: "/mæθs/", meaning: "数学", learned: false},
+                            {word: "Science", phonetic: "/ˈsaɪəns/", meaning: "科学", learned: false},
+                            {word: "play", phonetic: "/pleɪ/", meaning: "打（球）", learned: false},
+                            {word: "sleep", phonetic: "/sliːp/", meaning: "睡觉", learned: false},
+                            {word: "today", phonetic: "/təˈdeɪ/", meaning: "今天", learned: false},
+                            {word: "Music", phonetic: "/ˈmjuːzɪk/", meaning: "音乐", learned: false},
+                            {word: "Art", phonetic: "/ɑːt/", meaning: "美术", learned: false},
+                            {word: "PE", phonetic: "/ˌpiː ˈiː/", meaning: "体育", learned: false}
+                        ]
+                    },
+                    'Module 7': {
+                        words: [
+                            {word: "for", phonetic: "/fɔː(r)/", meaning: "给，为", learned: false},
+                            {word: "about", phonetic: "/əˈbaʊt/", meaning: "关于", learned: false},
+                            {word: "Spring Festival", phonetic: "/sprɪŋ ˈfestɪvl/", meaning: "春节", learned: false},
+                            {word: "Chinese", phonetic: "/ˌtʃaɪˈniːz/", meaning: "中国的", learned: false},
+                            {word: "New Year", phonetic: "/njuː jɪə(r)/", meaning: "新年", learned: false},
+                            {word: "Christmas", phonetic: "/ˈkrɪsməs/", meaning: "圣诞节", learned: false},
+                            {word: "England", phonetic: "/ˈɪŋɡlənd/", meaning: "英国", learned: false},
+                            {word: "sing", phonetic: "/sɪŋ/", meaning: "唱歌", learned: false},
+                            {word: "give", phonetic: "/ɡɪv/", meaning: "给", learned: false},
+                            {word: "present", phonetic: "/ˈpreznt/", meaning: "礼物", learned: false},
+                            {word: "eat", phonetic: "/iːt/", meaning: "吃", learned: false}
+                        ]
+                    },
+                    'Module 8': {
+                        words: [
+                            {word: "hot", phonetic: "/hɒt/", meaning: "热的", learned: false},
+                            {word: "summer", phonetic: "/ˈsʌmə(r)/", meaning: "夏天", learned: false},
+                            {word: "spring", phonetic: "/sprɪŋ/", meaning: "春天", learned: false},
+                            {word: "warm", phonetic: "/wɔːm/", meaning: "暖和的", learned: false},
+                            {word: "fly", phonetic: "/flaɪ/", meaning: "放（风筝）", learned: false},
+                            {word: "autumn", phonetic: "/ˈɔːtəm/", meaning: "秋天", learned: false},
+                            {word: "cool", phonetic: "/kuːl/", meaning: "凉爽的", learned: false},
+                            {word: "winter", phonetic: "/ˈwɪntə(r)/", meaning: "冬天", learned: false},
+                            {word: "cold", phonetic: "/kəʊld/", meaning: "寒冷的", learned: false},
+                            {word: "sunny", phonetic: "/ˈsʌni/", meaning: "晴朗的，阳光充足的", learned: false},
+                            {word: "windy", phonetic: "/ˈwɪndi/", meaning: "有风的", learned: false}
+                        ]
+                    },
+                    'Module 9': {
+                        words: [
+                            {word: "have got", phonetic: "/hæv ɡɒt/", meaning: "拥有", learned: false},
+                            {word: "animal", phonetic: "/ˈænɪml/", meaning: "动物", learned: false},
+                            {word: "sport", phonetic: "/spɔːt/", meaning: "运动", learned: false},
+                            {word: "dress", phonetic: "/dres/", meaning: "连衣裙，女装", learned: false},
+                            {word: "coat", phonetic: "/kəʊt/", meaning: "外套", learned: false},
+                            {word: "sweater", phonetic: "/ˈswetə(r)/", meaning: "毛线衫", learned: false},
+                            {word: "has got", phonetic: "/hæz ɡɒt/", meaning: "拥有（have got的第三人称单数形式）", learned: false},
+                            {word: "T-shirt", phonetic: "/ˈtiː ʃɜːt/", meaning: "T恤衫", learned: false},
+                            {word: "by", phonetic: "/baɪ/", meaning: "乘坐，以……方式", learned: false},
+                            {word: "bike", phonetic: "/baɪk/", meaning: "自行车", learned: false},
+                            {word: "bus", phonetic: "/bʌs/", meaning: "公共汽车", learned: false},
+                            {word: "go to work", phonetic: "/ɡəʊ tu wɜːk/", meaning: "上班", learned: false},
+                            {word: "walk", phonetic: "/wɔːk/", meaning: "步行", learned: false}
+                        ]
+                    },
+                    'Module 10': {
+                        words: [
+                            {word: "on", phonetic: "/ɒn/", meaning: "在……上面", learned: false},
+                            {word: "box", phonetic: "/bɒks/", meaning: "盒子", learned: false},
+                            {word: "under", phonetic: "/ˈʌndə(r)/", meaning: "在……下面", learned: false},
+                            {word: "bedroom", phonetic: "/ˈbedruːm/", meaning: "卧室", learned: false},
+                            {word: "park", phonetic: "/pɑːk/", meaning: "公园", learned: false},
+                            {word: "swim", phonetic: "/swɪm/", meaning: "游泳", learned: false},
+                            {word: "lake", phonetic: "/leɪk/", meaning: "湖", learned: false},
+                            {word: "snow", phonetic: "/snəʊ/", meaning: "雪", learned: false}
+                        ]
+                    }
+                }
+            },
+
+            "新版三年级下册": {
+                modules: {
+                    "Unit 1": {
+                        words: [
+                            {"word": "animal", "phonetic": "/ˈænɪml/", "meaning": "动物", "learned": false},
+                            {"word": "panda", "phonetic": "/ˈpændə/", "meaning": "大熊猫", "learned": false},
+                            {"word": "elephant", "phonetic": "/ˈelɪfənt/", "meaning": "象", "learned": false},
+                            {"word": "bear", "phonetic": "/beə(r)/", "meaning": "熊", "learned": false},
+                            {"word": "giraffe", "phonetic": "/dʒəˈrɑːf/", "meaning": "长颈鹿", "learned": false},
+                            {"word": "monkey", "phonetic": "/ˈmʌŋki/", "meaning": "猴", "learned": false},
+                            {"word": "them", "phonetic": "/ðem/", "meaning": "他们；她们；它们", "learned": false},
+                            {"word": "draw", "phonetic": "/drɔː/", "meaning": "画，绘画", "learned": false},
+                            {"word": "tiger", "phonetic": "/ˈtaɪɡə(r)/", "meaning": "老虎，虎", "learned": false},
+                            {"word": "strong", "phonetic": "/strɒŋ/", "meaning": "强壮的，力气大的", "learned": false},
+                            {"word": "short", "phonetic": "/ʃɔːt/", "meaning": "个子矮的", "learned": false},
+                            {"word": "white", "phonetic": "/waɪt/", "meaning": "白的，白色的", "learned": false},
+                            {"word": "brown", "phonetic": "/braʊn/", "meaning": "棕色的；褐色的", "learned": false},
+                            {"word": "tall", "phonetic": "/tɔːl/", "meaning": "高的，高大的", "learned": false},
+                            {"word": "him", "phonetic": "/hɪm/", "meaning": "他；它（指雄性动物）", "learned": false},
+                            {"word": "ostrich", "phonetic": "/ˈɒstrɪtʃ/", "meaning": "鸵鸟", "learned": false},
+                            {"word": "fast", "phonetic": "/fɑːst/", "meaning": "快的，快速的", "learned": false},
+                            {"word": "chameleon", "phonetic": "/kəˈmiːliən/", "meaning": "变色龙", "learned": false},
+                            {"word": "small", "phonetic": "/smɔːl/", "meaning": "小的", "learned": false},
+                            {"word": "lion", "phonetic": "/ˈlaɪən/", "meaning": "狮子", "learned": false},
+                            {"word": "cute", "phonetic": "/kjuːt/", "meaning": "可爱的，漂亮的，逗人喜爱的", "learned": false},
+                            {"word": "out", "phonetic": "/aʊt/", "meaning": "往外，向外，出来", "learned": false},
+                            {"word": "zoo", "phonetic": "/zuː/", "meaning": "动物园", "learned": false},
+                            {"word": "go", "phonetic": "/ɡəʊ/", "meaning": "走，去", "learned": false},
+                            {"word": "zebra", "phonetic": "/ˈzebrə/", "meaning": "斑马", "learned": false},
+                            {"word": "move", "phonetic": "/muːv/", "meaning": "移动", "learned": false},
+                            {"word": "road", "phonetic": "/rəʊd/", "meaning": "路，道路", "learned": false},
+                            {"word": "dance", "phonetic": "/dɑːns/", "meaning": "跳舞", "learned": false},
+                            {"word": "along", "phonetic": "/əˈlɒŋ/", "meaning": "一起", "learned": false},
+                            {"word": "which", "phonetic": "/wɪtʃ/", "meaning": "哪一个；哪些", "learned": false},
+                            {"word": "word", "phonetic": "/wɜːd/", "meaning": "字，词，单词", "learned": false},
+                            {"word": "stone", "phonetic": "/stəʊn/", "meaning": "石头", "learned": false},
+                            {"word": "hat", "phonetic": "/hæt/", "meaning": "帽子", "learned": false},
+                            {"word": "shoe", "phonetic": "/ʃuː/", "meaning": "鞋", "learned": false}
+                        ]
+                    },
+                    "Unit 2": {
+                        words: [
+                            {"word": "body", "phonetic": "/ˈbɒdi/", "meaning": "身体", "learned": false},
+                            {"word": "head", "phonetic": "/hed/", "meaning": "头，头部", "learned": false},
+                            {"word": "eye", "phonetic": "/aɪ/", "meaning": "眼睛", "learned": false},
+                            {"word": "ear", "phonetic": "/ɪə(r)/", "meaning": "耳朵", "learned": false},
+                            {"word": "mouth", "phonetic": "/maʊθ/", "meaning": "嘴，口", "learned": false},
+                            {"word": "nose", "phonetic": "/nəʊz/", "meaning": "鼻子", "learned": false},
+                            {"word": "touch", "phonetic": "/tʌtʃ/", "meaning": "触摸，碰", "learned": false},
+                            {"word": "hand", "phonetic": "/hænd/", "meaning": "手", "learned": false},
+                            {"word": "arm", "phonetic": "/ɑːm/", "meaning": "手臂，上肢", "learned": false},
+                            {"word": "leg", "phonetic": "/leɡ/", "meaning": "腿", "learned": false},
+                            {"word": "foot", "phonetic": "/fʊt/", "meaning": "（复数feet）脚", "learned": false},
+                            {"word": "toe", "phonetic": "/təʊ/", "meaning": "脚趾", "learned": false},
+                            {"word": "get", "phonetic": "/ɡet/", "meaning": "获得，得到", "learned": false},
+                            {"word": "snowy", "phonetic": "/ˈsnəʊi/", "meaning": "多雪的，积雪", "learned": false},
+                            {"word": "child", "phonetic": "/tʃaɪld/", "meaning": "（复数children）儿童，小孩", "learned": false},
+                            {"word": "work", "phonetic": "/wɜːk/", "meaning": "事情，工作", "learned": false},
+                            {"word": "snowman", "phonetic": "/ˈsnəʊmæn/", "meaning": "雪人", "learned": false},
+                            {"word": "long", "phonetic": "/lɒŋ/", "meaning": "长的", "learned": false},
+                            {"word": "rock", "phonetic": "/rɒk/", "meaning": "石头，石子", "learned": false},
+                            {"word": "cool", "phonetic": "/kuːl/", "meaning": "时髦的，酷的", "learned": false},
+                            {"word": "best", "phonetic": "/best/", "meaning": "最好的", "learned": false},
+                            {"word": "part", "phonetic": "/pɑːt/", "meaning": "器官；部位；组成部分", "learned": false},
+                            {"word": "well", "phonetic": "/wel/", "meaning": "嗯，这个；健康的", "learned": false},
+                            {"word": "hear", "phonetic": "/hɪə(r)/", "meaning": "听见", "learned": false},
+                            {"word": "smell", "phonetic": "/smel/", "meaning": "闻到，嗅到", "learned": false},
+                            {"word": "talk", "phonetic": "/tɔːk/", "meaning": "说话", "learned": false},
+                            {"word": "eat", "phonetic": "/iːt/", "meaning": "吃", "learned": false},
+                            {"word": "hey", "phonetic": "/heɪ/", "meaning": "嘿，喂", "learned": false},
+                            {"word": "stop", "phonetic": "/stɒp/", "meaning": "停止，终止", "learned": false},
+                            {"word": "important", "phonetic": "/ɪmˈpɔːtnt/", "meaning": "重要的，重大的", "learned": false},
+                            {"word": "team", "phonetic": "/tiːm/", "meaning": "队", "learned": false},
+                            {"word": "dream", "phonetic": "/driːm/", "meaning": "梦", "learned": false},
+                            {"word": "ask", "phonetic": "/ɑːsk/", "meaning": "问，提问", "learned": false},
+                            {"word": "answer", "phonetic": "/ˈɑːnsə(r)/", "meaning": "回答，答复", "learned": false},
+                            {"word": "hair", "phonetic": "/heə(r)/", "meaning": "头发", "learned": false},
+                            {"word": "different", "phonetic": "/ˈdɪfrənt/", "meaning": "不同的，不一样的，有差异的", "learned": false},
+                            {"word": "face", "phonetic": "/feɪs/", "meaning": "脸", "learned": false}
+                        ]
+                    },
+                    "Unit 3": {
+                        words: [
+                            {"word": "yummy", "phonetic": "/ˈjʌmi/", "meaning": "美味的，很好吃的", "learned": false},
+                            {"word": "food", "phonetic": "/fuːd/", "meaning": "食物", "learned": false},
+                            {"word": "strawberry", "phonetic": "/ˈstrɔːbəri/", "meaning": "草莓", "learned": false},
+                            {"word": "tomato", "phonetic": "/təˈmɑːtəʊ/", "meaning": "番茄，西红柿", "learned": false},
+                            {"word": "noodle", "phonetic": "/ˈnuːdl/", "meaning": "面条", "learned": false},
+                            {"word": "carrot", "phonetic": "/ˈkærət/", "meaning": "胡萝卜", "learned": false},
+                            {"word": "chicken", "phonetic": "/ˈtʃɪkɪn/", "meaning": "鸡肉；鸡", "learned": false},
+                            {"word": "fish", "phonetic": "/fɪʃ/", "meaning": "鱼肉；鱼", "learned": false},
+                            {"word": "rice", "phonetic": "/raɪs/", "meaning": "米；米饭", "learned": false},
+                            {"word": "meat", "phonetic": "/miːt/", "meaning": "肉", "learned": false},
+                            {"word": "fruit", "phonetic": "/fruːt/", "meaning": "水果", "learned": false},
+                            {"word": "vegetable", "phonetic": "/ˈvedʒtəbl/", "meaning": "蔬菜", "learned": false},
+                            {"word": "salad", "phonetic": "/ˈsæləd/", "meaning": "沙拉", "learned": false},
+                            {"word": "banana", "phonetic": "/bəˈnɑːnə/", "meaning": "香蕉", "learned": false},
+                            {"word": "bean", "phonetic": "/biːn/", "meaning": "豆子", "learned": false},
+                            {"word": "cucumber", "phonetic": "/ˈkjuːkʌmbə(r)/", "meaning": "黄瓜", "learned": false},
+                            {"word": "then", "phonetic": "/ðen/", "meaning": "那么；然后，接下来", "learned": false},
+                            {"word": "about", "phonetic": "/əˈbaʊt/", "meaning": "关于", "learned": false},
+                            {"word": "what about...", "phonetic": "/wɒt əˈbaʊt/", "meaning": "……怎么样", "learned": false},
+                            {"word": "grape", "phonetic": "/ɡreɪp/", "meaning": "葡萄", "learned": false},
+                            {"word": "juice", "phonetic": "/dʒuːs/", "meaning": "汁", "learned": false},
+                            {"word": "why", "phonetic": "/waɪ/", "meaning": "为什么", "learned": false},
+                            {"word": "early", "phonetic": "/ˈɜːli/", "meaning": "提早，提前；早的", "learned": false},
+                            {"word": "breakfast", "phonetic": "/ˈbrekfəst/", "meaning": "早餐，早饭", "learned": false},
+                            {"word": "time", "phonetic": "/taɪm/", "meaning": "时间", "learned": false},
+                            {"word": "still", "phonetic": "/stɪl/", "meaning": "还，仍然", "learned": false},
+                            {"word": "ready", "phonetic": "/ˈredi/", "meaning": "准备好的", "learned": false},
+                            {"word": "corn", "phonetic": "/kɔːn/", "meaning": "玉米", "learned": false},
+                            {"word": "lunch", "phonetic": "/lʌntʃ/", "meaning": "午餐", "learned": false},
+                            {"word": "very", "phonetic": "/ˈveri/", "meaning": "很，非常", "learned": false},
+                            {"word": "much", "phonetic": "/mʌtʃ/", "meaning": "非常", "learned": false},
+                            {"word": "very much", "phonetic": "/ˈveri mʌtʃ/", "meaning": "非常", "learned": false},
+                            {"word": "afternoon", "phonetic": "/ˌɑːftəˈnuːn/", "meaning": "下午，午后", "learned": false},
+                            {"word": "tea", "phonetic": "/tiː/", "meaning": "茶；茶叶", "learned": false},
+                            {"word": "afternoon tea", "phonetic": "/ˌɑːftəˈnuːn tiː/", "meaning": "下午茶", "learned": false},
+                            {"word": "every", "phonetic": "/ˈevri/", "meaning": "每，每逢，每隔", "learned": false},
+                            {"word": "week", "phonetic": "/wiːk/", "meaning": "星期，周", "learned": false},
+                            {"word": "tree", "phonetic": "/triː/", "meaning": "树", "learned": false},
+                            {"word": "milk", "phonetic": "/mɪlk/", "meaning": "奶，牛奶", "learned": false},
+                            {"word": "cupcake", "phonetic": "/ˈkʌpkeɪk/", "meaning": "杯形蛋糕", "learned": false},
+                            {"word": "sandwich", "phonetic": "/ˈsænwɪtʃ/", "meaning": "三明治，夹心面包", "learned": false},
+                            {"word": "beef", "phonetic": "/biːf/", "meaning": "牛肉", "learned": false},
+                            {"word": "dumpling", "phonetic": "/ˈdʌmplɪŋ/", "meaning": "水饺", "learned": false},
+                            {"word": "hot", "phonetic": "/hɒt/", "meaning": "热的", "learned": false},
+                            {"word": "hot dog", "phonetic": "/hɒt dɒɡ/", "meaning": "热狗", "learned": false},
+                            {"word": "sushi", "phonetic": "/ˈsuːʃi/", "meaning": "寿司", "learned": false},
+                            {"word": "cake", "phonetic": "/keɪk/", "meaning": "蛋糕", "learned": false}
+                        ]
+                    },
+                    "Unit 4": {
+                        words: [
+                            {"word": "hobby", "phonetic": "/ˈhɒbi/", "meaning": "业余爱好，嗜好"},
+                            {"word": "free", "phonetic": "/friː/", "meaning": "空闲的，有空的"},
+                            {"word": "after", "phonetic": "/ˈɑːftə(r)/", "meaning": "在……后"},
+                            {"word": "swim", "phonetic": "/swɪm/", "meaning": "游泳"},
+                            {"word": "lot", "phonetic": "/lɒt/", "meaning": "许多"},
+                            {"word": "a lot", "phonetic": "/ə lɒt/", "meaning": "大量，许多"},
+                            {"word": "these", "phonetic": "/ðiːz/", "meaning": "这些（this的复数形式）"},
+                            {"word": "taichi", "phonetic": "/ˈtaɪtʃi/", "meaning": "太极"},
+                            {"word": "his", "phonetic": "/hɪz/", "meaning": "他的"},
+                            {"word": "insect", "phonetic": "/ˈɪnsekt/", "meaning": "昆虫"},
+                            {"word": "man", "phonetic": "/mæn/", "meaning": "喜欢某物的人"},
+                            {"word": "learn", "phonetic": "/lɜːn/", "meaning": "学习"},
+                            {"word": "plant", "phonetic": "/plɑːnt/", "meaning": "植物"},
+                            {"word": "when", "phonetic": "/wen/", "meaning": "什么时候"},
+                            {"word": "question", "phonetic": "/ˈkwestʃən/", "meaning": "问题，疑问"},
+                            {"word": "watch", "phonetic": "/wɒtʃ/", "meaning": "观察"},
+                            {"word": "study", "phonetic": "/ˈstʌdi/", "meaning": "研究；仔细察看"},
+                            {"word": "mantis", "phonetic": "/ˈmæntɪs/", "meaning": "螳螂"},
+                            {"word": "stay", "phonetic": "/steɪ/", "meaning": "停留，逗留，留下"},
+                            {"word": "interesting", "phonetic": "/ˈɪntrəstɪŋ/", "meaning": "有趣的，吸引人的"},
+                            {"word": "grow", "phonetic": "/ɡrəʊ/", "meaning": "成长，长大"},
+                            {"word": "grow up", "phonetic": "/ɡrəʊ ʌp/", "meaning": "长大"},
+                            {"word": "country", "phonetic": "/ˈkʌntri/", "meaning": "国家"},
+                            {"word": "robot", "phonetic": "/ˈrəʊbɒt/", "meaning": "机器人"},
+                            {"word": "kite", "phonetic": "/kaɪt/", "meaning": "风筝"},
+                            {"word": "skate", "phonetic": "/skeɪt/", "meaning": "滑冰，溜冰"},
+                            {"word": "ice", "phonetic": "/aɪs/", "meaning": "冰"},
+                            {"word": "ski", "phonetic": "/skiː/", "meaning": "滑雪"},
+                            {"word": "garden", "phonetic": "/ˈɡɑːdn/", "meaning": "做园艺工作；花园"}
+                        ]
+                    },
+                    "Unit 5": {
+                        words: [
+                            {"word": "tick - tock", "phonetic": "/tɪk tɒk/", "meaning": "嘀嗒声"},
+                            {"word": "tell", "phonetic": "/tel/", "meaning": "告诉，告知"},
+                            {"word": "clock", "phonetic": "/klɒk/", "meaning": "时钟"},
+                            {"word": "o'clock", "phonetic": "/əˈklɒk/", "meaning": "点钟"},
+                            {"word": "fifteen", "phonetic": "/ˌfɪfˈtiːn/", "meaning": "十五"},
+                            {"word": "thirty", "phonetic": "/ˈθɜːti/", "meaning": "三十"},
+                            {"word": "forty - five", "phonetic": "/ˈfɔːti faɪv/", "meaning": "四十五"},
+                            {"word": "dinner", "phonetic": "/ˈdɪnə(r)/", "meaning": "正餐，主餐"},
+                            {"word": "half", "phonetic": "/hɑːf/", "meaning": "一半，半"},
+                            {"word": "past", "phonetic": "/pɑːst/", "meaning": "晚于；在……之后"},
+                            {"word": "urgh", "phonetic": "/ɜːɡ/", "meaning": "呃，呸"},
+                            {"word": "homework", "phonetic": "/ˈhəʊmwɜːk/", "meaning": "家庭作业，功课"},
+                            {"word": "need", "phonetic": "/niːd/", "meaning": "需要"},
+                            {"word": "activity", "phonetic": "/ækˈtɪvəti/", "meaning": "活动"},
+                            {"word": "her", "phonetic": "/hɜː(r)/", "meaning": "她的"},
+                            {"word": "class", "phonetic": "/klɑːs/", "meaning": "课；班级"},
+                            {"word": "evening", "phonetic": "/ˈiːvnɪŋ/", "meaning": "傍晚；晚上"},
+                            {"word": "call", "phonetic": "/kɔːl/", "meaning": "（给……）打电话"},
+                            {"word": "football", "phonetic": "/ˈfʊtbɔːl/", "meaning": "足球"},
+                            {"word": "art", "phonetic": "/ɑːt/", "meaning": "美术，艺术"},
+                            {"word": "subject", "phonetic": "/ˈsʌbdʒɪkt/", "meaning": "学科"},
+                            {"word": "something", "phonetic": "/ˈsʌmθɪŋ/", "meaning": "某物；某事"},
+                            {"word": "idea", "phonetic": "/aɪˈdɪə/", "meaning": "想法，主意"},
+                            {"word": "soon", "phonetic": "/suːn/", "meaning": "不久，即刻，很快"},
+                            {"word": "teach", "phonetic": "/tiːtʃ/", "meaning": "教，教授"},
+                            {"word": "English", "phonetic": "/ˈɪŋɡlɪʃ/", "meaning": "英语"},
+                            {"word": "card", "phonetic": "/kɑːd/", "meaning": "卡片"},
+                            {"word": "busy", "phonetic": "/ˈbɪzi/", "meaning": "忙的，忙碌的"},
+                            {"word": "old", "phonetic": "/əʊld/", "meaning": "年老的；相识很久的"},
+                            {"word": "some", "phonetic": "/səm/", "meaning": "一些，若干"},
+                            {"word": "bookmark", "phonetic": "/ˈbʊkmɑːk/", "meaning": "书签"},
+                            {"word": "stick", "phonetic": "/stɪk/", "meaning": "木棍，拐杖"},
+                            {"word": "sure", "phonetic": "/ʃʊə(r)/", "meaning": "当然，好的"},
+                            {"word": "flower", "phonetic": "/ˈflaʊə(r)/", "meaning": "花，花朵"},
+                            {"word": "afterschool", "phonetic": "/ˌɑːftəˈskuːl/", "meaning": "课外的"},
+                            {"word": "club", "phonetic": "/klʌb/", "meaning": "俱乐部"},
+                            {"word": "piano", "phonetic": "/piˈænəʊ/", "meaning": "钢琴"},
+                            {"word": "basketball", "phonetic": "/ˈbɑːskɪtbɔːl/", "meaning": "篮球"},
+                            {"word": "computer", "phonetic": "/kəmˈpjuːtə(r)/", "meaning": "计算机；电脑"},
+                            {"word": "music", "phonetic": "/ˈmjuːzɪk/", "meaning": "音乐"},
+                            {"word": "science", "phonetic": "/ˈsaɪəns/", "meaning": "科学"}
+                        ]
+                    },
+                    "Unit 6": {
+                        words: [
+                            {"word": "Monday", "phonetic": "/ˈmʌndeɪ/", "meaning": "星期一"},
+                            {"word": "Tuesday", "phonetic": "/ˈtjuːzdeɪ/", "meaning": "星期二"},
+                            {"word": "Wednesday", "phonetic": "/ˈwenzdeɪ/", "meaning": "星期三"},
+                            {"word": "Thursday", "phonetic": "/ˈθɜːzdeɪ/", "meaning": "星期四"},
+                            {"word": "Friday", "phonetic": "/ˈfraɪdeɪ/", "meaning": "星期五"},
+                            {"word": "Saturday", "phonetic": "/ˈsætədeɪ/", "meaning": "星期六"},
+                            {"word": "Sunday", "phonetic": "/ˈsʌndeɪ/", "meaning": "星期日"},
+                            {"word": "park", "phonetic": "/pɑːk/", "meaning": "公园"},
+                            {"word": "visit", "phonetic": "/ˈvɪzɪt/", "meaning": "看望，拜访"},
+                            {"word": "lesson", "phonetic": "/ˈlesn/", "meaning": "课，课程"}
+                        ]
+                    }
+                }
+            },
+
+        '四年级上册': {
+                modules: {
+                    'Module 1': {
+                        words: [
+                            {word: "straight", phonetic: "/streɪt/", meaning: "直地，直线地", learned: false},
+                            {word: "go straight on", phonetic: "/ɡəʊ streɪt ɒn/", meaning: "直着走", learned: false},
+                            {word: "left", phonetic: "/left/", meaning: "左边；向左；左边的", learned: false},
+                            {word: "right", phonetic: "/raɪt/", meaning: "右边；向右；右边的", learned: false},
+                            {word: "lost", phonetic: "/lɒst/", meaning: "迷路的", learned: false},
+                            {word: "live", phonetic: "/lɪv/", meaning: "居住", learned: false},
+                            {word: "No.", phonetic: "/nʌmbə(r)/", meaning: "第……号 (number的缩写)", learned: false},
+                            {word: "street", phonetic: "/striːt/", meaning: "大街，街道", learned: false},
+                            {word: "excuse me", phonetic: "/ɪkˈskjuːz miː/", meaning: "对不起，打扰", learned: false},
+                            {word: "turn left", phonetic: "/tɜːn left/", meaning: "向左转", learned: false},
+                            {word: "turn right", phonetic: "/tɜːn raɪt/", meaning: "向右转", learned: false},
+                            {word: "next to", phonetic: "/nekst tuː/", meaning: "临近的，在……旁边", learned: false},
+                            {word: "supermarket", phonetic: "/ˈsuːpəmɑːkɪt/", meaning: "超市", learned: false},
+                            {word: "beside", phonetic: "/bɪˈsaɪd/", meaning: "在……旁边，在……附近", learned: false},
+                            {word: "cinema", phonetic: "/ˈsɪnəmə/", meaning: "电影院", learned: false},
+                            {word: "so much", phonetic: "/səʊ mʌtʃ/", meaning: "十分，非常", learned: false},
+                            {word: "You’re welcome!", phonetic: "/jɔː(r) ˈwelkəm/", meaning: "不客气！", learned: false},
+                            {word: "station", phonetic: "/ˈsteɪʃn/", meaning: "车站", learned: false},
+                            {word: "train", phonetic: "/treɪn/", meaning: "火车", learned: false},
+                            {word: "hill", phonetic: "/hɪl/", meaning: "小山", learned: false},
+                            {word: "near", phonetic: "/nɪə(r)/", meaning: "接近，临近", learned: false},
+                            {word: "house", phonetic: "/haʊs/", meaning: "房屋", learned: false}
+                        ]
+                    },
+                    'Module 2': {
+                        words: [
+                            {word: "read", phonetic: "/riːd/", meaning: "阅读", learned: false},
+                            {word: "running", phonetic: "/ˈrʌnɪŋ/", meaning: "跑步", learned: false},
+                            {word: "these", phonetic: "/ðiːz/", meaning: "这些", learned: false},
+                            {word: "picture", phonetic: "/ˈpɪktʃə(r)/", meaning: "图画", learned: false},
+                            {word: "take", phonetic: "/teɪk/", meaning: "拍摄", learned: false},
+                            {word: "take pictures", phonetic: "/teɪk ˈpɪktʃəz/", meaning: "照相", learned: false},
+                            {word: "children", phonetic: "/ˈtʃɪldrən/", meaning: "孩子们 (child的复数)", learned: false},
+                            {word: "listen", phonetic: "/ˈlɪsn/", meaning: "听", learned: false},
+                            {word: "listen to", phonetic: "/ˈlɪsn tuː/", meaning: "听", learned: false},
+                            {word: "talk", phonetic: "/tɔːk/", meaning: "说话，交谈", learned: false},
+                            {word: "talk to", phonetic: "/tɔːk tuː/", meaning: "和……交谈", learned: false},
+                            {word: "China", phonetic: "/ˈtʃaɪnə/", meaning: "中国", learned: false}
+                        ]
+                    },
+                    'Module 3': {
+                        words: [
+                            {word: "kid", phonetic: "/kɪd/", meaning: "小孩", learned: false},
+                            {word: "get on", phonetic: "/ɡet ɒn/", meaning: "上（车）", learned: false},
+                            {word: "can", phonetic: "/kæn/", meaning: "能够", learned: false},
+                            {word: "see", phonetic: "/siː/", meaning: "看到", learned: false},
+                            {word: "lots of", phonetic: "/lɒts ɒv/", meaning: "许多", learned: false},
+                            {word: "interesting", phonetic: "/ˈɪntrəstɪŋ/", meaning: "有趣的", learned: false},
+                            {word: "thing", phonetic: "/θɪŋ/", meaning: "物品，东西", learned: false},
+                            {word: "people", phonetic: "/ˈpiːpl/", meaning: "人，人们", learned: false},
+                            {word: "row", phonetic: "/rəʊ/", meaning: "划（船）", learned: false},
+                            {word: "dragon", phonetic: "/ˈdræɡən/", meaning: "龙", learned: false},
+                            {word: "boat", phonetic: "/bəʊt/", meaning: "船", learned: false},
+                            {word: "dragon boat", phonetic: "/ˈdræɡən bəʊt/", meaning: "龙舟", learned: false},
+                            {word: "men", phonetic: "/men/", meaning: "男人 (man的复数)", learned: false},
+                            {word: "between", phonetic: "/bɪˈtwiːn/", meaning: "在……之间，在中间", learned: false},
+                            {word: "chess", phonetic: "/tʃes/", meaning: "国际象棋", learned: false},
+                            {word: "play chess", phonetic: "/pleɪ tʃes/", meaning: "下国际象棋", learned: false},
+                            {word: "drink", phonetic: "/drɪŋk/", meaning: "喝，饮用", learned: false},
+                            {word: "soya milk", phonetic: "/ˈsɔɪə mɪlk/", meaning: "豆浆", learned: false},
+                            {word: "clock", phonetic: "/klɒk/", meaning: "钟", learned: false},
+                            {word: "hungry", phonetic: "/ˈhʌŋɡri/", meaning: "饥饿的", learned: false},
+                            {word: "Me too", phonetic: "/miː tuː/", meaning: "我也一样", learned: false},
+                            {word: "draw", phonetic: "/drɔː/", meaning: "画", learned: false},
+                            {word: "jump", phonetic: "/dʒʌmp/", meaning: "跳", learned: false},
+                            {word: "sing", phonetic: "/sɪŋ/", meaning: "唱歌", learned: false},
+                            {word: "dance", phonetic: "/dɑːns/", meaning: "跳舞", learned: false}
+                        ]
+                    },
+                    'Module 4': {
+                        words: [
+                            {word: "want", phonetic: "/wɒnt/", meaning: "需要，想要", learned: false},
+                            {word: "some", phonetic: "/sʌm/", meaning: "一些", learned: false},
+                            {word: "juice", phonetic: "/dʒuːs/", meaning: "果汁", learned: false},
+                            {word: "ice", phonetic: "/aɪs/", meaning: "冰，冰块", learned: false},
+                            {word: "also", phonetic: "/ˈɔːlsəʊ/", meaning: "也，还", learned: false},
+                            {word: "food", phonetic: "/fuːd/", meaning: "食物", learned: false},
+                            {word: "fast food", phonetic: "/fɑːst fuːd/", meaning: "快餐", learned: false},
+                            {word: "make", phonetic: "/meɪk/", meaning: "制作", learned: false},
+                            {word: "tomato", phonetic: "/təˈmeɪtəʊ/", meaning: "番茄，西红柿", learned: false},
+                            {word: "egg", phonetic: "/eɡ/", meaning: "鸡蛋", learned: false},
+                            {word: "potato", phonetic: "/pəˈteɪtəʊ/", meaning: "马铃薯，土豆", learned: false},
+                            {word: "how much", phonetic: "/haʊ mʌtʃ/", meaning: "多少钱？", learned: false},
+                            {word: "flower", phonetic: "/ˈflaʊə(r)/", meaning: "花", learned: false},
+                            {word: "dumpling", phonetic: "/ˈdʌmplɪŋ/", meaning: "水饺", learned: false},
+                            {word: "help", phonetic: "/help/", meaning: "帮助，帮忙", learned: false},
+                            {word: "buy", phonetic: "/baɪ/", meaning: "买", learned: false}
+                        ]
+                    },
+                    'Module 5': {
+                        words: [
+                            {word: "run", phonetic: "/rʌn/", meaning: "跑", learned: false},
+                            {word: "fast", phonetic: "/fɑːst/", meaning: "快", learned: false},
+                            {word: "sky", phonetic: "/skaɪ/", meaning: "天，天空", learned: false},
+                            {word: "high", phonetic: "/haɪ/", meaning: "高", learned: false},
+                            {word: "winner", phonetic: "/ˈwɪnə(r)/", meaning: "冠军", learned: false},
+                            {word: "far", phonetic: "/fɑː(r)/", meaning: "远", learned: false},
+                            {word: "afraid", phonetic: "/əˈfreɪd/", meaning: "恐怕", learned: false},
+                            {word: "strong", phonetic: "/strɒŋ/", meaning: "健壮的", learned: false},
+                            {word: "star", phonetic: "/stɑː(r)/", meaning: "明星", learned: false}
+                        ]
+                    },
+                    'Module 6': {
+                        words: [
+                            {word: "sweets", phonetic: "/swiːts/", meaning: "糖果（常复）", learned: false},
+                            {word: "soup", phonetic: "/suːp/", meaning: "汤", learned: false},
+                            {word: "sorry", phonetic: "/ˈsɒri/", meaning: "抱歉，对不起", learned: false},
+                            {word: "bread", phonetic: "/bred/", meaning: "面包", learned: false},
+                            {word: "dark", phonetic: "/dɑːk/", meaning: "黑暗的", learned: false},
+                            {word: "well", phonetic: "/wel/", meaning: "（语气词）唔，噢", learned: false},
+                            {word: "turn on", phonetic: "/tɜːn ɒn/", meaning: "打开", learned: false},
+                            {word: "light", phonetic: "/laɪt/", meaning: "灯", learned: false},
+                            {word: "Halloween", phonetic: "/ˌhæləˈwiːn/", meaning: "万圣节前夕", learned: false},
+                            {word: "trick or treat", phonetic: "/trɪk ɔː(r) triːt/", meaning: "不请吃就捣蛋", learned: false},
+                            {word: "give", phonetic: "/ɡɪv/", meaning: "给", learned: false},
+                            {word: "come in", phonetic: "/kʌm ɪn/", meaning: "进来", learned: false},
+                            {word: "of course", phonetic: "/ɒv kɔːs/", meaning: "当然", learned: false}
+                        ]
+                    },
+                    'Module 7': {
+                        words: [
+                            {word: "there is", phonetic: "/ðeə(r) ɪz/", meaning: "有，存在", learned: false},
+                            {word: "horse", phonetic: "/hɔːs/", meaning: "马", learned: false},
+                            {word: "there are", phonetic: "/ðeə(r) ɑː(r)/", meaning: "有，存在", learned: false},
+                            {word: "have a look", phonetic: "/hæv ə lʊk/", meaning: "看一看", learned: false},
+                            {word: "sheep", phonetic: "/ʃiːp/", meaning: "羊，绵羊", learned: false},
+                            {word: "vegetable", phonetic: "/ˈvedʒtəbl/", meaning: "蔬菜", learned: false},
+                            {word: "climb", phonetic: "/klaɪm/", meaning: "爬，攀爬", learned: false},
+                            {word: "face", phonetic: "/feɪs/", meaning: "脸，面孔", learned: false},
+                            {word: "fruit", phonetic: "/fruːt/", meaning: "水果", learned: false},
+                            {word: "chicken", phonetic: "/ˈtʃɪkɪn/", meaning: "鸡", learned: false},
+                            {word: "bear", phonetic: "/beə(r)/", meaning: "熊", learned: false},
+                            {word: "pig", phonetic: "/pɪɡ/", meaning: "猪", learned: false}
+                        ]
+                    },
+                    'Module 8': {
+                        words: [
+                            {word: "visit", phonetic: "/ˈvɪzɪt/", meaning: "参观，拜访", learned: false},
+                            {word: "tomorrow", phonetic: "/təˈmɒrəʊ/", meaning: "明天", learned: false},
+                            {word: "plane", phonetic: "/pleɪn/", meaning: "飞机", learned: false},
+                            {word: "get up", phonetic: "/ɡet ʌp/", meaning: "起床", learned: false},
+                            {word: "o'clock", phonetic: "/əˈklɒk/", meaning: "……点钟", learned: false},
+                            {word: "from", phonetic: "/frəm/", meaning: "来自……", learned: false},
+                            {word: "sea", phonetic: "/siː/", meaning: "大海", learned: false},
+                            {word: "swimsuit", phonetic: "/ˈswɪmsuːt/", meaning: "游泳衣", learned: false},
+                            {word: "sock", phonetic: "/sɒk/", meaning: "短袜", learned: false},
+                            {word: "fish", phonetic: "/fɪʃ/", meaning: "钓鱼", learned: false},
+                            {word: "hooray", phonetic: "/hʊˈreɪ/", meaning: "（表示激动与高兴的呼喊声）好，好哇", learned: false}
+                        ]
+                    },
+                    'Module 9': {
+                        words: [
+                            {word: "sports day", phonetic: "/ˈspɔːts deɪ/", meaning: "运动日", learned: false},
+                            {word: "win", phonetic: "/wɪn/", meaning: "胜利，取胜", learned: false},
+                            {word: "month", phonetic: "/mʌnθ/", meaning: "月", learned: false},
+                            {word: "hundred", phonetic: "/ˈhʌndrəd/", meaning: "一百（100）", learned: false},
+                            {word: "metre", phonetic: "/ˈmiːtə(r)/", meaning: "米", learned: false},
+                            {word: "every", phonetic: "/ˈevri/", meaning: "每个，每一", learned: false},
+                            {word: "day", phonetic: "/deɪ/", meaning: "一天，一日", learned: false},
+                            {word: "luck", phonetic: "/lʌk/", meaning: "运气", learned: false},
+                            {word: "good luck", phonetic: "/ɡʊd lʌk/", meaning: "祝你好运", learned: false},
+                            {word: "come on", phonetic: "/kʌm ɒn/", meaning: "快点，赶快", learned: false},
+                            {word: "jump", phonetic: "/dʒʌmp/", meaning: "跳", learned: false},
+                            {word: "high jump", phonetic: "/haɪ dʒʌmp/", meaning: "跳高", learned: false},
+                            {word: "long jump", phonetic: "/lɒŋ dʒʌmp/", meaning: "跳远", learned: false},
+                            {word: "How about...?", phonetic: "/haʊ əˈbaʊt.../", meaning: "……怎么样？", learned: false},
+                            {word: "subject", phonetic: "/ˈsʌbdʒɪkt/", meaning: "学科，科目", learned: false}
+                        ]
+                    },
+                    'Module 10': {
+                        words: [
+                            {word: "family", phonetic: "/ˈfæməli/", meaning: "家，家庭", learned: false},
+                            {word: "dinner", phonetic: "/ˈdɪnə(r)/", meaning: "晚餐，正餐", learned: false},
+                            {word: "year", phonetic: "/jɪə(r)/", meaning: "年份", learned: false},
+                            {word: "New Year", phonetic: "/njuː jɪə(r)/", meaning: "新年", learned: false},
+                            {word: "Chinese", phonetic: "/ˌtʃaɪˈniːz/", meaning: "中国的", learned: false},
+                            {word: "festival", phonetic: "/ˈfestɪvl/", meaning: "节日", learned: false},
+                            {word: "the Spring Festival", phonetic: "/ðə sprɪŋ ˈfestɪvl/", meaning: "春节", learned: false},
+                            {word: "I see", phonetic: "/aɪ siː/", meaning: "我明白了", learned: false},
+                            {word: "peanut", phonetic: "/ˈpiːnʌt/", meaning: "花生", learned: false},
+                            {word: "merry", phonetic: "/ˈmeri/", meaning: "愉快的", learned: false},
+                            {word: "Christmas", phonetic: "/ˈkrɪsməs/", meaning: "圣诞节", learned: false},
+                            {word: "Merry Christmas!", phonetic: "/ˈmeri ˈkrɪsməs/", meaning: "圣诞快乐！", learned: false}
+                        ]
+                    }
+                }
+            },
+
+            '四年级下册': {
+                modules: {
+                    'Module 1': {
+                        words: [
+                            {word: "nice", phonetic: "/naɪs/", meaning: "好的，友善的", learned: false},
+                            {word: "clever", phonetic: "/ˈklevə(r)/", meaning: "聪明的", learned: false},
+                            {word: "naughty", phonetic: "/ˈnɔːti/", meaning: "淘气的", learned: false},
+                            {word: "shy", phonetic: "/ʃaɪ/", meaning: "害羞的", learned: false},
+                            {word: "answer", phonetic: "/ˈɑːnsə(r)/", meaning: "回答，答案", learned: false},
+                            {word: "call", phonetic: "/kɔːl/", meaning: "打电话，大声喊", learned: false},
+                            {word: "bad", phonetic: "/bæd/", meaning: "坏的", learned: false},
+                            {word: "cool", phonetic: "/kuːl/", meaning: "酷的", learned: false},
+                            {word: "aunt", phonetic: "/ɑːnt/", meaning: "阿姨", learned: false},
+                            {word: "uncle", phonetic: "/ˈʌŋkl/", meaning: "叔叔", learned: false},
+                            {word: "big", phonetic: "/bɪɡ/", meaning: "大；年龄较大的", learned: false},
+                            {word: "little", phonetic: "/ˈlɪtl/", meaning: "小的，年幼的", learned: false},
+                            {word: "cute", phonetic: "/kjuːt/", meaning: "可爱的", learned: false},
+                            {word: "a bit", phonetic: "/ə bɪt/", meaning: "有一点", learned: false}
+                        ]
+                    },
+                    'Module 2': {
+                        words: [
+                            {word: "city", phonetic: "/ˈsɪti/", meaning: "城市", learned: false},
+                            {word: "ship", phonetic: "/ʃɪp/", meaning: "船", learned: false},
+                            {word: "beautiful", phonetic: "/ˈbjuːtɪfl/", meaning: "美丽的", learned: false},
+                            {word: "whose", phonetic: "/huːz/", meaning: "谁的", learned: false},
+                            {word: "queen", phonetic: "/kwiːn/", meaning: "女王", learned: false},
+                            {word: "close", phonetic: "/kləʊz/", meaning: "关闭；近的，接近的", learned: false},
+                            {word: "old", phonetic: "/əʊld/", meaning: "古老的；老的", learned: false},
+                            {word: "famous", phonetic: "/ˈfeɪməs/", meaning: "著名的", learned: false}
+                        ]
+                    },
+                    'Module 3': {
+                        words: [
+                            {word: "robot", phonetic: "/ˈrəʊbɒt/", meaning: "机器人", learned: false},
+                            {word: "will", phonetic: "/wɪl/", meaning: "将，将会", learned: false},
+                            {word: "everything", phonetic: "/ˈevriθɪŋ/", meaning: "所有事情", learned: false},
+                            {word: "housework", phonetic: "/ˈhaʊswɜːk/", meaning: "家务", learned: false},
+                            {word: "learn", phonetic: "/lɜːn/", meaning: "学习", learned: false},
+                            {word: "our", phonetic: "/ˈaʊə(r)/", meaning: "我们的", learned: false},
+                            {word: "homework", phonetic: "/ˈhəʊmwɜːk/", meaning: "家庭作业", learned: false},
+                            {word: "won’t", phonetic: "/wəʊnt/", meaning: "将不会 (will not)", learned: false},
+                            {word: "Tuesday", phonetic: "/ˈtjuːzdeɪ/", meaning: "星期二", learned: false},
+                            {word: "Wednesday", phonetic: "/ˈwenzdeɪ/", meaning: "星期三", learned: false},
+                            {word: "Thursday", phonetic: "/ˈθɜːzdeɪ/", meaning: "星期四", learned: false},
+                            {word: "Friday", phonetic: "/ˈfraɪdeɪ/", meaning: "星期五", learned: false},
+                            {word: "have", phonetic: "/hæv/", meaning: "有，拥有", learned: false},
+                            {word: "next", phonetic: "/nekst/", meaning: "下一个的", learned: false},
+                            {word: "week", phonetic: "/wiːk/", meaning: "星期，周", learned: false},
+                            {word: "holiday", phonetic: "/ˈhɒlədeɪ/", meaning: "假期", learned: false},
+                            {word: "one day", phonetic: "/wʌn deɪ/", meaning: "（将来）有一天", learned: false}
+                        ]
+                    },
+                    'Module 4': {
+                        words: [
+                            {word: "take", phonetic: "/teɪk/", meaning: "带，拿", learned: false},
+                            {word: "fly", phonetic: "/flaɪ/", meaning: "飞", learned: false},
+                            {word: "picnic", phonetic: "/ˈpɪknɪk/", meaning: "野餐", learned: false},
+                            {word: "great", phonetic: "/ɡreɪt/", meaning: "太好了", learned: false},
+                            {word: "why", phonetic: "/waɪ/", meaning: "为什么", learned: false},
+                            {word: "because", phonetic: "/bɪˈkɒz/", meaning: "因为", learned: false},
+                            {word: "so", phonetic: "/səʊ/", meaning: "所以", learned: false},
+                            {word: "cloudy", phonetic: "/ˈklaʊdi/", meaning: "多云的", learned: false},
+                            {word: "weather", phonetic: "/ˈweðə(r)/", meaning: "天气", learned: false}
+                        ]
+                    },
+                    'Module 5': {
+                        words: [
+                            {word: "was", phonetic: "/wɒz/", meaning: "（am/is的过去式）是", learned: false},
+                            {word: "then", phonetic: "/ðen/", meaning: "当时，那时", learned: false},
+                            {word: "grandparent", phonetic: "/ˈɡrænpeərənt/", meaning: "祖父，祖母，外祖父，外祖母", learned: false},
+                            {word: "were", phonetic: "/wɜː(r)/", meaning: "（are的过去式）是", learned: false},
+                            {word: "young", phonetic: "/jʌŋ/", meaning: "年轻的", learned: false},
+                            {word: "old", phonetic: "/əʊld/", meaning: "老的，年老的", learned: false},
+                            {word: "hair", phonetic: "/heə(r)/", meaning: "头发", learned: false},
+                            {word: "so", phonetic: "/səʊ/", meaning: "这么，那么", learned: false},
+                            {word: "short", phonetic: "/ʃɔːt/", meaning: "短的", learned: false},
+                            {word: "long", phonetic: "/lɒŋ/", meaning: "长的", learned: false},
+                            {word: "wasn’t", phonetic: "/ˈwɒznt/", meaning: "不是 (was not)", learned: false},
+                            {word: "weren’t", phonetic: "/ˈwɜːnt/", meaning: "不是 (were not)", learned: false},
+                            {word: "clean", phonetic: "/kliːn/", meaning: "干净的", learned: false},
+                            {word: "dirty", phonetic: "/ˈdɜːti/", meaning: "脏的", learned: false}
+                        ]
+                    },
+                    'Module 6': {
+                        words: [
+                            {word: "yesterday", phonetic: "/ˈjestədeɪ/", meaning: "昨天", learned: false},
+                            {word: "out", phonetic: "/aʊt/", meaning: "不在家（的），在外面（的）", learned: false},
+                            {word: "well", phonetic: "/wel/", meaning: "健康的", learned: false},
+                            {word: "thanks", phonetic: "/θæŋks/", meaning: "谢谢", learned: false},
+                            {word: "sun", phonetic: "/sʌn/", meaning: "太阳", learned: false},
+                            {word: "lesson", phonetic: "/ˈlesn/", meaning: "一节课，一堂课", learned: false},
+                            {word: "village", phonetic: "/ˈvɪlɪdʒ/", meaning: "乡村，村子", learned: false}
+                        ]
+                    },
+                    'Module 7': {
+                        words: [
+                            {word: "had", phonetic: "/hæd/", meaning: "（have的过去式）度过", learned: false},
+                            {word: "phone", phonetic: "/fəʊn/", meaning: "打电话", learned: false},
+                            {word: "cook", phonetic: "/kʊk/", meaning: "烹调，煮，烧", learned: false},
+                            {word: "really", phonetic: "/ˈriːəli/", meaning: "真的", learned: false},
+                            {word: "wash", phonetic: "/wɒʃ/", meaning: "洗", learned: false},
+                            {word: "did", phonetic: "/dɪd/", meaning: "（do的过去式）助动词", learned: false},
+                            {word: "didn’t", phonetic: "/ˈdɪdnt/", meaning: "没有 (did not)", learned: false},
+                            {word: "computer", phonetic: "/kəmˈpjuːtə(r)/", meaning: "计算机", learned: false},
+                            {word: "love", phonetic: "/lʌv/", meaning: "爱，喜欢", learned: false},
+                            {word: "him", phonetic: "/hɪm/", meaning: "（宾格）他", learned: false},
+                            {word: "Mrs", phonetic: "/ˈmɪsɪz/", meaning: "太太，夫人", learned: false},
+                            {word: "Miss", phonetic: "/mɪs/", meaning: "小姐", learned: false}
+                        ]
+                    },
+                    'Module 8': {
+                        words: [
+                            {word: "sang", phonetic: "/sæŋ/", meaning: "（sing的过去式）唱歌", learned: false},
+                            {word: "beautifully", phonetic: "/ˈbjuːtɪfli/", meaning: "优美地，动听地", learned: false},
+                            {word: "saw", phonetic: "/sɔː/", meaning: "（see的过去式）看见", learned: false},
+                            {word: "game", phonetic: "/ɡeɪm/", meaning: "游戏，比赛", learned: false},
+                            {word: "last", phonetic: "/lɑːst/", meaning: "最近过去的", learned: false},
+                            {word: "fun", phonetic: "/fʌn/", meaning: "有趣的，令人愉快的", learned: false},
+                            {word: "went", phonetic: "/went/", meaning: "（go的过去式）去", learned: false},
+                            {word: "there", phonetic: "/ðeə(r)/", meaning: "在哪儿，往哪里", learned: false},
+                            {word: "ate", phonetic: "/eɪt/", meaning: "（eat的过去式）吃", learned: false},
+                            {word: "drank", phonetic: "/dræŋk/", meaning: "（drink的过去式）喝，饮", learned: false},
+                            {word: "drink", phonetic: "/drɪŋk/", meaning: "饮料", learned: false},
+                            {word: "time", phonetic: "/taɪm/", meaning: "一段时间", learned: false},
+                            {word: "had a good time", phonetic: "/hæd ə ɡʊd taɪm/", meaning: "玩得开心", learned: false},
+                            {word: "busy", phonetic: "/ˈbɪzi/", meaning: "忙的，忙碌的", learned: false},
+                            {word: "took", phonetic: "/tʊk/", meaning: "（take的过去式）拍摄", learned: false},
+                            {word: "tell", phonetic: "/tel/", meaning: "告诉，告知", learned: false},
+                            {word: "great", phonetic: "/ɡreɪt/", meaning: "非常好的，令人愉快的", learned: false},
+                            {word: "delicious", phonetic: "/dɪˈlɪʃəs/", meaning: "美味的，可口的", learned: false},
+                            {word: "made", phonetic: "/meɪd/", meaning: "（make的过去式）做，制作", learned: false},
+                            {word: "poster", phonetic: "/ˈpəʊstə(r)/", meaning: "海报", learned: false}
+                        ]
+                    },
+                    'Module 9': {
+                        words: [
+                            {word: "welcome", phonetic: "/ˈwelkəm/", meaning: "欢迎", learned: false},
+                            {word: "postcard", phonetic: "/ˈpəʊstkɑːd/", meaning: "明信片", learned: false},
+                            {word: "cousin", phonetic: "/ˈkʌzn/", meaning: "表（堂）兄弟，表（堂）姐妹", learned: false},
+                            {word: "dear", phonetic: "/dɪə(r)/", meaning: "亲爱的", learned: false},
+                            {word: "on holiday", phonetic: "/ɒn ˈhɒlədeɪ/", meaning: "在休假，在度假", learned: false},
+                            {word: "travel", phonetic: "/ˈtrævl/", meaning: "旅行，游历", learned: false},
+                            {word: "came", phonetic: "/keɪm/", meaning: "（come的过去式）来", learned: false},
+                            {word: "pop", phonetic: "/pɒp/", meaning: "流行音乐的", learned: false},
+                            {word: "concert", phonetic: "/ˈkɒnsət/", meaning: "音乐会", learned: false},
+                            {word: "earth", phonetic: "/ɜːθ/", meaning: "地球", learned: false}
+                        ]
+                    },
+                    'Module 10': {
+                        words: [
+                            {word: "fall", phonetic: "/fɔːl/", meaning: "掉下，落下，摔倒", learned: false},
+                            {word: "fall off", phonetic: "/fɔːl ɒf/", meaning: "跌落", learned: false},
+                            {word: "fell", phonetic: "/fel/", meaning: "（fall过去式）掉下，落下，摔倒", learned: false},
+                            {word: "fall down", phonetic: "/fɔːl daʊn/", meaning: "摔倒，跌倒，坍塌", learned: false},
+                            {word: "found", phonetic: "/faʊnd/", meaning: "（find的过去式）发现，找到", learned: false},
+                            {word: "town", phonetic: "/taʊn/", meaning: "城镇，市镇", learned: false},
+                            {word: "happen", phonetic: "/ˈhæpən/", meaning: "发生", learned: false},
+                            {word: "ride", phonetic: "/raɪd/", meaning: "骑车", learned: false},
+                            {word: "thirsty", phonetic: "/ˈθɜːsti/", meaning: "口渴的", learned: false},
+                            {word: "water", phonetic: "/ˈwɔːtə(r)/", meaning: "水", learned: false},
+                            {word: "bought", phonetic: "/bɔːt/", meaning: "（buy的过去式）买", learned: false}
+                        ]
+                    }
+                }
+            },
+
+
+            '五年级上册': {
+                modules: {
+                    'Module 1': {
+                        words: [
+                             {word: "met", phonetic: "", meaning:" 碰上，遇见 (meet 过去式)", learned: false},
+                             {word: "above", phonetic: "", meaning:" 在... 上方，在.. 之上 ", learned: false},
+                             {word: "ground", phonetic: "", meaning:" 地面 ", learned: false},
+                             {word: "those", phonetic: "", meaning:" 那些 ", learned: false},
+                             {word: "ice cream", phonetic: "", meaning:" 冰激凌 ", learned: false},
+                             {word: "us", phonetic: "", meaning:" 我们 (宾格)", learned: false},
+                             {word: "finish", phonetic: "", meaning:" 吃完 ", learned: false},
+                             {word: "wait", phonetic: "", meaning:" 等待，等候 ", learned: false},
+                             {word: "hurry", phonetic: "", meaning:" 赶紧，匆忙 ", learned: false},
+                             {word: "hurry up", phonetic: "", meaning:" 赶紧，赶快 ", learned: false},
+                             {word: "dropped", phonetic: "", meaning:"(无意中) 使掉落 (drop 过去式)", learned: false},
+                             {word: "send", phonetic: "", meaning:" 发送，寄 ", learned: false},
+                             {word: "email", phonetic: "", meaning:" 电子邮件 ", learned: false},
+                             {word: "ran", phonetic: "", meaning:" 跑 (run 的过去式)", learned: false},
+                             {word: "love", phonetic: "", meaning:" 爱你的 ", learned: false}
+                        ]
+                    },
+                    'Module 2': {
+                        words: [
+                            {word: "list", phonetic: "", meaning:" 清单 ", learned: false},
+                            {word: "er", phonetic: "", meaning:" 哦，嗯，呃 ", learned: false},
+                            {word: "need", phonetic: "", meaning:" 需要 ", learned: false},
+                            {word: "first", phonetic: "", meaning:" 首先，第一；最先的，第一（次）的 ", learned: false},
+                            {word: "can", phonetic: "", meaning:" 可以 ", learned: false},
+                            {word: "lost", phonetic: "", meaning:" 丢失 (lose 的过去式)", learned: false},
+                            {word: "how much", phonetic: "", meaning:" 多少（用于不可数名词）", learned: false},
+                            {word: "cheese", phonetic: "", meaning:" 奶酪 ", learned: false},
+                            {word: "any", phonetic: "", meaning:" 一些，一点，若干 ", learned: false},
+                            {word: "use", phonetic: "", meaning:" 使用 ", learned: false},
+                            {word: "over there", phonetic: "", meaning:" 在那边 ", learned: false},
+                            {word: "bottle", phonetic: "", meaning:" 瓶子；一瓶的容量 ", learned: false},
+                            {word: "half", phonetic: "", meaning:" 一半 ", learned: false},
+                            {word: "kilo", phonetic: "", meaning:" 千克，公斤 ", learned: false},
+                            {word: "a lot of", phonetic: "", meaning:" 许多的 ", learned: false}
+                        ]
+                    },
+                    'Module 3': {
+                        words: [
+                            {word: "weekend", phonetic: "", meaning:" 周末 ", learned: false},
+                            {word: "place", phonetic: "", meaning:" 地方 ", learned: false},
+                            {word: "British", phonetic: "", meaning:" 英国的，英国人的，英国人 ", learned: false},
+                            {word: "museum", phonetic: "", meaning:" 博物馆 ", learned: false},
+                            {word: "how", phonetic: "", meaning:" 如何，怎样 ", learned: false},
+                            {word: "best", phonetic: "", meaning:" 最 ", learned: false},
+                            {word: "took", phonetic: "", meaning:" 搭乘，乘坐（交通工具）；需要花费（一定的时间） (take 的过去式)", learned: false},
+                            {word: "trip", phonetic: "", meaning:" 旅行，旅程 ", learned: false},
+                            {word: "along", phonetic: "", meaning:" 沿着 ", learned: false},
+                            {word: "river", phonetic: "", meaning:" 河，江 ", learned: false},
+                            {word: "hour", phonetic: "", meaning:" 小时 ", learned: false},
+                            {word: "twenty", phonetic: "", meaning:" 二十 ", learned: false},
+                            {word: "minute", phonetic: "", meaning:" 分钟 ", learned: false},
+                            {word: "of", phonetic: "", meaning:" 关于...... 的，表明...... 的 ", learned: false},
+                            {word: "wall", phonetic: "", meaning:" 墙，城墙 ", learned: false},
+                            {word: "arrive", phonetic: "", meaning:" 到达 ", learned: false},
+                            {word: "for", phonetic: "", meaning:" 达，计 ", learned: false},
+                            {word: "mountain", phonetic: "", meaning:" 山 ", learned: false},
+                            {word: "with", phonetic: "", meaning:" 拥有，具有 ", learned: false},
+                            {word: "plant", phonetic: "", meaning:" 植物 ", learned: false}
+                        ]
+                    },
+                    'Module 4': {
+                        words: [
+                            {word: "pair", phonetic: "", meaning:" 一套，一双，一副 ", learned: false},
+                            {word: "shorts", phonetic: "", meaning:" 短裤 (常复)", learned: false},
+                            {word: "argue", phonetic: "", meaning:" 争论，争吵 ", learned: false},
+                            {word: "matter", phonetic: "", meaning:" 问题，麻烦 ", learned: false},
+                            {word: "What’s the matter", phonetic: "", meaning:" 怎么啦？", learned: false},
+                            {word: "took", phonetic: "", meaning:" 拿（走），取（走） (take 的过去式)", learned: false},
+                            {word: "wear", phonetic: "", meaning:" 穿 ", learned: false},
+                            {word: "That’s OK", phonetic: "", meaning:" 没关系 ", learned: false},
+                            {word: "sports", phonetic: "", meaning:" 体育运动的，体育运动用的 ", learned: false},
+                            {word: "hey", phonetic: "", meaning:" 嘿，喂 ", learned: false}
+                        ]
+                    },
+                    'Module 5': {
+                        words: [
+                            {word: "nineteen", phonetic: "", meaning:" 十九 ", learned: false},
+                            {word: "crayon", phonetic: "", meaning:" 蜡笔 ", learned: false},
+                            {word: "fifteen", phonetic: "", meaning:" 十五 ", learned: false},
+                            {word: "begin", phonetic: "", meaning:" 开始 ", learned: false},
+                            {word: "give out", phonetic: "", meaning:" 分发 ", learned: false},
+                            {word: "all right", phonetic: "", meaning:" 好，行 ", learned: false},
+                            {word: "thirteen", phonetic: "", meaning:" 十三 ", learned: false},
+                            {word: "fourteen", phonetic: "", meaning:" 十四 ", learned: false},
+                            {word: "sixteen", phonetic: "", meaning:" 十六 ", learned: false},
+                            {word: "seventeen", phonetic: "", meaning:" 十七 ", learned: false},
+                            {word: "eighteen", phonetic: "", meaning:" 十八 ", learned: false},
+                            {word: "floor", phonetic: "", meaning:" 地面，地板 ", learned: false},
+                            {word: "forty", phonetic: "", meaning:" 四十 ", learned: false},
+                            {word: "number", phonetic: "", meaning:" 数字 ", learned: false},
+                            {word: "thirty", phonetic: "", meaning:" 三十 ", learned: false},
+                            {word: "fifty", phonetic: "", meaning:" 五十 ", learned: false},
+                            {word: "sixty", phonetic: "", meaning:" 六十 ", learned: false},
+                            {word: "seventy", phonetic: "", meaning:" 七十 ", learned: false},
+                            {word: "eighty", phonetic: "", meaning:" 八十 ", learned: false},
+                            {word: "ninety", phonetic: "", meaning:" 九十 ", learned: false},
+                            {word: "happily", phonetic: "", meaning:" 幸福地，愉快地 ", learned: false},
+                            {word: "many", phonetic: "", meaning:" 许多，很多 ", learned: false}
+                        ]
+                    },
+                    'Module 6': {
+                        words: [
+                            {word: "well", phonetic: "", meaning:" 好，熟练地 ", learned: false},
+                            {word: "team", phonetic: "", meaning:" 运动队，球队 ", learned: false},
+                            {word: "really", phonetic: "", meaning:" 很，非常 ", learned: false},
+                            {word: "good at", phonetic: "", meaning:" 擅长 ", learned: false},
+                            {word: "catch", phonetic: "", meaning:" 抓住，接住 ", learned: false},
+                            {word: "goalkeeper", phonetic: "", meaning:" 守门员 ", learned: false},
+                            {word: "think", phonetic: "", meaning:" 想，认为 ", learned: false},
+                            {word: "fantastic", phonetic: "", meaning:" 极好的 ", learned: false},
+                            {word: "fan", phonetic: "", meaning:" 狂热仰慕者，迷 ", learned: false},
+                            {word: "past", phonetic: "", meaning:" 过去 ", learned: false},
+                            {word: "swam", phonetic: "", meaning:" 游泳 (swim 的过去式)", learned: false},
+                            {word: "slow", phonetic: "", meaning:" 慢的 ", learned: false},
+                            {word: "healthy", phonetic: "", meaning:" 健康的 ", learned: false}
+                        ]
+                    },
+                    'Module 7': {
+                        words: [
+                            {word: "a lot", phonetic: "", meaning:" 许多，大量 ", learned: false},
+                            {word: "useful", phonetic: "", meaning:" 有用的 ", learned: false},
+                            {word: "show", phonetic: "", meaning:"(电视或广播) 节目 ", learned: false},
+                            {word: "presenter", phonetic: "", meaning:"(电视或广播节目的) 主持人 ", learned: false},
+                            {word: "blind", phonetic: "", meaning:" 失明的，瞎的 ", learned: false},
+                            {word: "deaf", phonetic: "", meaning:" 失聪的，聋的 ", learned: false},
+                            {word: "hear", phonetic: "", meaning:" 听到 ", learned: false},
+                            {word: "her", phonetic: "", meaning:" 她 (宾格)", learned: false},
+                            {word: "fire", phonetic: "", meaning:" 火灾，失火 ", learned: false},
+                            {word: "firefighter", phonetic: "", meaning:" 消防队员 ", learned: false},
+                            {word: "hot dog", phonetic: "", meaning:" 热狗 ", learned: false},
+                            {word: "sausage", phonetic: "", meaning:" 香肠 ", learned: false},
+                            {word: "kind", phonetic: "", meaning:" 友好的，善意的，体贴的 ", learned: false}
+                        ]
+                    },
+                    'Module 8': {
+                        words: [
+                            {word: "time", phonetic: "", meaning:" 时刻，时候，时间 ", learned: false},
+                            {word: "school", phonetic: "", meaning:" 学校 ", learned: false},
+                            {word: "start", phonetic: "", meaning:" 开始，发生 ", learned: false},
+                            {word: "past", phonetic: "", meaning:" 晚于，过（几点）", learned: false},
+                            {word: "late", phonetic: "", meaning:" 迟到的 ", learned: false},
+                            {word: "go to bed", phonetic: "", meaning:" 上床睡觉 ", learned: false},
+                            {word: "exercise", phonetic: "", meaning:" 运动，锻炼 ", learned: false},
+                            {word: "playground", phonetic: "", meaning:" 操场 ", learned: false},
+                            {word: "before", phonetic: "", meaning:" 在…… 之前 ", learned: false},
+                            {word: "join", phonetic: "", meaning:" 加入，参加 ", learned: false},
+                            {word: "Skipping rope", phonetic: "", meaning:" 跳绳 ", learned: false},
+                            {word: "coffee", phonetic: "", meaning:" 咖啡 ", learned: false},
+                            {word: "tea", phonetic: "", meaning:" 茶 ", learned: false},
+                            {word: "always", phonetic: "", meaning:" 总是，一直 ", learned: false},
+                            {word: "bell", phonetic: "", meaning:" 钟，铃 ", learned: false},
+                            {word: "rang", phonetic: "", meaning:" 鸣，响 (ring 过去式)", learned: false},
+                            {word: "into", phonetic: "", meaning:" 进入...... 里面 ", learned: false}
+                        ]
+                    },
+                    'Module 9': {
+                        words: [
+                            {word: "feel", phonetic: "", meaning:" 感觉，觉得 ", learned: false},
+                            {word: "bored", phonetic: "", meaning:" 厌烦的，厌倦的 ", learned: false},
+                            {word: "sad", phonetic: "", meaning:" 伤心的，难过的 ", learned: false},
+                            {word: "woof", phonetic: "", meaning:"(狗发出的) 吠声 ", learned: false},
+                            {word: "miss", phonetic: "", meaning:" 想念 ", learned: false},
+                            {word: "angry", phonetic: "", meaning:" 生气的，愤怒的 ", learned: false},
+                            {word: "ill", phonetic: "", meaning:" 有病的，不健康的 ", learned: false},
+                            {word: "told", phonetic: "", meaning:" 告诉 (tell 的过去式)", learned: false},
+                            {word: "better", phonetic: "", meaning:" 痊愈的，恢复健康的 ", learned: false},
+                            {word: "farm", phonetic: "", meaning:" 农场 ", learned: false},
+                            {word: "tired", phonetic: "", meaning:" 累的，疲劳的 ", learned: false},
+                            {word: "won", phonetic: "", meaning:" 赢，获胜 (win 的过去式)", learned: false},
+                            {word: "ruler", phonetic: "", meaning:" 直尺 ", learned: false},
+                            {word: "smell", phonetic: "", meaning:" 闻出，嗅出 ", learned: false}
+                        ]
+                    },
+                    'Module 10': {
+                        words: [
+                            {word: "kitchen", phonetic: "", meaning:" 厨房 ", learned: false},
+                            {word: "toilet", phonetic: "", meaning:" 厕所，卫生间 ", learned: false},
+                            {word: "room", phonetic: "", meaning:" 房间 ", learned: false},
+                            {word: "living room", phonetic: "", meaning:" 起居室，客厅 ", learned: false},
+                            {word: "hide-and-seek", phonetic: "", meaning:" 捉迷藏 ", learned: false},
+                            {word: "now", phonetic: "", meaning:" 好，哦 ", learned: false},
+                            {word: "last", phonetic: "", meaning:" 最后 ", learned: false},
+                            {word: "hide", phonetic: "", meaning:" 躲，躲藏 ", learned: false},
+                            {word: "sofa", phonetic: "", meaning:" 沙发 ", learned: false},
+                            {word: "shout", phonetic: "", meaning:" 呼喊，大叫 ", learned: false},
+                            {word: "grass", phonetic: "", meaning:" 草，草地 ", learned: false},
+                            {word: "baby", phonetic: "", meaning:" 婴儿 ", learned: false},
+                            {word: "dangerous", phonetic: "", meaning:" 危险的 ", learned: false}
+                        ]
+                    }
+                }
+            },
+
+
+            "五年级下册": {
+                "modules": {
+                    "Module 1": {
+                        "words": [
+                            { "word": "still", "phonetic": "", "meaning": "还，仍然", "learned": false },
+                            { "word": "programme", "phonetic": "", "meaning": "（电视或广播）节目", "learned": false },
+                            { "word": "lady", "phonetic": "", "meaning": "女士，夫人", "learned": false },
+                            { "word": "life", "phonetic": "", "meaning": "生活", "learned": false },
+                            { "word": "different", "phonetic": "", "meaning": "不同的", "learned": false },
+                            { "word": "ago", "phonetic": "", "meaning": "以前", "learned": false },
+                            { "word": "interviewer", "phonetic": "", "meaning": "采访者", "learned": false },
+                            { "word": "enough", "phonetic": "", "meaning": "足够的", "learned": false },
+                            { "word": "television", "phonetic": "", "meaning": "电视机", "learned": false },
+                            { "word": "grandchildren", "phonetic": "", "meaning": "（外）孙子（女）", "learned": false },
+                            { "word": "change", "phonetic": "", "meaning": "改变，变化", "learned": false },
+                            { "word": "night", "phonetic": "", "meaning": "夜晚，夜间", "learned": false },
+                            { "word": "work", "phonetic": "", "meaning": "工作；劳动；干活儿", "learned": false },
+                            { "word": "field", "phonetic": "", "meaning": "田地", "learned": false },
+                            { "word": "fire", "phonetic": "", "meaning": "火，炉火", "learned": false },
+                            { "word": "or", "phonetic": "", "meaning": "（用于否定句）也不，也没", "learned": false },
+                            { "word": "radio", "phonetic": "", "meaning": "收音机", "learned": false },
+                            { "word": "telephone", "phonetic": "", "meaning": "电话", "learned": false },
+                            { "word": "couldn't", "phonetic": "", "meaning": "不能（could not）", "learned": false },
+                            { "word": "write", "phonetic": "", "meaning": "写", "learned": false },
+                            { "word": "hope", "phonetic": "", "meaning": "希望", "learned": false }
+                        ]
+                    },
+                    "Module 2": {
+                        "words": [
+                            { "word": "learnt", "phonetic": "", "meaning": "学习（learn的过去式）", "learned": false },
+                            { "word": "taught", "phonetic": "", "meaning": "教，讲授（teach的过去式）", "learned": false },
+                            { "word": "language", "phonetic": "", "meaning": "语言", "learned": false },
+                            { "word": "wrote", "phonetic": "", "meaning": "写（write的过去式）", "learned": false },
+                            { "word": "dancer", "phonetic": "", "meaning": "舞蹈演员", "learned": false },
+                            { "word": "foreign", "phonetic": "", "meaning": "外国的", "learned": false },
+                            { "word": "studied", "phonetic": "", "meaning": "学习（study的过去式）", "learned": false },
+                            { "word": "hard", "phonetic": "", "meaning": "努力地", "learned": false }
+                        ]
+                    },
+                    "Module 3": {
+                        "words": [
+                            { "word": "hamburger", "phonetic": "", "meaning": "汉堡", "learned": false },
+                            { "word": "English", "phonetic": "", "meaning": "英国（式）的", "learned": false },
+                            { "word": "breakfast", "phonetic": "", "meaning": "早餐，早饭", "learned": false },
+                            { "word": "lunch", "phonetic": "", "meaning": "午餐，午饭", "learned": false },
+                            { "word": "sandwich", "phonetic": "", "meaning": "三明治", "learned": false },
+                            { "word": "fish and chips", "phonetic": "", "meaning": "炸鱼加炸薯条", "learned": false },
+                            { "word": "traditional", "phonetic": "", "meaning": "传统的", "learned": false },
+                            { "word": "dish", "phonetic": "", "meaning": "食品；菜肴", "learned": false },
+                            { "word": "very much", "phonetic": "", "meaning": "很，非常", "learned": false },
+                            { "word": "gave", "phonetic": "", "meaning": "给（give的过去式）", "learned": false },
+                            { "word": "tonight", "phonetic": "", "meaning": "今夜，今晚", "learned": false }
+                        ]
+                    },
+                    "Module 4": {
+                        "words": [
+                            { "word": "library", "phonetic": "", "meaning": "图书馆", "learned": false },
+                            { "word": "student", "phonetic": "", "meaning": "学生", "learned": false },
+                            { "word": "sent", "phonetic": "", "meaning": "发送，寄（send的过去式）", "learned": false },
+                            { "word": "CD", "phonetic": "", "meaning": "激光唱片，光盘", "learned": false },
+                            { "word": "idea", "phonetic": "", "meaning": "主意，想法", "learned": false },
+                            { "word": "put", "phonetic": "", "meaning": "放，安放", "learned": false },
+                            { "word": "shelf", "phonetic": "", "meaning": "架子", "learned": false },
+                            { "word": "heavy", "phonetic": "", "meaning": "重的，沉的", "learned": false },
+                            { "word": "dictionary", "phonetic": "", "meaning": "词典；字典", "learned": false },
+                            { "word": "card", "phonetic": "", "meaning": "卡片", "learned": false },
+                            { "word": "library card", "phonetic": "", "meaning": "图书卡，借书证", "learned": false },
+                            { "word": "ask", "phonetic": "", "meaning": "邀请", "learned": false },
+                            { "word": "wrong", "phonetic": "", "meaning": "错误的", "learned": false },
+                            { "word": "dear", "phonetic": "", "meaning": "哎呀", "learned": false },
+                            { "word": "information", "phonetic": "", "meaning": "信息", "learned": false },
+                            { "word": "e-book", "phonetic": "", "meaning": "电子书", "learned": false },
+                            { "word": "project", "phonetic": "", "meaning": "项目", "learned": false },
+                            { "word": "guide", "phonetic": "", "meaning": "介绍，指南，手册", "learned": false },
+                            { "word": "film", "phonetic": "", "meaning": "电影", "learned": false },
+                            { "word": "as well", "phonetic": "", "meaning": "又，还，也", "learned": false },
+                            { "word": "way", "phonetic": "", "meaning": "方法，方式", "learned": false },
+                            { "word": "on", "phonetic": "", "meaning": "关于", "learned": false },
+                            { "word": "topic", "phonetic": "", "meaning": "话题", "learned": false }
+                        ]
+                    },
+                    "Module 5": {
+                        "words": [
+                            { "word": "light", "phonetic": "", "meaning": "轻的", "learned": false },
+                            { "word": "hard", "phonetic": "", "meaning": "困难的，费力的", "learned": false },
+                            { "word": "broken", "phonetic": "", "meaning": "坏的，破的", "learned": false },
+                            { "word": "department store", "phonetic": "", "meaning": "百货商店", "learned": false },
+                            { "word": "pocket", "phonetic": "", "meaning": "口袋，兜", "learned": false },
+                            { "word": "umbrella", "phonetic": "", "meaning": "雨伞", "learned": false },
+                            { "word": "sales assistant", "phonetic": "", "meaning": "售货员，营业员", "learned": false },
+                            { "word": "wheel", "phonetic": "", "meaning": "轮子", "learned": false },
+                            { "word": "easy", "phonetic": "", "meaning": "容易的，不费力的", "learned": false },
+                            { "word": "take", "phonetic": "", "meaning": "选择要，选择购买", "learned": false },
+                            { "word": "too", "phonetic": "", "meaning": "太，过于", "learned": false },
+                            { "word": "try", "phonetic": "", "meaning": "试，尝试", "learned": false },
+                            { "word": "lovely", "phonetic": "", "meaning": "美丽的，可爱的；令人愉快的", "learned": false }
+                        ]
+                    },
+                    "Module 6": {
+                        "words": [
+                            { "word": "moon", "phonetic": "", "meaning": "月亮，月球", "learned": false },
+                            { "word": "get", "phonetic": "", "meaning": "到达", "learned": false },
+                            { "word": "west", "phonetic": "", "meaning": "西，西部，西方；向西方", "learned": false },
+                            { "word": "parent", "phonetic": "", "meaning": "母亲；父亲；家长", "learned": false },
+                            { "word": "stay", "phonetic": "", "meaning": "停留", "learned": false },
+                            { "word": "July", "phonetic": "", "meaning": "七月", "learned": false },
+                            { "word": "south", "phonetic": "", "meaning": "南，南部，南方；向南方", "learned": false },
+                            { "word": "remember", "phonetic": "", "meaning": "记得", "learned": false },
+                            { "word": "June", "phonetic": "", "meaning": "六月", "learned": false },
+                            { "word": "east", "phonetic": "", "meaning": "东，东部，东方；向东方", "learned": false },
+                            { "word": "best", "phonetic": "", "meaning": "最好的", "learned": false },
+                            { "word": "north", "phonetic": "", "meaning": "北，北部，北方；向北方", "learned": false },
+                            { "word": "rest", "phonetic": "", "meaning": "休息", "learned": false },
+                            { "word": "have a rest", "phonetic": "", "meaning": "休息一下", "learned": false },
+                            { "word": "rode", "phonetic": "", "meaning": "骑（ride的过去式）", "learned": false }
+                        ]
+                    },
+                    "Module 7": {
+                        "words": [
+                            { "word": "evening", "phonetic": "", "meaning": "傍晚，晚上", "learned": false },
+                            { "word": "late", "phonetic": "", "meaning": "近日暮的；近深夜的；时间不早的", "learned": false },
+                            { "word": "worker", "phonetic": "", "meaning": "工人", "learned": false },
+                            { "word": "factory", "phonetic": "", "meaning": "制造厂；工厂", "learned": false },
+                            { "word": "early", "phonetic": "", "meaning": "早的", "learned": false },
+                            { "word": "taxi", "phonetic": "", "meaning": "出租车，计程车", "learned": false },
+                            { "word": "quarter", "phonetic": "", "meaning": "一刻钟", "learned": false },
+                            { "word": "to", "phonetic": "", "meaning": "(距整点)差…", "learned": false },
+                            { "word": "worry", "phonetic": "", "meaning": "焦虑，担心", "learned": false }
+                        ]
+                    },
+                    "Module 8": {
+                        "words": [
+                            { "word": "paper", "phonetic": "", "meaning": "纸", "learned": false },
+                            { "word": "Chinese", "phonetic": "", "meaning": "中国人的", "learned": false },
+                            { "word": "so", "phonetic": "", "meaning": "如此，这样", "learned": false },
+                            { "word": "word", "phonetic": "", "meaning": "词，字", "learned": false },
+                            { "word": "drew", "phonetic": "", "meaning": "画（draw的过去式）", "learned": false },
+                            { "word": "cut", "phonetic": "", "meaning": "剪，切，割（cut的过去式）", "learned": false },
+                            { "word": "piece", "phonetic": "", "meaning": "张，片，块", "learned": false },
+                            { "word": "paint", "phonetic": "", "meaning": "(用颜料)绘画，着色", "learned": false },
+                            { "word": "put", "phonetic": "", "meaning": "放，安放（put的过去式）", "learned": false },
+                            { "word": "stick", "phonetic": "", "meaning": "小木棍，小木条", "learned": false },
+                            { "word": "tied", "phonetic": "", "meaning": "扎上，系上（tie的过去式）", "learned": false },
+                            { "word": "string", "phonetic": "", "meaning": "线，绳子", "learned": false }
+                        ]
+                    },
+                    "Module 9": {
+                        "words": [
+                            { "word": "laugh", "phonetic": "", "meaning": "笑", "learned": false },
+                            { "word": "wore", "phonetic": "", "meaning": "穿（wear的过去式）", "learned": false },
+                            { "word": "letter", "phonetic": "", "meaning": "信，书信", "learned": false },
+                            { "word": "theatre", "phonetic": "", "meaning": "剧院", "learned": false },
+                            { "word": "women", "phonetic": "", "meaning": "女性，妇女（woman的复数形式）", "learned": false },
+                            { "word": "actor", "phonetic": "", "meaning": "演员", "learned": false },
+                            { "word": "told", "phonetic": "", "meaning": "口述，讲(故事等)（tell的过去式）", "learned": false },
+                            { "word": "joke", "phonetic": "", "meaning": "笑话", "learned": false },
+                            { "word": "after", "phonetic": "", "meaning": "在……以后", "learned": false },
+                            { "word": "show", "phonetic": "", "meaning": "(尤指剧院的)演出，表演", "learned": false },
+                            { "word": "restaurant", "phonetic": "", "meaning": "饭店，餐馆", "learned": false },
+                            { "word": "read", "phonetic": "", "meaning": "读（read的过去式）", "learned": false },
+                            { "word": "at all", "phonetic": "", "meaning": "一点都", "learned": false },
+                            { "word": "in", "phonetic": "", "meaning": "在(将来一段时间)之后", "learned": false },
+                            { "word": "another", "phonetic": "", "meaning": "另一个", "learned": false },
+                            { "word": "history", "phonetic": "", "meaning": "历史", "learned": false },
+                            { "word": "ask", "phonetic": "", "meaning": "问，询问", "learned": false },
+                            { "word": "question", "phonetic": "", "meaning": "问题", "learned": false },
+                            { "word": "forget", "phonetic": "", "meaning": "忘，忘记", "learned": false },
+                            { "word": "bring", "phonetic": "", "meaning": "带来，拿来", "learned": false },
+                            { "word": "soon", "phonetic": "", "meaning": "不久，很快", "learned": false }
+                        ]
+                    },
+                    "Module 10": {
+                        "words": [
+                            { "word": "when", "phonetic": "", "meaning": "在什么时候", "learned": false },
+                            { "word": "end", "phonetic": "", "meaning": "结束，终止", "learned": false },
+                            { "word": "nervous", "phonetic": "", "meaning": "紧张的，情绪不安的", "learned": false },
+                            { "word": "all right", "phonetic": "", "meaning": "没事，没问题", "learned": false },
+                            { "word": "airport", "phonetic": "", "meaning": "机场", "learned": false },
+                            { "word": "ticket", "phonetic": "", "meaning": "票", "learned": false },
+                            { "word": "passport", "phonetic": "", "meaning": "护照", "learned": false },
+                            { "word": "safe", "phonetic": "", "meaning": "安全的，平安的", "learned": false },
+                            { "word": "pet", "phonetic": "", "meaning": "宠物", "learned": false },
+                            { "word": "speak", "phonetic": "", "meaning": "说，讲", "learned": false },
+                            { "word": "building", "phonetic": "", "meaning": "建筑物", "learned": false },
+                            { "word": "American", "phonetic": "", "meaning": "美国的；美国人的；美国人", "learned": false },
+                            { "word": "find out", "phonetic": "", "meaning": "发现，弄清", "learned": false },
+                            { "word": "more", "phonetic": "", "meaning": "更多的(量)，较多的(量)", "learned": false }
+                        ]
+                    }
+                }
+            },
+
+
+            "六年级上册": {
+                modules: {
+                    "Module 1": {
+                        words: [
+                            { "word": "more than", "phonetic": "", "meaning": "超过", "learned": false },
+                            { "word": "thousand", "phonetic": "", "meaning": "一千", "learned": false },
+                            { "word": "kilometre", "phonetic": "", "meaning": "千米，公里", "learned": false },
+                            { "word": "something", "phonetic": "", "meaning": "某事物，某种东西", "learned": false },
+                            { "word": "million", "phonetic": "", "meaning": "百万", "learned": false },
+                            { "word": "map", "phonetic": "", "meaning": "地图", "learned": false },
+                            { "word": "right", "phonetic": "", "meaning": "正确的", "learned": false },
+                            { "word": "country", "phonetic": "", "meaning": "国家", "learned": false }
+                        ]
+                    },
+                    "Module 2": {
+                        words: [
+                            { "word": "dancing", "phonetic": "", "meaning": "跳舞，舞蹈", "learned": false },
+                            { "word": "Chinatown", "phonetic": "", "meaning": "唐人街，中国城", "learned": false },
+                            { "word": "sometimes", "phonetic": "", "meaning": "有时", "learned": false },
+                            { "word": "shop", "phonetic": "", "meaning": "商店", "learned": false },
+                            { "word": "then", "phonetic": "", "meaning": "既然是这样，那么", "learned": false },
+                            { "word": "ah", "phonetic": "", "meaning": "啊", "learned": false },
+                            { "word": "strong", "phonetic": "", "meaning": "坚固的", "learned": false }
+                        ]
+                    },
+                    "Module 3": {
+                        words: [
+                            { "word": "collect", "phonetic": "", "meaning": "收集", "learned": false },
+                            { "word": "stamp", "phonetic": "", "meaning": "邮票", "learned": false },
+                            { "word": "hobby", "phonetic": "", "meaning": "业余爱好", "learned": false },
+                            { "word": "doll", "phonetic": "", "meaning": "玩具娃娃", "learned": false },
+                            { "word": "bicycle", "phonetic": "", "meaning": "自行车", "learned": false }
+                        ]
+                    },
+                    "Module 4": {
+                        words: [
+                            { "word": "Thanksgiving", "phonetic": "", "meaning": "感恩节", "learned": false },
+                            { "word": "Thanksgiving Day", "phonetic": "", "meaning": "感恩节", "learned": false },
+                            { "word": "flag", "phonetic": "", "meaning": "旗；国旗", "learned": false },
+                            { "word": "Flag Day", "phonetic": "", "meaning": "（美国）国旗制定纪念日", "learned": false },
+                            { "word": "fly", "phonetic": "", "meaning": "（使）（旗帜）飘扬", "learned": false },
+                            { "word": "special", "phonetic": "", "meaning": "特殊的，特别的", "learned": false },
+                            { "word": "meal", "phonetic": "", "meaning": "餐", "learned": false },
+                            { "word": "sound", "phonetic": "", "meaning": "听起来", "learned": false },
+                            { "word": "football", "phonetic": "", "meaning": "（美式）橄榄球", "learned": false },
+                            { "word": "moon cake", "phonetic": "", "meaning": "月饼", "learned": false },
+                            { "word": "the Mid-Autumn Festival", "phonetic": "", "meaning": "中秋节", "learned": false },
+                            { "word": "the Dragon Boat Festival", "phonetic": "", "meaning": "端午节", "learned": false },
+                            { "word": "race", "phonetic": "", "meaning": "比赛，竞赛", "learned": false },
+                            { "word": "lantern", "phonetic": "", "meaning": "灯笼", "learned": false },
+                            { "word": "the Lantern Festival", "phonetic": "", "meaning": "元宵节", "learned": false },
+                            { "word": "hang", "phonetic": "", "meaning": "悬挂，吊", "learned": false }
+                        ]
+                    },
+                    "Module 5": {
+                        words: [
+                            { "word": "pen friend", "phonetic": "", "meaning": "笔友", "learned": false },
+                            { "word": "Pleased to meet you!", "phonetic": "", "meaning": "很高兴见到你！", "learned": false },
+                            { "word": "address", "phonetic": "", "meaning": "地址", "learned": false },
+                            { "word": "French", "phonetic": "", "meaning": "法语", "learned": false },
+                            { "word": "age", "phonetic": "", "meaning": "年龄", "learned": false },
+                            { "word": "story", "phonetic": "", "meaning": "故事", "learned": false },
+                            { "word": "candy", "phonetic": "", "meaning": "糖果", "learned": false }
+                        ]
+                    },
+                    "Module 6": {
+                        words: [
+                            { "word": "world", "phonetic": "", "meaning": "世界", "learned": false },
+                            { "word": "often", "phonetic": "", "meaning": "经常", "learned": false },
+                            { "word": "difficult", "phonetic": "", "meaning": "困难的", "learned": false },
+                            { "word": "knife", "phonetic": "", "meaning": "餐刀；刀子", "learned": false },
+                            { "word": "fork", "phonetic": "", "meaning": "餐刀；叉", "learned": false },
+                            { "word": "chopsticks", "phonetic": "", "meaning": "（常复）筷子", "learned": false },
+                            { "word": "Japanese", "phonetic": "", "meaning": "日本的", "learned": false }
+                        ]
+                    },
+                    "Module 7": {
+                        words: [
+                            { "word": "believe", "phonetic": "", "meaning": "相信", "learned": false },
+                            { "word": "snake", "phonetic": "", "meaning": "蛇", "learned": false },
+                            { "word": "DVD", "phonetic": "", "meaning": "数字化视频光盘，DVD光盘", "learned": false },
+                            { "word": "together", "phonetic": "", "meaning": "一起，共同", "learned": false },
+                            { "word": "lucky", "phonetic": "", "meaning": "幸运的", "learned": false },
+                            { "word": "bamboo", "phonetic": "", "meaning": "竹子", "learned": false },
+                            { "word": "its", "phonetic": "", "meaning": "它的", "learned": false },
+                            { "word": "body", "phonetic": "", "meaning": "身体", "learned": false },
+                            { "word": "come out of", "phonetic": "", "meaning": "从……中出来", "learned": false },
+                            { "word": "flute", "phonetic": "", "meaning": "笛子", "learned": false },
+                            { "word": "get", "phonetic": "", "meaning": "变得，变成", "learned": false },
+                            { "word": "frightened", "phonetic": "", "meaning": "恐惧的，害怕的", "learned": false }
+                        ]
+                    },
+                    "Module 8": {
+                        words: [
+                            { "word": "long ago", "phonetic": "", "meaning": "很久以前", "learned": false },
+                            { "word": "I'd love to", "phonetic": "", "meaning": "我很乐意", "learned": false },
+                            { "word": "not really", "phonetic": "", "meaning": "不全是，事实上没有", "learned": false },
+                            { "word": "stop", "phonetic": "", "meaning": "（使）停止", "learned": false },
+                            { "word": "clean", "phonetic": "", "meaning": "打扫，（使）清洁", "learned": false },
+                            { "word": "camera", "phonetic": "", "meaning": "照相机", "learned": false },
+                            { "word": "show", "phonetic": "", "meaning": "把……给（某人）看", "learned": false },
+                            { "word": "never", "phonetic": "", "meaning": "从不", "learned": false }
+                        ]
+                    },
+                    "Module 9": {
+                        words: [
+                            { "word": "around", "phonetic": "", "meaning": "在四周，到处", "learned": false },
+                            { "word": "all around", "phonetic": "", "meaning": "到处，遍及", "learned": false },
+                            { "word": "member state", "phonetic": "", "meaning": "成员国", "learned": false },
+                            { "word": "inside", "phonetic": "", "meaning": "向室内，向里面", "learned": false },
+                            { "word": "should", "phonetic": "", "meaning": "应该", "learned": false }
+                        ]
+                    },
+                    "Module 10": {
+                        words: [
+                            { "word": "line", "phonetic": "", "meaning": "（等候的）长队，队列", "learned": false },
+                            { "word": "stand in line", "phonetic": "", "meaning": "排队", "learned": false },
+                            { "word": "close", "phonetic": "", "meaning": "关门，关闭", "learned": false },
+                            { "word": "librarian", "phonetic": "", "meaning": "图书馆管理员", "learned": false },
+                            { "word": "rule", "phonetic": "", "meaning": "规定，规章", "learned": false },
+                            { "word": "quiet", "phonetic": "", "meaning": "安静的", "learned": false },
+                            { "word": "problem", "phonetic": "", "meaning": "麻烦，困难，问题", "learned": false },
+                            { "word": "No problem", "phonetic": "", "meaning": "没问题", "learned": false },
+                            { "word": "cross", "phonetic": "", "meaning": "穿过（马路等）；渡过（河）", "learned": false }
+                        ]
+                    }
+                }
+            },
+
+            "六年级下册": {
+                modules: {
+                    "Module 1": {
+                        words: [
+                            { "word": "look", "phonetic": "", "meaning": "看；看上去", "learned": false },
+                            { "word": "cashier", "phonetic": "", "meaning": "收银员", "learned": false },
+                            { "word": "cola", "phonetic": "", "meaning": "可乐", "learned": false },
+                            { "word": "dollar", "phonetic": "", "meaning": "美元", "learned": false },
+                            { "word": "cent", "phonetic": "", "meaning": "美分", "learned": false },
+                            { "word": "enjoy", "phonetic": "", "meaning": "享用，享受", "learned": false },
+                            { "word": "careful", "phonetic": "", "meaning": "小心的", "learned": false },
+                            { "word": "Be careful", "phonetic": "", "meaning": "当心！", "learned": false }
+                        ]
+                    },
+                    "Module 2": {
+                        words: [
+                            { "word": "later", "phonetic": "", "meaning": "后来，以后", "learned": false },
+                            { "word": "to go", "phonetic": "", "meaning": "剩余", "learned": false },
+                            { "word": "duck", "phonetic": "", "meaning": "鸭子", "learned": false },
+                            { "word": "pond", "phonetic": "", "meaning": "水池，池塘", "learned": false },
+                            { "word": "cloud", "phonetic": "", "meaning": "云", "learned": false },
+                            { "word": "dry", "phonetic": "", "meaning": "干的", "learned": false },
+                            { "word": "like", "phonetic": "", "meaning": "像...一样", "learned": false },
+                            { "word": "look like", "phonetic": "", "meaning": "看来好像", "learned": false },
+                            { "word": "stay", "phonetic": "", "meaning": "保持，维持", "learned": false }
+                        ]
+                    },
+                    "Module 3": {
+                        words: [
+                            { "word": "shine", "phonetic": "", "meaning": "（太阳）发光，照耀", "learned": false },
+                            { "word": "cry", "phonetic": "", "meaning": "哭", "learned": false },
+                            { "word": "everyone", "phonetic": "", "meaning": "人人，每人，大家", "learned": false },
+                            { "word": "fly away", "phonetic": "", "meaning": "飞走", "learned": false },
+                            { "word": "just", "phonetic": "", "meaning": "就，且请", "learned": false },
+                            { "word": "cow", "phonetic": "", "meaning": "奶牛", "learned": false },
+                            { "word": "blow", "phonetic": "", "meaning": "吹，刮", "learned": false },
+                            { "word": "rabbit", "phonetic": "", "meaning": "兔子", "learned": false }
+                        ]
+                    },
+                    "Module 4": {
+                        words: [
+                            { "word": "balloon", "phonetic": "", "meaning": "气球", "learned": false },
+                            { "word": "stairs", "phonetic": "", "meaning": "（常复）楼梯", "learned": false },
+                            { "word": "mess", "phonetic": "", "meaning": "肮脏；凌乱", "learned": false }
+                        ]
+                    },
+                    "Module 5": {
+                        words: [
+                            { "word": "play", "phonetic": "", "meaning": "演奏，弹奏(音乐)", "learned": false },
+                            { "word": "third", "phonetic": "", "meaning": "第三(个)", "learned": false },
+                            { "word": "time", "phonetic": "", "meaning": "次，回", "learned": false },
+                            { "word": "bark", "phonetic": "", "meaning": "（狗）吠，叫", "learned": false },
+                            { "word": "loudly", "phonetic": "", "meaning": "大声地", "learned": false },
+                            { "word": "nothing", "phonetic": "", "meaning": "没有东西，没有事情", "learned": false }
+                        ]
+                    },
+                    "Module 6": {
+                        words: [
+                            { "word": "home", "phonetic": "", "meaning": "回家", "learned": false },
+                            { "word": "got", "phonetic": "", "meaning": "（get的过去式）得到，收到", "learned": false },
+                            { "word": "space", "phonetic": "", "meaning": "太空", "learned": false },
+                            { "word": "interested", "phonetic": "", "meaning": "感兴趣的", "learned": false },
+                            { "word": "spaceship", "phonetic": "", "meaning": "宇宙飞船", "learned": false },
+                            { "word": "finish", "phonetic": "", "meaning": "结束，完成", "learned": false },
+                            { "word": "decide", "phonetic": "", "meaning": "决定", "learned": false },
+                            { "word": "paper", "phonetic": "", "meaning": "纸做的，纸质的", "learned": false },
+                            { "word": "brought", "phonetic": "", "meaning": "（bring的过去式）拿来，带来", "learned": false },
+                            { "word": "bring back", "phonetic": "", "meaning": "带回", "learned": false },
+                            { "word": "model", "phonetic": "", "meaning": "模型", "learned": false },
+                            { "word": "taikonaut", "phonetic": "", "meaning": "（中国的）太空人，宇航员", "learned": false },
+                            { "word": "first", "phonetic": "", "meaning": "最初(的)，第一次(的)", "learned": false },
+                            { "word": "national", "phonetic": "", "meaning": "国家的，民族的", "learned": false },
+                            { "word": "seed", "phonetic": "", "meaning": "种子", "learned": false }
+                        ]
+                    },
+                    "Module 7": {
+                        words: [
+                            { "word": "spent", "phonetic": "", "meaning": "（spend的过去式）度过", "learned": false },
+                            { "word": "about", "phonetic": "", "meaning": "大约", "learned": false },
+                            { "word": "flew", "phonetic": "", "meaning": "（fly的过去式）飞，飞行", "learned": false },
+                            { "word": "October", "phonetic": "", "meaning": "十月", "learned": false },
+                            { "word": "video", "phonetic": "", "meaning": "录像", "learned": false },
+                            { "word": "proud", "phonetic": "", "meaning": "感到自豪的，感到骄傲的", "learned": false },
+                            { "word": "someday", "phonetic": "", "meaning": "有朝一日", "learned": false },
+                            { "word": "born", "phonetic": "", "meaning": "出生，诞生", "learned": false },
+                            { "word": "as", "phonetic": "", "meaning": "作为", "learned": false },
+                            { "word": "became", "phonetic": "", "meaning": "（become的过去式）变成", "learned": false },
+                            { "word": "letter", "phonetic": "", "meaning": "字母", "learned": false },
+                            { "word": "spell", "phonetic": "", "meaning": "拼写，拼出", "learned": false },
+                            { "word": "herself", "phonetic": "", "meaning": "她自己", "learned": false },
+                            { "word": "all over", "phonetic": "", "meaning": "到处，遍及，处处", "learned": false },
+                            { "word": "live", "phonetic": "", "meaning": "活着", "learned": false },
+                            { "word": "role model", "phonetic": "", "meaning": "模范，榜样", "learned": false }
+                        ]
+                    },
+                    "Module 8": {
+                        words: [
+                            { "word": "cup", "phonetic": "", "meaning": "杯子", "learned": false },
+                            { "word": "planned", "phonetic": "", "meaning": "（plan的过去式）计划", "learned": false },
+                            { "word": "baseball", "phonetic": "", "meaning": "棒球", "learned": false },
+                            { "word": "more", "phonetic": "", "meaning": "更强烈的", "learned": false },
+                            { "word": "smile", "phonetic": "", "meaning": "微笑", "learned": false },
+                            { "word": "mistake", "phonetic": "", "meaning": "错误", "learned": false },
+                            { "word": "make mistakes", "phonetic": "", "meaning": "犯错误", "learned": false },
+                            { "word": "with", "phonetic": "", "meaning": "与...有关", "learned": false },
+                            { "word": "said", "phonetic": "", "meaning": "（say的过去式）说", "learned": false },
+                            { "word": "raincoat", "phonetic": "", "meaning": "雨衣", "learned": false }
+                        ]
+                    },
+                    "Module 9": {
+                        words: [
+                            { "word": "wish", "phonetic": "", "meaning": "愿望，希望，祝，祝愿", "learned": false },
+                            { "word": "best wishes", "phonetic": "", "meaning": "最美好的祝愿", "learned": false },
+                            { "word": "primary", "phonetic": "", "meaning": "小学的，初等的", "learned": false },
+                            { "word": "message", "phonetic": "", "meaning": "留言", "learned": false },
+                            { "word": "keep", "phonetic": "", "meaning": "留言", "learned": false },
+                            { "word": "forever", "phonetic": "", "meaning": "永远", "learned": false },
+                            { "word": "joy", "phonetic": "", "meaning": "乐事，乐趣", "learned": false },
+                            { "word": "future", "phonetic": "", "meaning": "未来；前途", "learned": false },
+                            { "word": "wonderful", "phonetic": "", "meaning": "了不起的，出色的", "learned": false },
+                            { "word": "happiness", "phonetic": "", "meaning": "幸福，愉快", "learned": false },
+                            { "word": "what", "phonetic": "", "meaning": "多么", "learned": false }
+                        ]
+                    },
+                    "Module 10": {
+                        words: [
+                            { "word": "middle", "phonetic": "", "meaning": "中间的，中等的，中期，中间", "learned": false },
+                            { "word": "middle school", "phonetic": "", "meaning": "中学", "learned": false },
+                            { "word": "speech", "phonetic": "", "meaning": "演说，讲演", "learned": false },
+                            { "word": "classmate", "phonetic": "", "meaning": "同班同学", "learned": false },
+                            { "word": "leave", "phonetic": "", "meaning": "离开", "learned": false },
+                            { "word": "September", "phonetic": "", "meaning": "九月", "learned": false },
+                            { "word": "excited", "phonetic": "", "meaning": "激动的，兴奋的", "learned": false },
+                            { "word": "geography", "phonetic": "", "meaning": "地理", "learned": false },
+                            { "word": "same", "phonetic": "", "meaning": "相同的", "learned": false },
+                            { "word": "at the same time", "phonetic": "", "meaning": "同时", "learned": false },
+                            { "word": "spoke", "phonetic": "", "meaning": "（speak的过去式）说(某种语言)", "learned": false },
+                            { "word": "little", "phonetic": "", "meaning": "极少量的", "learned": false },
+                            { "word": "keep on", "phonetic": "", "meaning": "保持", "learned": false },
+                            { "word": "practise", "phonetic": "", "meaning": "练习", "learned": false },
+                            { "word": "sometime", "phonetic": "", "meaning": "某个时候", "learned": false },
+                            { "word": "each other", "phonetic": "", "meaning": "互相，彼此", "learned": false },
+                            { "word": "chemistry", "phonetic": "", "meaning": "化学", "learned": false },
+                            { "word": "physics", "phonetic": "", "meaning": "物理", "learned": false }
+                        ]
+                    }
+                }
+            },
+
+
+        };
+        
+        // 显示通知
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 页面切换函数
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 如果是首页，更新统计信息
+            if (pageId === 'home-page') {
+                updateGlobalStats();
+            }
+            // 如果是教材目录页，更新所有教材的进度
+            else if (pageId === 'catalog-page') {
+                updateAllBookProgress();
+            }
+            // 如果是单元目录页，刷新当前教材的单元
+            else if (pageId === 'module-page' && currentBook) {
+                selectBook(currentBook);
+            }
+            
+            // 滚动到顶部
+            window.scrollTo(0, 0);
+        }
+        
+        // 更新全局统计数据
+        function updateGlobalStats() {
+            let totalWords = 0;
+            let learnedWords = 0;
+            
+            // 遍历所有教材和单元
+            for (const bookName in books) {
+                for (const moduleName in books[bookName].modules) {
+                    const words = books[bookName].modules[moduleName].words;
+                    totalWords += words.length;
+                    learnedWords += words.filter(word => word.learned).length;
+                }
+            }
+            
+            // 计算总进度
+            const progress = totalWords > 0 ? Math.round((learnedWords / totalWords) * 100) : 0;
+            
+            // 更新UI
+            document.getElementById('total-words').textContent = totalWords;
+            document.getElementById('learned-words').textContent = learnedWords;
+            document.getElementById('progress-percent').textContent = `${progress}%`;
+        }
+        
+        // 计算教材的进度
+        function calculateBookProgress(bookName) {
+            const book = books[bookName];
+            if (!book) return 0;
+            
+            let totalModules = 0;
+            let totalProgress = 0;
+            
+            // 遍历所有单元
+            for (const moduleName in book.modules) {
+                const module = book.modules[moduleName];
+                const moduleProgress = calculateModuleProgress(bookName, moduleName);
+                totalProgress += moduleProgress;
+                totalModules++;
+            }
+            
+            return totalModules > 0 ? Math.round(totalProgress / totalModules) : 0;
+        }
+        
+        // 计算单元的进度
+        function calculateModuleProgress(bookName, moduleName) {
+            const module = books[bookName].modules[moduleName];
+            if (!module) return 0;
+            
+            const words = module.words;
+            if (words.length === 0) return 0;
+            
+            const learnedCount = words.filter(word => word.learned).length;
+            return Math.round((learnedCount / words.length) * 100);
+        }
+        
+        // 更新所有教材的进度显示
+        function updateAllBookProgress() {
+            const bookNames = Object.keys(books);
+            let overallProgress = 0;
+            
+            // 更新每个教材的进度
+            bookNames.forEach((bookName, index) => {
+                const progress = calculateBookProgress(bookName);
+                overallProgress += progress;
+                
+                // 更新进度条和文本
+                const progressBar = document.getElementById(`progress-${index+1}`);
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                    document.getElementById(`progress-text-${index+1}`).textContent = `${progress}% 已学习`;
+                }
+            });
+            
+            // 计算并显示整体进度
+            overallProgress = bookNames.length > 0 ? Math.round(overallProgress / bookNames.length) : 0;
+            document.getElementById('overall-progress').textContent = `总体进度: ${overallProgress}%`;
+        }
+        
+        // 选择教材
+        function selectBook(bookName) {
+            currentBook = bookName;
+            document.getElementById('book-title').textContent = bookName + " - 单元目录";
+            
+            // 计算教材进度
+            const bookProgress = calculateBookProgress(bookName);
+            document.getElementById('book-progress').textContent = `学习进度: ${bookProgress}%`;
+            
+            // 生成单元目录
+            const moduleGrid = document.getElementById('module-grid');
+            moduleGrid.innerHTML = '';
+            
+            for (const moduleName in books[bookName].modules) {
+                const module = books[bookName].modules[moduleName];
+                const moduleProgress = calculateModuleProgress(bookName, moduleName);
+                
+                const moduleCard = document.createElement('div');
+                moduleCard.className = 'category-card';
+                moduleCard.innerHTML = `
+                    <h3>${moduleName}</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${moduleProgress}%"></div>
+                    </div>
+                    <div class="progress-text">${moduleProgress}% 已学习</div>
+                `;
+                moduleCard.onclick = () => selectModule(moduleName);
+                moduleGrid.appendChild(moduleCard);
+            }
+            
+            showPage('module-page');
+        }
+        
+        // 选择单元
+        function selectModule(moduleName) {
+            currentModule = moduleName;
+            document.getElementById('module-title').textContent = `${currentBook} - ${moduleName}`;
+            
+            // 计算单元进度
+            const moduleProgress = calculateModuleProgress(currentBook, moduleName);
+            document.getElementById('module-progress').textContent = `学习进度: ${moduleProgress}%`;
+            
+            // 生成单词卡片
+            const wordsGrid = document.getElementById('words-grid');
+            wordsGrid.innerHTML = '';
+            
+            const module = books[currentBook].modules[moduleName];
+            module.words.forEach(word => {
+                const wordCard = document.createElement('div');
+                wordCard.className = `word-card ${word.learned ? 'learned' : ''}`;
+                wordCard.innerHTML = `
+                    <div class="word-header">
+                        <div>
+                            <div class="word">${word.word}</div>
+                            <div class="phonetic">${word.phonetic}</div>
+                        </div>
+                        <button class="audio-btn" onclick="playAudio('${word.word}')">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                    </div>
+                    <div class="meaning">${word.meaning}</div>
+                    <button class="learn-btn ${word.learned ? 'learned' : ''}" 
+                            onclick="toggleLearned(this, '${currentBook}', '${currentModule}', '${word.word}')">
+                        <i class="fas ${word.learned ? 'fa-check-circle' : 'fa-check'}"></i> 
+                        ${word.learned ? '已学习' : '标记为已学'}
+                    </button>
+                `;
+                wordsGrid.appendChild(wordCard);
+            });
+            
+            showPage('wordlist-page');
+        }
+        
+        // 播放单词发音
+        function playAudio(word) {
+            // 这里使用Web Speech API模拟发音
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+        
+        // 标记单词为已学/未学
+        function toggleLearned(button, bookName, moduleName, wordText) {
+            // 找到单词对象
+            const word = books[bookName].modules[moduleName].words.find(w => w.word === wordText);
+            if (!word) return;
+            
+            // 切换学习状态
+            word.learned = !word.learned;
+            
+            // 更新UI
+            const wordCard = button.closest('.word-card');
+            if (word.learned) {
+                wordCard.classList.add('learned');
+                button.innerHTML = '<i class="fas fa-check-circle"></i> 已学习';
+                button.classList.add('learned');
+            } else {
+                wordCard.classList.remove('learned');
+                button.innerHTML = '<i class="fas fa-check"></i> 标记为已学';
+                button.classList.remove('learned');
+            }
+            
+            // 更新单元进度
+            const moduleProgress = calculateModuleProgress(bookName, moduleName);
+            document.getElementById('module-progress').textContent = `学习进度: ${moduleProgress}%`;
+            
+            // 更新教材进度
+            const bookProgress = calculateBookProgress(bookName);
+            document.getElementById('book-progress').textContent = `学习进度: ${bookProgress}%`;
+            
+            // 更新首页统计数据
+            updateGlobalStats();
+            
+            // 显示更新通知
+            showNotification();
+        }
+        
+        // 返回到教材目录页（带刷新）
+        function goBackToCatalog() {
+            updateAllBookProgress();
+            showPage('catalog-page');
+        }
+        
+        // 返回到单元目录页（带刷新）
+        function goBackToModules() {
+            if (currentBook) {
+                selectBook(currentBook);
+            } else {
+                showPage('module-page');
+            }
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化统计数据
+            updateGlobalStats();
+            
+            // 初始化教材进度
+            updateAllBookProgress();
+            
+        });
+    </script>
+</body>
+</html>
