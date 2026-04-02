@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Bode Pro v1.0 | Frequency Probe</title>
+    <title>Bode</title>
     <style>
         :root { --bg: #f5f7f9; --panel: #ffffff; --primary: #1976D2; --axis: #333; --grid: #e8e8e8; --probe: #9C27B0; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); overflow: hidden; }
@@ -92,7 +92,7 @@
         dc: 60, 
         poles: [{f: 1000, t: 'LHP', c: '#D32F2F', q: 0.707}], 
         zeros: [{f: 1e6, t: 'LHP', c: '#2E7D32'}],
-        probeFreq: 1e5 // 探针初始频率
+        probeFreq: 1e5
     };
     let view = { fMin: 1, fMax: 1e9 };
 
@@ -150,7 +150,6 @@
             drawGrid(ctx, w, h, ctx === mCtx ? mRange : pRange, ctx === mCtx ? 'dB' : '°');
         });
 
-        // 绘制主曲线
         let ugf = null, pm = null;
         mCtx.beginPath(); pCtx.beginPath();
         mCtx.strokeStyle = "#1976D2"; pCtx.strokeStyle = "#E65100";
@@ -167,17 +166,30 @@
         }
         mCtx.stroke(); pCtx.stroke();
 
-        // 绘制探针
-        drawProbe(w, h, mRange, pRange);
-
-        // 绘制 UGF
+        // --- 核心修正：双图同步绘制 UGF 虚线 ---
         if (ugf && ugf >= view.fMin && ugf <= view.fMax) {
             const ux = freqToX(ugf, w);
-            mCtx.save(); mCtx.setLineDash([5, 3]); mCtx.strokeStyle = COLORS.ugf;
-            mCtx.beginPath(); mCtx.moveTo(ux, PAD.t); mCtx.lineTo(ux, h-PAD.b); mCtx.stroke(); mCtx.restore();
+            [mCtx, pCtx].forEach(ctx => {
+                ctx.save();
+                ctx.setLineDash([5, 3]);
+                ctx.strokeStyle = COLORS.ugf;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(ux, PAD.t);
+                ctx.lineTo(ux, h - PAD.b);
+                ctx.stroke();
+                
+                if (ctx === mCtx) {
+                    ctx.fillStyle = COLORS.ugf;
+                    ctx.font = "bold 11px Arial";
+                    ctx.fillText(`UGF: ${formatEng(ugf)}Hz`, ux + 5, PAD.t + 15);
+                }
+                ctx.restore();
+            });
         }
 
-        // 绘制标记点
+        drawProbe(w, h, mRange, pRange);
+
         [...sys.poles.map(p=>({p, isP:true})), ...sys.zeros.map(z=>({p:z, isP:false}))].forEach(obj => {
             drawMarker(mCtx, obj.p, obj.isP, mRange, w, h);
         });
@@ -188,7 +200,6 @@
 
     function drawProbe(w, h, mRange, pRange) {
         if (sys.probeFreq < view.fMin || sys.probeFreq > view.fMax) return;
-        
         const px = freqToX(sys.probeFreq, w);
         const res = getResp(sys.probeFreq);
         const my = valToY(res.m, mRange.min, mRange.max, h);
@@ -200,21 +211,16 @@
             ctx.strokeStyle = COLORS.probe;
             ctx.lineWidth = 1.5;
             ctx.beginPath(); ctx.moveTo(px, PAD.t); ctx.lineTo(px, h - PAD.b); ctx.stroke();
-            
-            // 绘制交点圆圈
             const targetY = (ctx === mCtx) ? my : py;
             ctx.setLineDash([]);
             ctx.fillStyle = COLORS.probe;
             ctx.beginPath(); ctx.arc(px, targetY, 4, 0, 7); ctx.fill();
-            
-            // 绘制探针数值标签
             ctx.font = "bold 11px Arial";
             const txt = (ctx === mCtx) ? `${res.m.toFixed(1)} dB` : `${res.p.toFixed(1)}°`;
             ctx.fillText(txt, px + 8, targetY - 8);
             if(ctx === mCtx) ctx.fillText(`f: ${formatEng(sys.probeFreq)}Hz`, px + 8, PAD.t + 15);
             ctx.restore();
         });
-        
         document.getElementById('probe-readout').innerHTML = 
             `Probe @ <b>${formatEng(sys.probeFreq)}Hz</b>: <span style="color:#64ffda">${res.m.toFixed(2)}dB</span> / <span style="color:#ffb74d">${res.p.toFixed(1)}°</span>`;
     }
@@ -254,44 +260,35 @@
     }
 
     function setupEvents() {
-        let dragTarget = null; // 'probe', or {type, index}
+        let dragTarget = null;
         const handleDown = (e) => {
-            const r = mCanvas.getBoundingClientRect();
+            const canvas = e.target;
+            const r = canvas.getBoundingClientRect();
             const mx = e.clientX - r.left, my = e.clientY - r.top;
-            
-            // 1. 优先检查是否点中探针 (px 附近 15 像素范围)
             const px = freqToX(sys.probeFreq, r.width);
             if (Math.abs(mx - px) < 15) { dragTarget = { type: 'probe' }; return; }
-
-            // 2. 检查极零点
-            const mRange = { min: parseFloat(document.getElementById('mag-min').value), max: parseFloat(document.getElementById('mag-max').value) };
-            [...sys.poles.map((p,i)=>({p,i,t:'pole'})), ...sys.zeros.map((z,i)=>({p:z,i,t:'zero'}))].forEach(o => {
-                const ix = freqToX(o.p.f, r.width), iy = valToY(getResp(o.p.f).m, mRange.min, mRange.max, r.height);
-                if (Math.hypot(mx-ix, my-iy) < 25) dragTarget = o;
-            });
+            if (canvas === mCanvas) {
+                const mRange = { min: parseFloat(document.getElementById('mag-min').value), max: parseFloat(document.getElementById('mag-max').value) };
+                [...sys.poles.map((p,i)=>({p,i,t:'pole'})), ...sys.zeros.map((z,i)=>({p:z,i,t:'zero'}))].forEach(o => {
+                    const ix = freqToX(o.p.f, r.width), iy = valToY(getResp(o.p.f).m, mRange.min, mRange.max, r.height);
+                    if (Math.hypot(mx-ix, my-iy) < 25) dragTarget = o;
+                });
+            }
         };
-
         const handleMove = (e) => {
             if (!dragTarget) return;
             const r = mCanvas.getBoundingClientRect();
             let x = Math.max(PAD.l, Math.min(e.clientX - r.left, r.width - PAD.r));
             const newF = xToFreq(x, r.width);
-
-            if (dragTarget.type === 'probe') {
-                sys.probeFreq = newF;
-            } else {
-                dragTarget.p.f = newF;
-                syncUI();
-            }
-            render();
+            if (dragTarget.type === 'probe') sys.probeFreq = newF;
+            else dragTarget.p.f = newF;
+            render(); syncUI();
         };
-
         [mCanvas, pCanvas].forEach(c => c.addEventListener('mousedown', handleDown));
         window.addEventListener('mousemove', handleMove);
         window.addEventListener('mouseup', () => dragTarget = null);
     }
 
-    // --- Utils ---
     function freqToX(f, w) { return PAD.l + (Math.log10(f) - Math.log10(view.fMin)) / (Math.log10(view.fMax) - Math.log10(view.fMin)) * (w - PAD.l - PAD.r); }
     function xToFreq(x, w) { return Math.pow(10, Math.log10(view.fMin) + (x - PAD.l) / (w - PAD.l - PAD.r) * (Math.log10(view.fMax) - Math.log10(view.fMin))); }
     function valToY(v, min, max, h) { return h - PAD.b - (v - min) / (max - min) * (h - PAD.t - PAD.b); }
@@ -309,31 +306,17 @@
         const m = String(s).match(/^([0-9.]+)\s*([a-zA-Z]*)$/);
         return m ? parseFloat(m[1]) * (UNITS[m[2]] || 1) : parseFloat(s) || 0;
     }
-
     function syncUI() {
-        const renderList = (type) => {
-            const container = document.getElementById(type + 's-list');
-            container.innerHTML = '';
+        const list = (type) => {
+            const container = document.getElementById(type + 's-list'); container.innerHTML = '';
             sys[type+'s'].forEach((item, i) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'item-row';
-                wrapper.innerHTML = `
-                    <input type="text" value="${formatEng(item.f)}" onchange="updateItem('${type}',${i},'f',this.value)">
-                    <select onchange="updateItem('${type}',${i},'t',this.value)">
-                        <option value="LHP" ${item.t==='LHP'?'selected':''}>LHP</option>
-                        <option value="RHP" ${item.t==='RHP'?'selected':''}>RHP</option>
-                        ${type==='pole'?'<option value="Conjugate" '+(item.t==='Conjugate'?'selected':'')+'>Conj</option>':''}
-                    </select>
-                    <input type="color" value="${item.c}" onchange="updateItem('${type}',${i},'c',this.value)">
-                    <button style="border:none;background:none;color:red;font-weight:bold;cursor:pointer" onclick="removeItem('${type}',${i})">×</button>
-                    ${item.t==='Conjugate' ? `<div class="q-input"><label>Q:</label><input type="number" step="0.1" value="${item.q}" onchange="updateItem('${type}',${i},'q',this.value)"></div>` : ''}
-                `;
-                container.appendChild(wrapper);
+                const row = document.createElement('div'); row.className = 'item-row';
+                row.innerHTML = `<input type="text" value="${formatEng(item.f)}" onchange="updateItem('${type}',${i},'f',this.value)"><select onchange="updateItem('${type}',${i},'t',this.value)"><option value="LHP" ${item.t==='LHP'?'selected':''}>LHP</option><option value="RHP" ${item.t==='RHP'?'selected':''}>RHP</option>${type==='pole'?'<option value="Conjugate" '+(item.t==='Conjugate'?'selected':'')+'>Conj</option>':''}</select><input type="color" value="${item.c}" onchange="updateItem('${type}',${i},'c',this.value)"><button style="border:none;background:none;color:red;font-weight:bold;cursor:pointer" onclick="removeItem('${type}',${i})">×</button>${item.t==='Conjugate' ? `<div class="q-input"><label>Q:</label><input type="number" step="0.1" value="${item.q}" onchange="updateItem('${type}',${i},'q',this.value)"></div>` : ''}`;
+                container.appendChild(row);
             });
         };
-        renderList('pole'); renderList('zero');
+        list('pole'); list('zero');
     }
-
     function updateView() {
         const pan = parseFloat(document.getElementById('freq-pan').value);
         const zoom = parseFloat(document.getElementById('freq-zoom').value);
@@ -342,10 +325,7 @@
     }
     window.addItem = (t) => { sys[t+'s'].push({f: 1e6, t:'LHP', c: t==='pole'?'#D32F2F':'#2E7D32', q: 0.707}); syncUI(); render(); };
     window.removeItem = (t, i) => { sys[t+'s'].splice(i, 1); syncUI(); render(); };
-    window.updateItem = (t, i, fld, val) => { 
-        sys[t+'s'][i][fld] = (fld==='f') ? parseEng(val) : (fld==='q'?parseFloat(val):val); 
-        render(); syncUI(); 
-    };
+    window.updateItem = (t, i, fld, val) => { sys[t+'s'][i][fld] = (fld==='f') ? parseEng(val) : (fld==='q'?parseFloat(val):val); render(); syncUI(); };
     window.updateSys = () => { sys.dc = parseEng(document.getElementById('dc-gain').value); render(); };
 
     init();
