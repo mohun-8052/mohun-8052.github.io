@@ -2,6 +2,359 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <title>Bode Pro v1.0 | Frequency Probe</title>
+    <style>
+        :root { --bg: #f5f7f9; --panel: #ffffff; --primary: #1976D2; --axis: #333; --grid: #e8e8e8; --probe: #9C27B0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); overflow: hidden; }
+        
+        #sidebar { width: 360px; min-width: 360px; background: var(--panel); border-right: 1px solid #cfd8dc; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; box-shadow: 2px 0 12px rgba(0,0,0,0.08); }
+        .section { padding: 12px; border: 1px solid #e0e6ed; border-radius: 8px; background: #fff; }
+        h3 { font-size: 0.85rem; margin: 0 0 10px 0; color: var(--primary); border-left: 4px solid var(--primary); padding-left: 8px; text-transform: uppercase; }
+        
+        label { display: block; font-size: 11px; color: #546e7a; margin-bottom: 2px; font-weight: 700; }
+        input, select { width: 100%; padding: 5px; border: 1px solid #b0bec5; border-radius: 4px; box-sizing: border-box; font-family: 'Consolas', monospace; margin-bottom: 5px; font-size: 12px; }
+        
+        #main { flex-grow: 1; display: flex; flex-direction: column; padding: 20px; gap: 15px; background: #eceff1; overflow-y: auto; align-items: center; }
+        .chart-container { width: 100%; max-width: 1100px; background: #fff; border: 1px solid #cfd8dc; border-radius: 4px; position: relative; }
+        canvas { display: block; width: 100%; height: 320px; cursor: crosshair; }
+        .tag { position: absolute; top: 10px; left: 85px; font-size: 10px; font-weight: 800; color: #fff; background: #455a64; padding: 2px 6px; border-radius: 3px; z-index: 5; }
+        
+        #dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; background: #263238; color: #fff; border-radius: 8px; }
+        .val { color: #64ffda; font-weight: 800; display: block; font-size: 18px; }
+        .probe-val { color: #E1BEE7; font-size: 12px; margin-top: 4px; border-top: 1px solid #546e7a; padding-top: 4px; grid-column: span 2; }
+        
+        .item-row { display: grid; grid-template-columns: 1fr 85px 45px 25px 20px; gap: 4px; margin-bottom: 8px; align-items: center; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .q-input { grid-column: 1 / span 2; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; font-size: 11px; }
+        input[type="color"] { padding: 0; height: 24px; border: none; cursor: pointer; background: none; }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <div id="dashboard">
+        <div>UGF<span id="ugf-val" class="val">--</span></div>
+        <div>PM<span id="pm-val" class="val">--</span></div>
+        <div id="probe-readout" class="probe-val">Probe: 拖动紫色虚线查看数据</div>
+    </div>
+
+    <div class="section">
+        <h3>1. 系统参数 (System)</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div>
+                <label>Gain (dB)</label>
+                <input type="text" id="dc-gain" value="60" onchange="updateSys()">
+            </div>
+            <div>
+                <label>Phase Start (°)</label>
+                <input type="number" id="phase-start" value="180" onchange="render()">
+            </div>
+        </div>
+        <label>极点 Poles / 零点 Zeros</label>
+        <div id="poles-list"></div>
+        <button class="btn-add" onclick="addItem('pole')">+ 增加极点</button>
+        <div id="zeros-list" style="margin-top:10px;"></div>
+        <button class="btn-add" onclick="addItem('zero')">+ 增加零点</button>
+    </div>
+
+    <div class="section">
+        <h3>2. 视图与轴量程</h3>
+        <label>中心频率 & 跨度 (Log)</label>
+        <input type="range" id="freq-pan" min="-6" max="12" step="0.1" value="4" oninput="updateView()">
+        <input type="range" id="freq-zoom" min="1" max="18" step="0.1" value="8" oninput="updateView()">
+        <label>纵轴范围 (Mag / Phase)</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:4px;">
+            <input type="number" id="mag-min" value="-40" onchange="render()">
+            <input type="number" id="mag-max" value="80" onchange="render()">
+            <input type="number" id="phase-min" value="-90" onchange="render()">
+            <input type="number" id="phase-max" value="270" onchange="render()">
+        </div>
+    </div>
+</div>
+
+<div id="main">
+    <div class="chart-container">
+        <div class="tag">MAGNITUDE (dB)</div>
+        <canvas id="magCanvas"></canvas>
+    </div>
+    <div class="chart-container">
+        <div class="tag">PHASE (Degree)</div>
+        <canvas id="phaseCanvas"></canvas>
+    </div>
+</div>
+
+<script>
+    const UNITS = { 'G': 1e9, 'M': 1e6, 'k': 1e3, 'm': 1e-3, 'u': 1e-6, 'n': 1e-9, 'p': 1e-12 };
+    const PAD = { t: 40, r: 40, b: 50, l: 85 }; 
+    const COLORS = { axis: '#333', grid: '#e8e8e8', ugf: '#D32F2F', probe: '#9C27B0' };
+
+    let sys = { 
+        dc: 60, 
+        poles: [{f: 1000, t: 'LHP', c: '#D32F2F', q: 0.707}], 
+        zeros: [{f: 1e6, t: 'LHP', c: '#2E7D32'}],
+        probeFreq: 1e5 // 探针初始频率
+    };
+    let view = { fMin: 1, fMax: 1e9 };
+
+    const mCanvas = document.getElementById('magCanvas'), pCanvas = document.getElementById('phaseCanvas');
+    const mCtx = mCanvas.getContext('2d'), pCtx = pCanvas.getContext('2d');
+
+    function init() {
+        window.addEventListener('resize', onResize);
+        setupEvents();
+        updateView();
+        syncUI();
+        setTimeout(onResize, 50);
+    }
+
+    function onResize() {
+        const containerWidth = mCanvas.parentElement.clientWidth;
+        const fixedHeight = 320;
+        [mCanvas, pCanvas].forEach(c => {
+            c.width = containerWidth * window.devicePixelRatio;
+            c.height = fixedHeight * window.devicePixelRatio;
+            c.style.height = fixedHeight + "px";
+        });
+        render();
+    }
+
+    function getResp(f) {
+        let m = sys.dc;
+        let p = parseFloat(document.getElementById('phase-start').value) || 0; 
+        const process = (item, isP) => {
+            const s = isP ? -1 : 1;
+            if (item.t === 'Conjugate') {
+                const r = f / item.f;
+                m += s * 20 * Math.log10(Math.sqrt(Math.pow(1 - r*r, 2) + Math.pow(r/item.q, 2)) || 1e-15);
+                p += s * Math.atan2(r/item.q, 1 - r*r) * 180 / Math.PI;
+            } else {
+                m += s * 20 * Math.log10(Math.sqrt(1 + (f/item.f)**2));
+                let d = Math.atan2(f, item.f) * 180 / Math.PI;
+                p += s * (item.t === 'LHP' ? d : -d);
+            }
+        };
+        sys.poles.forEach(x => process(x, true));
+        sys.zeros.forEach(x => process(x, false));
+        return { m, p };
+    }
+
+    function render() {
+        const dpr = window.devicePixelRatio || 1;
+        const w = mCanvas.width / dpr, h = mCanvas.height / dpr;
+        const mRange = { min: parseFloat(document.getElementById('mag-min').value), max: parseFloat(document.getElementById('mag-max').value) };
+        const pRange = { min: parseFloat(document.getElementById('phase-min').value), max: parseFloat(document.getElementById('phase-max').value) };
+
+        [mCtx, pCtx].forEach(ctx => {
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, w, h);
+            drawGrid(ctx, w, h, ctx === mCtx ? mRange : pRange, ctx === mCtx ? 'dB' : '°');
+        });
+
+        // 绘制主曲线
+        let ugf = null, pm = null;
+        mCtx.beginPath(); pCtx.beginPath();
+        mCtx.strokeStyle = "#1976D2"; pCtx.strokeStyle = "#E65100";
+        mCtx.lineWidth = 2.5;
+
+        for (let x = PAD.l; x <= w - PAD.r; x++) {
+            const f = xToFreq(x, w);
+            const { m, p } = getResp(f);
+            const my = valToY(m, mRange.min, mRange.max, h);
+            const py = valToY(p, pRange.min, pRange.max, h);
+            if (x === PAD.l) { mCtx.moveTo(x, my); pCtx.moveTo(x, py); }
+            else { mCtx.lineTo(x, my); pCtx.lineTo(x, py); }
+            if (!ugf && m <= 0) { ugf = f; pm = p; }
+        }
+        mCtx.stroke(); pCtx.stroke();
+
+        // 绘制探针
+        drawProbe(w, h, mRange, pRange);
+
+        // 绘制 UGF
+        if (ugf && ugf >= view.fMin && ugf <= view.fMax) {
+            const ux = freqToX(ugf, w);
+            mCtx.save(); mCtx.setLineDash([5, 3]); mCtx.strokeStyle = COLORS.ugf;
+            mCtx.beginPath(); mCtx.moveTo(ux, PAD.t); mCtx.lineTo(ux, h-PAD.b); mCtx.stroke(); mCtx.restore();
+        }
+
+        // 绘制标记点
+        [...sys.poles.map(p=>({p, isP:true})), ...sys.zeros.map(z=>({p:z, isP:false}))].forEach(obj => {
+            drawMarker(mCtx, obj.p, obj.isP, mRange, w, h);
+        });
+
+        document.getElementById('ugf-val').innerText = ugf ? formatEng(ugf) + 'Hz' : '--';
+        document.getElementById('pm-val').innerText = pm ? pm.toFixed(1) + '°' : '--';
+    }
+
+    function drawProbe(w, h, mRange, pRange) {
+        if (sys.probeFreq < view.fMin || sys.probeFreq > view.fMax) return;
+        
+        const px = freqToX(sys.probeFreq, w);
+        const res = getResp(sys.probeFreq);
+        const my = valToY(res.m, mRange.min, mRange.max, h);
+        const py = valToY(res.p, pRange.min, pRange.max, h);
+
+        [mCtx, pCtx].forEach(ctx => {
+            ctx.save();
+            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = COLORS.probe;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(px, PAD.t); ctx.lineTo(px, h - PAD.b); ctx.stroke();
+            
+            // 绘制交点圆圈
+            const targetY = (ctx === mCtx) ? my : py;
+            ctx.setLineDash([]);
+            ctx.fillStyle = COLORS.probe;
+            ctx.beginPath(); ctx.arc(px, targetY, 4, 0, 7); ctx.fill();
+            
+            // 绘制探针数值标签
+            ctx.font = "bold 11px Arial";
+            const txt = (ctx === mCtx) ? `${res.m.toFixed(1)} dB` : `${res.p.toFixed(1)}°`;
+            ctx.fillText(txt, px + 8, targetY - 8);
+            if(ctx === mCtx) ctx.fillText(`f: ${formatEng(sys.probeFreq)}Hz`, px + 8, PAD.t + 15);
+            ctx.restore();
+        });
+        
+        document.getElementById('probe-readout').innerHTML = 
+            `Probe @ <b>${formatEng(sys.probeFreq)}Hz</b>: <span style="color:#64ffda">${res.m.toFixed(2)}dB</span> / <span style="color:#ffb74d">${res.p.toFixed(1)}°</span>`;
+    }
+
+    function drawGrid(ctx, w, h, range, unit) {
+        ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1;
+        const lMin = Math.floor(Math.log10(view.fMin)), lMax = Math.ceil(Math.log10(view.fMax));
+        for (let i = lMin; i <= lMax; i++) {
+            let x = freqToX(Math.pow(10, i), w);
+            if (x < PAD.l || x > w - PAD.r) continue;
+            ctx.beginPath(); ctx.moveTo(x, PAD.t); ctx.lineTo(x, h - PAD.b); ctx.stroke();
+        }
+        ctx.strokeStyle = COLORS.axis; ctx.lineWidth = 2;
+        ctx.strokeRect(PAD.l, PAD.t, w - PAD.l - PAD.r, h - PAD.t - PAD.b);
+        ctx.fillStyle = COLORS.axis; ctx.font = "bold 11px 'Consolas'";
+        for (let i = lMin; i <= lMax; i++) {
+            let f = Math.pow(10, i);
+            let x = freqToX(f, w);
+            if (x >= PAD.l - 10 && x <= w - PAD.r + 10) ctx.fillText(formatEng(f), x - 18, h - PAD.b + 22);
+        }
+        for (let i = 0; i <= 6; i++) {
+            const val = range.min + (range.max - range.min) * (i / 6);
+            const y = valToY(val, range.min, range.max, h);
+            ctx.fillText(val.toFixed(0) + unit, PAD.l - 65, y + 4);
+        }
+    }
+
+    function drawMarker(ctx, item, isP, range, w, h) {
+        if (item.f < view.fMin || item.f > view.fMax) return;
+        const x = freqToX(item.f, w), y = valToY(getResp(item.f).m, range.min, range.max, h);
+        ctx.strokeStyle = item.c; ctx.lineWidth = 3; ctx.beginPath();
+        if (isP) { 
+            ctx.moveTo(x-5, y-5); ctx.lineTo(x+5, y+5); ctx.moveTo(x-5, y+5); ctx.lineTo(x+5, y-5);
+            if (item.t === 'Conjugate') ctx.strokeRect(x-8, y-8, 16, 16);
+        } else { ctx.arc(x, y, 5, 0, 7); }
+        ctx.stroke();
+    }
+
+    function setupEvents() {
+        let dragTarget = null; // 'probe', or {type, index}
+        const handleDown = (e) => {
+            const r = mCanvas.getBoundingClientRect();
+            const mx = e.clientX - r.left, my = e.clientY - r.top;
+            
+            // 1. 优先检查是否点中探针 (px 附近 15 像素范围)
+            const px = freqToX(sys.probeFreq, r.width);
+            if (Math.abs(mx - px) < 15) { dragTarget = { type: 'probe' }; return; }
+
+            // 2. 检查极零点
+            const mRange = { min: parseFloat(document.getElementById('mag-min').value), max: parseFloat(document.getElementById('mag-max').value) };
+            [...sys.poles.map((p,i)=>({p,i,t:'pole'})), ...sys.zeros.map((z,i)=>({p:z,i,t:'zero'}))].forEach(o => {
+                const ix = freqToX(o.p.f, r.width), iy = valToY(getResp(o.p.f).m, mRange.min, mRange.max, r.height);
+                if (Math.hypot(mx-ix, my-iy) < 25) dragTarget = o;
+            });
+        };
+
+        const handleMove = (e) => {
+            if (!dragTarget) return;
+            const r = mCanvas.getBoundingClientRect();
+            let x = Math.max(PAD.l, Math.min(e.clientX - r.left, r.width - PAD.r));
+            const newF = xToFreq(x, r.width);
+
+            if (dragTarget.type === 'probe') {
+                sys.probeFreq = newF;
+            } else {
+                dragTarget.p.f = newF;
+                syncUI();
+            }
+            render();
+        };
+
+        [mCanvas, pCanvas].forEach(c => c.addEventListener('mousedown', handleDown));
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', () => dragTarget = null);
+    }
+
+    // --- Utils ---
+    function freqToX(f, w) { return PAD.l + (Math.log10(f) - Math.log10(view.fMin)) / (Math.log10(view.fMax) - Math.log10(view.fMin)) * (w - PAD.l - PAD.r); }
+    function xToFreq(x, w) { return Math.pow(10, Math.log10(view.fMin) + (x - PAD.l) / (w - PAD.l - PAD.r) * (Math.log10(view.fMax) - Math.log10(view.fMin))); }
+    function valToY(v, min, max, h) { return h - PAD.b - (v - min) / (max - min) * (h - PAD.t - PAD.b); }
+    function formatEng(v) { 
+        const a = Math.abs(v);
+        if (a >= 1e9) return (v/1e9).toFixed(1) + 'G';
+        if (a >= 1e6) return (v/1e6).toFixed(1) + 'M';
+        if (a >= 1e3) return (v/1e3).toFixed(1) + 'k';
+        if (a >= 1) return v.toFixed(v<10?1:0);
+        if (a >= 1e-3) return (v*1e3).toFixed(0) + 'm';
+        if (a >= 1e-6) return (v*1e6).toFixed(0) + 'u';
+        return v.toExponential(0);
+    }
+    function parseEng(s) {
+        const m = String(s).match(/^([0-9.]+)\s*([a-zA-Z]*)$/);
+        return m ? parseFloat(m[1]) * (UNITS[m[2]] || 1) : parseFloat(s) || 0;
+    }
+
+    function syncUI() {
+        const renderList = (type) => {
+            const container = document.getElementById(type + 's-list');
+            container.innerHTML = '';
+            sys[type+'s'].forEach((item, i) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'item-row';
+                wrapper.innerHTML = `
+                    <input type="text" value="${formatEng(item.f)}" onchange="updateItem('${type}',${i},'f',this.value)">
+                    <select onchange="updateItem('${type}',${i},'t',this.value)">
+                        <option value="LHP" ${item.t==='LHP'?'selected':''}>LHP</option>
+                        <option value="RHP" ${item.t==='RHP'?'selected':''}>RHP</option>
+                        ${type==='pole'?'<option value="Conjugate" '+(item.t==='Conjugate'?'selected':'')+'>Conj</option>':''}
+                    </select>
+                    <input type="color" value="${item.c}" onchange="updateItem('${type}',${i},'c',this.value)">
+                    <button style="border:none;background:none;color:red;font-weight:bold;cursor:pointer" onclick="removeItem('${type}',${i})">×</button>
+                    ${item.t==='Conjugate' ? `<div class="q-input"><label>Q:</label><input type="number" step="0.1" value="${item.q}" onchange="updateItem('${type}',${i},'q',this.value)"></div>` : ''}
+                `;
+                container.appendChild(wrapper);
+            });
+        };
+        renderList('pole'); renderList('zero');
+    }
+
+    function updateView() {
+        const pan = parseFloat(document.getElementById('freq-pan').value);
+        const zoom = parseFloat(document.getElementById('freq-zoom').value);
+        view.fMin = Math.pow(10, pan - zoom/2); view.fMax = Math.pow(10, pan + zoom/2);
+        render();
+    }
+    window.addItem = (t) => { sys[t+'s'].push({f: 1e6, t:'LHP', c: t==='pole'?'#D32F2F':'#2E7D32', q: 0.707}); syncUI(); render(); };
+    window.removeItem = (t, i) => { sys[t+'s'].splice(i, 1); syncUI(); render(); };
+    window.updateItem = (t, i, fld, val) => { 
+        sys[t+'s'][i][fld] = (fld==='f') ? parseEng(val) : (fld==='q'?parseFloat(val):val); 
+        render(); syncUI(); 
+    };
+    window.updateSys = () => { sys.dc = parseEng(document.getElementById('dc-gain').value); render(); };
+
+    init();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
     <title>Bode Professional v1.0</title>
     <style>
         :root { --bg: #f5f7f9; --panel: #ffffff; --primary: #1976D2; --axis: #333; --grid: #e8e8e8; }
