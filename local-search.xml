@@ -8,9 +8,15 @@
     <link href="/2026/07/28/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84virtuoso%E8%AE%BE%E7%BD%AE/"/>
     <url>/2026/07/28/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84virtuoso%E8%AE%BE%E7%BD%AE/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<p>一些常用的virtuoso设置</p><hr><span id="more"></span><h1 id="1-调整字体"><a href="#1-调整字体" class="headerlink" title="1. 调整字体"></a>1. 调整字体</h1><p>分别调整CIW窗口、标签/菜单字体、文本字体</p><figure class="highlight stylus"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;ciw&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;label&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;text&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br></code></pre></td></tr></table></figure><h1 id="2-波形显示界面"><a href="#2-波形显示界面" class="headerlink" title="2. 波形显示界面"></a>2. 波形显示界面</h1><h2 id="2-1-背景改成白色"><a href="#2-1-背景改成白色" class="headerlink" title="2.1 背景改成白色"></a>2.1 背景改成白色</h2><p>打开 <strong>Virtuoso CIW 窗口</strong>。</p><p>依次选择 <strong>Options &gt; Cdsenv Editor</strong>。</p><p>导航到路径 <strong>viva -&gt; graphFrame</strong>。</p><p>将 <strong>background</strong> 参数设置为白色：white</p><h2 id="2-1-仿真波形改为粗"><a href="#2-1-仿真波形改为粗" class="headerlink" title="2.1 仿真波形改为粗"></a>2.1 仿真波形改为粗</h2><p>打开 <strong>Virtuoso CIW 窗口</strong>。</p><p>依次选择 <strong>Options &gt; Cdsenv Editor</strong>。</p><p>导航到路径 <strong>viva -&gt; trace</strong>。</p><p>将 <strong>lineThickness</strong> 参数设置为超级粗：ExtraThick </p>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>模拟IC</tag>
+      
+    </tags>
     
   </entry>
   
