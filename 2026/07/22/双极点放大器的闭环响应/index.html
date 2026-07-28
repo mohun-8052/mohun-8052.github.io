@@ -16,26 +16,24 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="直接耦合和电容耦合输入的运放DC工作点">
+    <meta name="description" content="开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="直接耦合和电容耦合输入的运放DC工作点">
-<meta property="og:url" content="http://example.com/2026/07/21/%E7%9B%B4%E6%8E%A5%E8%80%A6%E5%90%88%E5%92%8C%E7%94%B5%E5%AE%B9%E8%80%A6%E5%90%88%E8%BE%93%E5%85%A5%E7%9A%84%E8%BF%90%E6%94%BEDC%E5%B7%A5%E4%BD%9C%E7%82%B9/index.html">
+<meta property="og:title" content="双极点放大器的闭环响应">
+<meta property="og:url" content="http://example.com/2026/07/22/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="直接耦合和电容耦合输入的运放DC工作点">
+<meta property="og:description" content="开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224741215.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224003297.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721230051543.png">
-<meta property="article:published_time" content="2026-07-21T14:24:01.000Z">
-<meta property="article:modified_time" content="2026-07-22T12:47:37.477Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png">
+<meta property="article:published_time" content="2026-07-22T12:45:24.000Z">
+<meta property="article:modified_time" content="2026-07-23T14:12:01.299Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
-<meta property="article:tag" content="随笔">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224741215.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png">
   
   
-  <title>直接耦合和电容耦合输入的运放DC工作点 - 墨魂</title>
+  <title>双极点放大器的闭环响应 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -197,7 +195,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="直接耦合和电容耦合输入的运放DC工作点">
+            <span class="h2" id="subtitle" title="双极点放大器的闭环响应">
               
             </span>
 
@@ -207,8 +205,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2026-07-21 22:24" pubdate>
-        2026年7月21日 晚上
+      <time datetime="2026-07-22 20:45" pubdate>
+        2026年7月22日 晚上
       </time>
     </span>
   
@@ -218,7 +216,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      4.8k 字
     </span>
   
 
@@ -227,7 +225,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9 分钟
+      41 分钟
     </span>
   
 
@@ -256,30 +254,151 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">直接耦合和电容耦合输入的运放DC工作点</h1>
+            <h1 style="display: none">双极点放大器的闭环响应</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年7月22日 晚上
+                  本文最后更新于：2026年7月23日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>直接耦合和电容耦合输入的运放DC工作点</p>
+              <p>开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。</p>
 <hr>
 <span id="more"></span>
-<p>使用运放的时候，有些数据手册会让信号通过一个$1\mu F$的电容再输入到运放中。刚开始接触的时候会疑惑输入信号串联了一个电容，那么输入DC工作点（输入共模电压）如何确定？此处以全差分运放为例进行说明。</p>
-<p>对于全差分运放，其需要共模反馈，因此其输出的共模电压是确定的，等于$V_{O-CM}$。</p>
-<p>如下图所示，输入信号为共模DC值为$V_{IN-CM}$、差分输入信号幅值为$V_S/2$的信号。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224741215.png" srcset="/img/loading.gif" lazyload alt="输入信号示意图"></p>
-<p>当我们考虑共模信号的时候，就不需要考虑$V_S$，只需要考虑$V_{IN-CM}$。由于电容的阻隔，因此对于共模DC而言，电阻$R_2$上没有电流（电阻$R_2$两端压降为0），因此电阻$R_1$上也没有压降。显然，输入共模DC=$V_{X-P}$=$V_{O-CM}$。这意味电容两端的压差就等于$V_{O-CM}-V_{IN-CM}$。也就是芯片内部自己负反馈给自己输入信号做了共模DC偏置。这意味不管我们输入信号的DC值是多大，都不会影响到我们芯片的工作点，保证了运放芯片始终正常工作。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224003297.png" srcset="/img/loading.gif" lazyload alt="电容耦合输入电路图"></p>
-<p>然而，总有用户不按照datasheet操作，直接不加输入耦合电容，将信号直接怼到输入PIN脚，如下图所示。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721230051543.png" srcset="/img/loading.gif" lazyload alt="直接耦合输入电路图"></p>
-<p>此时，不存在电容“隔直”作用，运放正负输入端的共模DC电平$V_{X-CM}$等于</p>
+<p>假设放大器的开环增益为$A(s)$，接成反馈系数为$\beta$（假设$\beta$与频率无关）的闭环反馈放大器使用，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png" srcset="/img/loading.gif" lazyload alt="image-20260722205747757"></p>
+<p>则闭环响应表示为</p>
 <script type="math/tex; mode=display">
-V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正负输入端的共模DC电平$V_{X-CM}$是由输出共模电平和用户输入信号的输入共模电平共同作用。由于输出共模电平是由一个负反馈环路（即共模反馈环路）钳制在某一个固定电平，不管输入信号共模DC如何变化，该值基本保持不变，因此$V_{X-CM}$就会随$V_{IN-CM}$变化而变化。如果$V_{IN-CM}$设置得比较极端，使得$V_{X-CM}$不在全差分运放所能忍受的共模输入范围内，则全差分运放不能正常工作。</p>
-<p>全差分运放不能正常工作不仅会影响其本身的放大能力，可能还会使得共模反馈也跟着失效，从而导致输出共模电平也发生错误。假设本级FDA后面电路也是直接耦合的（芯片内部都是直接耦合的），原本匹配的是设定好的$V_{O-CM}$，此时由于$V_{O-CM}$发生错误，可能也会影响到后面电路的工作。所以，最前面一级运放是否应该做一个rubust的设计来避免由于直接耦合输入导致的输出共模电压$V_{O-CM}$失效？笔者觉得是需要。</p>
+v_o/v_i=\frac{A(s)}{1+A(s)\beta} \tag{1}</script><p>因此反馈放大器的极点就是$1+A(s)\beta$的零点。</p>
+<p>令<strong>特征方程</strong>为</p>
+<script type="math/tex; mode=display">
+1+A(s)\beta=0 \tag{2}</script><p>以下将根据不同的开环系统，即不同的$A(s)$对闭环反馈电路的稳定性进行讨论</p>
+<hr>
+<p><strong>【情形1】</strong>：开环放大器为双实极点系统，零点位于无穷远处，则开环传递函数$A(s)$表示为：</p>
+<script type="math/tex; mode=display">
+A(s) = \frac{A_0}{(1 + s/\omega_{p1})(1 + s/\omega_{p2})}\tag{4}</script><p>带入式（2）<strong>特征方程</strong>，并整理为<strong>标准二次方程</strong>：</p>
+<script type="math/tex; mode=display">
+s^2 + (\omega_{p1} + \omega_{p2})s + \omega_{p1}\omega_{p2}(1 + \beta A_0) = 0 \tag{5}</script><p>显然，闭环反馈放大器此时存在两个极点$p_1$、$p_2$，这两个极点的位置即$s$的解</p>
+<blockquote>
+<p>开环放大器存在两个极点，则闭环放大器必然也存在两个极点</p>
+<p>只是这两个闭环极点可能是双实极点，也可能是共轭复极点</p>
+</blockquote>
+<p>使用求根公式解得$s$为</p>
+<script type="math/tex; mode=display">
+s = -\frac{1}{2}(\omega_{p1} + \omega_{p2}) \pm  \frac{1}{2}\sqrt{(\omega_{p1} + \omega_{p2})^2 - 4\omega_{p1}\omega_{p2}(1 + \beta A_0)} \tag{6}</script><p>两极点的位置（即s的解）与$A_0\beta$相关。由于$A_0$不变，因此不同的反馈系数$\beta$会使得闭环极点的位置不同：</p>
+<ul>
+<li>随着$\beta$由0（$\beta=0$即开环）不断增大，闭环极点逐步相互靠近。</li>
+<li>当$\beta$达到一定数值时，两极点重合。</li>
+<li>当$\beta$继续增大，其极点将成为一对共轭极点并沿着一条垂直线移动。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png" srcset="/img/loading.gif" lazyload alt="image-20260722224554470"></p>
+<p>显然，当$\beta$最大时，反馈闭环电路的稳定性最差。</p>
+<blockquote>
+<p>【注意】：</p>
+<p>需要注意的是，通过$A_0\beta$的STB仿真得到的相位裕度PM就可以预测闭环响应（<strong>后面说明</strong>）</p>
+<p>因此，当$\beta$固定的时候，直接仿真该环路的STB，观察其PM大小即可预测闭环响应</p>
+<p>如果$\beta$不固定的时候，需要仿真最差情况</p>
+<p>通常，$\beta$最大即等于1，即<strong>单位负反馈</strong>，因此很多时候直接看单位负反馈STB的PM</p>
+<p>然而有些反馈放大器的放大倍数＜1（$\beta$&gt;1），则单看单位负反馈PM并不足够说明闭环的稳定性情况</p>
+</blockquote>
+<p>根据标准二次方程，可以得到<strong>无阻尼自然频率</strong>$\omega_n$：</p>
+<script type="math/tex; mode=display">
+\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} \tag{7}</script><p>注意，有时候会误以为$\omega_n = \sqrt{\omega_{p1}\omega_{p2}}$，这是<strong>错误</strong>的！！这个错误的原因是直接把$A(s)$极点的$\omega_n$当成$A(s)$闭环反馈极点的$\omega_n$。</p>
+<p><strong>阻尼因子</strong>$\zeta$：</p>
+<script type="math/tex; mode=display">
+\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} \tag{8}</script><p><strong>情形2</strong>：开环放大器为双实极点系统，增加了补偿零点，则开环传递函数$A(s)$表示为：</p>
+<script type="math/tex; mode=display">
+A(s) = \frac{A_0(1 + s/\omega_{z})}{(1 + s/\omega_{p1})(1 + s/\omega_{p2})}\tag{9}</script><p>带入式（2）<strong>特征方程</strong>，并整理为<strong>标准二次方程</strong>：</p>
+<script type="math/tex; mode=display">
+s^2 + (\omega_{p1} + \omega_{p2} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{\omega_z}) s + \omega_{p1}\omega_{p2}(1 + \beta A_0) = 0 \tag{10}</script><p>显然，闭环反馈放大器此时存在两个极点$p_1$、$p_2$，<strong>零点的引入并没有改变闭环反馈放大器的极点个数</strong>。</p>
+<p>根据标准二次方程，可以得到<strong>无阻尼自然频率</strong>$\omega_n$：</p>
+<script type="math/tex; mode=display">
+\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} \tag{11}</script><p>对比情况1的$\omega_n$，二者一致。</p>
+<p><strong>阻尼因子</strong>$\zeta$：</p>
+<script type="math/tex; mode=display">
+\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\omega_n\,\omega_z}</script><p>对比情况1的$\zeta$，$\zeta$表达式中的第二项 <strong>随 $\omega_z$ 减小而增大</strong>。</p>
+<blockquote>
+<p>$\omega_n$大小不受零点影响！！</p>
+<p>$\zeta$大小受零点影响！！</p>
+</blockquote>
+<p>是的，<strong>阻尼比 (\zeta) 与共轭极点位置有直接且重要的几何关系</strong>。</p>
+<hr>
+<h3 id="1-极点的极坐标表示"><a href="#1-极点的极坐标表示" class="headerlink" title="1. 极点的极坐标表示"></a>1. 极点的极坐标表示</h3><p>二阶系统的共轭极点为：<br>[<br>s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2} = -\sigma \pm j\omega_d<br>]<br>极点在 (s) 平面上的极径（到原点的距离）正是无阻尼自然频率：<br>[<br>r = |s_{1,2}| = \omega_n<br>]<br>极角 (\theta) 是极点向量与<strong>负实轴</strong>的夹角，满足：<br>[<br>\cos\theta = \frac{\sigma}{r} = \frac{\zeta\omega_n}{\omega_n} = \zeta<br>]<br>即<br>[<br>\boxed{\zeta = \cos\theta}<br>]<br><strong>因此，阻尼比 (\zeta) 直接决定了共轭极点在 (s) 平面上的角度位置</strong>：</p>
+<ul>
+<li>每一个 (\zeta) 对应一条从原点出发、与负实轴夹角为 (\theta = \arccos\zeta) 的射线，极点只能位于这条等 (\zeta) 线上。</li>
+<li>(\zeta) 不变时，(\omega_n) 变化只会让极点沿这条射线径向移动。</li>
+</ul>
+<hr>
+<h3 id="2-本电路的体现"><a href="#2-本电路的体现" class="headerlink" title="2. 本电路的体现"></a>2. 本电路的体现</h3><p>由前推导：<br>[<br>\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\sqrt{\omega_{p1}\omega_{p2}(1+A_0\beta)}}<br>]<br>随着 (\beta) 增大：</p>
+<ul>
+<li>(\zeta) 从 (&gt;1) 下降到 (&lt;1)，极点从负实轴分离为一对共轭复极点。</li>
+<li>当 (\beta &gt; \beta_c) 后，(\sigma = \frac{\omega_{p1}+\omega_{p2}}{2}) 恒定，(\omega_d = \omega_n\sqrt{1-\zeta^2} = \sqrt{\omega_n^2 - \sigma^2}) 随 (\beta) 增大，极点上移。此时：<br>[<br>\zeta = \frac{\sigma}{\omega_n} = \frac{\sigma}{\sqrt{\sigma^2 + \omega_d^2}}<br>]<br>虚部 (\omega_d) 增大 ⇒ (\zeta) 减小 ⇒ 极角 (\theta = \arccos\zeta) 增大 ⇒ 极点更靠近虚轴，超调增加，稳定性相对变差。</li>
+</ul>
+<hr>
+<h3 id="3-zeta-与极点位置关系的总结"><a href="#3-zeta-与极点位置关系的总结" class="headerlink" title="3. (\zeta) 与极点位置关系的总结"></a>3. (\zeta) 与极点位置关系的总结</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>(\zeta) 值</th>
+<th>极点位置</th>
+<th>物理意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(\zeta &gt; 1)</td>
+<td>两个不等负实根，均在负实轴上</td>
+<td>过阻尼，无振荡</td>
+</tr>
+<tr>
+<td>(\zeta = 1)</td>
+<td>二重负实根</td>
+<td>临界阻尼</td>
+</tr>
+<tr>
+<td>(0&lt;\zeta&lt;1)</td>
+<td>共轭复极点，位于与负实轴夹角 (\arccos\zeta) 的射线上</td>
+<td>欠阻尼，衰减振荡</td>
+</tr>
+<tr>
+<td>(\zeta = 0)</td>
+<td>共轭纯虚根 ±jω_n</td>
+<td>无阻尼等幅振荡</td>
+</tr>
+<tr>
+<td>(\zeta &lt; 0)</td>
+<td>极点进入右半平面</td>
+<td>不稳定，发散振荡</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因此，<strong>阻尼比不仅与极点位置有关，它本身就是对该位置的一种几何描述——共轭极点所在射线与负实轴夹角的余弦</strong>。</p>
+<h3 id="1-对阻尼比的直接影响"><a href="#1-对阻尼比的直接影响" class="headerlink" title="1. 对阻尼比的直接影响"></a>1. 对阻尼比的直接影响</h3><p>将方程写成标准二阶形式 (s^2 + 2\zeta\omega_n s + \omega_n^2 = 0)：<br>[<br>\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)}, \quad<br>\zeta = \frac{a_1}{2\omega_n} = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\omega_n\,\omega_z}<br>]<br>(\zeta) 表达式中的第二项 <strong>随 (\omega_z) 减小而增大</strong>。因此：</p>
+<ul>
+<li><strong>当 (\omega_z \to \infty)（无零点）</strong>：(\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n})，系统可能因低阻尼而出现强烈振荡。</li>
+<li><strong>当 (\omega_z) 向低频移动（零点靠近原点）</strong>：(\zeta) 单调增大，系统阻尼增强。当 (\zeta \ge 1) 时，闭环极点变为两个负实根，系统由欠阻尼过渡到过阻尼，超调消失，响应变慢但更平稳。</li>
+<li><strong>若 (\omega_z) 为正但极小</strong>：(a_1) 非常大，一个极点会趋近 (-\omega_z)（被零点“吸引”），另一个极点趋近 (-\frac{a_0}{\omega_z}) 而变得非常负，系统呈现一阶主导特性。</li>
+</ul>
+<h3 id="2-从根轨迹看-omega-z-的作用"><a href="#2-从根轨迹看-omega-z-的作用" class="headerlink" title="2. 从根轨迹看 (\omega_z) 的作用"></a>2. 从根轨迹看 (\omega_z) 的作用</h3><p>开环极点位于 (-\omega_{p1})、(-\omega_{p2})，零点位于 (-\omega_z)（假设均在左半平面）。根轨迹法则指出：<strong>零点会吸引根轨迹，使闭环极点向零点方向移动</strong>。  </p>
+<ul>
+<li>零点位于极点左侧（(\omega_z &gt; \omega_{p2})）：根轨迹向左弯曲，两个分支先在实轴上分离（或汇合），然后可能沿渐近线进入左半平面。零点使分离角减小，系统更容易稳定。  </li>
+<li>零点位于两极之间（(\omega_{p1} &lt; \omega_z &lt; \omega_{p2})）或极点右侧（(\omega_z &lt; \omega_{p1})）：零点将位于实轴上的一个极点“拉”向自己，该分支沿实轴向左移动，成为主导极点；另一分支则远离虚轴向左移动。此时系统阻尼显著增加，甚至变成两个一阶环节。</li>
+</ul>
+<p>无论哪种情况，<strong>左半平面零点都提供正相位（相位超前）</strong>，增大了相位裕度，使闭环极点向左偏移，相对稳定性提高。</p>
+<h3 id="3-定量影响：偏导数分析"><a href="#3-定量影响：偏导数分析" class="headerlink" title="3. 定量影响：偏导数分析"></a>3. 定量影响：偏导数分析</h3><p>固定其他参数，(a_1) 对 (1/\omega_z) 的敏感度为：<br>[<br>\frac{\partial a_1}{\partial (1/\omega_z)} = \beta A_0\,\omega_{p1}\omega_{p2} &gt; 0<br>]<br>可见 (\omega_z) 下降（(1/\omega_z) 上升）直接使 (a_1) 线性增大。由于 (\omega_n) 恒定，阻尼比 (\zeta) 以相同趋势增大。闭环极点实部绝对值增大（极点向左移动），虚部减小（振荡减弱）。</p>
+<h3 id="4-特殊情况下的极点近似"><a href="#4-特殊情况下的极点近似" class="headerlink" title="4. 特殊情况下的极点近似"></a>4. 特殊情况下的极点近似</h3><ul>
+<li><strong>(\omega_z \to \infty)（无零点）</strong>：(s) 退化为原无零点方程的解，可能为共轭复根。</li>
+<li><strong>(\omega_z) 使 (a_1^2 = 4a_0)</strong>（临界阻尼点）：解得<br>[<br>\omega_z = \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} - (\omega_{p1}+\omega_{p2})}<br>]<br>此时两闭环极点重合为负实数。</li>
+<li><strong>(\omega_z \to 0^+)（零点极度接近原点）</strong>：一个极点 (p_1 \to -\omega_z)，另一个 (p_2 \to -\infty)（快速衰减），系统近似为一阶系统，时间常数 (1/\omega_z)。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>零点 (-\omega_z) 是<strong>改善稳定性和抑制振荡</strong>的关键手段：</p>
+<ul>
+<li>减小 (\omega_z)（零点向低频移动）→ 阻尼比增大 → 振荡减小、超调降低，但响应速度可能变慢；</li>
+<li>增大 (\omega_z)（零点远离原点）→ 影响减弱，系统趋近于原始双极点响应的欠阻尼状态。</li>
+</ul>
+<p>在实际设计中，可调节 (\omega_z) 来同时满足快速性和稳定性的折中要求。</p>
 
             </div>
             <hr>
@@ -291,8 +410,6 @@ V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正�
                     <i class="iconfont icon-tags"></i>
                     
                       <a class="hover-with-bg" href="/tags/%E6%A8%A1%E6%8B%9FIC/">模拟IC</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
                     
                   </div>
                 
@@ -309,9 +426,9 @@ V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/22/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
+                      <a href="/2026/07/23/%E6%A0%87%E5%87%86%E4%BA%8C%E9%98%B6%E5%BD%A2%E5%BC%8F/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">双极点放大器的闭环响应</span>
+                        <span class="hidden-mobile">标准二阶形式</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -319,8 +436,8 @@ V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正�
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/19/Maxima%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E4%BC%A0%E9%80%92%E5%87%BD%E6%95%B0/">
-                        <span class="hidden-mobile">Maxima如何计算传递函数</span>
+                      <a href="/2026/07/21/%E7%9B%B4%E6%8E%A5%E8%80%A6%E5%90%88%E5%92%8C%E7%94%B5%E5%AE%B9%E8%80%A6%E5%90%88%E8%BE%93%E5%85%A5%E7%9A%84%E8%BF%90%E6%94%BEDC%E5%B7%A5%E4%BD%9C%E7%82%B9/">
+                        <span class="hidden-mobile">直接耦合和电容耦合输入的运放DC工作点</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

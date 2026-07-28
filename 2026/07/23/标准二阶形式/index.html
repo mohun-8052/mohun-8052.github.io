@@ -16,26 +16,23 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="直接耦合和电容耦合输入的运放DC工作点">
+    <meta name="description" content="对标准二阶形式和相关参数进行分析介绍">
 <meta property="og:type" content="article">
-<meta property="og:title" content="直接耦合和电容耦合输入的运放DC工作点">
-<meta property="og:url" content="http://example.com/2026/07/21/%E7%9B%B4%E6%8E%A5%E8%80%A6%E5%90%88%E5%92%8C%E7%94%B5%E5%AE%B9%E8%80%A6%E5%90%88%E8%BE%93%E5%85%A5%E7%9A%84%E8%BF%90%E6%94%BEDC%E5%B7%A5%E4%BD%9C%E7%82%B9/index.html">
+<meta property="og:title" content="标准二阶形式">
+<meta property="og:url" content="http://example.com/2026/07/23/%E6%A0%87%E5%87%86%E4%BA%8C%E9%98%B6%E5%BD%A2%E5%BC%8F/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="直接耦合和电容耦合输入的运放DC工作点">
+<meta property="og:description" content="对标准二阶形式和相关参数进行分析介绍">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224741215.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224003297.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721230051543.png">
-<meta property="article:published_time" content="2026-07-21T14:24:01.000Z">
-<meta property="article:modified_time" content="2026-07-22T12:47:37.477Z">
+<meta property="og:image" content="c:/Users/20185/AppData/Roaming/Typora/typora-user-images/image-20260723214237644.png">
+<meta property="article:published_time" content="2026-07-23T14:12:55.000Z">
+<meta property="article:modified_time" content="2026-07-28T11:25:14.711Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
-<meta property="article:tag" content="随笔">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224741215.png">
+<meta name="twitter:image" content="c:/Users/20185/AppData/Roaming/Typora/typora-user-images/image-20260723214237644.png">
   
   
-  <title>直接耦合和电容耦合输入的运放DC工作点 - 墨魂</title>
+  <title>标准二阶形式 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -197,7 +194,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="直接耦合和电容耦合输入的运放DC工作点">
+            <span class="h2" id="subtitle" title="标准二阶形式">
               
             </span>
 
@@ -207,8 +204,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2026-07-21 22:24" pubdate>
-        2026年7月21日 晚上
+      <time datetime="2026-07-23 22:12" pubdate>
+        2026年7月23日 晚上
       </time>
     </span>
   
@@ -218,7 +215,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      2.6k 字
     </span>
   
 
@@ -227,7 +224,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9 分钟
+      22 分钟
     </span>
   
 
@@ -256,30 +253,161 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">直接耦合和电容耦合输入的运放DC工作点</h1>
+            <h1 style="display: none">标准二阶形式</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年7月22日 晚上
+                  本文最后更新于：2026年7月28日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>直接耦合和电容耦合输入的运放DC工作点</p>
+              <p>对标准二阶形式和相关参数进行分析介绍</p>
 <hr>
 <span id="more"></span>
-<p>使用运放的时候，有些数据手册会让信号通过一个$1\mu F$的电容再输入到运放中。刚开始接触的时候会疑惑输入信号串联了一个电容，那么输入DC工作点（输入共模电压）如何确定？此处以全差分运放为例进行说明。</p>
-<p>对于全差分运放，其需要共模反馈，因此其输出的共模电压是确定的，等于$V_{O-CM}$。</p>
-<p>如下图所示，输入信号为共模DC值为$V_{IN-CM}$、差分输入信号幅值为$V_S/2$的信号。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224741215.png" srcset="/img/loading.gif" lazyload alt="输入信号示意图"></p>
-<p>当我们考虑共模信号的时候，就不需要考虑$V_S$，只需要考虑$V_{IN-CM}$。由于电容的阻隔，因此对于共模DC而言，电阻$R_2$上没有电流（电阻$R_2$两端压降为0），因此电阻$R_1$上也没有压降。显然，输入共模DC=$V_{X-P}$=$V_{O-CM}$。这意味电容两端的压差就等于$V_{O-CM}-V_{IN-CM}$。也就是芯片内部自己负反馈给自己输入信号做了共模DC偏置。这意味不管我们输入信号的DC值是多大，都不会影响到我们芯片的工作点，保证了运放芯片始终正常工作。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721224003297.png" srcset="/img/loading.gif" lazyload alt="电容耦合输入电路图"></p>
-<p>然而，总有用户不按照datasheet操作，直接不加输入耦合电容，将信号直接怼到输入PIN脚，如下图所示。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260721230051543.png" srcset="/img/loading.gif" lazyload alt="直接耦合输入电路图"></p>
-<p>此时，不存在电容“隔直”作用，运放正负输入端的共模DC电平$V_{X-CM}$等于</p>
+<h1 id="1-标准二阶形式"><a href="#1-标准二阶形式" class="headerlink" title="1. 标准二阶形式"></a>1. 标准二阶形式</h1><p><strong>标准二阶形式</strong></p>
 <script type="math/tex; mode=display">
-V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正负输入端的共模DC电平$V_{X-CM}$是由输出共模电平和用户输入信号的输入共模电平共同作用。由于输出共模电平是由一个负反馈环路（即共模反馈环路）钳制在某一个固定电平，不管输入信号共模DC如何变化，该值基本保持不变，因此$V_{X-CM}$就会随$V_{IN-CM}$变化而变化。如果$V_{IN-CM}$设置得比较极端，使得$V_{X-CM}$不在全差分运放所能忍受的共模输入范围内，则全差分运放不能正常工作。</p>
-<p>全差分运放不能正常工作不仅会影响其本身的放大能力，可能还会使得共模反馈也跟着失效，从而导致输出共模电平也发生错误。假设本级FDA后面电路也是直接耦合的（芯片内部都是直接耦合的），原本匹配的是设定好的$V_{O-CM}$，此时由于$V_{O-CM}$发生错误，可能也会影响到后面电路的工作。所以，最前面一级运放是否应该做一个rubust的设计来避免由于直接耦合输入导致的输出共模电压$V_{O-CM}$失效？笔者觉得是需要。</p>
+s^2 + 2\zeta\omega_n s + \omega_n^2 = 0</script><p>或</p>
+<script type="math/tex; mode=display">
+s^2 + \frac{\omega_n}{Q} s + \omega_n^2 = 0</script><p>使用求根公式解得$s$为</p>
+<script type="math/tex; mode=display">
+s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2} = -\sigma \pm j\omega_d</script><p><img src="C:\Users\20185\AppData\Roaming\Typora\typora-user-images\image-20260723214237644.png" srcset="/img/loading.gif" lazyload alt="image-20260723214237644"></p>
+<h1 id="2-参数讨论"><a href="#2-参数讨论" class="headerlink" title="2. 参数讨论"></a>2. 参数讨论</h1><p>【<strong>无阻尼自然频率</strong>$\omega_n$】：</p>
+<p>对于s平面的共轭极点$(\sigma,j\omega_d)$，有</p>
+<script type="math/tex; mode=display">
+\omega_n^2 =\sigma^2+\omega_d^2</script><p>即共轭极点到原点的距离。</p>
+<p>当闭环极点耦合成共轭极点时，且零阻尼（$\zeta=0$）或$\zeta$较小时，该频率<strong>约等于</strong>共轭极点所在的频率。</p>
+<p>【<strong>阻尼因子</strong>$\zeta$ 和 <strong>品质因子</strong>$Q$】：</p>
+<p>$\zeta$和$Q$之间存在数值关系：</p>
+<script type="math/tex; mode=display">
+\boxed{\zeta Q=0.5}</script><p>极角$\theta$是极点向量与<strong>负实轴</strong>的夹角，满足</p>
+<script type="math/tex; mode=display">
+\cos\theta = \frac{\sigma}{r} = \frac{\zeta\omega_n}{\omega_n} = \zeta</script><p>因此，阻尼比$\zeta$直接决定了共轭极点在s平面上的角度位置： </p>
+<ul>
+<li>每一个$\zeta$对应一条从原点出发、与负实轴夹角为 $\theta = \arccos(\zeta)$的射线，极点只能位于这条等$\zeta$线上。</li>
+<li>$\zeta$不变时，$\omega_n$ 变化只会让极点沿这条射线径向移动。</li>
+</ul>
+<p>【$\zeta$与极点位置关系的总结】</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\zeta$值</th>
+<th style="text-align:center">$Q$值</th>
+<th style="text-align:center">极点位置</th>
+<th style="text-align:center">物理意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$\zeta&gt;1$</td>
+<td style="text-align:center">$Q&lt;0.5$</td>
+<td style="text-align:center">两个不等负实根，均在负实轴上</td>
+<td style="text-align:center">过阻尼，无振荡</td>
+</tr>
+<tr>
+<td style="text-align:center">$\zeta=1$</td>
+<td style="text-align:center">$Q=0.5$</td>
+<td style="text-align:center">二重负实根</td>
+<td style="text-align:center">临界阻尼</td>
+</tr>
+<tr>
+<td style="text-align:center">$0&lt;\zeta&lt;1$</td>
+<td style="text-align:center">$Q&gt;0.5$</td>
+<td style="text-align:center">共轭复极点，位于与负实轴夹角 $\arccos(\zeta)$ 的射线上</td>
+<td style="text-align:center">欠阻尼，衰减振荡</td>
+</tr>
+<tr>
+<td style="text-align:center">$\zeta=0$</td>
+<td style="text-align:center">$Q=\infty$</td>
+<td style="text-align:center">共轭纯虚根$±jω_n$</td>
+<td style="text-align:center">无阻尼，等幅振荡</td>
+</tr>
+<tr>
+<td style="text-align:center">$\zeta&lt;0$</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">极点进入右半平面</td>
+<td style="text-align:center">不稳定，发散振荡</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>【注意点】</p>
+<p>$Q=\zeta=0.707$，即$\frac{\sqrt{2}}{2}$，共轭极点与负实轴夹角$\theta=45^\circ$，其响应函数的图形表现为具有最大平坦响应</p>
+<p>$Q\leq0.707$，即$\zeta\geq0.707$，虽然极点可能为共轭极点，但是响应函数的图形表现无增益尖峰</p>
+<p>$Q\geq0.707$，即$\zeta\leq0.707$，极点为共轭极点，响应函数的图形存在增益尖峰</p>
+<h1 id="3-Q-amp-A"><a href="#3-Q-amp-A" class="headerlink" title="3. Q&amp;A"></a>3. Q&amp;A</h1><h2 id="3-1-谐振峰频率和无阻尼自然频率的关系？"><a href="#3-1-谐振峰频率和无阻尼自然频率的关系？" class="headerlink" title="3.1 谐振峰频率和无阻尼自然频率的关系？"></a>3.1 谐振峰频率和无阻尼自然频率的关系？</h2><p><strong>谐振峰（峰值频率）通常不等于无阻尼自然频率 $\omega_n$</strong>。</p>
+<p>除非是零阻尼（$\zeta=0$）的理想情况，否则谐振峰总是出现在比 $\omega_n$略低一些的频率上。</p>
+<p><strong>【为什么这样？】</strong></p>
+<p>对于标准二阶低通系统：</p>
+<script type="math/tex; mode=display">
+H(s) = \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}</script><p>幅频响应为：</p>
+<script type="math/tex; mode=display">
+|H(j\omega)| = \frac{1}{\sqrt{\left(1 - \frac{\omega^2}{\omega_n^2}\right)^2 + \left(2\zeta\frac{\omega}{\omega_n}\right)^2}}</script><p>求导可得，当$0 &lt; \zeta &lt; \frac{1}{\sqrt{2}} \approx 0.707$时，幅值在以下频率处达到最大：</p>
+<script type="math/tex; mode=display">
+\boxed{\omega_p = \omega_n \sqrt{1 - 2\zeta^2}}</script><p>这就是<strong>谐振频率$\omega_p$</strong>，即在波特图上看到的峰顶所在的频率位置。</p>
+<p><strong>【数值举例】</strong></p>
+<p>假设一个系统$\omega_n = 10\,\text{kHz}$：</p>
+<ul>
+<li>若$\zeta = 0$（无阻尼），$\omega_p = \omega_n$，理论上峰趋向无穷大。</li>
+<li>若$\zeta = 0.1$，谐振频率$\omega_p \approx 10 \times \sqrt{1 - 0.02} \approx 9.9\,\text{kHz}$，峰非常靠近$\omega_n$。</li>
+<li>若$\zeta = 0.5$，$\omega_p \approx 10 \times \sqrt{1 - 0.5} \approx 7.07\,\text{kHz}$，峰已明显左移。</li>
+<li>若 $\zeta = 0.707$，$\omega_p = 0$（峰值刚好消失，曲线单调下降）。</li>
+</ul>
+<p>所以，<strong>你看到的那个“凸起来”的最高点，几乎永远在无阻尼自然频率的左侧</strong>。阻尼越大，这个偏移越明显；直到峰完全消失。</p>
+<blockquote>
+<p>【注】：</p>
+<p>当阻尼较小时，可以认为$\omega_p = \omega_n$，即$\omega_n$就是峰顶所在的频率位置</p>
+</blockquote>
+<h2 id="3-2-三个频率的对比"><a href="#3-2-三个频率的对比" class="headerlink" title="3.2 三个频率的对比"></a>3.2 三个频率的对比</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>无阻尼自然频率$\omega_n$</th>
+<th>谐振频率$\omega_p$</th>
+<th style="text-align:center">阻尼振荡频率$\omega_d$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定义</td>
+<td>极点到原点的距离$\sqrt{\sigma^2 + \omega_d^2}$</td>
+<td>幅频特性达到最大值的频率</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>在波特图上的体现</td>
+<td>渐近线转折频率；相频曲线 -90° 的位置</td>
+<td>幅频曲线峰值的位置</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>与$\zeta$的关系</td>
+<td>与$\zeta$无关，完全由极点径向距离决定</td>
+<td>随$\zeta$增大而逐渐偏离$\omega_n$</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>存在条件</td>
+<td>始终存在</td>
+<td>仅当$\zeta &lt;0.707$ 时才会出现谐振峰</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>【使用共轭极点直观理解】</p>
+<p>极点$s = -\sigma \pm j\omega_d$中，虚部$\omega_d$是<strong>阻尼振荡频率</strong>（时域响应的振荡频率），它与谐振频率$\omega_p $也不同。三个频率的关系是：</p>
+<script type="math/tex; mode=display">
+\omega_d = \omega_n\sqrt{1-\zeta^2} \quad (\text{时域振荡频率})</script><script type="math/tex; mode=display">
+\omega_p = \omega_n\sqrt{1-2\zeta^2} \quad (\text{频域谐振频率})</script><script type="math/tex; mode=display">
+\omega_n = \sqrt{\sigma^2 + \omega_d^2}</script><p>大小顺序如下：</p>
+<ul>
+<li>当$0&lt;\zeta&lt;0.707$ 时：$\omega_p &lt; \omega_d &lt; \omega_n$</li>
+<li>$\zeta=0$ 时：$\omega_p = \omega_d = \omega_n$</li>
+</ul>
+<p>【总结】：</p>
+<p><strong>谐振峰≠无阻尼自然频率</strong>。在波特图上，$\omega_n$ 是“转折点”频率，$\omega_p$ 是“峰尖”频率，二者位置不同。</p>
 
             </div>
             <hr>
@@ -291,8 +419,6 @@ V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正�
                     <i class="iconfont icon-tags"></i>
                     
                       <a class="hover-with-bg" href="/tags/%E6%A8%A1%E6%8B%9FIC/">模拟IC</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
                     
                   </div>
                 
@@ -309,9 +435,9 @@ V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/22/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
+                      <a href="/2026/07/28/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84virtuoso%E8%AE%BE%E7%BD%AE/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">双极点放大器的闭环响应</span>
+                        <span class="hidden-mobile">一些常用的virtuoso设置</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -319,8 +445,8 @@ V_{X-CM}=V_{IN-CM}+(V_{O-CM}-V_{IN-CM})·R_2/(R_2+R_1)</script><p>即运放正�
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/19/Maxima%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E4%BC%A0%E9%80%92%E5%87%BD%E6%95%B0/">
-                        <span class="hidden-mobile">Maxima如何计算传递函数</span>
+                      <a href="/2026/07/22/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
+                        <span class="hidden-mobile">双极点放大器的闭环响应</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
