@@ -25,8 +25,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260729214852902.png">
 <meta property="article:published_time" content="2026-07-28T14:45:24.000Z">
-<meta property="article:modified_time" content="2026-07-28T13:25:46.463Z">
+<meta property="article:modified_time" content="2026-07-29T14:50:08.339Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
@@ -216,7 +217,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.8k 字
+      2.5k 字
     </span>
   
 
@@ -225,7 +226,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      41 分钟
+      21 分钟
     </span>
   
 
@@ -258,7 +259,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年7月28日 晚上
+                  本文最后更新于：2026年7月29日 晚上
                 
               </p>
             
@@ -266,7 +267,7 @@
               <p>开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。</p>
 <hr>
 <span id="more"></span>
-<p>假设放大器的开环增益为$A(s)$，接成反馈系数为$\beta$（假设$\beta$与频率无关）的闭环反馈放大器使用，如下图所示：</p>
+<h1 id="1-开环到闭环"><a href="#1-开环到闭环" class="headerlink" title="1. 开环到闭环"></a>1. 开环到闭环</h1><p>假设放大器的开环增益为$A(s)$，接成反馈系数为$\beta$（假设$\beta$与频率无关）的闭环反馈放大器使用，如下图所示：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png" srcset="/img/loading.gif" lazyload alt="image-20260722205747757"></p>
 <p>则闭环响应表示为</p>
 <script type="math/tex; mode=display">
@@ -274,8 +275,7 @@ v_o/v_i=\frac{A(s)}{1+A(s)\beta} \tag{1}</script><p>因此反馈放大器的极�
 <p>令<strong>特征方程</strong>为</p>
 <script type="math/tex; mode=display">
 1+A(s)\beta=0 \tag{2}</script><p>以下将根据不同的开环系统，即不同的$A(s)$对闭环反馈电路的稳定性进行讨论</p>
-<hr>
-<p><strong>【情形1】</strong>：开环放大器为双实极点系统，零点位于无穷远处，则开环传递函数$A(s)$表示为：</p>
+<h1 id="2-开环：双实极点"><a href="#2-开环：双实极点" class="headerlink" title="2. 开环：双实极点"></a>2. 开环：双实极点</h1><p><strong>【情形1】</strong>：开环放大器为双实极点系统，零点位于无穷远处，则开环传递函数$A(s)$表示为：</p>
 <script type="math/tex; mode=display">
 A(s) = \frac{A_0}{(1 + s/\omega_{p1})(1 + s/\omega_{p2})}\tag{4}</script><p>带入式（2）<strong>特征方程</strong>，并整理为<strong>标准二次方程</strong>：</p>
 <script type="math/tex; mode=display">
@@ -307,7 +307,7 @@ s = -\frac{1}{2}(\omega_{p1} + \omega_{p2}) \pm  \frac{1}{2}\sqrt{(\omega_{p1} +
 \omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} \tag{7}</script><p>注意，有时候会误以为$\omega_n = \sqrt{\omega_{p1}\omega_{p2}}$，这是<strong>错误</strong>的！！这个错误的原因是直接把$A(s)$极点的$\omega_n$当成$A(s)$闭环反馈极点的$\omega_n$。</p>
 <p><strong>阻尼因子</strong>$\zeta$：</p>
 <script type="math/tex; mode=display">
-\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} \tag{8}</script><p><strong>情形2</strong>：开环放大器为双实极点系统，增加了补偿零点，则开环传递函数$A(s)$表示为：</p>
+\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} \tag{8}</script><h1 id="3-开环：双极点-零点"><a href="#3-开环：双极点-零点" class="headerlink" title="3. 开环：双极点+零点"></a>3. 开环：双极点+零点</h1><p><strong>情形2</strong>：开环放大器为双实极点系统，增加了补偿零点（需注意，本文所说的零点均是<strong>负半平面零点</strong>，正半平面零点不在讨论范围），则开环传递函数$A(s)$表示为：</p>
 <script type="math/tex; mode=display">
 A(s) = \frac{A_0(1 + s/\omega_{z})}{(1 + s/\omega_{p1})(1 + s/\omega_{p2})}\tag{9}</script><p>带入式（2）<strong>特征方程</strong>，并整理为<strong>标准二次方程</strong>：</p>
 <script type="math/tex; mode=display">
@@ -317,89 +317,65 @@ s^2 + (\omega_{p1} + \omega_{p2} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{\ome
 \omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} \tag{11}</script><p>对比情况1的$\omega_n$，二者一致。</p>
 <p><strong>阻尼因子</strong>$\zeta$：</p>
 <script type="math/tex; mode=display">
-\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\omega_n\,\omega_z}</script><p>对比情况1的$\zeta$，$\zeta$表达式中的第二项 <strong>随 $\omega_z$ 减小而增大</strong>。</p>
+\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\omega_n\,\omega_z}</script><p>对比情况1的$\zeta$，$\zeta$表达式中的第二项 <strong>随 $\omega_z$ 减小而增大</strong>，系统阻尼增大，闭环系统趋向稳定、响应速度变慢，响应曲线变缓（趋向不出现增益尖峰）。因此引入零点是<strong>改善稳定性和抑制振荡</strong>的关键手段，（负半平面）零点的存在总是让系统趋向稳定。</p>
 <blockquote>
 <p>$\omega_n$大小不受零点影响！！</p>
 <p>$\zeta$大小受零点影响！！</p>
 </blockquote>
-<p>是的，<strong>阻尼比 (\zeta) 与共轭极点位置有直接且重要的几何关系</strong>。</p>
-<hr>
-<h3 id="1-极点的极坐标表示"><a href="#1-极点的极坐标表示" class="headerlink" title="1. 极点的极坐标表示"></a>1. 极点的极坐标表示</h3><p>二阶系统的共轭极点为：<br>[<br>s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2} = -\sigma \pm j\omega_d<br>]<br>极点在 (s) 平面上的极径（到原点的距离）正是无阻尼自然频率：<br>[<br>r = |s_{1,2}| = \omega_n<br>]<br>极角 (\theta) 是极点向量与<strong>负实轴</strong>的夹角，满足：<br>[<br>\cos\theta = \frac{\sigma}{r} = \frac{\zeta\omega_n}{\omega_n} = \zeta<br>]<br>即<br>[<br>\boxed{\zeta = \cos\theta}<br>]<br><strong>因此，阻尼比 (\zeta) 直接决定了共轭极点在 (s) 平面上的角度位置</strong>：</p>
+<p>对于零点补偿双极点系统的频率补偿方案，零点放置的位置可分为<strong>两（或三）种情况</strong>：</p>
+<p>① 零点位于两极点中间，即$\omega_{p1}&lt;\omega_z&lt;\omega_{p2}$</p>
+<p>② 零点位于两极点之外，即$\omega_{p1}&lt;\omega_{p2}&lt;\omega_z$</p>
+<p>③ 零点位于两极点前面，即$\omega_z&lt;\omega_{p1}&lt;\omega_{p2}$</p>
+<p>①、②两种情况是常见的补偿方案，③几乎不出现，因此后文不对③进行讨论。</p>
+<h2 id="3-1-零点位于两极点中间"><a href="#3-1-零点位于两极点中间" class="headerlink" title="3.1 零点位于两极点中间"></a>3.1 零点位于两极点中间</h2><p>从$\zeta$表达式讲，该情况的零点频率较低，因此$\zeta$更高，相应的闭环系统也会更加稳定；</p>
+<p>从相位裕度讲，由于零点在次极点前，于是$UGB$附近的零极点分布为：</p>
+<script type="math/tex; mode=display">
+\omega_z<\omega_{p2}≤UGB</script><p>因此相位裕度通常是随着$UGB$（即$A_0\beta$）的增大而单调递减，因此在$A_0\beta$最大时就是闭环系统稳定性最差时。</p>
+<p>【此处先给出该情况的闭环响应结论】：</p>
 <ul>
-<li>每一个 (\zeta) 对应一条从原点出发、与负实轴夹角为 (\theta = \arccos\zeta) 的射线，极点只能位于这条等 (\zeta) 线上。</li>
-<li>(\zeta) 不变时，(\omega_n) 变化只会让极点沿这条射线径向移动。</li>
+<li>闭环后仍然存在两个极点，且为两个不相等的负半平面极点</li>
+<li>闭环极点$p_1$相对原来的主极点$\omega_{p1}$频率更高，随$A_0\beta$的增大最终会<strong>趋向补偿零点频率$\omega_z$</strong>，即闭环系统带宽增大</li>
+<li>闭环极点$p_2$相对原来的次极点$\omega_{p2}$频率更高，随$A_0\beta$的增大最终会趋向无穷远处</li>
+<li>$A_0\beta$很大时，闭环系统可认为单极点系统，最大带宽约为$\omega_z$</li>
 </ul>
-<hr>
-<h3 id="2-本电路的体现"><a href="#2-本电路的体现" class="headerlink" title="2. 本电路的体现"></a>2. 本电路的体现</h3><p>由前推导：<br>[<br>\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\sqrt{\omega_{p1}\omega_{p2}(1+A_0\beta)}}<br>]<br>随着 (\beta) 增大：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260729214852902.png" srcset="/img/loading.gif" lazyload alt="image-20260729214852902"></p>
+<p>以下为具体数值分析：</p>
+<h3 id="3-1-1-闭环必为双实极点"><a href="#3-1-1-闭环必为双实极点" class="headerlink" title="3.1.1 闭环必为双实极点"></a>3.1.1 闭环必为双实极点</h3><p>根据开环双实极点+零点的闭环特征方程的标准二阶形式</p>
+<script type="math/tex; mode=display">
+\underbrace{}_{a=1}s^2 +\underbrace{(\omega_{p1} + \omega_{p2} + \frac{\beta A_0\omega_{p1}\omega_{p2}}{\omega_z})}_{b}s + \underbrace{\omega_{p1}\omega_{p2}(1 + \beta A_0)}_{c} = 0</script><p>根据“二次方程的跟判别式（$\Delta=b^2-4ac&gt;0?$）”得</p>
+<script type="math/tex; mode=display">
+\Delta = \left(\omega_{p1}+\omega_{p2} + \frac{T\omega_{p1}\omega_{p2}}{\omega_z}\right)^2 - 4\omega_{p1}\omega_{p2}(1+T)</script><p>其中，$T = \beta A_0$</p>
+<p>将其视为关于$T$的二次函数：</p>
+<script type="math/tex; mode=display">
+\Delta(T) = \frac{\omega_{p1}^2\omega_{p2}^2}{\omega_z^2}\,T^2 + 2\omega_{p1}\omega_{p2}\!\left(\frac{\omega_{p1}+\omega_{p2}}{\omega_z}-2\right)\!T + (\omega_{p1}-\omega_{p2})^2.</script><p>该二次式开口向上，其判别式（关于$T$的判别式）为</p>
+<script type="math/tex; mode=display">
+D = 4\omega_{p1}^2\omega_{p2}^2\left[ \left(\frac{\omega_{p1}+\omega_{p2}}{\omega_z}-2\right)^2 - \frac{(\omega_{p1}-\omega_{p2})^2}{\omega_z^2} \right]
+      = \frac{16\,\omega_{p1}^2\omega_{p2}^2}{\omega_z^2}(\omega_{p1}-\omega_z)(\omega_{p2}-\omega_z).</script><p>由于 $\omega_{p1}&lt;\omega_z&lt;\omega_{p2}$，因此 $(\omega_{p1}-\omega_z)(\omega_{p2}-\omega_z)<0$，故$D<0$。这说明$\Delta(T)$无实数解，而$\Delta(0)=(\omega_{p1}-\omega_{p2})^2>0$，因此对任意 $T\ge0$ 均有 $\Delta&gt;0$。即，对任意 $T\ge0$，$s$均有两个不相等的解，这意味着闭环极点始终为两个相异负实数，永不振荡。</p>
+<h3 id="3-1-2-极点相对开环零极点的位置"><a href="#3-1-2-极点相对开环零极点的位置" class="headerlink" title="3.1.2 极点相对开环零极点的位置"></a>3.1.2 极点相对开环零极点的位置</h3><p>可利用二次函数$f(s)=s^2+a_1s+a_0$ 在关键点的符号确定根的范围：</p>
+<p>由连续性与二次函数开口向上可得：</p>
 <ul>
-<li>(\zeta) 从 (&gt;1) 下降到 (&lt;1)，极点从负实轴分离为一对共轭复极点。</li>
-<li>当 (\beta &gt; \beta_c) 后，(\sigma = \frac{\omega_{p1}+\omega_{p2}}{2}) 恒定，(\omega_d = \omega_n\sqrt{1-\zeta^2} = \sqrt{\omega_n^2 - \sigma^2}) 随 (\beta) 增大，极点上移。此时：<br>[<br>\zeta = \frac{\sigma}{\omega_n} = \frac{\sigma}{\sqrt{\sigma^2 + \omega_d^2}}<br>]<br>虚部 (\omega_d) 增大 ⇒ (\zeta) 减小 ⇒ 极角 (\theta = \arccos\zeta) 增大 ⇒ 极点更靠近虚轴，超调增加，稳定性相对变差。</li>
+<li>$f(-\omega_{p1})\ge0,\ f(-\omega_z)&lt;0$→ 在区间$(-\omega_z,\ -\omega_{p1})$内必有一根，记为$p_1$。</li>
+<li>$f(-\omega_{p2})\le0,\ f(-\infty)=+\infty$→ 在区间$(-\infty,\ -\omega_{p2})$ 内必有一根，记为$p_2$。</li>
 </ul>
-<hr>
-<h3 id="3-zeta-与极点位置关系的总结"><a href="#3-zeta-与极点位置关系的总结" class="headerlink" title="3. (\zeta) 与极点位置关系的总结"></a>3. (\zeta) 与极点位置关系的总结</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>(\zeta) 值</th>
-<th>极点位置</th>
-<th>物理意义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>(\zeta &gt; 1)</td>
-<td>两个不等负实根，均在负实轴上</td>
-<td>过阻尼，无振荡</td>
-</tr>
-<tr>
-<td>(\zeta = 1)</td>
-<td>二重负实根</td>
-<td>临界阻尼</td>
-</tr>
-<tr>
-<td>(0&lt;\zeta&lt;1)</td>
-<td>共轭复极点，位于与负实轴夹角 (\arccos\zeta) 的射线上</td>
-<td>欠阻尼，衰减振荡</td>
-</tr>
-<tr>
-<td>(\zeta = 0)</td>
-<td>共轭纯虚根 ±jω_n</td>
-<td>无阻尼等幅振荡</td>
-</tr>
-<tr>
-<td>(\zeta &lt; 0)</td>
-<td>极点进入右半平面</td>
-<td>不稳定，发散振荡</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>因此，<strong>阻尼比不仅与极点位置有关，它本身就是对该位置的一种几何描述——共轭极点所在射线与负实轴夹角的余弦</strong>。</p>
-<h3 id="1-对阻尼比的直接影响"><a href="#1-对阻尼比的直接影响" class="headerlink" title="1. 对阻尼比的直接影响"></a>1. 对阻尼比的直接影响</h3><p>将方程写成标准二阶形式 (s^2 + 2\zeta\omega_n s + \omega_n^2 = 0)：<br>[<br>\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)}, \quad<br>\zeta = \frac{a_1}{2\omega_n} = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\omega_n\,\omega_z}<br>]<br>(\zeta) 表达式中的第二项 <strong>随 (\omega_z) 减小而增大</strong>。因此：</p>
-<ul>
-<li><strong>当 (\omega_z \to \infty)（无零点）</strong>：(\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n})，系统可能因低阻尼而出现强烈振荡。</li>
-<li><strong>当 (\omega_z) 向低频移动（零点靠近原点）</strong>：(\zeta) 单调增大，系统阻尼增强。当 (\zeta \ge 1) 时，闭环极点变为两个负实根，系统由欠阻尼过渡到过阻尼，超调消失，响应变慢但更平稳。</li>
-<li><strong>若 (\omega_z) 为正但极小</strong>：(a_1) 非常大，一个极点会趋近 (-\omega_z)（被零点“吸引”），另一个极点趋近 (-\frac{a_0}{\omega_z}) 而变得非常负，系统呈现一阶主导特性。</li>
+<p>因此位置顺序（负实轴上从左向右为更负到更靠近原点）为：  </p>
+<script type="math/tex; mode=display">
+\boxed{p_2 \le -\omega_{p2} < -\omega_z < p_1 \le -\omega_{p1}}</script><p>等号仅在 $T=0$ 时成立，此时开环极点即闭环极点。</p>
+<p>两个根可显式写为： </p>
+<script type="math/tex; mode=display">
+p_1 = \frac{-b + \sqrt{\Delta}}{2}, \qquad 
+p_2 = \frac{-b - \sqrt{\Delta}}{2}.</script><ul>
+<li><p>对于$p_1$（闭环主极点）：当$T\to\infty$ 时，$b ≈ \frac{T\omega_{p1}\omega_{p2}}{\omega_z}$，$\Delta ≈ \left(\frac{T\omega_{p1}\omega_{p2}}{\omega_z}\right)^2 - 4T\omega_{p1}\omega_{p2} \sim [\frac{T\omega_{p1}\omega_{p2}}{\omega_z}+2\omega_z]^2$ ，可算得$p_1 \to \omega_z$（被零点吸引）。  </p>
+</li>
+<li><p>对于$p_2$（闭环非主极点）：当 $T\to\infty$ 时，$p_2 \approx -a_1 \sim -\frac{T\omega_{p1}\omega_{p2}}{\omega_z} \to -\infty$。</p>
+</li>
 </ul>
-<h3 id="2-从根轨迹看-omega-z-的作用"><a href="#2-从根轨迹看-omega-z-的作用" class="headerlink" title="2. 从根轨迹看 (\omega_z) 的作用"></a>2. 从根轨迹看 (\omega_z) 的作用</h3><p>开环极点位于 (-\omega_{p1})、(-\omega_{p2})，零点位于 (-\omega_z)（假设均在左半平面）。根轨迹法则指出：<strong>零点会吸引根轨迹，使闭环极点向零点方向移动</strong>。  </p>
-<ul>
-<li>零点位于极点左侧（(\omega_z &gt; \omega_{p2})）：根轨迹向左弯曲，两个分支先在实轴上分离（或汇合），然后可能沿渐近线进入左半平面。零点使分离角减小，系统更容易稳定。  </li>
-<li>零点位于两极之间（(\omega_{p1} &lt; \omega_z &lt; \omega_{p2})）或极点右侧（(\omega_z &lt; \omega_{p1})）：零点将位于实轴上的一个极点“拉”向自己，该分支沿实轴向左移动，成为主导极点；另一分支则远离虚轴向左移动。此时系统阻尼显著增加，甚至变成两个一阶环节。</li>
+<h3 id="3-1-3-总结"><a href="#3-1-3-总结" class="headerlink" title="3.1.3 总结"></a>3.1.3 总结</h3><ul>
+<li>两个闭环极点均相对开环极点<strong>向左移动</strong>（更负），系统响应加速。  </li>
+<li>零点像“磁石”将 $\omega_{p1}$拉向自己，使得主导极点趋$p_1$近$\omega_z$，闭环带宽最高约达 $\omega_z$。  </li>
+<li>$p_2$ 迅速远离虚轴成为非主导极点，系统近似为一阶惯性环节，无超调，过阻尼。  </li>
+<li>整个系统始终保持稳定，且动态特性可由 $\omega_z$ 的位置调节。</li>
 </ul>
-<p>无论哪种情况，<strong>左半平面零点都提供正相位（相位超前）</strong>，增大了相位裕度，使闭环极点向左偏移，相对稳定性提高。</p>
-<h3 id="3-定量影响：偏导数分析"><a href="#3-定量影响：偏导数分析" class="headerlink" title="3. 定量影响：偏导数分析"></a>3. 定量影响：偏导数分析</h3><p>固定其他参数，(a_1) 对 (1/\omega_z) 的敏感度为：<br>[<br>\frac{\partial a_1}{\partial (1/\omega_z)} = \beta A_0\,\omega_{p1}\omega_{p2} &gt; 0<br>]<br>可见 (\omega_z) 下降（(1/\omega_z) 上升）直接使 (a_1) 线性增大。由于 (\omega_n) 恒定，阻尼比 (\zeta) 以相同趋势增大。闭环极点实部绝对值增大（极点向左移动），虚部减小（振荡减弱）。</p>
-<h3 id="4-特殊情况下的极点近似"><a href="#4-特殊情况下的极点近似" class="headerlink" title="4. 特殊情况下的极点近似"></a>4. 特殊情况下的极点近似</h3><ul>
-<li><strong>(\omega_z \to \infty)（无零点）</strong>：(s) 退化为原无零点方程的解，可能为共轭复根。</li>
-<li><strong>(\omega_z) 使 (a_1^2 = 4a_0)</strong>（临界阻尼点）：解得<br>[<br>\omega_z = \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} - (\omega_{p1}+\omega_{p2})}<br>]<br>此时两闭环极点重合为负实数。</li>
-<li><strong>(\omega_z \to 0^+)（零点极度接近原点）</strong>：一个极点 (p_1 \to -\omega_z)，另一个 (p_2 \to -\infty)（快速衰减），系统近似为一阶系统，时间常数 (1/\omega_z)。</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>零点 (-\omega_z) 是<strong>改善稳定性和抑制振荡</strong>的关键手段：</p>
-<ul>
-<li>减小 (\omega_z)（零点向低频移动）→ 阻尼比增大 → 振荡减小、超调降低，但响应速度可能变慢；</li>
-<li>增大 (\omega_z)（零点远离原点）→ 影响减弱，系统趋近于原始双极点响应的欠阻尼状态。</li>
-</ul>
-<p>在实际设计中，可调节 (\omega_z) 来同时满足快速性和稳定性的折中要求。</p>
-
+<h2 id="3-2-零点位于两极点之外"><a href="#3-2-零点位于两极点之外" class="headerlink" title="3.2 零点位于两极点之外"></a>3.2 零点位于两极点之外</h2>
             </div>
             <hr>
             <div>
