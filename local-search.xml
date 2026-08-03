@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>全差分输出负载等效</title>
+    <link href="/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/"/>
+    <url>/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/</url>
+    
+    <content type="html"><![CDATA[<p>通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。</p><hr><span id="more"></span><h1 id="1-结论"><a href="#1-结论" class="headerlink" title="1. 结论"></a>1. 结论</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png" alt="负载等效"></p><div class="table-container"><table><thead><tr><th style="text-align:center">跨接元件</th><th style="text-align:center">单端对地等效值（差模）</th><th style="text-align:center">单端对地等效值（共模）</th></tr></thead><tbody><tr><td style="text-align:center">电容 $C_L$</td><td style="text-align:center">$2C_L$</td><td style="text-align:center">$0$</td></tr><tr><td style="text-align:center">电阻$R_L$</td><td style="text-align:center">$R_L/2$</td><td style="text-align:center">$∞$</td></tr></tbody></table></div><h1 id="2-推导"><a href="#2-推导" class="headerlink" title="2. 推导"></a>2. 推导</h1><h2 id="2-1-差模"><a href="#2-1-差模" class="headerlink" title="2.1 差模"></a>2.1 差模</h2><p>对于全差分运放，其输出<strong>VO1 和 VO2 输出幅度相等、相位相反</strong>（即正常差分工作状态，$V_{O2} = -V_{O1}$）</p><p>【对于电容负载】：</p><p>设跨接在 VO1 和 VO2 之间的电容为$C_L$，流过该电容的电流为：</p><script type="math/tex; mode=display">I = C_L \cdot \frac{d(V_{O1} - V_{O2})}{dt}</script><p>由于全差分运放正常工作时，$V_{O2} = -V_{O1}$，代入得：</p><script type="math/tex; mode=display">V_{O1} - V_{O2} = V_{O1} - (-V_{O1}) = 2V_{O1}</script><script type="math/tex; mode=display">I = C_L \cdot \frac{d(2V_{O1})}{dt} = 2C_L \cdot \frac{dV_{O1}}{dt}</script><p>从 VO1 节点“看向地”的等效电容$C_{eq}$ 定义为$I = C_{eq} \cdot \frac{dV_{O1}}{dt}$，因此：</p><script type="math/tex; mode=display">C_{eq} = 2C_L</script><p>物理角度：电压变化率加倍 → 位移电流加倍 → 容抗减半 → 等效电容倍增</p><p>【对于电阻负载】：</p><p>跨接电阻$R_L$两端的电压为$V_{O1} - V_{O2}$，流过电阻的电流为：</p><script type="math/tex; mode=display">I = \frac{V_{O1} - V_{O2}}{R_L}</script><p>由于全差分运放正常工作时，$V_{O2} = -V_{O1}$，代入得：</p><script type="math/tex; mode=display">V_{O1} - V_{O2} = V_{O1} - (-V_{O1}) = 2V_{O1}</script><script type="math/tex; mode=display">I = \frac{2V_{O1}}{R_L}</script><p>从 VO1 节点“看向地”的等效电阻$ R_{eq} $ 定义为$R_{eq} = V_{O1} / I $，因此：</p><script type="math/tex; mode=display">R_{eq} = \frac{V_{O1}}{2V_{O1}/R_L} = \frac{R_L}{2}</script><p>物理角度：电压差加倍 → 流过电流加倍 → 阻值减半</p><h2 id="2-2-共模"><a href="#2-2-共模" class="headerlink" title="2.2 共模"></a>2.2 共模</h2><p>如果 VO1 和 VO2 同时同向变化（共模信号，如电源噪声或共模扰动），即$V_{O2} = -V_{O1}$，则负载两端压差始终为零，流过负载的电流 $ I = 0$，相当于开路。</p><p>【对于电容负载】：</p><script type="math/tex; mode=display">\frac{1}{sC_{eq}}=∞</script><p>因此，<strong>VO1 对地的等效电容为 0</strong>。</p><p>【对于电阻负载】：</p><script type="math/tex; mode=display">R_{eq}=∞</script>]]></content>
+    
+    
+    <categories>
+      
+      <category>模拟IC</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>模拟IC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>双极点放大器的闭环响应</title>
     <link href="/2026/07/28/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/"/>
     <url>/2026/07/28/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/</url>
@@ -58,7 +83,7 @@
     <link href="/2026/07/28/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84virtuoso%E8%AE%BE%E7%BD%AE/"/>
     <url>/2026/07/28/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84virtuoso%E8%AE%BE%E7%BD%AE/</url>
     
-    <content type="html"><![CDATA[<p>一些常用的virtuoso设置</p><hr><span id="more"></span><h1 id="1-调整字体"><a href="#1-调整字体" class="headerlink" title="1. 调整字体"></a>1. 调整字体</h1><p>分别调整CIW窗口、标签/菜单字体、文本字体</p><figure class="highlight stylus"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;ciw&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;label&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;text&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br></code></pre></td></tr></table></figure><h1 id="2-波形显示界面"><a href="#2-波形显示界面" class="headerlink" title="2. 波形显示界面"></a>2. 波形显示界面</h1><h2 id="2-1-背景改成白色"><a href="#2-1-背景改成白色" class="headerlink" title="2.1 背景改成白色"></a>2.1 背景改成白色</h2><p>打开 <strong>Virtuoso CIW 窗口</strong>。</p><p>依次选择 <strong>Options &gt; Cdsenv Editor</strong>。</p><p>导航到路径 <strong>viva -&gt; graphFrame</strong>。</p><p>将 <strong>background</strong> 参数设置为白色：white</p><h2 id="2-1-仿真波形改为粗"><a href="#2-1-仿真波形改为粗" class="headerlink" title="2.1 仿真波形改为粗"></a>2.1 仿真波形改为粗</h2><p>打开 <strong>Virtuoso CIW 窗口</strong>。</p><p>依次选择 <strong>Options &gt; Cdsenv Editor</strong>。</p><p>导航到路径 <strong>viva -&gt; trace</strong>。</p><p>将 <strong>lineThickness</strong> 参数设置为超级粗：ExtraThick </p>]]></content>
+    <content type="html"><![CDATA[<p>一些常用的virtuoso设置</p><hr><span id="more"></span><h1 id="1-调整字体"><a href="#1-调整字体" class="headerlink" title="1. 调整字体"></a>1. 调整字体</h1><p>分别调整CIW窗口、标签/菜单字体、文本字体</p><figure class="highlight stylus"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;ciw&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;label&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br><span class="hljs-function"><span class="hljs-title">hiSetFont</span><span class="hljs-params">(<span class="hljs-string">&quot;text&quot;</span> ?size <span class="hljs-number">14</span>)</span></span><br></code></pre></td></tr></table></figure><h1 id="2-波形显示界面"><a href="#2-波形显示界面" class="headerlink" title="2. 波形显示界面"></a>2. 波形显示界面</h1><h2 id="2-1-背景改成白色"><a href="#2-1-背景改成白色" class="headerlink" title="2.1 背景改成白色"></a>2.1 背景改成白色</h2><p>打开 <strong>Virtuoso CIW 窗口</strong>。</p><p>依次选择 <strong>Options &gt; Cdsenv Editor</strong>。</p><p>导航到路径 <strong>viva -&gt; graphFrame</strong>。</p><p>将 <strong>background</strong> 参数设置为白色：white</p><h2 id="2-1-仿真波形改为超级粗"><a href="#2-1-仿真波形改为超级粗" class="headerlink" title="2.1 仿真波形改为超级粗"></a>2.1 仿真波形改为超级粗</h2><p>打开 <strong>Virtuoso CIW 窗口</strong>。</p><p>依次选择 <strong>Options &gt; Cdsenv Editor</strong>。</p><p>导航到路径 <strong>viva -&gt; trace</strong>。</p><p>将 <strong>lineThickness</strong> 参数设置为超级粗：ExtraThick </p>]]></content>
     
     
     <categories>

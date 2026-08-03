@@ -16,25 +16,23 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。">
+    <meta name="description" content="通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="双极点放大器的闭环响应">
-<meta property="og:url" content="http://example.com/2026/07/28/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/index.html">
+<meta property="og:title" content="全差分输出负载等效">
+<meta property="og:url" content="http://example.com/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。">
+<meta property="og:description" content="通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260729214852902.png">
-<meta property="article:published_time" content="2026-07-28T14:45:24.000Z">
-<meta property="article:modified_time" content="2026-07-29T14:50:08.339Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png">
+<meta property="article:published_time" content="2026-08-03T11:16:45.000Z">
+<meta property="article:modified_time" content="2026-08-03T14:04:46.708Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png">
   
   
-  <title>双极点放大器的闭环响应 - 墨魂</title>
+  <title>全差分输出负载等效 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -196,7 +194,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="双极点放大器的闭环响应">
+            <span class="h2" id="subtitle" title="全差分输出负载等效">
               
             </span>
 
@@ -206,8 +204,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2026-07-28 22:45" pubdate>
-        2026年7月28日 晚上
+      <time datetime="2026-08-03 19:16" pubdate>
+        2026年8月3日 晚上
       </time>
     </span>
   
@@ -217,7 +215,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.5k 字
+      929 字
     </span>
   
 
@@ -226,7 +224,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      21 分钟
+      8 分钟
     </span>
   
 
@@ -255,127 +253,68 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">双极点放大器的闭环响应</h1>
+            <h1 style="display: none">全差分输出负载等效</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年7月29日 晚上
+                  本文最后更新于：2026年8月3日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>开环放大器为双极点放大器，接成闭环放大器使用后的闭环响应。</p>
+              <p>通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。</p>
 <hr>
 <span id="more"></span>
-<h1 id="1-开环到闭环"><a href="#1-开环到闭环" class="headerlink" title="1. 开环到闭环"></a>1. 开环到闭环</h1><p>假设放大器的开环增益为$A(s)$，接成反馈系数为$\beta$（假设$\beta$与频率无关）的闭环反馈放大器使用，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png" srcset="/img/loading.gif" lazyload alt="image-20260722205747757"></p>
-<p>则闭环响应表示为</p>
+<h1 id="1-结论"><a href="#1-结论" class="headerlink" title="1. 结论"></a>1. 结论</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png" srcset="/img/loading.gif" lazyload alt="负载等效"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">跨接元件</th>
+<th style="text-align:center">单端对地等效值（差模）</th>
+<th style="text-align:center">单端对地等效值（共模）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">电容 $C_L$</td>
+<td style="text-align:center">$2C_L$</td>
+<td style="text-align:center">$0$</td>
+</tr>
+<tr>
+<td style="text-align:center">电阻$R_L$</td>
+<td style="text-align:center">$R_L/2$</td>
+<td style="text-align:center">$∞$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="2-推导"><a href="#2-推导" class="headerlink" title="2. 推导"></a>2. 推导</h1><h2 id="2-1-差模"><a href="#2-1-差模" class="headerlink" title="2.1 差模"></a>2.1 差模</h2><p>对于全差分运放，其输出<strong>VO1 和 VO2 输出幅度相等、相位相反</strong>（即正常差分工作状态，$V_{O2} = -V_{O1}$）</p>
+<p>【对于电容负载】：</p>
+<p>设跨接在 VO1 和 VO2 之间的电容为$C_L$，流过该电容的电流为：</p>
 <script type="math/tex; mode=display">
-v_o/v_i=\frac{A(s)}{1+A(s)\beta} \tag{1}</script><p>因此反馈放大器的极点就是$1+A(s)\beta$的零点。</p>
-<p>令<strong>特征方程</strong>为</p>
+I = C_L \cdot \frac{d(V_{O1} - V_{O2})}{dt}</script><p>由于全差分运放正常工作时，$V_{O2} = -V_{O1}$，代入得：</p>
 <script type="math/tex; mode=display">
-1+A(s)\beta=0 \tag{2}</script><p>以下将根据不同的开环系统，即不同的$A(s)$对闭环反馈电路的稳定性进行讨论</p>
-<h1 id="2-开环：双实极点"><a href="#2-开环：双实极点" class="headerlink" title="2. 开环：双实极点"></a>2. 开环：双实极点</h1><p><strong>【情形1】</strong>：开环放大器为双实极点系统，零点位于无穷远处，则开环传递函数$A(s)$表示为：</p>
+V_{O1} - V_{O2} = V_{O1} - (-V_{O1}) = 2V_{O1}</script><script type="math/tex; mode=display">
+I = C_L \cdot \frac{d(2V_{O1})}{dt} = 2C_L \cdot \frac{dV_{O1}}{dt}</script><p>从 VO1 节点“看向地”的等效电容$C_{eq}$ 定义为$I = C_{eq} \cdot \frac{dV_{O1}}{dt}$，因此：</p>
 <script type="math/tex; mode=display">
-A(s) = \frac{A_0}{(1 + s/\omega_{p1})(1 + s/\omega_{p2})}\tag{4}</script><p>带入式（2）<strong>特征方程</strong>，并整理为<strong>标准二次方程</strong>：</p>
+C_{eq} = 2C_L</script><p>物理角度：电压变化率加倍 → 位移电流加倍 → 容抗减半 → 等效电容倍增</p>
+<p>【对于电阻负载】：</p>
+<p>跨接电阻$R_L$两端的电压为$V_{O1} - V_{O2}$，流过电阻的电流为：</p>
 <script type="math/tex; mode=display">
-s^2 + (\omega_{p1} + \omega_{p2})s + \omega_{p1}\omega_{p2}(1 + \beta A_0) = 0 \tag{5}</script><p>显然，闭环反馈放大器此时存在两个极点$p_1$、$p_2$，这两个极点的位置即$s$的解</p>
-<blockquote>
-<p>开环放大器存在两个极点，则闭环放大器必然也存在两个极点</p>
-<p>只是这两个闭环极点可能是双实极点，也可能是共轭复极点</p>
-</blockquote>
-<p>使用求根公式解得$s$为</p>
+I = \frac{V_{O1} - V_{O2}}{R_L}</script><p>由于全差分运放正常工作时，$V_{O2} = -V_{O1}$，代入得：</p>
 <script type="math/tex; mode=display">
-s = -\frac{1}{2}(\omega_{p1} + \omega_{p2}) \pm  \frac{1}{2}\sqrt{(\omega_{p1} + \omega_{p2})^2 - 4\omega_{p1}\omega_{p2}(1 + \beta A_0)} \tag{6}</script><p>两极点的位置（即s的解）与$A_0\beta$相关。由于$A_0$不变，因此不同的反馈系数$\beta$会使得闭环极点的位置不同：</p>
-<ul>
-<li>随着$\beta$由0（$\beta=0$即开环）不断增大，闭环极点逐步相互靠近。</li>
-<li>当$\beta$达到一定数值时，两极点重合。</li>
-<li>当$\beta$继续增大，其极点将成为一对共轭极点并沿着一条垂直线移动。</li>
-</ul>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png" srcset="/img/loading.gif" lazyload alt="image-20260722224554470"></p>
-<p>显然，当$\beta$最大时，反馈闭环电路的稳定性最差。</p>
-<blockquote>
-<p>【注意】：</p>
-<p>需要注意的是，通过$A_0\beta$的STB仿真得到的相位裕度PM就可以预测闭环响应（<strong>后面说明</strong>）</p>
-<p>因此，当$\beta$固定的时候，直接仿真该环路的STB，观察其PM大小即可预测闭环响应</p>
-<p>如果$\beta$不固定的时候，需要仿真最差情况</p>
-<p>通常，$\beta$最大即等于1，即<strong>单位负反馈</strong>，因此很多时候直接看单位负反馈STB的PM</p>
-<p>然而有些反馈放大器的放大倍数＜1（$\beta$&gt;1），则单看单位负反馈PM并不足够说明闭环的稳定性情况</p>
-</blockquote>
-<p>根据标准二次方程，可以得到<strong>无阻尼自然频率</strong>$\omega_n$：</p>
+V_{O1} - V_{O2} = V_{O1} - (-V_{O1}) = 2V_{O1}</script><script type="math/tex; mode=display">
+I = \frac{2V_{O1}}{R_L}</script><p>从 VO1 节点“看向地”的等效电阻$ R_{eq} $ 定义为$R_{eq} = V_{O1} / I $，因此：</p>
 <script type="math/tex; mode=display">
-\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} \tag{7}</script><p>注意，有时候会误以为$\omega_n = \sqrt{\omega_{p1}\omega_{p2}}$，这是<strong>错误</strong>的！！这个错误的原因是直接把$A(s)$极点的$\omega_n$当成$A(s)$闭环反馈极点的$\omega_n$。</p>
-<p><strong>阻尼因子</strong>$\zeta$：</p>
+R_{eq} = \frac{V_{O1}}{2V_{O1}/R_L} = \frac{R_L}{2}</script><p>物理角度：电压差加倍 → 流过电流加倍 → 阻值减半</p>
+<h2 id="2-2-共模"><a href="#2-2-共模" class="headerlink" title="2.2 共模"></a>2.2 共模</h2><p>如果 VO1 和 VO2 同时同向变化（共模信号，如电源噪声或共模扰动），即$V_{O2} = -V_{O1}$，则负载两端压差始终为零，流过负载的电流 $ I = 0$，相当于开路。</p>
+<p>【对于电容负载】：</p>
 <script type="math/tex; mode=display">
-\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} \tag{8}</script><h1 id="3-开环：双极点-零点"><a href="#3-开环：双极点-零点" class="headerlink" title="3. 开环：双极点+零点"></a>3. 开环：双极点+零点</h1><p><strong>情形2</strong>：开环放大器为双实极点系统，增加了补偿零点（需注意，本文所说的零点均是<strong>负半平面零点</strong>，正半平面零点不在讨论范围），则开环传递函数$A(s)$表示为：</p>
+\frac{1}{sC_{eq}}=∞</script><p>因此，<strong>VO1 对地的等效电容为 0</strong>。</p>
+<p>【对于电阻负载】：</p>
 <script type="math/tex; mode=display">
-A(s) = \frac{A_0(1 + s/\omega_{z})}{(1 + s/\omega_{p1})(1 + s/\omega_{p2})}\tag{9}</script><p>带入式（2）<strong>特征方程</strong>，并整理为<strong>标准二次方程</strong>：</p>
-<script type="math/tex; mode=display">
-s^2 + (\omega_{p1} + \omega_{p2} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{\omega_z}) s + \omega_{p1}\omega_{p2}(1 + \beta A_0) = 0 \tag{10}</script><p>显然，闭环反馈放大器此时存在两个极点$p_1$、$p_2$，<strong>零点的引入并没有改变闭环反馈放大器的极点个数</strong>。</p>
-<p>根据标准二次方程，可以得到<strong>无阻尼自然频率</strong>$\omega_n$：</p>
-<script type="math/tex; mode=display">
-\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+\beta A_0)} \tag{11}</script><p>对比情况1的$\omega_n$，二者一致。</p>
-<p><strong>阻尼因子</strong>$\zeta$：</p>
-<script type="math/tex; mode=display">
-\zeta = \frac{\omega_{p1}+\omega_{p2}}{2\omega_n} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{2\omega_n\,\omega_z}</script><p>对比情况1的$\zeta$，$\zeta$表达式中的第二项 <strong>随 $\omega_z$ 减小而增大</strong>，系统阻尼增大，闭环系统趋向稳定、响应速度变慢，响应曲线变缓（趋向不出现增益尖峰）。因此引入零点是<strong>改善稳定性和抑制振荡</strong>的关键手段，（负半平面）零点的存在总是让系统趋向稳定。</p>
-<blockquote>
-<p>$\omega_n$大小不受零点影响！！</p>
-<p>$\zeta$大小受零点影响！！</p>
-</blockquote>
-<p>对于零点补偿双极点系统的频率补偿方案，零点放置的位置可分为<strong>两（或三）种情况</strong>：</p>
-<p>① 零点位于两极点中间，即$\omega_{p1}&lt;\omega_z&lt;\omega_{p2}$</p>
-<p>② 零点位于两极点之外，即$\omega_{p1}&lt;\omega_{p2}&lt;\omega_z$</p>
-<p>③ 零点位于两极点前面，即$\omega_z&lt;\omega_{p1}&lt;\omega_{p2}$</p>
-<p>①、②两种情况是常见的补偿方案，③几乎不出现，因此后文不对③进行讨论。</p>
-<h2 id="3-1-零点位于两极点中间"><a href="#3-1-零点位于两极点中间" class="headerlink" title="3.1 零点位于两极点中间"></a>3.1 零点位于两极点中间</h2><p>从$\zeta$表达式讲，该情况的零点频率较低，因此$\zeta$更高，相应的闭环系统也会更加稳定；</p>
-<p>从相位裕度讲，由于零点在次极点前，于是$UGB$附近的零极点分布为：</p>
-<script type="math/tex; mode=display">
-\omega_z<\omega_{p2}≤UGB</script><p>因此相位裕度通常是随着$UGB$（即$A_0\beta$）的增大而单调递减，因此在$A_0\beta$最大时就是闭环系统稳定性最差时。</p>
-<p>【此处先给出该情况的闭环响应结论】：</p>
-<ul>
-<li>闭环后仍然存在两个极点，且为两个不相等的负半平面极点</li>
-<li>闭环极点$p_1$相对原来的主极点$\omega_{p1}$频率更高，随$A_0\beta$的增大最终会<strong>趋向补偿零点频率$\omega_z$</strong>，即闭环系统带宽增大</li>
-<li>闭环极点$p_2$相对原来的次极点$\omega_{p2}$频率更高，随$A_0\beta$的增大最终会趋向无穷远处</li>
-<li>$A_0\beta$很大时，闭环系统可认为单极点系统，最大带宽约为$\omega_z$</li>
-</ul>
-<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260729214852902.png" srcset="/img/loading.gif" lazyload alt="image-20260729214852902"></p>
-<p>以下为具体数值分析：</p>
-<h3 id="3-1-1-闭环必为双实极点"><a href="#3-1-1-闭环必为双实极点" class="headerlink" title="3.1.1 闭环必为双实极点"></a>3.1.1 闭环必为双实极点</h3><p>根据开环双实极点+零点的闭环特征方程的标准二阶形式</p>
-<script type="math/tex; mode=display">
-\underbrace{}_{a=1}s^2 +\underbrace{(\omega_{p1} + \omega_{p2} + \frac{\beta A_0\omega_{p1}\omega_{p2}}{\omega_z})}_{b}s + \underbrace{\omega_{p1}\omega_{p2}(1 + \beta A_0)}_{c} = 0</script><p>根据“二次方程的跟判别式（$\Delta=b^2-4ac&gt;0?$）”得</p>
-<script type="math/tex; mode=display">
-\Delta = \left(\omega_{p1}+\omega_{p2} + \frac{T\omega_{p1}\omega_{p2}}{\omega_z}\right)^2 - 4\omega_{p1}\omega_{p2}(1+T)</script><p>其中，$T = \beta A_0$</p>
-<p>将其视为关于$T$的二次函数：</p>
-<script type="math/tex; mode=display">
-\Delta(T) = \frac{\omega_{p1}^2\omega_{p2}^2}{\omega_z^2}\,T^2 + 2\omega_{p1}\omega_{p2}\!\left(\frac{\omega_{p1}+\omega_{p2}}{\omega_z}-2\right)\!T + (\omega_{p1}-\omega_{p2})^2.</script><p>该二次式开口向上，其判别式（关于$T$的判别式）为</p>
-<script type="math/tex; mode=display">
-D = 4\omega_{p1}^2\omega_{p2}^2\left[ \left(\frac{\omega_{p1}+\omega_{p2}}{\omega_z}-2\right)^2 - \frac{(\omega_{p1}-\omega_{p2})^2}{\omega_z^2} \right]
-      = \frac{16\,\omega_{p1}^2\omega_{p2}^2}{\omega_z^2}(\omega_{p1}-\omega_z)(\omega_{p2}-\omega_z).</script><p>由于 $\omega_{p1}&lt;\omega_z&lt;\omega_{p2}$，因此 $(\omega_{p1}-\omega_z)(\omega_{p2}-\omega_z)<0$，故$D<0$。这说明$\Delta(T)$无实数解，而$\Delta(0)=(\omega_{p1}-\omega_{p2})^2>0$，因此对任意 $T\ge0$ 均有 $\Delta&gt;0$。即，对任意 $T\ge0$，$s$均有两个不相等的解，这意味着闭环极点始终为两个相异负实数，永不振荡。</p>
-<h3 id="3-1-2-极点相对开环零极点的位置"><a href="#3-1-2-极点相对开环零极点的位置" class="headerlink" title="3.1.2 极点相对开环零极点的位置"></a>3.1.2 极点相对开环零极点的位置</h3><p>可利用二次函数$f(s)=s^2+a_1s+a_0$ 在关键点的符号确定根的范围：</p>
-<p>由连续性与二次函数开口向上可得：</p>
-<ul>
-<li>$f(-\omega_{p1})\ge0,\ f(-\omega_z)&lt;0$→ 在区间$(-\omega_z,\ -\omega_{p1})$内必有一根，记为$p_1$。</li>
-<li>$f(-\omega_{p2})\le0,\ f(-\infty)=+\infty$→ 在区间$(-\infty,\ -\omega_{p2})$ 内必有一根，记为$p_2$。</li>
-</ul>
-<p>因此位置顺序（负实轴上从左向右为更负到更靠近原点）为：  </p>
-<script type="math/tex; mode=display">
-\boxed{p_2 \le -\omega_{p2} < -\omega_z < p_1 \le -\omega_{p1}}</script><p>等号仅在 $T=0$ 时成立，此时开环极点即闭环极点。</p>
-<p>两个根可显式写为： </p>
-<script type="math/tex; mode=display">
-p_1 = \frac{-b + \sqrt{\Delta}}{2}, \qquad 
-p_2 = \frac{-b - \sqrt{\Delta}}{2}.</script><ul>
-<li><p>对于$p_1$（闭环主极点）：当$T\to\infty$ 时，$b ≈ \frac{T\omega_{p1}\omega_{p2}}{\omega_z}$，$\Delta ≈ \left(\frac{T\omega_{p1}\omega_{p2}}{\omega_z}\right)^2 - 4T\omega_{p1}\omega_{p2} \sim [\frac{T\omega_{p1}\omega_{p2}}{\omega_z}+2\omega_z]^2$ ，可算得$p_1 \to \omega_z$（被零点吸引）。  </p>
-</li>
-<li><p>对于$p_2$（闭环非主极点）：当 $T\to\infty$ 时，$p_2 \approx -a_1 \sim -\frac{T\omega_{p1}\omega_{p2}}{\omega_z} \to -\infty$。</p>
-</li>
-</ul>
-<h3 id="3-1-3-总结"><a href="#3-1-3-总结" class="headerlink" title="3.1.3 总结"></a>3.1.3 总结</h3><ul>
-<li>两个闭环极点均相对开环极点<strong>向左移动</strong>（更负），系统响应加速。  </li>
-<li>零点像“磁石”将 $\omega_{p1}$拉向自己，使得主导极点趋$p_1$近$\omega_z$，闭环带宽最高约达 $\omega_z$。  </li>
-<li>$p_2$ 迅速远离虚轴成为非主导极点，系统近似为一阶惯性环节，无超调，过阻尼。  </li>
-<li>整个系统始终保持稳定，且动态特性可由 $\omega_z$ 的位置调节。</li>
-</ul>
-<h2 id="3-2-零点位于两极点之外"><a href="#3-2-零点位于两极点之外" class="headerlink" title="3.2 零点位于两极点之外"></a>3.2 零点位于两极点之外</h2>
+R_{eq}=∞</script>
             </div>
             <hr>
             <div>
@@ -409,18 +348,12 @@ p_2 = \frac{-b - \sqrt{\Delta}}{2}.</script><ul>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">全差分输出负载等效</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/28/%E6%A0%87%E5%87%86%E4%BA%8C%E9%98%B6%E5%BD%A2%E5%BC%8F/">
-                        <span class="hidden-mobile">标准二阶形式</span>
+                      <a href="/2026/07/28/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
+                        <span class="hidden-mobile">双极点放大器的闭环响应</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
