@@ -25,9 +25,10 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722205747757.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png">
+<meta property="og:image" content="c:/Users/20185/AppData/Roaming/Typora/typora-user-images/image-20260804201553508.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260729214852902.png">
 <meta property="article:published_time" content="2026-07-28T14:45:24.000Z">
-<meta property="article:modified_time" content="2026-07-29T14:50:08.339Z">
+<meta property="article:modified_time" content="2026-08-04T12:22:16.550Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
@@ -259,7 +260,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年7月29日 晚上
+                  本文最后更新于：2026年8月4日 晚上
                 
               </p>
             
@@ -296,7 +297,7 @@ s = -\frac{1}{2}(\omega_{p1} + \omega_{p2}) \pm  \frac{1}{2}\sqrt{(\omega_{p1} +
 <p>显然，当$\beta$最大时，反馈闭环电路的稳定性最差。</p>
 <blockquote>
 <p>【注意】：</p>
-<p>需要注意的是，通过$A_0\beta$的STB仿真得到的相位裕度PM就可以预测闭环响应（<strong>后面说明</strong>）</p>
+<p>需要注意的是，通过$A_0\beta$的STB仿真得到的相位裕度PM就可以预测闭环响应</p>
 <p>因此，当$\beta$固定的时候，直接仿真该环路的STB，观察其PM大小即可预测闭环响应</p>
 <p>如果$\beta$不固定的时候，需要仿真最差情况</p>
 <p>通常，$\beta$最大即等于1，即<strong>单位负反馈</strong>，因此很多时候直接看单位负反馈STB的PM</p>
@@ -330,7 +331,9 @@ s^2 + (\omega_{p1} + \omega_{p2} + \frac{\beta A_0\,\omega_{p1}\omega_{p2}}{\ome
 <h2 id="3-1-零点位于两极点中间"><a href="#3-1-零点位于两极点中间" class="headerlink" title="3.1 零点位于两极点中间"></a>3.1 零点位于两极点中间</h2><p>从$\zeta$表达式讲，该情况的零点频率较低，因此$\zeta$更高，相应的闭环系统也会更加稳定；</p>
 <p>从相位裕度讲，由于零点在次极点前，于是$UGB$附近的零极点分布为：</p>
 <script type="math/tex; mode=display">
-\omega_z<\omega_{p2}≤UGB</script><p>因此相位裕度通常是随着$UGB$（即$A_0\beta$）的增大而单调递减，因此在$A_0\beta$最大时就是闭环系统稳定性最差时。</p>
+UGB≤\omega_{p2}<\omega_z</script><p>由于主极点$\omega_{p1}$只贡献90°相移，且在$UGB$附近有$\omega_z$抬一下，相位裕度通常是可以达到$90°$甚至$100°+$。这个时候不需要考虑环路的稳定性问题，因为环路必然是稳定的。</p>
+<p>PM随着$UGB$（即$A_0\beta$）的变化，可知<strong>直接从波特图上获知</strong>：呈现出先减小，后增大，再减小的特点，但PM始终$≥90°$</p>
+<p><img src="C:\Users\20185\AppData\Roaming\Typora\typora-user-images\image-20260804201553508.png" srcset="/img/loading.gif" lazyload alt="image-20260804201553508" style="zoom:67%;" /></p>
 <p>【此处先给出该情况的闭环响应结论】：</p>
 <ul>
 <li>闭环后仍然存在两个极点，且为两个不相等的负半平面极点</li>

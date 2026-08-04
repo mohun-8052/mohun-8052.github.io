@@ -16,23 +16,21 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。">
+    <meta name="description" content="通过分析&#x2F;仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应">
 <meta property="og:type" content="article">
-<meta property="og:title" content="全差分输出负载等效">
-<meta property="og:url" content="http://example.com/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/index.html">
+<meta property="og:title" content="环路相位裕度预测闭环响应">
+<meta property="og:url" content="http://example.com/2026/08/04/%E7%8E%AF%E8%B7%AF%E7%9B%B8%E4%BD%8D%E8%A3%95%E5%BA%A6%E9%A2%84%E6%B5%8B%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。">
+<meta property="og:description" content="通过分析&#x2F;仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png">
-<meta property="article:published_time" content="2026-08-03T11:16:45.000Z">
-<meta property="article:modified_time" content="2026-08-03T14:04:46.708Z">
+<meta property="article:published_time" content="2026-08-04T12:30:57.000Z">
+<meta property="article:modified_time" content="2026-08-04T14:07:01.735Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png">
   
   
-  <title>全差分输出负载等效 - 墨魂</title>
+  <title>环路相位裕度预测闭环响应 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -194,7 +192,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="全差分输出负载等效">
+            <span class="h2" id="subtitle" title="环路相位裕度预测闭环响应">
               
             </span>
 
@@ -204,8 +202,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2026-08-03 19:16" pubdate>
-        2026年8月3日 晚上
+      <time datetime="2026-08-04 20:30" pubdate>
+        2026年8月4日 晚上
       </time>
     </span>
   
@@ -215,7 +213,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      929 字
+      1.5k 字
     </span>
   
 
@@ -224,7 +222,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8 分钟
+      13 分钟
     </span>
   
 
@@ -253,68 +251,80 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">全差分输出负载等效</h1>
+            <h1 style="display: none">环路相位裕度预测闭环响应</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年8月3日 晚上
+                  本文最后更新于：2026年8月4日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>通常全差分输出存在电阻和电容两种负载，并且跨接在两个输出之间。为了方便分析，我们更希望负载是对地的。</p>
+              <p>通过分析/仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应</p>
 <hr>
 <span id="more"></span>
-<h1 id="1-结论"><a href="#1-结论" class="headerlink" title="1. 结论"></a>1. 结论</h1><p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260803213717067.png" srcset="/img/loading.gif" lazyload alt="负载等效"></p>
+<h1 id="1-相位裕度的定义"><a href="#1-相位裕度的定义" class="headerlink" title="1. 相位裕度的定义"></a>1. 相位裕度的定义</h1><p>对于一个2 pole + 1 zero的系统，其环路传递函数为</p>
+<script type="math/tex; mode=display">
+A(s)\beta = \frac{\beta A_0\left(1+\dfrac{s}{\omega_z}\right)}{\left(1+\dfrac{s}{\omega_{p1}}\right)\left(1+\dfrac{s}{\omega_{p2}}\right)}</script><p>相位裕度定义为在环路增益的幅值穿越频率 $\omega_c$（即 $|A(j\omega_c)\beta| = 1$，或$UGB$）处，环路相位$\angle A(j\omega_c)\beta$与$-180^\circ$的差值：</p>
+<script type="math/tex; mode=display">
+\text{PM} = 180^\circ + \angle A(j\omega_c)\beta = 180^\circ + \left[\arctan\frac{\omega_c}{\omega_z} - \arctan\frac{\omega_c}{\omega_{p1}} - \arctan\frac{\omega_c}{\omega_{p2}}\right].</script><p>其中两个极点贡献的滞后相位为$-\arctan(\omega_c/\omega_{p1}) - \arctan(\omega_c/\omega_{p2})$，而零点贡献的超前相位为$+\arctan(\omega_c/\omega_z)$。  </p>
+<p>零点$-\omega_z$ 的引入本质上是一种<strong>相位超前补偿</strong>，它通过提升相位裕度来改善闭环响应。</p>
+<p>加入零点后，即便$\omega_z$ 只是略大于 $\omega_{p2}$（如$\omega_{p1}&lt;\omega_{p2}&lt;\omega_z$，它在$\omega_c$ 处提供的正相位也能显著抵消极点滞后，使 PM 增大。</p>
+<h1 id="2-相位裕度和闭环阻尼的关系"><a href="#2-相位裕度和闭环阻尼的关系" class="headerlink" title="2. 相位裕度和闭环阻尼的关系"></a>2. 相位裕度和闭环阻尼的关系</h1><p>对于标准二阶系统（无零点），闭环传递函数为</p>
+<script type="math/tex; mode=display">
+A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度与阻尼有以下解析关系：</p>
+<script type="math/tex; mode=display">
+\text{PM} = \arctan\frac{2\zeta}{\sqrt{\sqrt{4\zeta^4+1}-2\zeta^2}}</script><p>有近似关系：</p>
+<script type="math/tex; mode=display">
+\boxed{\zeta \approx \frac{\text{PM (deg)}}{90}}</script><p>相位裕度的提高等价于闭环主导极点阻尼比 $\zeta$ 的增大，使得闭环响应从欠阻尼振荡向临界阻尼/过阻尼过渡，<strong>超调量减小、振荡次数减少、稳定性增强</strong>。</p>
+<p>以单位阶跃响应为例，时域特性与 PM（或 $\zeta$ ）的关系为：</p>
 <div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:center">跨接元件</th>
-<th style="text-align:center">单端对地等效值（差模）</th>
-<th style="text-align:center">单端对地等效值（共模）</th>
+<th style="text-align:center">相位裕度 PM</th>
+<th style="text-align:center">阻尼比 $\zeta$ 估算</th>
+<th style="text-align:center">超调量</th>
+<th style="text-align:center">调节时间</th>
+<th style="text-align:center">闭环响应特征</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">电容 $C_L$</td>
-<td style="text-align:center">$2C_L$</td>
-<td style="text-align:center">$0$</td>
+<td style="text-align:center">&lt; 45°</td>
+<td style="text-align:center">&lt; 0.5</td>
+<td style="text-align:center">&gt; 20%</td>
+<td style="text-align:center">长（振荡衰减慢）</td>
+<td style="text-align:center">明显振荡，可能出现条件稳定</td>
 </tr>
 <tr>
-<td style="text-align:center">电阻$R_L$</td>
-<td style="text-align:center">$R_L/2$</td>
-<td style="text-align:center">$∞$</td>
+<td style="text-align:center"><strong>45°–63°</strong></td>
+<td style="text-align:center">0.5~0.707</td>
+<td style="text-align:center">10%–20%</td>
+<td style="text-align:center">中等</td>
+<td style="text-align:center">适中阻尼，<strong>兼顾速度与平稳性</strong></td>
+</tr>
+<tr>
+<td style="text-align:center">60°–76°</td>
+<td style="text-align:center">0.707~1</td>
+<td style="text-align:center">&lt; 10%</td>
+<td style="text-align:center">较短</td>
+<td style="text-align:center">响应平滑，超调小</td>
+</tr>
+<tr>
+<td style="text-align:center">&gt; 76°</td>
+<td style="text-align:center">&gt; 1</td>
+<td style="text-align:center">极小或零</td>
+<td style="text-align:center">可能变慢（过阻尼）</td>
+<td style="text-align:center">无超调，但上升时间增加</td>
 </tr>
 </tbody>
 </table>
 </div>
-<h1 id="2-推导"><a href="#2-推导" class="headerlink" title="2. 推导"></a>2. 推导</h1><h2 id="2-1-差模"><a href="#2-1-差模" class="headerlink" title="2.1 差模"></a>2.1 差模</h2><p>对于全差分运放，其输出<strong>VO1 和 VO2 输出幅度相等、相位相反</strong>（即正常差分工作状态，$V_{O2} = -V_{O1}$）</p>
-<p>【对于电容负载】：</p>
-<p>设跨接在 VO1 和 VO2 之间的电容为$C_L$，流过该电容的电流为：</p>
-<script type="math/tex; mode=display">
-I = C_L \cdot \frac{d(V_{O1} - V_{O2})}{dt}</script><p>由于全差分运放正常工作时，$V_{O2} = -V_{O1}$，代入得：</p>
-<script type="math/tex; mode=display">
-V_{O1} - V_{O2} = V_{O1} - (-V_{O1}) = 2V_{O1}</script><script type="math/tex; mode=display">
-I = C_L \cdot \frac{d(2V_{O1})}{dt} = 2C_L \cdot \frac{dV_{O1}}{dt}</script><p>从 VO1 节点“看向地”的等效电容$C_{eq}$ 定义为$I = C_{eq} \cdot \frac{dV_{O1}}{dt}$，因此：</p>
-<script type="math/tex; mode=display">
-C_{eq} = 2C_L</script><p>物理角度：电压变化率加倍 → 位移电流加倍 → 容抗减半 → 等效电容倍增</p>
-<p>【对于电阻负载】：</p>
-<p>跨接电阻$R_L$两端的电压为$V_{O1} - V_{O2}$，流过电阻的电流为：</p>
-<script type="math/tex; mode=display">
-I = \frac{V_{O1} - V_{O2}}{R_L}</script><p>由于全差分运放正常工作时，$V_{O2} = -V_{O1}$，代入得：</p>
-<script type="math/tex; mode=display">
-V_{O1} - V_{O2} = V_{O1} - (-V_{O1}) = 2V_{O1}</script><script type="math/tex; mode=display">
-I = \frac{2V_{O1}}{R_L}</script><p>从 VO1 节点“看向地”的等效电阻$ R_{eq} $ 定义为$R_{eq} = V_{O1} / I $，因此：</p>
-<script type="math/tex; mode=display">
-R_{eq} = \frac{V_{O1}}{2V_{O1}/R_L} = \frac{R_L}{2}</script><p>物理角度：电压差加倍 → 流过电流加倍 → 阻值减半</p>
-<h2 id="2-2-共模"><a href="#2-2-共模" class="headerlink" title="2.2 共模"></a>2.2 共模</h2><p>如果 VO1 和 VO2 同时同向变化（共模信号，如电源噪声或共模扰动），即$V_{O2} = -V_{O1}$，则负载两端压差始终为零，流过负载的电流 $ I = 0$，相当于开路。</p>
-<p>【对于电容负载】：</p>
-<script type="math/tex; mode=display">
-\frac{1}{sC_{eq}}=∞</script><p>因此，<strong>VO1 对地的等效电容为 0</strong>。</p>
-<p>【对于电阻负载】：</p>
-<script type="math/tex; mode=display">
-R_{eq}=∞</script>
+<p>增大 PM 虽然能抑制振荡，但会导致响应变慢。为了兼顾稳定性和速度，通常取PM为$ 45°–60°$</p>
+<p>其中，阻尼 $\zeta=0.707$ 对应的PM约为$60°$，因此通常要求环路相位裕度为$60°$</p>
+<p>需要注意是，阻尼 $\zeta=0.707$时，其共轭极点与负实轴夹角$\theta=45^\circ$，这个$45^\circ$是s域共轭极点与负实轴夹角的角度，<strong>不是</strong>相位裕度！！</p>
+
             </div>
             <hr>
             <div>
@@ -348,18 +358,12 @@ R_{eq}=∞</script>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/08/04/%E7%8E%AF%E8%B7%AF%E7%9B%B8%E4%BD%8D%E8%A3%95%E5%BA%A6%E9%A2%84%E6%B5%8B%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">环路相位裕度预测闭环响应</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/28/%E5%8F%8C%E6%9E%81%E7%82%B9%E6%94%BE%E5%A4%A7%E5%99%A8%E7%9A%84%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
-                        <span class="hidden-mobile">双极点放大器的闭环响应</span>
+                      <a href="/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/">
+                        <span class="hidden-mobile">全差分输出负载等效</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
