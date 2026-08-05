@@ -16,21 +16,22 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="通过分析&#x2F;仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应">
+    <meta name="description" content="傅里叶仿真的注意事项">
 <meta property="og:type" content="article">
-<meta property="og:title" content="环路相位裕度预测闭环响应">
-<meta property="og:url" content="http://example.com/2026/08/04/%E7%8E%AF%E8%B7%AF%E7%9B%B8%E4%BD%8D%E8%A3%95%E5%BA%A6%E9%A2%84%E6%B5%8B%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/index.html">
+<meta property="og:title" content="virtuoso快速傅里叶变换仿真">
+<meta property="og:url" content="http://example.com/2026/08/05/virtuoso%E5%82%85%E9%87%8C%E5%8F%B6%E4%BB%BF%E7%9C%9F/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="通过分析&#x2F;仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应">
+<meta property="og:description" content="傅里叶仿真的注意事项">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-08-04T12:30:57.000Z">
-<meta property="article:modified_time" content="2026-08-04T14:07:01.735Z">
+<meta property="article:published_time" content="2026-08-05T14:32:08.000Z">
+<meta property="article:modified_time" content="2026-08-05T15:27:04.100Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
+<meta property="article:tag" content="随笔">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>环路相位裕度预测闭环响应 - 墨魂</title>
+  <title>virtuoso快速傅里叶变换仿真 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -192,7 +193,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="环路相位裕度预测闭环响应">
+            <span class="h2" id="subtitle" title="virtuoso快速傅里叶变换仿真">
               
             </span>
 
@@ -202,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2026-08-04 20:30" pubdate>
-        2026年8月4日 晚上
+      <time datetime="2026-08-05 22:32" pubdate>
+        2026年8月5日 晚上
       </time>
     </span>
   
@@ -213,7 +214,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      2.4k 字
     </span>
   
 
@@ -222,7 +223,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13 分钟
+      20 分钟
     </span>
   
 
@@ -251,79 +252,92 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">环路相位裕度预测闭环响应</h1>
+            <h1 style="display: none">virtuoso快速傅里叶变换仿真</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年8月4日 晚上
+                  本文最后更新于：2026年8月5日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>通过分析/仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应</p>
+              <p>傅里叶仿真的注意事项</p>
 <hr>
 <span id="more"></span>
-<h1 id="1-相位裕度的定义"><a href="#1-相位裕度的定义" class="headerlink" title="1. 相位裕度的定义"></a>1. 相位裕度的定义</h1><p>对于一个2 pole + 1 zero的系统，其环路传递函数为</p>
+<h1 id="1-相干采样"><a href="#1-相干采样" class="headerlink" title="1. 相干采样"></a>1. 相干采样</h1><p>在Virtuoso中进行频谱分析，<strong>核心是进行FFT（快速傅里叶变换）设置</strong>。这通常是在完成<strong>瞬态仿真（tran）</strong> 后，对输出的时域波形进行后处理。</p>
+<p>为了获得准确的频谱，最关键的一步是实现<strong>相干采样 (Coherent Sampling)</strong>，以避免频谱泄露。</p>
+<p>相干采样要求输入信号频率 (<code>fin</code>)、采样频率 (<code>fs</code>) 和采样点数 (<code>N</code>) 满足以下关系：</p>
 <script type="math/tex; mode=display">
-A(s)\beta = \frac{\beta A_0\left(1+\dfrac{s}{\omega_z}\right)}{\left(1+\dfrac{s}{\omega_{p1}}\right)\left(1+\dfrac{s}{\omega_{p2}}\right)}</script><p>相位裕度定义为在环路增益的幅值穿越频率 $\omega_c$（即 $|A(j\omega_c)\beta| = 1$，或$UGB$）处，环路相位$\angle A(j\omega_c)\beta$与$-180^\circ$的差值：</p>
+f_{in}=f_s·\frac{M}{N}=f_s·\frac{M}{2^n}</script><ul>
+<li><strong>N</strong>：FFT点数，通常取2的幂，如1024、2048。</li>
+<li><strong>M</strong>：<strong>质数</strong>，代表在<code>N</code>个采样点中包含的输入信号完整周期数。</li>
+</ul>
+<p>简单来说，就是确保你的采样窗口恰好截取了整数个周期的信号波形。</p>
+<p><strong>起始时间 (<code>Start Time</code>)</strong> 和<strong>结束时间 (<code>Stop Time</code>)</strong>满足：</p>
 <script type="math/tex; mode=display">
-\text{PM} = 180^\circ + \angle A(j\omega_c)\beta = 180^\circ + \left[\arctan\frac{\omega_c}{\omega_z} - \arctan\frac{\omega_c}{\omega_{p1}} - \arctan\frac{\omega_c}{\omega_{p2}}\right].</script><p>其中两个极点贡献的滞后相位为$-\arctan(\omega_c/\omega_{p1}) - \arctan(\omega_c/\omega_{p2})$，而零点贡献的超前相位为$+\arctan(\omega_c/\omega_z)$。  </p>
-<p>零点$-\omega_z$ 的引入本质上是一种<strong>相位超前补偿</strong>，它通过提升相位裕度来改善闭环响应。</p>
-<p>加入零点后，即便$\omega_z$ 只是略大于 $\omega_{p2}$（如$\omega_{p1}&lt;\omega_{p2}&lt;\omega_z$，它在$\omega_c$ 处提供的正相位也能显著抵消极点滞后，使 PM 增大。</p>
-<h1 id="2-相位裕度和闭环阻尼的关系"><a href="#2-相位裕度和闭环阻尼的关系" class="headerlink" title="2. 相位裕度和闭环阻尼的关系"></a>2. 相位裕度和闭环阻尼的关系</h1><p>对于标准二阶系统（无零点），闭环传递函数为</p>
-<script type="math/tex; mode=display">
-A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度与阻尼有以下解析关系：</p>
-<script type="math/tex; mode=display">
-\text{PM} = \arctan\frac{2\zeta}{\sqrt{\sqrt{4\zeta^4+1}-2\zeta^2}}</script><p>有近似关系：</p>
-<script type="math/tex; mode=display">
-\boxed{\zeta \approx \frac{\text{PM (deg)}}{90}}</script><p>相位裕度的提高等价于闭环主导极点阻尼比 $\zeta$ 的增大，使得闭环响应从欠阻尼振荡向临界阻尼/过阻尼过渡，<strong>超调量减小、振荡次数减少、稳定性增强</strong>。</p>
-<p>以单位阶跃响应为例，时域特性与 PM（或 $\zeta$ ）的关系为：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">相位裕度 PM</th>
-<th style="text-align:center">阻尼比 $\zeta$ 估算</th>
-<th style="text-align:center">超调量</th>
-<th style="text-align:center">调节时间</th>
-<th style="text-align:center">闭环响应特征</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">&lt; 45°</td>
-<td style="text-align:center">&lt; 0.5</td>
-<td style="text-align:center">&gt; 20%</td>
-<td style="text-align:center">长（振荡衰减慢）</td>
-<td style="text-align:center">明显振荡，可能出现条件稳定</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>45°–63°</strong></td>
-<td style="text-align:center">0.5~0.707</td>
-<td style="text-align:center">10%–20%</td>
-<td style="text-align:center">中等</td>
-<td style="text-align:center">适中阻尼，<strong>兼顾速度与平稳性</strong></td>
-</tr>
-<tr>
-<td style="text-align:center">60°–76°</td>
-<td style="text-align:center">0.707~1</td>
-<td style="text-align:center">&lt; 10%</td>
-<td style="text-align:center">较短</td>
-<td style="text-align:center">响应平滑，超调小</td>
-</tr>
-<tr>
-<td style="text-align:center">&gt; 76°</td>
-<td style="text-align:center">&gt; 1</td>
-<td style="text-align:center">极小或零</td>
-<td style="text-align:center">可能变慢（过阻尼）</td>
-<td style="text-align:center">无超调，但上升时间增加</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>增大 PM 虽然能抑制振荡，但会导致响应变慢。为了兼顾稳定性和速度，通常取PM为$ 45°–60°$</p>
-<p>其中，阻尼 $\zeta=0.707$ 对应的PM约为$60°$，因此通常要求环路相位裕度为$60°$</p>
-<p>需要注意是，阻尼 $\zeta=0.707$时，其共轭极点与负实轴夹角$\theta=45^\circ$，这个$45^\circ$是s域共轭极点与负实轴夹角的角度，<strong>不是</strong>相位裕度！！</p>
+\text{Stop Time}-\text{Start Time}=\frac{M}{f_{in}}=\frac{N}{f_{s}}</script><p>【举个例子】：</p>
+<p>假设我瞬态仿真得到的波形基波频率为$300\text{Hz}$，于是$f_{in}=300\text{Hz}$</p>
+<p>virtuoso默认采样点数是1024个点，我们通常需要设置的是<strong>起始时间 (<code>Start Time</code>)</strong> 和<strong>结束时间 (<code>Stop Time</code>)</strong></p>
+<p>首先确定$M$，通常为质数，通常可以取1、3、5、7。由于输入信号基频为300，因此此处可以取3，即可计算得到$\text{Stop Time}-\text{Start Time}=\frac{3}{300}=10ms$</p>
+<p>若波形存在启动时间，则$\text{Start Time}$应大于启动时间，则整个tran仿真的时间应该大于$\text{Stop Time}$</p>
+<p>比如波形从开始建立到稳定的时间为$500\mu s$，则可以设置$\text{Start Time}=1ms$，设置$\text{Stop Time}=\text{Start Time}+10ms=11ms$，tran总仿真时长设置为$12ms$</p>
+<p>同时可以计算得到$f_s=102.4k\text{Hz}$</p>
+<p>为满足奈奎斯特采样定理，可观测信号频率只能是采样频率的一半，因此我们FFT之后看到的频谱图横坐标（即频率）能看到的最大值为$f_s/2=51.2k\text{Hz}$</p>
+<h1 id="2-具体操作"><a href="#2-具体操作" class="headerlink" title="2. 具体操作"></a>2. 具体操作</h1><p>【第一步】：瞬态仿真 (Transient Simulation) 设置</p>
+<p>在设置瞬态仿真时，就需要为后续的FFT分析做准备。</p>
+<ul>
+<li><strong>仿真时间 (Stop Time)</strong>：至少保证电路进入稳定状态后，还有足够时间采集<code>N</code>个点。一个常用的公式是：<code>仿真总时间 &gt;= 启动时间 + N / fs</code>。</li>
+<li><strong>仿真步长 (Step)</strong>：步长应足够小，以满足奈奎斯特采样定理，并准确捕捉信号细节。一般建议步长小于 <code>1/(2·fs)</code>。</li>
+</ul>
+<p>【第二步】：调用频谱分析工具 (Spectrum/FFT)</p>
+<p>仿真完成后，在波形窗口 (Waveform Window) 中，通过菜单栏 <strong><code>Measurements</code> -&gt; <code>Spectrum</code></strong> 来打开设置对话框。</p>
+<p>【第三步】：关键参数配置 </p>
+<p>这是整个频谱分析的核心，每个参数都直接影响结果。</p>
+<ol>
+<li><p><strong><code>Input Wave Type</code></strong>: 选择 <strong><code>Time Domain Waveform</code></strong>。</p>
+</li>
+<li><p><strong><code>FFT Input Method</code></strong>: 推荐选择 <strong><code>Calculate Sample Frequency</code></strong>。</p>
+<ul>
+<li>这种方式下，你需要指定FFT分析的<strong>起始时间 (<code>Start Time</code>)</strong> 和<strong>结束时间 (<code>Stop Time</code>)</strong>，系统会自动算出采样频率。</li>
+<li><strong><code>Start Time</code></strong>：<strong>至关重要</strong>，必须避开电路启动时的暂态过程，选择电路已稳定后的时间点。例如，可从 <code>1ms</code> 开始。</li>
+<li><strong><code>Stop Time</code></strong>：计算公式为 <code>Start Time + M / fin</code>，以满足相干采样。</li>
+</ul>
+</li>
+<li><p><strong><code>Sample Count</code> / <code>Number of Samples</code></strong>: 设置FFT点数 <code>N</code>，通常为1024、2048等2的幂。</p>
+</li>
+<li><p><strong><code>Window Type</code> (窗函数)</strong>:</p>
+<ul>
+<li><strong><code>Rectangular</code> (矩形窗)</strong>：适用于信号周期完美对齐（相干采样）的情况。对于Nyquist速率ADC，推荐使用此窗。</li>
+<li><strong><code>Hanning</code> (汉宁窗)</strong>：能有效抑制频谱泄露，适用于非相干采样或Sigma-Delta调制器等。</li>
+</ul>
+</li>
+<li><p><strong><code>Start/End Freq</code></strong>: 设置你关注的频率分析范围。可以点击 <strong><code>S</code></strong> 按钮，让它与你的 <code>Start/Stop Time</code> 自动同步。</p>
+</li>
+<li><p><strong><code>Harmonics</code></strong>: 设置想要观察或用于计算THD的谐波次数，通常设置为3到7次即可。如果波形实现不明显，则设置7次足矣，7次以上计算出来的THD和计算7次的差别不大。</p>
+</li>
+<li><p><strong><code>Signal Bins</code></strong>: 这个参数与窗函数有关，通常保留默认值即可。</p>
+</li>
+</ol>
+<p>【第四步】：生成频谱图与分析</p>
+<p>完成所有设置后，点击 <strong><code>Plot</code></strong> 按钮，即可生成频谱图。在频谱图上可以直接读出基波、各次谐波以及噪底的功率值，用于后续计算THD、SINAD、SFDR等动态参数。</p>
+<h1 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3. 注意事项"></a>3. 注意事项</h1><ul>
+<li><p><strong>较为精确设置初始时间和结束时间</strong>：如果选取不合适，则可能出现以下情况。</p>
+<p>例如，希望观察 <code>fin=300Hz</code>，选取<code>M=7</code>、<code>N=1024</code>，计算 <code>Stop Time-Start Time=23.333ms</code>，但是你设置的<code>Stop Time-Start Time=23ms</code>，则实际观测到频率为 <code>fin = 7/23ms = 304.3Hz</code>，和<code>300Hz</code>有所偏差。</p>
+</li>
+<li><p><strong>关于<code>M</code>（信号周期数）的选择</strong>：<code>M</code> 必须为质数，通常取3、5、7。</p>
+</li>
+<li><p><strong>采样点数并非越多越好</strong>：过高的采样点数（如16384）可能导致样本间差异过小，反而影响FFT结果的有效性。</p>
+</li>
+<li><p><strong>如何包含噪声</strong>：如果需要分析包含噪声的频谱，需在电路或输入信号中引入噪声源。常规的瞬态仿真本身不包含器件噪声。</p>
+</li>
+<li><p><strong>常见问题排查</strong>：</p>
+<ul>
+<li><strong>THD计算结果为0</strong>：检查 <code>Harmonics</code> 是否设置正确，或电路是否过于理想化。</li>
+<li><strong>频谱泄露严重</strong>：检查 <code>Start/Stop Time</code> 的设置是否严格满足相干采样条件。</li>
+<li><strong>SNR大于SNDR</strong>：这通常意味着仿真或FFT设置存在问题，因为SNDR = SNR + THD，理论上SNDR应大于SNR。</li>
+</ul>
+</li>
+</ul>
 
             </div>
             <hr>
@@ -343,6 +357,8 @@ A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度
                     
                       <a class="hover-with-bg" href="/tags/%E6%A8%A1%E6%8B%9FIC/">模拟IC</a>
                     
+                      <a class="hover-with-bg" href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+                    
                   </div>
                 
               </div>
@@ -358,18 +374,12 @@ A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/08/05/virtuoso%E5%82%85%E9%87%8C%E5%8F%B6%E4%BB%BF%E7%9C%9F/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">virtuoso快速傅里叶变换仿真</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/08/03/%E5%85%A8%E5%B7%AE%E5%88%86%E8%BE%93%E5%87%BA%E8%B4%9F%E8%BD%BD%E7%AD%89%E6%95%88/">
-                        <span class="hidden-mobile">全差分输出负载等效</span>
+                      <a href="/2026/08/04/%E7%8E%AF%E8%B7%AF%E7%9B%B8%E4%BD%8D%E8%A3%95%E5%BA%A6%E9%A2%84%E6%B5%8B%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
+                        <span class="hidden-mobile">环路相位裕度预测闭环响应</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
