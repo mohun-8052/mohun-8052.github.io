@@ -16,22 +16,24 @@
   <meta name="author" content="shi">
   <meta name="keywords" content="">
   
-    <meta name="description" content="傅里叶仿真的注意事项">
+    <meta name="description" content="负载为电容，输出正弦波，需要多少驱动电流？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="virtuoso快速傅里叶变换仿真">
-<meta property="og:url" content="http://example.com/2026/08/05/virtuoso%E5%82%85%E9%87%8C%E5%8F%B6%E4%BB%BF%E7%9C%9F/index.html">
+<meta property="og:title" content="正弦输出驱动电流计算">
+<meta property="og:url" content="http://example.com/2026/08/06/%E6%AD%A3%E5%BC%A6%E8%BE%93%E5%87%BA%E9%A9%B1%E5%8A%A8%E7%94%B5%E6%B5%81%E8%AE%A1%E7%AE%97/index.html">
 <meta property="og:site_name" content="墨魂">
-<meta property="og:description" content="傅里叶仿真的注意事项">
+<meta property="og:description" content="负载为电容，输出正弦波，需要多少驱动电流？">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-08-05T14:32:08.000Z">
-<meta property="article:modified_time" content="2026-08-06T14:38:22.735Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260806215007275.png">
+<meta property="article:published_time" content="2026-08-06T13:25:22.000Z">
+<meta property="article:modified_time" content="2026-08-06T14:43:58.206Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta property="article:tag" content="随笔">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260806215007275.png">
   
   
-  <title>virtuoso快速傅里叶变换仿真 - 墨魂</title>
+  <title>正弦输出驱动电流计算 - 墨魂</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -193,7 +195,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="virtuoso快速傅里叶变换仿真">
+            <span class="h2" id="subtitle" title="正弦输出驱动电流计算">
               
             </span>
 
@@ -203,8 +205,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2026-08-05 22:32" pubdate>
-        2026年8月5日 晚上
+      <time datetime="2026-08-06 21:25" pubdate>
+        2026年8月6日 晚上
       </time>
     </span>
   
@@ -214,7 +216,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.3k 字
+      3.3k 字
     </span>
   
 
@@ -223,7 +225,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      19 分钟
+      28 分钟
     </span>
   
 
@@ -252,7 +254,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">virtuoso快速傅里叶变换仿真</h1>
+            <h1 style="display: none">正弦输出驱动电流计算</h1>
             
               <p class="note note-info">
                 
@@ -261,80 +263,109 @@
               </p>
             
             <div class="markdown-body">
-              <p>傅里叶仿真的注意事项</p>
+              <p>负载为电容，输出正弦波，需要多少驱动电流？</p>
 <hr>
 <span id="more"></span>
-<h1 id="1-相干采样"><a href="#1-相干采样" class="headerlink" title="1. 相干采样"></a>1. 相干采样</h1><p>在Virtuoso中进行频谱分析，<strong>核心是进行FFT（快速傅里叶变换）设置</strong>。这通常是在完成<strong>瞬态仿真（tran）</strong> 后，对输出的时域波形进行后处理。</p>
-<p>为了获得准确的频谱，最关键的一步是实现<strong>相干采样 (Coherent Sampling)</strong>，以避免频谱泄露。</p>
-<p>相干采样要求输入信号频率 (<code>fin</code>)、采样频率 (<code>fs</code>) 和采样点数 (<code>N</code>) 满足以下关系：</p>
+<p>要让电容值为 $C$的电容两端产生频率为 $f$、峰峰值电压为$V_{pp}$ 的正弦波，驱动电流（即流过电容的电流）也是一个同频率的正弦波</p>
+<h1 id="1-理想电容"><a href="#1-理想电容" class="headerlink" title="1. 理想电容"></a>1. 理想电容</h1><p>计算驱动电流的<strong>核心公式</strong>为</p>
 <script type="math/tex; mode=display">
-f_{in}=f_s·\frac{M}{N}=f_s·\frac{M}{2^n}</script><ul>
-<li><strong>N</strong>：FFT点数，通常取2的幂，如1024、2048。</li>
-<li><strong>M</strong>：<strong>质数</strong>，代表在<code>N</code>个采样点中包含的输入信号完整周期数。</li>
-</ul>
-<p>简单来说，就是确保你的采样窗口恰好截取了整数个周期的信号波形。</p>
-<p><strong>起始时间 (<code>Start Time</code>)</strong> 和<strong>结束时间 (<code>Stop Time</code>)</strong>满足：</p>
+ i(t) = C \frac{dv}{dt}</script><p>由于电容是理想电容，因此此时电流超前电压90°</p>
+<p>根据上文条件可知电容上的正弦波表达式：</p>
 <script type="math/tex; mode=display">
-\text{Stop Time}-\text{Start Time}=\frac{M}{f_{in}}=\frac{N}{f_{s}}</script><p>【举个例子】：</p>
-<p>假设我瞬态仿真得到的波形基波频率为$300\text{Hz}$，于是$f_{in}=300\text{Hz}$</p>
-<p>virtuoso默认采样点数是1024个点，我们通常需要设置的是<strong>起始时间 (<code>Start Time</code>)</strong> 和<strong>结束时间 (<code>Stop Time</code>)</strong></p>
-<p>首先确定$M$，通常为质数，通常可以取1、3、5、7。由于输入信号基频为300，因此此处可以取3，即可计算得到$\text{Stop Time}-\text{Start Time}=\frac{3}{300}=10ms$</p>
-<p>若波形存在启动时间，则$\text{Start Time}$应大于启动时间，则整个tran仿真的时间应该大于$\text{Stop Time}$</p>
-<p>比如波形从开始建立到稳定的时间为$500\mu s$，则可以设置$\text{Start Time}=1ms$，设置$\text{Stop Time}=\text{Start Time}+10ms=11ms$，tran总仿真时长设置为$12ms$</p>
-<p>同时可以计算得到$f_s=102.4k\text{Hz}$</p>
-<p>为满足奈奎斯特采样定理，可观测信号频率只能是采样频率的一半，因此我们FFT之后看到的频谱图横坐标（即频率）能看到的最大值为$f_s/2=51.2k\text{Hz}$</p>
-<h1 id="2-具体操作"><a href="#2-具体操作" class="headerlink" title="2. 具体操作"></a>2. 具体操作</h1><p>【第一步】：瞬态仿真 (Transient Simulation) 设置</p>
-<p>在设置瞬态仿真时，就需要为后续的FFT分析做准备。</p>
+ v(t) = \frac{V_{pp}}{2} \sin(2\pi f t)</script><p>根据“核心公式”可知，驱动电流的振幅：</p>
+<script type="math/tex; mode=display">
+I_{peak} = \pi \cdot f \cdot C \cdot V_{pp}</script><p>驱动电流的峰峰值即：</p>
+<script type="math/tex; mode=display">
+I_{pp} = 2I_{peak} =2\pi \cdot f \cdot C \cdot V_{pp}</script><p>驱动电流有效值（<strong>用于计算导线发热和功放功耗</strong>）：</p>
+<script type="math/tex; mode=display">
+I_{rms} = \frac{I_{peak}}{\sqrt{2}} = \frac{\pi \cdot f \cdot C \cdot V_{pp}}{\sqrt{2}} \approx 2.22 \cdot f \cdot C \cdot V_{pp}</script><p>【注意事项】：</p>
 <ul>
-<li><strong>仿真时间 (Stop Time)</strong>：至少保证电路进入稳定状态后，还有足够时间采集<code>N</code>个点。一个常用的公式是：<code>仿真总时间 &gt;= 启动时间 + N / fs</code>。</li>
-<li><strong>仿真步长 (Step)</strong>：步长应足够小，以满足奈奎斯特采样定理，并准确捕捉信号细节。一般建议步长小于 <code>1/(2·fs)</code>。</li>
+<li><p><strong>瞬时最大电流发生在电压过零点</strong>：正弦波电压斜率最大的时刻，驱动电流达到峰值 $ I_{peak}$。运放或驱动电路必须能提供至少这个峰值电流，否则波形会因“压摆率”不足或过流保护而失真。</p>
+</li>
+<li><p><strong>区分“峰峰值”与“峰值”</strong>：公式中使用的是$V_{pp}$（峰峰值）。如果误用振幅（峰值），结果会相差一倍，务必注意。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260806215007275.png" srcset="/img/loading.gif" lazyload alt="image-20260806215007275"></p>
+</li>
+<li><p><strong>直流偏置不影响电流</strong>：如果正弦波叠加在直流电压上（例如$V_{dc} + \frac{V_{pp}}{2}\sin(\omega t) $)，直流分量不产生电流，计算交流电流时只需代入 <strong>Vpp</strong> 即可。</p>
+</li>
 </ul>
-<p>【第二步】：调用频谱分析工具 (Spectrum/FFT)</p>
-<p>仿真完成后，在波形窗口 (Waveform Window) 中，通过菜单栏 <strong><code>Measurements</code> -&gt; <code>Spectrum</code></strong> 来打开设置对话框。</p>
-<p>【第三步】：关键参数配置 </p>
-<p>这是整个频谱分析的核心，每个参数都直接影响结果。</p>
+<h1 id="2-带ESR的电容"><a href="#2-带ESR的电容" class="headerlink" title="2. 带ESR的电容"></a>2. 带ESR的电容</h1><p>实际工程中，电容是带有ESR电阻的。</p>
+<p>用示波器探头夹在电容的两个引脚外侧，测到的是<strong>外部引脚电压</strong>，即落在ESR（$R_e$）和内部理想电容上的压降之和。</p>
+<p>此时的“电容”的等效阻抗<strong>模值</strong>为（$ \omega = 2\pi f$）：</p>
+<script type="math/tex; mode=display">
+Z = \sqrt{R_e^2 + (\frac{1}{\omega C})^2}</script><p>于是驱动电流的振幅（振幅=电流模值=电压模值/阻抗模值）：</p>
+<script type="math/tex; mode=display">
+I_{peak} = \frac{V_{pp} / 2}{Z} = \frac{V_{pp}}{2 \cdot \sqrt{R_e^2 + \left(\frac{1}{2\pi f C}\right)^2}}</script><p>驱动电流的峰峰值：</p>
+<script type="math/tex; mode=display">
+I_{pp} = 2I_{peak}</script><p>驱动电流有效值（RMS）</p>
+<script type="math/tex; mode=display">
+I_{rms} = \frac{I_{peak}}{\sqrt{2}}</script><p><strong>相位变化提醒</strong>：</p>
 <ol>
-<li><p><strong><code>Input Wave Type</code></strong>: 选择 <strong><code>Time Domain Waveform</code></strong>。</p>
-</li>
-<li><p><strong><code>FFT Input Method</code></strong>: 推荐选择 <strong><code>Calculate Sample Frequency</code></strong>。</p>
-<ul>
-<li>这种方式下，你需要指定FFT分析的<strong>起始时间 (<code>Start Time</code>)</strong> 和<strong>结束时间 (<code>Stop Time</code>)</strong>，系统会自动算出采样频率。</li>
-<li><strong><code>Start Time</code></strong>：<strong>至关重要</strong>，必须避开电路启动时的暂态过程，选择电路已稳定后的时间点。例如，可从 <code>1ms</code> 开始。</li>
-<li><strong><code>Stop Time</code></strong>：计算公式为 <code>Start Time + M / fin</code>，以满足相干采样。</li>
-</ul>
-</li>
-<li><p><strong><code>Sample Count</code> / <code>Number of Samples</code></strong>: 设置FFT点数 <code>N</code>，通常为1024、2048等2的幂。</p>
-</li>
-<li><p><strong><code>Window Type</code> (窗函数)</strong>:</p>
-<ul>
-<li><strong><code>Rectangular</code> (矩形窗)</strong>：适用于信号周期完美对齐（相干采样）的情况。对于Nyquist速率ADC，推荐使用此窗。</li>
-<li><strong><code>Hanning</code> (汉宁窗)</strong>：能有效抑制频谱泄露，适用于非相干采样或Sigma-Delta调制器等。</li>
-</ul>
-</li>
-<li><p><strong><code>Start/End Freq</code></strong>: 设置你关注的频率分析范围。可以点击 <strong><code>S</code></strong> 按钮，让它与你的 <code>Start/Stop Time</code> 自动同步。</p>
-</li>
-<li><p><strong><code>Harmonics</code></strong>: 设置想要观察或用于计算THD的谐波次数，通常设置为3到7次即可。如果波形实现不明显，则设置7次足矣，7次以上计算出来的THD和计算7次的差别不大。</p>
-</li>
-<li><p><strong><code>Signal Bins</code></strong>: 这个参数与窗函数有关，通常保留默认值即可。</p>
-</li>
+<li><strong>电阻上的电压</strong>（$V_R$）：与电流 <strong>同相位</strong>（波形同步）。</li>
+<li><strong>电容上的电压</strong>（$V_C$）：<strong>滞后</strong>电流 90°（波形慢四分之一个周期）。</li>
 </ol>
-<p>【第四步】：生成频谱图与分析</p>
-<p>完成所有设置后，点击 <strong><code>Plot</code></strong> 按钮，即可生成频谱图。在频谱图上可以直接读出基波、各次谐波以及噪底的功率值，用于后续计算THD、SINAD、SFDR等动态参数。</p>
-<h1 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3. 注意事项"></a>3. 注意事项</h1><ul>
-<li><p><strong>较为精确设置初始时间和结束时间</strong>：如果选取不合适，则可能出现以下情况。</p>
-<p>例如，希望观察 <code>fin=300Hz</code>，选取<code>M=7</code>、<code>N=1024</code>，计算 <code>Stop Time-Start Time=23.333ms</code>，但是你设置的<code>Stop Time-Start Time=23ms</code>，则实际观测到频率为 <code>fin = 7/23ms = 304.3Hz</code>，和<code>300Hz</code>有所偏差。</p>
-</li>
-<li><p><strong>关于<code>M</code>（信号周期数）的选择</strong>：<code>M</code> 必须为质数，通常取3、5、7。</p>
-</li>
-<li><p><strong>采样点数并非越多越好</strong>：过高的采样点数（如16384）可能导致样本间差异过小，反而影响FFT结果的有效性。</p>
-</li>
-<li><p><strong>常见问题排查</strong>：</p>
+<p>此时电流不再超前电压恰好 90°。电流超前电压的角度为$ \theta = \arctan\left(\frac{1 / (\omega C)}{R_e}\right) $。ESR 越大，相位差越小，电流波形会向电压波形“靠拢”。</p>
+<p>【注意事项】：</p>
 <ul>
-<li><strong>THD计算结果为0</strong>：检查 <code>Harmonics</code> 是否设置正确，或电路是否过于理想化。</li>
-<li><strong>频谱泄露严重</strong>：检查 <code>Start/Stop Time</code> 的设置是否严格满足相干采样条件。</li>
+<li><p><strong>额外功耗</strong>：无论哪种情况，ESR 都会导致电容发热。实际消耗的有功功率为：</p>
+<script type="math/tex; mode=display">
+P_{loss} = I_{rms}^2 \cdot R_e</script><p>理想电容没有功耗，因此该部分为 0，但现在驱动电路必须额外提供这部分真实功率（不再是纯无功功率）。</p>
+</li>
+<li><p><strong>高频时 ESR 起决定性作用</strong>：当频率$f$很高时，容抗$X_c = \frac{1}{2\pi fC}$ 会变得很小。若$X_c \ll R_e$，总阻抗约等于$R_e$，此时驱动电流振幅约等于$V_{pp} / (2R_e)$，<strong>电流大小几乎与电容值 C 无关</strong>，完全受 ESR 限制。</p>
+</li>
+</ul>
+<p>可通过以下例子快速对比、感受 ESR 的影响</p>
+<p>假设$C = 1\mu F$，$ f = 100kHz$，$V_{pp} = 10V $：</p>
+<ul>
+<li><strong>理想情况（无 ESR）</strong>：$ I_{peak} = 3.14A$（电流极大）。</li>
+<li><strong>加入 ESR（$ R_e = 1\Omega$）</strong>：<br>$X_c = 1.59\Omega$，$Z = \sqrt{1^2 + 1.59^2} \approx 1.88\Omega$。<br>$I_{peak} = \frac{10}{2 \times 1.88} \approx \mathbf{2.66A}$。<br>电流显著减小，因为 ESR 限制了电流；同时 ESR 上功耗高达$ (\frac{2.66}{\sqrt{2}})^2 \times 1 \approx 3.5W $</li>
+</ul>
+<h1 id="3-非理想正弦波电压输出"><a href="#3-非理想正弦波电压输出" class="headerlink" title="3. 非理想正弦波电压输出"></a>3. 非理想正弦波电压输出</h1><p>不考虑ESR电阻，若此时对电容上的正弦波没有严格要求，允许该电容上电压波形可以存在1%的THD，则驱动电流如何计算？</p>
+<p>需要注意的是，该驱动电流并<strong>没有唯一解</strong>，其与这1%失真能量在频域上的具体分布（即谐波的阶次$ n$）相关。</p>
+<h2 id="3-1-有效值计算"><a href="#3-1-有效值计算" class="headerlink" title="3.1 有效值计算"></a>3.1 有效值计算</h2><p>下面为具体推导和工程结论：</p>
+<p>设电压基波<strong>有效值</strong>为$V_1$，各次谐波<strong>有效值</strong>为$V_n $（$n \ge 2$）。  </p>
+<p>THD 定义为：</p>
+<script type="math/tex; mode=display">
+THD = \frac{\sqrt{\sum_{n=2}^{\infty} V_n^2}}{V_1} = 1\% = 0.01</script><p>对于理想电容$C$，流过$n$次谐波的电流<strong>有效值</strong>为：</p>
+<script type="math/tex; mode=display">
+I_n = 2\pi (n f) C \cdot V_n = n \cdot (2\pi f C V_n)</script><p>总电流有效值为（不同频率正交，RMS值平方相加）：</p>
+<script type="math/tex; mode=display">
+I_{total\_rms} = \sqrt{ \sum_{n=1}^{\infty} I_n^2 } 
+= 2\pi f C V_1 \cdot \sqrt{ 1 + \sum_{n=2}^{\infty} n^2 \left(\frac{V_n}{V_1}\right)^2 }</script><p>式中$ \sum (V_n/V_1)^2 = (0.01)^2 = 0.0001 $，但由于乘以了$ n^2$，<strong>谐波阶次$ n $越高，对电流的贡献放得越大</strong>。</p>
+<p>因此，1% THD 到底是由二次谐波还是 50 次谐波引起的，会导致总电流截然不同。</p>
+<p>【1% THD的由来】:</p>
+<ul>
+<li><p>如果这1%的THD是由常规放大器或信号源产生的（通常以二次$(n=2)$、三次$(n=3)$谐波为主），那么所需电流<strong>几乎等同于理想纯正弦波的理论值</strong>，差异小到可以忽略。</p>
+<ul>
+<li><p><strong>若 1% THD 全为二次谐波</strong>：  </p>
+<p>$\sum n^2 (V_n/V_1)^2 = 4 \times 0.0001 = 0.0004 $<br>$I_{total} = I_{ideal} \times \sqrt{1.0004} \approx \mathbf{1.0002 \times I_{ideal}}$，所需电流仅比理想值大 <strong>0.02%</strong>，工程上完全忽略。</p>
+</li>
+<li><p><strong>若 1% THD 全为三次谐波</strong>：  </p>
+<p>$ \sum = 9 \times 0.0001 = 0.0009$</p>
+<p>$I_{total} \approx \mathbf{1.00045 \times I_{ideal}}$，大 <strong>0.045%</strong>，同样忽略不计。</p>
+</li>
 </ul>
 </li>
 </ul>
+<ul>
+<li><p>如果这 1% 的失真集中在很高的频率（例如开关纹波、采样噪声引起的 ( n=50 ) 次谐波），那么电流会<strong>显著增加</strong></p>
+<ul>
+<li><p><strong>若全为 50 次谐波</strong>：<br>$\sum = 2500 \times 0.0001 = 0.25 $</p>
+<p>$ I_{total} = I_{ideal} \times \sqrt{1.25} \approx \mathbf{1.118 \times I_{ideal}} $，这意味着驱动电流需要比理想值多出约 <strong>12%</strong>。</p>
+</li>
+<li><p><strong>若全为 100 次谐波</strong>： </p>
+<p>$ \sum = 10000 \times 0.0001 = 1 $</p>
+<p>$I_{total} = \sqrt{2} \times I_{ideal} $，需要多出 <strong>41%</strong> 的电流能力。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-2-峰值电流"><a href="#3-2-峰值电流" class="headerlink" title="3.2 峰值电流"></a>3.2 峰值电流</h2><p>对于驱动电路（运放/功放）选型，<strong>峰值电流能力</strong>比RMS值更关键。总电流峰值不仅取决于RMS，还取决于各次谐波的<strong>相位叠加</strong>。</p>
+<ul>
+<li>在最坏相位情况下，所有谐波电流峰值在过零点同向叠加，瞬时峰值可能达到$I_{peak_total} \le I_{peak_1} + \sum I_{peak_n}$。</li>
+<li>即使 RMS 增加很小（如二次谐波），峰值电流也可能因相位巧合而额外增加几个百分点。</li>
+</ul>
+<h2 id="3-3-驱动电流取用建议"><a href="#3-3-驱动电流取用建议" class="headerlink" title="3.3 驱动电流取用建议"></a>3.3 驱动电流取用建议</h2><p>制定驱动芯片（运放）驱动电流指标时，将计算出的$ I_{peak}=\pi \cdot f \cdot C \cdot V_{pp} $ <strong>乘以 1.2 ~ 1.5 倍</strong>。这个裕量足以覆盖 1% THD（即便含少量高次谐波）带来的额外电流需求，同时也能应对电容容差、温度变化和PCB寄生参数的影响。</p>
+<p>若存在明显的高次（&gt;10次）谐波分量（如开关电源供电？），需要实际估计的各次谐波电压并带入计算，不要仅凭THD估算。</p>
 
             </div>
             <hr>
@@ -371,18 +402,12 @@ f_{in}=f_s·\frac{M}{N}=f_s·\frac{M}{2^n}</script><ul>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/08/06/%E6%AD%A3%E5%BC%A6%E8%BE%93%E5%87%BA%E9%A9%B1%E5%8A%A8%E7%94%B5%E6%B5%81%E8%AE%A1%E7%AE%97/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">正弦输出驱动电流计算</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/08/04/%E7%8E%AF%E8%B7%AF%E7%9B%B8%E4%BD%8D%E8%A3%95%E5%BA%A6%E9%A2%84%E6%B5%8B%E9%97%AD%E7%8E%AF%E5%93%8D%E5%BA%94/">
-                        <span class="hidden-mobile">环路相位裕度预测闭环响应</span>
+                      <a href="/2026/08/05/virtuoso%E5%82%85%E9%87%8C%E5%8F%B6%E4%BB%BF%E7%9C%9F/">
+                        <span class="hidden-mobile">virtuoso快速傅里叶变换仿真</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
