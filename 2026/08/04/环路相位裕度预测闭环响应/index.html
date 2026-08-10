@@ -24,7 +24,7 @@
 <meta property="og:description" content="通过分析&#x2F;仿真环路传递函数的相位裕度PM，就可以预测闭环系统的闭环响应">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-08-04T12:30:57.000Z">
-<meta property="article:modified_time" content="2026-08-04T14:07:01.735Z">
+<meta property="article:modified_time" content="2026-08-10T13:54:01.276Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年8月4日 晚上
+                  本文最后更新于：2026年8月10日 晚上
                 
               </p>
             
@@ -272,7 +272,7 @@ A(s)\beta = \frac{\beta A_0\left(1+\dfrac{s}{\omega_z}\right)}{\left(1+\dfrac{s}
 <p>加入零点后，即便$\omega_z$ 只是略大于 $\omega_{p2}$（如$\omega_{p1}&lt;\omega_{p2}&lt;\omega_z$，它在$\omega_c$ 处提供的正相位也能显著抵消极点滞后，使 PM 增大。</p>
 <h1 id="2-相位裕度和闭环阻尼的关系"><a href="#2-相位裕度和闭环阻尼的关系" class="headerlink" title="2. 相位裕度和闭环阻尼的关系"></a>2. 相位裕度和闭环阻尼的关系</h1><p>对于标准二阶系统（无零点），闭环传递函数为</p>
 <script type="math/tex; mode=display">
-A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度与阻尼有以下解析关系：</p>
+A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度与闭环阻尼有以下解析关系：</p>
 <script type="math/tex; mode=display">
 \text{PM} = \arctan\frac{2\zeta}{\sqrt{\sqrt{4\zeta^4+1}-2\zeta^2}}</script><p>有近似关系：</p>
 <script type="math/tex; mode=display">
@@ -283,7 +283,7 @@ A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度
 <thead>
 <tr>
 <th style="text-align:center">相位裕度 PM</th>
-<th style="text-align:center">阻尼比 $\zeta$ 估算</th>
+<th style="text-align:center">闭环阻尼 $\zeta$ 估算</th>
 <th style="text-align:center">超调量</th>
 <th style="text-align:center">调节时间</th>
 <th style="text-align:center">闭环响应特征</th>
@@ -305,7 +305,7 @@ A(s) =\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}</script><p>相位裕度
 <td style="text-align:center">适中阻尼，<strong>兼顾速度与平稳性</strong></td>
 </tr>
 <tr>
-<td style="text-align:center">60°–76°</td>
+<td style="text-align:center">63°–76°</td>
 <td style="text-align:center">0.707~1</td>
 <td style="text-align:center">&lt; 10%</td>
 <td style="text-align:center">较短</td>

@@ -27,8 +27,10 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260722224554470.png">
 <meta property="og:image" content="c:/Users/20185/AppData/Roaming/Typora/typora-user-images/image-20260804201553508.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mohun-8052/pic/image-20260729214852902.png">
+<meta property="og:image" content="c:/Users/20185/AppData/Roaming/Typora/typora-user-images/image-20260810205534230.png">
+<meta property="og:image" content="c:/Users/20185/AppData/Roaming/Typora/typora-user-images/image-20260810220035649.png">
 <meta property="article:published_time" content="2026-07-28T14:45:24.000Z">
-<meta property="article:modified_time" content="2026-08-04T12:22:16.550Z">
+<meta property="article:modified_time" content="2026-08-10T14:09:35.178Z">
 <meta property="article:author" content="shi">
 <meta property="article:tag" content="模拟IC">
 <meta name="twitter:card" content="summary_large_image">
@@ -260,7 +262,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2026年8月4日 晚上
+                  本文最后更新于：2026年8月10日 晚上
                 
               </p>
             
@@ -378,7 +380,48 @@ p_2 = \frac{-b - \sqrt{\Delta}}{2}.</script><ul>
 <li>$p_2$ 迅速远离虚轴成为非主导极点，系统近似为一阶惯性环节，无超调，过阻尼。  </li>
 <li>整个系统始终保持稳定，且动态特性可由 $\omega_z$ 的位置调节。</li>
 </ul>
-<h2 id="3-2-零点位于两极点之外"><a href="#3-2-零点位于两极点之外" class="headerlink" title="3.2 零点位于两极点之外"></a>3.2 零点位于两极点之外</h2>
+<h2 id="3-2-零点位于两极点之外"><a href="#3-2-零点位于两极点之外" class="headerlink" title="3.2 零点位于两极点之外"></a>3.2 零点位于两极点之外</h2><p>该部分不进行具体公式推导，仅通过观察开环波特图就可以预测闭环响应。</p>
+<p>【<strong>次极点与主极点较近且低，零点频率较高</strong>】：</p>
+<p>开环波特图如下：</p>
+<p><img src="C:\Users\20185\AppData\Roaming\Typora\typora-user-images\image-20260810205534230.png" srcset="/img/loading.gif" lazyload alt="image-20260810205534230" style="zoom:67%;" /></p>
+<p>相较于【零点位于两极点】之间的情况，【零点位于零极点之外】的情况环路单位增益带宽内存在将近180°的相移，而前者最多只有90°相移。于是，【零点位于零极点之外】的情况可能使得闭环极点耦合成<strong>共轭极点</strong>，引起闭环产生增益尖峰。当然，相对应的，该种补偿方案相比【零点位于两极点】响应速度也会更快。</p>
+<p>令环路增益为$T$：</p>
+<script type="math/tex; mode=display">
+T = \beta A_0</script><ul>
+<li><p>$T=0$​（即开环）：$p_1 = -\omega_{p1},\; p_2 = -\omega_{p2}$。</p>
+</li>
+<li><p>$T$增大：相移增大，相位裕度减小但依然$&gt;76°$（$\zeta&gt;1$），$p_1$ 从$-\omega_{p1}$向左移，$p_2$从$-\omega_{p2}$向右移，$p_1$和$p_2$为<strong>分离极点</strong>。</p>
+</li>
+<li><p>$T$继续增大：相移继续增大，相位裕度继续减小且$=76°$（$\zeta=1$），$p_1$和$p_2$在区间$(-\omega_{p2}, -\omega_{p1})$内某点相遇，此时为<strong>重实极点</strong>。</p>
+</li>
+<li><p>$T$继续增大：相移继续增大，相位裕度继续减小且$&lt;76°$（$\zeta&lt;1$），$p_1$和$p_2$成为<strong>共轭极点</strong></p>
+</li>
+<li><p>$T$继续增大：由于零点的作用，相移由增大变成减小，相位裕度随之变大且$&lt;76°$，$p_1$和$p_2$依然为<strong>共轭极点</strong>，并且整体向左半平面移动，阻尼比由于零点加入而提高。</p>
+<p>共轭极点表示为：</p>
+<script type="math/tex; mode=display">
+s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}</script><p>其中，</p>
+<script type="math/tex; mode=display">
+\omega_n = \sqrt{\omega_{p1}\omega_{p2}(1+T)}</script><script type="math/tex; mode=display">
+\zeta = \frac{\omega_{p1}+\omega_{p2} + \dfrac{T\,\omega_{p1}\omega_{p2}}{\omega_z}}{2\sqrt{\omega_{p1}\omega_{p2}(1+T)}}.</script><ul>
+<li>当<strong>相位裕度&lt;63°</strong>，则闭环$\zeta&lt;0.707$，闭环波特图开始出现增益尖峰</li>
+<li>当<strong>相位裕度&lt;45°</strong>，则闭环$\zeta&lt;0.5$，增益尖峰明显</li>
+<li>当相位裕度最小时，<strong>相位裕度接近0°</strong>，增益尖峰极为明显。但由于两极点系统相位裕度始终＞0，因此闭环系统依然稳定，只是调节时间较长。</li>
+</ul>
+</li>
+<li><p>$T$继续增大：由于零点的作用，相移持续减小，相位裕度随之增大且$=76°$（$\zeta=1$），共轭复根在实轴会合，位于 $(-\infty, -\omega_z)$区间。</p>
+</li>
+<li><p>$T$继续增大：两个实极点$p_1$和$p_2$重新分开，一个极点向右趋近$-\omega_z$，另一个向左趋向 $-\infty$。</p>
+</li>
+<li><p>$T\to\infty$：$p_1 \to -\omega_z^-$（从左侧趋近零点），$p_2 \to -\infty$。零点像“磁石”将根轨迹拉向自己，使得最终主导极点可到达 $-\omega_z$，远比开环极点$-\omega_{p1}$更负，大幅提升响应速度；即使 $\omega_z$仅略大于 $\omega_{p2}$，该补偿也能明显增大阻尼、抑制振荡，改善稳定性。</p>
+</li>
+</ul>
+<p>上文所述的【闭环极点随$T$变化】如下：</p>
+<p><img src="C:\Users\20185\AppData\Roaming\Typora\typora-user-images\image-20260810220035649.png" srcset="/img/loading.gif" lazyload alt="image-20260810220035649"></p>
+<p>【注意事项】：</p>
+<ul>
+<li>假设遇到这种“零点大于次极点”的补偿方案，但是出现相位裕度&lt;0、但补偿零点依然有效果的情况，则必然说明环路单位增益带宽处存在零极点对，且极点频率略低于零点频率。</li>
+</ul>
+
             </div>
             <hr>
             <div>
