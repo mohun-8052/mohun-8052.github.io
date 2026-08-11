@@ -246,51 +246,6 @@
             const y = valToY(val, range.min, range.max, h);
             ctx.fillText(val.toFixed(0) + unit, PAD.l - 65, y + 4);
         }
-
-        // ======== 修改：增强 0dB / 0° 参考线 ========
-        // 幅频图：0dB 红色虚线
-        if (unit === 'dB') {
-            if (range.min < 0 && range.max > 0) {
-                const y0 = valToY(0, range.min, range.max, h);
-                ctx.save();
-                ctx.strokeStyle = '#D32F2F';          // 红色
-                ctx.lineWidth = 2.0;
-                ctx.setLineDash([6, 4]);
-                ctx.beginPath();
-                ctx.moveTo(PAD.l, y0);
-                ctx.lineTo(w - PAD.r, y0);
-                ctx.stroke();
-                ctx.restore();
-            }
-        } else {
-            // 相频图：0° 蓝色虚线
-            if (range.min < 0 && range.max > 0) {
-                const y0 = valToY(0, range.min, range.max, h);
-                ctx.save();
-                ctx.strokeStyle = '#1976D2';          // 蓝色
-                ctx.lineWidth = 2.0;
-                ctx.setLineDash([6, 4]);
-                ctx.beginPath();
-                ctx.moveTo(PAD.l, y0);
-                ctx.lineTo(w - PAD.r, y0);
-                ctx.stroke();
-                ctx.restore();
-            }
-            // 原有的 -180° 参考线保持不变（灰色虚线）
-            if (range.min < -180 && range.max > -180) {
-                const y180 = valToY(-180, range.min, range.max, h);
-                ctx.save();
-                ctx.strokeStyle = '#b0bec5';
-                ctx.lineWidth = 0.8;
-                ctx.setLineDash([4, 4]);
-                ctx.beginPath();
-                ctx.moveTo(PAD.l, y180);
-                ctx.lineTo(w - PAD.r, y180);
-                ctx.stroke();
-                ctx.restore();
-            }
-        }
-        // ===========================================
     }
 
     function drawMarker(ctx, item, isP, range, w, h) {
